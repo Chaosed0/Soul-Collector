@@ -1,3 +1,10 @@
+<style type="text/css">
+code
+{
+	font-family: courier;
+}
+</style>
+
 <html>
 
 <h1>Useful stuff</h1>
@@ -11,44 +18,44 @@ Run through <a href="https://help.github.com/articles/generating-ssh-keys">this 
 <p><b>Using Git</b></p>
 <p>First thing you want to do is to identify yourself. Run the following commands with your own info substituted:</p>
 
-<p><font face="courier">
-git config --global user.email "EMAIL@EMAIL.COM"
+<p><code>
+git config --global user.email "EMAIL@EMAIL.COM"<br/>
 git config --global user.name "USERNAME"
-</font></p>
+</code></p>
 
 <p>Now, to clone the repository (if you don't have a local copy):</p>
 
-<p><font face="courier">
+<p><code>
 git clone git@git.assembla.com:cmpsc483w-un.git
-</font></p>
+</code></p>
 
 <p>If you're starting work from somewhere you already have the repository, make sure to pull the most recent changes before starting work:</p>
 
-<p><font face="courier">
+<p><code>
 git pull
-</font></p>
+</code></p>
 
 <p>After making some changes, commit to your local repository (make a local backup):</p>
 
-<p><font face="courier">
+<p><code>
 git add *
 git commit
-</font></p>
+</code></p>
 
 <p>The second command will bring up a vim prompt to type in a commit message. Pay attention to the message at the bottom - it will tell you what changes you made. Commit messages should take the following form:</p>
 
-<p><font face="courier"></p>
+<p><code>
 Simple, short explanation<br/><br/>
 
 A bit of a longer, detailed explanation here, if needed.
 Can span multiple lines.
-</font></p>
+</code></p>
 
 <p>To push to the remote server (our Assembla repository):</p>
 
-<p><font face="courier">
+<p><code>
 git push
-</font></p>
+</code></p>
 
 <p>If someone's made changes before you, you'll have to pull their changes first and possibly merge their changes before commiting and pushing again.</p>
 
