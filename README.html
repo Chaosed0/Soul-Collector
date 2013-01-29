@@ -18,44 +18,32 @@ Run through <a href="https://help.github.com/articles/generating-ssh-keys">this 
 <p><b>Using Git</b></p>
 <p>First thing you want to do is to identify yourself. Run the following commands with your own info substituted:</p>
 
-<code>
-git config --global user.email "EMAIL@EMAIL.COM"<br/>
-git config --global user.name "USERNAME"<br/>
-</code>
+<code>git config --global user.email "EMAIL@EMAIL.COM"</code><br/>
+<code>git config --global user.name "USERNAME"</code><br/>
 
 <p>Now, to clone the repository (if you don't have a local copy):</p>
 
-<code>
-git clone git@git.assembla.com:cmpsc483w-un.git
-</code>
+<code>git clone git@git.assembla.com:cmpsc483w-un.git</code>
 
 <p>If you're starting work from somewhere you already have the repository, make sure to pull the most recent changes before starting work:</p>
 
-<p><code>
-git pull
-</code></p>
+<code>git pull</code><br/>
 
 <p>After making some changes, commit to your local repository (make a local backup):</p>
 
-<p><code>
-git add *
-git commit
-</code></p>
+<code>git add *</code><br/>
+<code>git commit</code><br/>
 
 <p>The second command will bring up a vim prompt to type in a commit message. Pay attention to the message at the bottom - it will tell you what changes you made. Commit messages should take the following form:</p>
 
-<code>
-Simple, short explanation<br/><br/>
+<code>Simple, short explanation<br/><br/>
 
-A bit of a longer, detailed explanation here, if needed.
-Can span multiple lines.
-</code>
+A bit of a longer, detailed explanation here, if needed.<br/>
+Can span multiple lines. </code><br/>
 
 <p>To push to the remote server (our Assembla repository):</p>
 
-<code>
-git push
-</code>
+<code>git push</code><br/>
 
 <p>If someone's made changes before you, you'll have to pull their changes first and possibly merge their changes before commiting and pushing again.</p>
 
