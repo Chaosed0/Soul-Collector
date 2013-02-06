@@ -5,7 +5,8 @@ Game::Game() :
 	winWidth(800), winHeight(600),
 	window(sf::VideoMode(winWidth, winHeight), "Test") ,
 	menus(winWidth, winHeight),
-	player(sf::Vector2f(winWidth/2.0f, winHeight/2.0f), "player.png")
+	player(sf::Vector2f(winWidth/2.0f, winHeight/2.0f), "assets/img/what.png"),
+	level("test.tmx")
 {
 	//Flag set to false when the game ends
 	running = false;
@@ -144,13 +145,17 @@ void Game::Render()
 	//Clear the screen of what was drawn before
 	// This is inefficient, but if we don't call it, then there will be artefacts from the
 	// previous frame
-	window.clear(sf::Color(255, 255, 255, 255));
+	//Note: Since we're rendering the level and that takes up all of the screen, we don't
+	// need to clear the screen
+	//window.clear(sf::Color(255, 255, 255, 255));
+	//Render the level to the screen, before the player
+	window.draw(level);
 	//Render the player to the screen
 	window.draw(player);
-	//Update the window after the drawing
 
 	menus.Display(window);
 
+	//Update the window after the drawing
 	window.display();
 }
 

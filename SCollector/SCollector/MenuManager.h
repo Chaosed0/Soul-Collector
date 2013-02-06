@@ -4,6 +4,9 @@
  * \date February 2 2013
  */
 
+#ifndef __MENUMANAGER_H
+#define __MENUMANAGER_H
+
 #include <SFGUI/SFGUI.hpp>
 
 class MenuManager 
@@ -88,3 +91,5 @@ void MenuManager::connectExitFunc(void (Class::*function)(), Class* object)
 {
 	exitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(function, object);
 }
+
+#endif

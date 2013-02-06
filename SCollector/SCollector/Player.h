@@ -6,6 +6,9 @@
  * This is a subclass of sf::Drawable so that it can be drawn by itself.
  */
 
+#ifndef __PLAYER_H
+#define __PLAYER_H
+
 #include <SFML/Graphics.hpp>
 
 class Player : public sf::Drawable
@@ -82,3 +85,5 @@ private:
 	/** Movement speed of the player */
 	float moveSpeed;
 };
+
+#endif

@@ -4,10 +4,14 @@
  * \date February 2 2013
  */
 
+#ifndef __GAME_H
+#define __GAME_H
+
 #include <SFML/Graphics.hpp>
 
 #include "MenuManager.h"
 #include "Player.h"
+#include "Level.h"
 
 class Game
 {
@@ -37,4 +41,7 @@ private:
 	bool running;
 
 	Player player;
+	Level level;
 };
+
+#endif
