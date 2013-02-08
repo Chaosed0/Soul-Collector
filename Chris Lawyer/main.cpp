@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include <time.h>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #define FRAMES_PER_SEC 60.0
@@ -16,8 +17,8 @@ int main(int argc, char* argv[])
 	int windowHeight = 750;
 	float playerMoveSpeed = .25;
 	float enemyMoveSpeed = .25;
-	std::string playerImage = "square.jpg";
-	std::string enemyImage = "circle.png";
+	std::string playerImage = "assets/img/megamanpic.png";
+	std::string enemyImage = "assets/img/what.png";
 	Player player(playerImage,windowWidth,windowHeight,playerMoveSpeed);
 	srand(time(0));
 	Enemy enemy1(enemyImage,windowWidth,windowHeight,enemyMoveSpeed);
@@ -32,7 +33,7 @@ int main(int argc, char* argv[])
 	//Frame limiter clock
 	sf::Clock frameLimiter;
 	//Time for a frame
-	sf::Time frameTime = sf::microseconds(1.0/FRAMES_PER_SEC);
+	sf::Time frameTime = sf::microseconds(1000000.0/FRAMES_PER_SEC);
 
 	window.setKeyRepeatEnabled(false);
 
@@ -122,7 +123,6 @@ int main(int argc, char* argv[])
 			sf::sleep(sf::microseconds(frameLimiter.getElapsedTime().asMicroseconds() - frameTime.asMicroseconds()));
 		else
 			printf("slow\n");
-
 	}
 
 	//End
