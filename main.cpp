@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 	//Frame limiter clock
 	sf::Clock frameLimiter;
 	//Time for a frame
-	sf::Time frameTime = sf::microseconds(1.0/FRAMES_PER_SEC);
+	sf::Time frameTime = sf::microseconds(1000000.0/FRAMES_PER_SEC);
 
 	//Main loop
 	while(running)
