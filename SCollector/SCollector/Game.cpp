@@ -6,7 +6,7 @@ Game::Game() :
 	window(sf::VideoMode(winWidth, winHeight), "Test") ,
 	menus(winWidth, winHeight),
 	player(sf::Vector2f(winWidth/2.0f, winHeight/2.0f), "assets/img/what.png"),
-	level("test.tmx")
+	level("test2.tmx")
 {
 	//Flag set to false when the game ends
 	running = false;

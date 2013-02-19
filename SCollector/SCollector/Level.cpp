@@ -107,7 +107,7 @@ bool Level::AdjustY(const sf::Vector2f& pos, int& nearest) const
 		sf::Vector2i locTile(tileIdx % tilesetWidth * tileWidth, tileIdx / tilesetWidth * tileHeight);
 		for(int i = pixel.y; i >= 0; i--)
 		{
-			//printf("(%d, %d) -> (%d, %d)\n", globTile.x, globTile.y, locTile.x, locTile.y);
+			printf("(%d, %d) -> (%d, %d)\n", globTile.x, globTile.y, locTile.x, locTile.y);
 			//printf("(%d, %d) -> %s\n", locTile.x+pixel.x, locTile.y+i, (collisionMap[locTile.x + pixel.x][locTile.y + i]?"true":"false"));
 			if(!collisionMap[locTile.x + pixel.x][locTile.y + i] || tileIdx == 0)
 			{

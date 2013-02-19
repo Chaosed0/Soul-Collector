@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="32" height="32" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Test" tilewidth="32" tileheight="32">
+  <image source="../tileset/tileset-platformer.png" width="192" height="544"/>
+ </tileset>
+ <tileset firstgid="103" name="Collision" tilewidth="32" tileheight="32">
+  <image source="../tileset/Collision.png" width="192" height="192"/>
+ </tileset>
+ <tileset firstgid="139" name="tmw_desert_spacing" tilewidth="64" tileheight="64" spacing="2">
+  <image source="../tileset/tmw_desert_spacing.png" width="265" height="199"/>
+ </tileset>
+ <layer name="Background" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKFL+P3jrMdQcNVUVVXV1w8SbTgQ
+  </data>
+ </layer>
+ <layer name="Foreground" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzNld0JwDAIhF2sK3T/cfoUELnTMz+kQmjShPvUavqY2XN5vIcHMs83d3a3b0PfwFzhr+QrMnbwmT465587+Cg+FneHP2ok1oySX4XvmR1+5UP2Xfy+hbmF954fTe0vtQYRf/XeqPxEhuJnhmLt1O8qf+grPrIePc33uqwGGF+xyGeaiI84p/j+vM9t1n/dgXhsHe+fqKPEX/WQus78yPxEcaM4VH7UiXWi5ETpc3W/6tXMh+4+yqPnI/+qO2yVn+39gT/DPslX6iS7Hzt8pl1ZFfssv9Obij8ZX9FV2V0+086Y3e/V5c/abT4zhV/9i3bwb44PIcCIdQ==
+  </data>
+ </layer>
+ <layer name="Collision" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt1kEKACAIRFGP6/1P0FYkghoYCf6AGIG9dpURkUMVpbuDj4+Pj/+nX9+Q057bv5lX/N2s21fS/wHKGX39Mq/coXa3rwQfHx8ff9afrAX/jzh5
+  </data>
+ </layer>
+</map>
