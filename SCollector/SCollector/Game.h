@@ -38,7 +38,7 @@ private:
 	const int winWidth, winHeight;
 	MenuManager menus;
 	sf::RenderWindow window;
-	bool running;
+	bool isRunning;
 
 	Player player;
 	Level level;

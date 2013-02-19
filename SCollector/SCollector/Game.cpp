@@ -9,12 +9,12 @@ Game::Game() :
 	level("test.tmx")
 {
 	//Flag set to false when the game ends
-	running = false;
+	isRunning = false;
 }
 
 int Game::Run()
 {
-	running = true;
+	isRunning = true;
 	Init();
 	Loop();
 
@@ -43,7 +43,7 @@ void Game::Loop()
 	sf::Time frameTime = sf::microseconds(sf::seconds(1).asMicroseconds()/ticksPerSec);
 
 	// --- MAIN GAME LOOP ---
-	while(running)
+	while(isRunning)
 	{
 		//Reset the framerate regulation timer
 		timer.restart();
@@ -161,5 +161,5 @@ void Game::Render()
 
 void Game::Exit()
 {
-	running = false;
+	isRunning = false;
 }

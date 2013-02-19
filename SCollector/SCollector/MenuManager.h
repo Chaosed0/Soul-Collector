@@ -62,7 +62,9 @@ private:
 	// --- Button callbacks ---
 	void button1Click();
 	void button2Click();
-	void PlayGame();
+	void button3Click();
+	void playGame();
+	void playSound();
 
 	/** Flag set to true when the active menu is visible */
 	bool visible;
@@ -80,6 +82,11 @@ private:
 	sfg::Box::Ptr win1Box;
 	sfg::Button::Ptr button2;
 	sfg::Button::Ptr playButton;
+
+	// --- Window 2 widgets
+	sfg::Box::Ptr win2Box;
+	sfg::Button::Ptr button3;
+	sfg::Button::Ptr playSoundButton;
 
 	sfg::SFGUI gui;
 	sfg::Desktop desktop;
