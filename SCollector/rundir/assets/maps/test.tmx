@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="32" height="32" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Test" tilewidth="32" tileheight="32">
+  <image source="../tileset/tileset-platformer.png" width="192" height="544"/>
+ </tileset>
+ <tileset firstgid="103" name="Collision" tilewidth="32" tileheight="32">
+  <image source="../tileset/Collision.png" width="192" height="192"/>
+ </tileset>
+ <layer name="Background" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKEr9P3rrcdQcNVUVVXV1w/Mb7QB
+  </data>
+ </layer>
+ <layer name="Doodads" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4B4wAvE/ANovzAQi47aP2r/CLV/FAw9MNLLzFGAHQQPtANGwSgYBaNgFIxYAAAyNwGk
+  </data>
+ </layer>
+ <layer name="Foreground" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztlFEKgCAQRD1CX0GUaHWj7n+YCFrYZEVxN/xwBoYCN98LI+cQBEG+mTrz50H4a6bxvXo2uwhzm5K/F3qy2SCsH0oHLV/rYMHXOFjxWx0s+TmH57v1To41X3IIyT6t/JqQI3fowScH+pfQPfU5j6uCnz5XaqzYk79XzewfBR988MEfnX8D2ytFBw==
+  </data>
+ </layer>
+ <layer name="Collision" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztkt0KgCAMhX1cCyzr/S/ajTBEZcvmujgfHOhn9R1wIQDwnkjJlItyO7jr+4NyOrjrd8nJ/VWHnkPi5rPlTPagO5eWR+OeZZUrCjKatdyz4mxd82erdn20k1YdJH7LDlK/VQeNv9eh3uMZvzSp8d2sXzPPO3j4ubeXTfg/bQAAAPyfB75oK3s=
+  </data>
+ </layer>
+ <layer name="Tile Layer 5" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
+  </data>
+ </layer>
+</map>

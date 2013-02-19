@@ -15,21 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="E:\tiles\src\Player.cpp">
+    <ClCompile Include="Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\tiles\src\Level.cpp">
+    <ClCompile Include="MenuManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\tiles\src\main.cpp">
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleMove.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="E:\tiles\src\Player.h">
+    <ClInclude Include="Level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="E:\tiles\src\Level.h">
+    <ClInclude Include="MenuManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
