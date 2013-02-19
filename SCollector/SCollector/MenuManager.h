@@ -60,9 +60,9 @@ private:
 	void SetActiveMenu(sfg::Window::Ptr& window);
 
 	// --- Button callbacks ---
-	void button1Click();
-	void button2Click();
-	void button3Click();
+	void gotoSettings();
+	void gotoHelp();
+	void gotoMain();
 	void playGame();
 	void playSound();
 
@@ -73,20 +73,19 @@ private:
 
 	sfg::Window::Ptr curWindow;
 
-	// --- Window 0 widgets
-	sfg::Box::Ptr win0Box;
-	sfg::Button::Ptr button1;
+	// --- Main Menu
+	sfg::Box::Ptr mainMenu;
+	sfg::Button::Ptr playButton;
+	sfg::Button::Ptr settingsButton;
+	sfg::Button::Ptr helpButton;
 	sfg::Button::Ptr exitButton;
 
-	// --- Window 1 widgets
-	sfg::Box::Ptr win1Box;
-	sfg::Button::Ptr button2;
-	sfg::Button::Ptr playButton;
+	// --- Settings
+	sfg::Box::Ptr settingsMenu;
+	sfg::Button::Ptr mainMenuButton;
 
-	// --- Window 2 widgets
-	sfg::Box::Ptr win2Box;
-	sfg::Button::Ptr button3;
-	sfg::Button::Ptr playSoundButton;
+	// --- Help
+	sfg::Box::Ptr helpMenu;
 
 	sfg::SFGUI gui;
 	sfg::Desktop desktop;
