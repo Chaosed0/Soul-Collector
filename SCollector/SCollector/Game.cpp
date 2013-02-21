@@ -74,17 +74,19 @@ void Game::Event()
 	// Why is "event" a keyword in Visual Studio? We may never know...
 	sf::Event anEvent;
 	while(window.pollEvent(anEvent)) {
+		//This one needs to go before the menu receives the input, so that 
+		// the window can still close if the menu's open
+		if(anEvent.type == sf::Event::Closed) {
+			Exit();
+		}
 		//If the menu system isn't visible, then it can't receive events
-		if(menus.IsVisible()) {
+		else if(menus.IsVisible()) {
 			menus.HandleEvent(anEvent);
 		}
 		//Otherwise, the game is visible, and it should receive events
 		// Note: May change later!
 		else {
 			switch(anEvent.type) {
-			case sf::Event::Closed :
-				Exit();
-				break;
 			case sf::Event::KeyPressed :
 				switch(anEvent.key.code) {
 				//Note: The reason I don't move the player shape within these case statements is twofold:
