@@ -12,6 +12,7 @@
 #include "MenuManager.h"
 #include "Player.h"
 #include "Level.h"
+#include "HUD.h"
 
 class Game
 {

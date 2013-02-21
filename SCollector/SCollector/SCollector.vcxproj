@@ -69,12 +69,16 @@
   <ItemGroup>
     <ClCompile Include="CircleMove.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="HudObject.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="HudObject.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Player.h" />
