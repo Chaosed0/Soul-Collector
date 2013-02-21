@@ -82,10 +82,11 @@ private:
 
 	// --- Settings
 	sfg::Box::Ptr settingsMenu;
-	sfg::Button::Ptr mainMenuButton;
+	sfg::Button::Ptr settingstoMain;
 
 	// --- Help
 	sfg::Box::Ptr helpMenu;
+	sfg::Button::Ptr helptoMain;
 
 	sfg::SFGUI gui;
 	sfg::Desktop desktop;
