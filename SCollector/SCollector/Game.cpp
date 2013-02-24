@@ -6,7 +6,7 @@ Game::Game() :
 	window(sf::VideoMode(winWidth, winHeight), "Test") ,
 	menus(winWidth, winHeight),
 	player(sf::Vector2f(winWidth/2.0f, winHeight/2.0f), "assets/img/what.png"),
-	level("test.tmx")
+	level("new.tmx")
 {
 	//Flag set to false when the game ends
 	isRunning = false;
@@ -30,6 +30,9 @@ void Game::Init()
 
 	//Connect the exit button of the menus to the exit function here
 	menus.connectExitFunc(&Game::Exit, this);
+
+	//Set the position of the player to the level spawn coords
+	player.SetPos(level.GetSpawn());
 }
 
 void Game::Loop()
@@ -138,7 +141,7 @@ void Game::Update()
 {
 	// --- GAME LOGIC ---
 	//Update the player class
-	player.Update();
+	player.Update(level);
 }
 
 void Game::Render()

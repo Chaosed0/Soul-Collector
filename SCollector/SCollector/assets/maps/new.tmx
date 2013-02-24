@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="29" height="16" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
+  <image source="../tileset/tileset.png" width="160" height="320"/>
+ </tileset>
+ <tileset firstgid="51" name="Object" tilewidth="32" tileheight="32">
+  <image source="../tileset/ObjectTiles.png" width="160" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="spawn"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="29" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYB7Fo3gUj+JRPIpHMUkYAMk9BXE=
+  </data>
+ </layer>
+ <layer name="Collision" width="29" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYBoATCkgxQxkOylxLz4z6GEnuvn09Ce97MRmPi3tJDZ9UivdkgKomc/o5U90O7GxcdlJjbRDqp3kAkrtpFZ8kmInNcFgtZPeGACSuQHl
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 1" width="29" height="16">
+  <object name="Spawn" type="Spawn" gid="51" x="493" y="467" width="32" height="32"/>
+ </objectgroup>
+</map>

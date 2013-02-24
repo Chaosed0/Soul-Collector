@@ -11,6 +11,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Level.h"
+
 class Player : public sf::Drawable
 {
 //Public attributes; visible to everyone
@@ -61,10 +63,16 @@ public:
 	void MoveDown(bool start);
 
 	/**
+	 * Sets the player's position.
+	 * \param The new position of the player.
+	 */
+	void SetPos(sf::Vector2f newpos);
+
+	/**
 	 * Updates the player's position.
 	 * This function should be called once per frame.
 	 */
-	void Update();
+	void Update(const Level& level);
 
 //Private attributes; visible only within this class
 private:

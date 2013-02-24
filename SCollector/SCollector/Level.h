@@ -93,6 +93,12 @@ public:
 	 * \return The pixel within the tile of the position.
 	 */
 	sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const;
+
+	/**
+	 * Gets the position of the spawn point.
+	 * \return The position of the spawn point.
+	 */
+	sf::Vector2f GetSpawn() const;
 private:
 	/** Draws the level */
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
@@ -110,6 +116,9 @@ private:
 	const Tmx::Tileset *tsetCollision;
 	/** Collision layer */
 	const Tmx::Layer *lyrCollision;
+
+	/** Spawn point for the player */
+	sf::Vector2f spawn;
 };
 
 #endif
