@@ -205,10 +205,27 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	else
 		step = -1;
 
+	if(horiz)
+	{
+		globTile.x += step;
+		if(stepPos)
+			pixel.x = 0;
+		else
+			pixel.x = map.GetTileWidth() - 1;
+	}
+	else
+	{
+		globTile.y += step;
+		if(stepPos)
+			pixel.y = 0;
+		else
+			pixel.y = map.GetTileHeight() - 1;
+	}
+
 	//printf("(%d, %d)\n", globTile.x, globTile.y);
 	//printf("(%d, %d)\n", layerWidth, layerHeight);
 
-	while(globTile.y >= 0 && globTile.y < layerHeight &&
+	if(globTile.y >= 0 && globTile.y < layerHeight &&
 			globTile.x >= 0 && globTile.x < layerWidth)
 	{
 		unsigned int tileIdx = lyrCollision->GetTileId(globTile.x, globTile.y);
@@ -240,26 +257,9 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 					pixel.y += step;
 			}
 		}
-
-		if(horiz)
-		{
-			globTile.x += step;
-			if(stepPos)
-				pixel.x = 0;
-			else
-				pixel.x = map.GetTileWidth() - 1;
-		}
-		else
-		{
-			globTile.y += step;
-			if(stepPos)
-				pixel.y = 0;
-			else
-				pixel.y = map.GetTileHeight() - 1;
-		}
 	}
 
-	nearest = INT_MAX;
+	nearest = (stepPos?INT_MAX:-INT_MAX);
 	return false;
 }
 
