@@ -6,10 +6,17 @@ Game::Game() :
 	window(sf::VideoMode(winWidth, winHeight), "Test") ,
 	menus(winWidth, winHeight),
 	player(sf::Vector2f(winWidth/2.0f, winHeight/2.0f)) ,
-	level("new.tmx")
+	level("new.tmx") ,
+	rect(sf::Vector2f(winWidth, winHeight))
 {
 	//Flag set to false when the game ends
 	isRunning = false;
+
+	circleTexture.loadFromFile("assets/img/LightAura.png");
+	circle.setTexture(circleTexture);
+	circle.setOrigin(circle.getTextureRect().width/2, circle.getTextureRect().height/2);
+	rect.setFillColor(sf::Color());
+	overlay.create(window.getSize().x, window.getSize().y);
 }
 
 int Game::Run()
@@ -142,6 +149,8 @@ void Game::Update()
 	// --- GAME LOGIC ---
 	//Update the player class
 	player.Update(level);
+
+	circle.setPosition(sf::Vector2f(player.GetPos().x, winHeight-player.GetPos().y));
 }
 
 void Game::Render()
@@ -157,6 +166,9 @@ void Game::Render()
 	window.draw(level);
 	//Render the player to the screen
 	window.draw(player);
+	overlay.draw(rect);
+	overlay.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
+	window.draw(sf::Sprite(overlay.getTexture()));
 
 	menus.Display(window);
 

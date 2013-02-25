@@ -42,6 +42,12 @@ private:
 
 	Player player;
 	Level level;
+
+	//TEST
+	sf::RenderTexture overlay;
+	sf::Texture circleTexture;
+	sf::Sprite circle;
+	sf::RectangleShape rect;
 };
 
 #endif

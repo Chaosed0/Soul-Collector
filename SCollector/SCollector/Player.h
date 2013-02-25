@@ -56,6 +56,8 @@ public:
 	 */
 	void SetPos(sf::Vector2f newpos);
 
+	sf::Vector2f GetPos();
+
 	/**
 	 * Updates the player's position.
 	 * This function should be called once per frame.

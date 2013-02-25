@@ -123,3 +123,9 @@ void Player::Update(const Level& level)
 	else
 		PlayAnim("idle");
 }
+
+
+sf::Vector2f Player::GetPos()
+{
+	return sprite.getPosition();
+}
