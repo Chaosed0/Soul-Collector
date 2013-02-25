@@ -104,6 +104,10 @@ bool Level::Parse(std::string mapName)
 				}
 				//If we've already found a spawnpoint, just ignore this one
 			}
+			else if(object->GetType().compare("Key") == 0) {
+				entityList.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0,
+					object->GetY() - object->GetHeight()/2.0)));
+			}
 			//Here, we should do keys, traps, etc...
 			//We don't know what type of object this is, issue an error
 			else {
@@ -315,5 +319,10 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 				}
 			}
 		}
+	}
+
+	//Draw all the entities on top of the tiles
+	for(int i = 0; i < entityList.size(); i++) {
+		target.draw(*entityList[i], state);
 	}
 }

@@ -39,11 +39,6 @@ void Player::MoveDown(bool start)
 	moveDown = start;
 }
 
-void Player::SetPos(sf::Vector2f newpos)
-{
-	sprite.setPosition(newpos);
-}
-
 void Player::Update(const Level& level)
 {
 	bool moving = moveLeft || moveRight || moveUp || moveDown;
@@ -122,10 +117,4 @@ void Player::Update(const Level& level)
 	}
 	else
 		PlayAnim("idle");
-}
-
-
-sf::Vector2f Player::GetPos()
-{
-	return sprite.getPosition();
 }

@@ -13,7 +13,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Level.h"
+class Level;
 
 class Entity : public sf::Drawable
 {
@@ -21,10 +21,28 @@ public:
 	Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox);
 
 	virtual void Update(const Level& level) = 0;
+
+	/**
+	 * Sets the Elayer's position.
+	 * \param newpos The new position of the Entity.
+	 */
+	void SetPos(sf::Vector2f newpos);
+
+	/**
+	 * Gets the Entity's position.
+	 * \return The position of the entity.
+	 */
+	sf::Vector2f GetPos();
 protected:
 	sf::IntRect collisionBox;
 	sf::Sprite sprite;
 	sf::Texture texture;
+
+	//These three don't really apply to the player at all, except for
+	// visible
+	bool visible;
+	bool active;
+	bool expended;
 
 	/**
 	 * Adds a set of frames to the animation sets of this entity.
@@ -43,6 +61,18 @@ protected:
 	 * \return True if the animation was successfully added, false otherwise.
 	 */
 	bool AddAnimSet(const std::string& animName, int begin, int end, bool loop = false);
+
+	/**
+	 * Changes the properties of an existing animation.
+	 * If begin or end are set to <0, then they remain unchanged.
+	 *
+	 * \param animName The name of this animation.
+	 * \param begin The first frame of the animation.
+	 * \param end The last frame of the animation.
+	 * \param loop Flag that makes the animation loop when set to true.
+	 * \return True if the animation was successfully modified, false otherwise.
+	 */
+	bool ModifyAnimSet(const std::string& animName, int begin, int end, bool loop = false);
 
 	/**
 	 * Plays an animation.

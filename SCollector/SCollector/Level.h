@@ -13,6 +13,8 @@
 #include <cmath>
 
 #include "Tmx.h"
+#include "Entity.h"
+#include "Key.h"
 
 #define BASEMAPDIR "assets/maps/"
 
@@ -124,6 +126,8 @@ private:
 
 	/** Spawn point for the player */
 	sf::Vector2f spawn;
+	/** List of entities in the level */
+	std::vector<Entity*> entityList;
 };
 
 #endif

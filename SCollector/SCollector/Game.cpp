@@ -16,7 +16,7 @@ Game::Game() :
 	circleTexture.loadFromFile("assets/img/LightAura.png");
 	circle.setTexture(circleTexture);
 	circle.setOrigin(circle.getTextureRect().width/2, circle.getTextureRect().height/2);
-	rect.setFillColor(sf::Color());
+	rect.setFillColor(sf::Color(0,0,0,255));
 	overlayTexture.create(window.getSize().x, window.getSize().y);
 	overlaySprite.setTexture(overlayTexture.getTexture());
 	overlaySprite.setOrigin(overlayTexture.getSize().x/2, overlayTexture.getSize().y/2);
@@ -182,12 +182,15 @@ void Game::Update()
 	//Update the overlay rectangle to follow the view
 	//rect.setPosition(view.getCenter());
 	overlaySprite.setPosition(view.getCenter());
+
+	overlayTexture.clear(sf::Color(0,0,0,0));
+	overlayTexture.draw(rect);
+	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
 }
 
 void Game::Render()
 {
-	overlayTexture.draw(rect);
-	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
+	window.clear();
 
 	// --- RENDERING ---
 	//Clear the screen of what was drawn before
