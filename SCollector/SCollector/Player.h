@@ -12,8 +12,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "Level.h"
+#include "Entity.h"
 
-class Player : public sf::Drawable
+class Player : public Entity
 {
 //Public attributes; visible to everyone
 public:
@@ -23,19 +24,6 @@ public:
 	 *  call LoadTexture() before drawing the player!
 	 */
 	Player(sf::Vector2f pos);
-
-	/**
-	 * Init constructor.
-	 * Equivalent to calling the default constructor, then LoadTexture().
-	 * \param pathToImage The path in the filesystem where the image is.
-	 */
-	Player(sf::Vector2f pos, std::string pathToImage);
-
-	/**
-	 * Loads a texture that represents the player.
-	 * \param pathToImage The path in the filesystem where the image is.
-	 */
-	void LoadTexture(std::string pathToImage);
 
 	/**
 	 * Starts or stops the player moving left.
@@ -72,20 +60,12 @@ public:
 	 * Updates the player's position.
 	 * This function should be called once per frame.
 	 */
-	void Update(const Level& level);
+	virtual void Update(const Level& level);
 
 //Private attributes; visible only within this class
 private:
-	/** Inherited from sf::Drawable */
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
-
 	/** Initialization procedures that are shared between the constructors of the player */
 	void Init(sf::Vector2f pos);
-
-	/** Texture representing the player */
-	sf::Texture texture;
-	/** Sprite representing the player */
-	sf::Sprite sprite;
 
 	/** Flags set to true when the player should move in the corresponding direction */
 	bool moveLeft, moveRight, moveUp, moveDown;
