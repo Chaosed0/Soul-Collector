@@ -81,7 +81,7 @@ sf::IntRect Entity::GetCurAnimRect()
 	curAnimFrameRect.width = animBox.width;
 	curAnimFrameRect.height = animBox.height;
 
-	printf("curFrame: %d, left:%d, top:%d, width:%d, height:%d\n", curAnimFrame, curAnimFrameRect.left, curAnimFrameRect.top, curAnimFrameRect.width, curAnimFrameRect.height);
+	//printf("curFrame: %d, left:%d, top:%d, width:%d, height:%d\n", curAnimFrame, curAnimFrameRect.left, curAnimFrameRect.top, curAnimFrameRect.width, curAnimFrameRect.height);
 
 	if(curAnimFrameRect.top+curAnimFrameRect.height >= texture.getSize().y)
 		return animBox;
