@@ -33,6 +33,13 @@ public:
 	 * \return The position of the entity.
 	 */
 	sf::Vector2f GetPos();
+
+	/**
+	 * Does a collision check on this entity and another.
+	 * \return True if this entity is colliding with the other, false
+	 *  otherwise.
+	 */
+	bool IsColliding(const Entity& entity);
 protected:
 	sf::IntRect collisionBox;
 	sf::Sprite sprite;

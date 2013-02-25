@@ -10,7 +10,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "MenuManager.h"
-#include "Player.h"
 #include "Level.h"
 
 class Game
@@ -40,7 +39,6 @@ private:
 	sf::RenderWindow window;
 	bool isRunning;
 
-	Player player;
 	Level level;
 
 	sf::View view;

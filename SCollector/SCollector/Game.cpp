@@ -1,11 +1,13 @@
 
 #include "Game.h"
+#include "Level.h"
+#include "Player.h"
+#include "MenuManager.h"
 
 Game::Game() :
 	winWidth(800), winHeight(600),
 	window(sf::VideoMode(winWidth, winHeight), "Test") ,
 	menus(winWidth, winHeight),
-	player(sf::Vector2f(winWidth/2.0f, winHeight/2.0f)) ,
 	level("new.tmx") ,
 	rect(sf::Vector2f(winWidth, winHeight)) ,
 	view(sf::FloatRect(0, 0, winWidth, winHeight))
@@ -42,9 +44,6 @@ void Game::Init()
 
 	//Connect the exit button of the menus to the exit function here
 	menus.connectExitFunc(&Game::Exit, this);
-
-	//Set the position of the player to the level spawn coords
-	player.SetPos(level.GetSpawn());
 }
 
 void Game::Loop()
@@ -112,16 +111,16 @@ void Game::Event()
 				//  their presses if held down that I turned off earlier, but I did that because there's
 				//  a delay between getting the press and actually determining that the key is held down.
 				case sf::Keyboard::Up :
-					player.MoveUp(true);
+					level.GetPlayer().MoveUp(true);
 					break;
 				case sf::Keyboard::Down :
-					player.MoveDown(true);
+					level.GetPlayer().MoveDown(true);
 					break;
 				case sf::Keyboard::Left :
-					player.MoveLeft(true);
+					level.GetPlayer().MoveLeft(true);
 					break;
 				case sf::Keyboard::Right :
-					player.MoveRight(true);
+					level.GetPlayer().MoveRight(true);
 					break;
 				case sf::Keyboard::Escape :
 					menus.SetVisible(true);
@@ -131,16 +130,16 @@ void Game::Event()
 			case sf::Event::KeyReleased :
 				switch(anEvent.key.code) {
 				case sf::Keyboard::Up :
-					player.MoveUp(false);
+					level.GetPlayer().MoveUp(false);
 					break;
 				case sf::Keyboard::Down :
-					player.MoveDown(false);
+					level.GetPlayer().MoveDown(false);
 					break;
 				case sf::Keyboard::Left :
-					player.MoveLeft(false);
+					level.GetPlayer().MoveLeft(false);
 					break;
 				case sf::Keyboard::Right :
-					player.MoveRight(false);
+					level.GetPlayer().MoveRight(false);
 					break;
 				}
 				break;
@@ -151,14 +150,14 @@ void Game::Event()
 
 void Game::Update()
 {
-	sf::Vector2f playerPos = player.GetPos();
+	sf::Vector2f playerPos = level.GetPlayer().GetPos();
 	sf::Vector2f viewSize = view.getSize();
 	sf::Vector2f viewPos = view.getCenter();
 	sf::Vector2i levelSize = level.GetSize();
 
 	// --- GAME LOGIC ---
-	//Update the player class
-	player.Update(level);
+	//Update the level
+	level.Update();
 
 	//Update the view to follow the player, but don't make it go offscreen
 	if(playerPos.x - viewSize.x/2 >= 0 && playerPos.x + viewSize.x/2 <= levelSize.x)
@@ -202,7 +201,6 @@ void Game::Render()
 	//Render the level to the screen, before the player
 	window.draw(level);
 	//Render the player to the screen
-	window.draw(player);
 	window.draw(overlaySprite);
 
 	menus.Display(window);

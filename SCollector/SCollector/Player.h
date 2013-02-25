@@ -11,8 +11,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Level.h"
 #include "Entity.h"
+class Level;
 
 class Player : public Entity
 {

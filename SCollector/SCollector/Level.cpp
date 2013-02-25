@@ -5,8 +5,12 @@
  */
 
 #include "Level.h"
+#include "Entity.h"
+#include "Player.h"
+#include "Key.h"
 
 Level::Level()
+	: player(sf::Vector2f())
 {
 	lyrCollision = NULL;
 	tsetCollision = NULL;
@@ -14,12 +18,15 @@ Level::Level()
 }
 
 Level::Level(std::string mapName)
+	: player(sf::Vector2f())
 {
 	lyrCollision = NULL;
 	tsetCollision = NULL;
 	spawn.x = spawn.y = -1;
 
 	Parse(mapName);
+
+	player.SetPos(spawn);
 }
 
 bool Level::Parse(std::string mapName)
@@ -115,6 +122,12 @@ bool Level::Parse(std::string mapName)
 			}
 		}
 	}
+
+	if(spawn.x < 0 || spawn.y < 0) {
+		printf("WARNING: No spawnpoint found! Defaulting to (0, 0)...\n");
+		spawn = sf::Vector2f(0, 0);
+	}
+
 
 	printf("Map parsing complete\n");
 	return true;
@@ -267,14 +280,22 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	return false;
 }
 
-sf::Vector2f Level::GetSpawn() const
-{
-	return spawn;
-}
-
 sf::Vector2i Level::GetSize() const
 {
 	return sf::Vector2i(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
+}
+
+Player& Level::GetPlayer()
+{
+	return player;
+}
+
+void Level::Update()
+{
+	player.Update(*this);
+	for(int i = 0; i < entityList.size(); i++) {
+		entityList[i]->Update(*this);
+	}
 }
 
 //Something to think about: Later, this should get passed the view so that
@@ -325,4 +346,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	for(int i = 0; i < entityList.size(); i++) {
 		target.draw(*entityList[i], state);
 	}
+
+	//Draw the player on top of everything
+	target.draw(player, state);
 }

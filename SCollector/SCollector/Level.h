@@ -13,11 +13,14 @@
 #include <cmath>
 
 #include "Tmx.h"
-#include "Entity.h"
-#include "Key.h"
+
+#include "Player.h"
+class Entity;
 
 #define BASEMAPDIR "assets/maps/"
 
+//Note: Level is sort of an Entity too, but it's got too many
+// differences to make it a subclass of Entity
 class Level : public sf::Drawable
 {
 public:
@@ -82,6 +85,22 @@ public:
 	 * \return The size of the map, in pixels.
 	 */
 	sf::Vector2i GetSize() const;
+
+	/**
+	 * Updates the level
+	 * This includes all entities in the level, such as
+	 * - Monsters
+	 * - Display of walls and such
+	 */
+	void Update();
+
+	/**
+	 * Gets the player.
+	 * This is kind of an ugly way to do things, but it's
+	 * better than the alternatives (I believe)
+	 * \return A reference to the player.
+	 */
+	Player& GetPlayer(); 
 private:
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
@@ -126,6 +145,13 @@ private:
 
 	/** Spawn point for the player */
 	sf::Vector2f spawn;
+
+	/**
+	 * The player himself 
+	 * He's just another entity, but it's worth keeping him around as a
+	 *  separate entity for clarity sake
+	 */
+	Player player;
 	/** List of entities in the level */
 	std::vector<Entity*> entityList;
 };

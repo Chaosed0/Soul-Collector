@@ -28,6 +28,32 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	sprite.setTextureRect(animBox);
 }
 
+bool Entity::IsColliding(const Entity& entity)
+{
+	//Separating Axis Theorem: Two boxes are colliding if and only if they are colliding
+	// on their component axes (x and y)
+	//x-axis
+	bool xCollide =
+		//Left side of the other box in this one
+		(entity.collisionBox.left >= collisionBox.left &&
+		entity.collisionBox.left <= collisionBox.left + collisionBox.width) ||
+		//Right side of other box in this one
+		(entity.collisionBox.left + entity.collisionBox.width >= collisionBox.left &&
+		entity.collisionBox.left + entity.collisionBox.width <= collisionBox.left + collisionBox.width);
+	//y-axis
+	bool yCollide = 
+		//Top side of the other box in this one
+		(entity.collisionBox.top >= collisionBox.top &&
+		entity.collisionBox.top <= collisionBox.top + collisionBox.height) ||
+		//Bottom side of the other box in this one
+		(entity.collisionBox.top + entity.collisionBox.height >= collisionBox.top &&
+		entity.collisionBox.top + entity.collisionBox.height <= collisionBox.top + collisionBox.height);
+
+	if(xCollide && yCollide)
+		return true;
+	return false;
+}
+
 bool Entity::ModifyAnimSet(const std::string& animName, int begin, int end, bool loop)
 {
 	//Make sure the animation exists already

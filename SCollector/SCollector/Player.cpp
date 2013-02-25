@@ -1,6 +1,7 @@
 //Implementation of Player class
 
 #include "Player.h"
+#include "Level.h"
 
 Player::Player(sf::Vector2f pos)
 	: Entity("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))

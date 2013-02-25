@@ -1,5 +1,6 @@
 
 #include "Key.h"
+#include "Entity.h"
 #include "Level.h"
 
 Key::Key(sf::Vector2f pos)
