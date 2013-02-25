@@ -66,7 +66,7 @@ void Player::Update(const Level& level)
 			foundTopLeft = level.GetCollide(topLeft, false, false, nearestTopLeft);
 			foundBotRight = level.GetCollide(topRight, false, false, nearestBotRight);
 			nearest = std::max(nearestTopLeft, nearestBotRight);
-			nearest -= top;
+			nearest -= (int)top;
 			found = foundTopLeft || foundBotRight;
 			if(!found)
 				nearest = -INT_MAX;
@@ -77,7 +77,7 @@ void Player::Update(const Level& level)
 			foundTopLeft = level.GetCollide(botLeft, false, true, nearestTopLeft);
 			foundBotRight = level.GetCollide(botRight, false, true, nearestBotRight);
 			nearest = std::min(nearestTopLeft, nearestBotRight);
-			nearest -= bot;
+			nearest -= (int)bot;
 			found = foundTopLeft || foundBotRight;
 			if(!found)
 				nearest = INT_MAX;
@@ -88,7 +88,7 @@ void Player::Update(const Level& level)
 			foundTopLeft = level.GetCollide(topLeft, true, false, nearestTopLeft);
 			foundBotRight = level.GetCollide(botLeft, true, false, nearestBotRight);
 			nearest = std::max(nearestTopLeft, nearestBotRight);
-			nearest -= left;
+			nearest -= (int)left;
 			found = foundTopLeft || foundBotRight;
 			if(!found)
 				nearest = -INT_MAX;
@@ -99,7 +99,7 @@ void Player::Update(const Level& level)
 			foundTopLeft = level.GetCollide(topRight, true, true, nearestTopLeft);
 			foundBotRight = level.GetCollide(botRight, true, true, nearestBotRight);
 			nearest = std::min(nearestTopLeft, nearestBotRight);
-			nearest -= right;
+			nearest -= (int)right;
 			found = foundTopLeft || foundBotRight;
 			if(!found)
 				nearest = INT_MAX;

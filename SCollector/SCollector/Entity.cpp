@@ -18,7 +18,7 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	//Load the texture
 	texture.loadFromFile(imgLoc);
 	sprite.setTexture(texture);
-	sprite.setOrigin(animBox.width/2, animBox.height/2);
+	sprite.setOrigin(animBox.width/2.0f, animBox.height/2.0f);
 
 	totalFrames = (texture.getSize().x/animBox.width) * (texture.getSize().y/animBox.height);
 
@@ -32,24 +32,34 @@ bool Entity::IsColliding(const Entity& entity)
 {
 	//Separating Axis Theorem: Two boxes are colliding if and only if they are colliding
 	// on their component axes (x and y)
-	//x-axis
-	bool xCollide =
-		//Left side of the other box in this one
-		(entity.collisionBox.left >= collisionBox.left &&
-		entity.collisionBox.left <= collisionBox.left + collisionBox.width) ||
-		//Right side of other box in this one
-		(entity.collisionBox.left + entity.collisionBox.width >= collisionBox.left &&
-		entity.collisionBox.left + entity.collisionBox.width <= collisionBox.left + collisionBox.width);
-	//y-axis
-	bool yCollide = 
-		//Top side of the other box in this one
-		(entity.collisionBox.top >= collisionBox.top &&
-		entity.collisionBox.top <= collisionBox.top + collisionBox.height) ||
-		//Bottom side of the other box in this one
-		(entity.collisionBox.top + entity.collisionBox.height >= collisionBox.top &&
-		entity.collisionBox.top + entity.collisionBox.height <= collisionBox.top + collisionBox.height);
+	sf::IntRect entCollisionBox  = entity.collisionBox;
+	sf::IntRect thisCollisionBox = collisionBox;
+	entCollisionBox.left = entity.GetPos().x;
+	entCollisionBox.top = entity.GetPos().y;
+	thisCollisionBox.left = GetPos().x;
+	thisCollisionBox.top = GetPos().y;
 
-	if(xCollide && yCollide)
+	//Left side of the other box in this one
+	bool leftCollide =
+		entCollisionBox.left >= thisCollisionBox.left &&
+		entCollisionBox.left <= thisCollisionBox.left + thisCollisionBox.width;
+	//Right side of other box in this one
+	bool rightCollide = 
+		entCollisionBox.left + entCollisionBox.width >= thisCollisionBox.left &&
+		entCollisionBox.left + entCollisionBox.width <= thisCollisionBox.left + thisCollisionBox.width;
+	//Top side of the other box in this one
+	bool topCollide = 
+		entCollisionBox.top >= thisCollisionBox.top &&
+		entCollisionBox.top <= thisCollisionBox.top + thisCollisionBox.height;
+	//Bottom side of the other box in this one
+	bool botCollide = 
+		entCollisionBox.top + entCollisionBox.height >= thisCollisionBox.top &&
+		entCollisionBox.top + entCollisionBox.height <= thisCollisionBox.top + thisCollisionBox.height;
+
+	//printf("%d, %d, %d, %d\n", leftCollide, rightCollide, topCollide, botCollide);
+	//printf("%d, %d, %d, %d\n", entity.collisionBox.left, entity.collisionBox.width, collisionBox.left, collisionBox.width);
+
+	if((leftCollide || rightCollide) && (topCollide || botCollide))
 		return true;
 	return false;
 }
@@ -107,12 +117,14 @@ bool Entity::StepAnim()
 	if(curAnimFrame == animSetEnd[curAnim] && animLoop[curAnim]) {
 		sprite.setTextureRect(GetCurAnimRect());
 		curAnimFrame = animSetBegin[curAnim];
+		return true;
 		//printf("End, loop, reset to %d\n", curAnimFrame);
 	}
 	else {
 		//printf("Frame %d\n", curAnimFrame);
 		sprite.setTextureRect(GetCurAnimRect());
 		curAnimFrame = (curAnimFrame+1)%totalFrames;
+		return true;
 	}
 }
 
@@ -145,7 +157,7 @@ sf::IntRect Entity::GetCurAnimRect()
 
 	//printf("curFrame: %d, left:%d, top:%d, width:%d, height:%d\n", curAnimFrame, curAnimFrameRect.left, curAnimFrameRect.top, curAnimFrameRect.width, curAnimFrameRect.height);
 
-	if(curAnimFrameRect.top+curAnimFrameRect.height > texture.getSize().y)
+	if(curAnimFrameRect.top+curAnimFrameRect.height > (int)texture.getSize().y)
 		return animBox;
 	return curAnimFrameRect;
 }
@@ -155,7 +167,7 @@ void Entity::SetPos(sf::Vector2f newpos)
 	sprite.setPosition(newpos);
 }
 
-sf::Vector2f Entity::GetPos()
+sf::Vector2f Entity::GetPos() const
 {
 	return sprite.getPosition();
 }

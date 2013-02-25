@@ -9,19 +9,19 @@ Game::Game() :
 	window(sf::VideoMode(winWidth, winHeight), "Test") ,
 	menus(winWidth, winHeight),
 	level("new.tmx") ,
-	rect(sf::Vector2f(winWidth, winHeight)) ,
-	view(sf::FloatRect(0, 0, winWidth, winHeight))
+	rect(sf::Vector2f((float)winWidth, (float)winHeight)) ,
+	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
 {
 	//Flag set to false when the game ends
 	isRunning = false;
 
 	circleTexture.loadFromFile("assets/img/LightAura.png");
 	circle.setTexture(circleTexture);
-	circle.setOrigin(circle.getTextureRect().width/2, circle.getTextureRect().height/2);
+	circle.setOrigin(circle.getTextureRect().width/2.0f, circle.getTextureRect().height/2.0f);
 	rect.setFillColor(sf::Color(0,0,0,255));
 	overlayTexture.create(window.getSize().x, window.getSize().y);
 	overlaySprite.setTexture(overlayTexture.getTexture());
-	overlaySprite.setOrigin(overlayTexture.getSize().x/2, overlayTexture.getSize().y/2);
+	overlaySprite.setOrigin(overlayTexture.getSize().x/2.0f, overlayTexture.getSize().y/2.0f);
 
 	window.setView(view);
 }
@@ -162,8 +162,12 @@ void Game::Update()
 	//Update the view to follow the player, but don't make it go offscreen
 	if(playerPos.x - viewSize.x/2 >= 0 && playerPos.x + viewSize.x/2 <= levelSize.x)
 		view.setCenter(sf::Vector2f(playerPos.x, view.getCenter().y));
+	else
+		view.setCenter(sf::Vector2f(levelSize.x - viewSize.x/2.0f, view.getCenter().y));
 	if(playerPos.y - viewSize.y/2 >= 0 && playerPos.y + viewSize.y/2 <= levelSize.y)
 		view.setCenter(sf::Vector2f(view.getCenter().x, playerPos.y));
+	else
+		view.setCenter(sf::Vector2f(view.getCenter().x, levelSize.y - viewSize.y/2.0f));
 	window.setView(view);
 
 	//Update the light circle to follow the player

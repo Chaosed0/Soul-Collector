@@ -33,14 +33,14 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	helpMenu->Pack(helptoMain, false, false);
 	menus[2]->Add(helpMenu);
 
-	for(int i = 0; i < menus.size(); i++)
-		menus[i]->SetRequisition(sf::Vector2f(winWidth, winHeight));
+	for(unsigned int i = 0; i < menus.size(); i++)
+		menus[i]->SetRequisition(sf::Vector2f((float)winWidth, (float)winHeight));
 
-	for(int i = 0; i < menus.size(); i++)
+	for(unsigned int i = 0; i < menus.size(); i++)
 		desktop.Add(menus[i]);
 
 	curWindow = menus[0];
-	for(int i = 1; i < menus.size(); i++)
+	for(unsigned int i = 1; i < menus.size(); i++)
 		menus[i]->Show(false);
 
 	visible = true;

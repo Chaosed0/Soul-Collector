@@ -32,7 +32,7 @@ public:
 	 * Gets the Entity's position.
 	 * \return The position of the entity.
 	 */
-	sf::Vector2f GetPos();
+	sf::Vector2f GetPos() const;
 
 	/**
 	 * Does a collision check on this entity and another.

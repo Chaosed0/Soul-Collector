@@ -106,14 +106,14 @@ bool Level::Parse(std::string mapName)
 			if(object->GetType().compare("Spawn") == 0) {
 				//Have we gotten a spawn already?
 				if(spawn.x < 0 && spawn.y < 0) {
-					spawn.x = object->GetX() + object->GetWidth()/2.0;
-					spawn.y = object->GetY() - object->GetWidth()/2.0;
+					spawn.x = object->GetX() + object->GetWidth()/2.0f;
+					spawn.y = object->GetY() - object->GetWidth()/2.0f;
 				}
 				//If we've already found a spawnpoint, just ignore this one
 			}
 			else if(object->GetType().compare("Key") == 0) {
-				entityList.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0,
-					object->GetY() - object->GetHeight()/2.0)));
+				entityList.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
+					object->GetY() - object->GetHeight()/2.0f)));
 			}
 			//Here, we should do keys, traps, etc...
 			//We don't know what type of object this is, issue an error
@@ -139,7 +139,7 @@ bool Level::AdjustY(const sf::Vector2f& pos, int& nearest) const
 	// position corresponds to on the layer
 	int tileWidth = tsetCollision->GetTileWidth();
 	int tileHeight = tsetCollision->GetTileHeight();
-	sf::Vector2i globTile(pos.x / tileWidth, pos.y / tileHeight);
+	sf::Vector2i globTile((int)pos.x / tileWidth, (int)pos.y / tileHeight);
 	
 	sf::Vector2i pixel((int)pos.x % tileWidth, (int)pos.y % tileHeight);
 
@@ -193,7 +193,7 @@ sf::Vector2i Level::GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& gl
 
 sf::Vector2i Level::GetGlobalTile(const sf::Vector2f& pos) const
 {
-	return sf::Vector2i(pos.x / map.GetTileWidth(), pos.y / map.GetTileHeight());
+	return sf::Vector2i((int)pos.x / map.GetTileWidth(), (int)pos.y / map.GetTileHeight());
 }
 
 sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const
@@ -293,8 +293,11 @@ Player& Level::GetPlayer()
 void Level::Update()
 {
 	player.Update(*this);
-	for(int i = 0; i < entityList.size(); i++) {
+	for(unsigned int i = 0; i < entityList.size(); i++) {
 		entityList[i]->Update(*this);
+		if(player.IsColliding(*entityList[i]) || entityList[i]->IsColliding(player)) {
+			printf("Player colliding with entity %d\n", i);
+		}
 	}
 }
 
@@ -332,7 +335,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 						//Get the part of the sprite corresponding to the tile
 						sprTilesetsConst[tilesetIdx].setTextureRect(sf::IntRect(locTile.x, locTile.y, map.GetTileWidth(), map.GetTileHeight()));
 						//Set the tile's position to the correct place
-						sprTilesetsConst[tilesetIdx].setPosition(x*map.GetTileWidth(), y*map.GetTileHeight());
+						sprTilesetsConst[tilesetIdx].setPosition((float)x*map.GetTileWidth(), (float)y*map.GetTileHeight());
 
 						//Draw that tile
 						target.draw(sprTilesetsConst[tilesetIdx], state);
@@ -343,7 +346,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	}
 
 	//Draw all the entities on top of the tiles
-	for(int i = 0; i < entityList.size(); i++) {
+	for(unsigned int i = 0; i < entityList.size(); i++) {
 		target.draw(*entityList[i], state);
 	}
 
