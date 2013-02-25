@@ -70,6 +70,18 @@ public:
 	sf::Vector2i GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& globTile) const;
 
 	/**
+	 * Gets the position of the spawn point.
+	 * \return The position of the spawn point.
+	 */
+	sf::Vector2f GetSpawn() const;
+
+	/**
+	 * Gets the size of the map.
+	 * \return The size of the map, in pixels.
+	 */
+	sf::Vector2i GetSize() const;
+private:
+	/**
 	 * Gets the Tmx::tileset* of a global tile.
 	 * 
 	 * \param layer The layer where globTile is located.
@@ -93,13 +105,6 @@ public:
 	 * \return The pixel within the tile of the position.
 	 */
 	sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const;
-
-	/**
-	 * Gets the position of the spawn point.
-	 * \return The position of the spawn point.
-	 */
-	sf::Vector2f GetSpawn() const;
-private:
 	/** Draws the level */
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 

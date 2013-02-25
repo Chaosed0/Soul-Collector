@@ -1,6 +1,7 @@
 
 #include "Entity.h"
 Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
+	: animTime(sf::microseconds(0))
 {
 	this->collisionBox = collisionBox;
 	this->animBox = animBox;
@@ -13,7 +14,7 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	sprite.setOrigin(animBox.width/2, animBox.height/2);
 
 	AddAnimSet("idle", 0, 0, true);
-	StartAnim("idle");
+	PlayAnim("idle");
 	sprite.setTextureRect(animBox);
 }
 
@@ -61,10 +62,14 @@ bool Entity::StepAnim()
 
 void Entity::PlayAnim(const std::string& anim)
 {
-	if(curAnim == animNames[anim])
-		StepAnim();
-	else
-		StartAnim(anim);
+	if(lastAnimTime.getElapsedTime() >= animTime)
+	{
+		if(curAnim == animNames[anim])
+			StepAnim();
+		else
+			StartAnim(anim);
+		lastAnimTime.restart();
+	}
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates state) const
@@ -83,7 +88,7 @@ sf::IntRect Entity::GetCurAnimRect()
 
 	//printf("curFrame: %d, left:%d, top:%d, width:%d, height:%d\n", curAnimFrame, curAnimFrameRect.left, curAnimFrameRect.top, curAnimFrameRect.width, curAnimFrameRect.height);
 
-	if(curAnimFrameRect.top+curAnimFrameRect.height >= texture.getSize().y)
+	if(curAnimFrameRect.top+curAnimFrameRect.height > texture.getSize().y)
 		return animBox;
 	return curAnimFrameRect;
 }

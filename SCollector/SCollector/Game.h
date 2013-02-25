@@ -43,8 +43,11 @@ private:
 	Player player;
 	Level level;
 
+	sf::View view;
+
 	//TEST
-	sf::RenderTexture overlay;
+	sf::RenderTexture overlayTexture;
+	sf::Sprite overlaySprite;
 	sf::Texture circleTexture;
 	sf::Sprite circle;
 	sf::RectangleShape rect;

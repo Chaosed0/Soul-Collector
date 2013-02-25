@@ -268,6 +268,13 @@ sf::Vector2f Level::GetSpawn() const
 	return spawn;
 }
 
+sf::Vector2i Level::GetSize() const
+{
+	return sf::Vector2i(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
+}
+
+//Something to think about: Later, this should get passed the view so that
+// we can cull tiles that we don't need
 void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	std::vector<sf::Sprite> sprTilesetsConst = sprTilesets;

@@ -7,7 +7,8 @@ Game::Game() :
 	menus(winWidth, winHeight),
 	player(sf::Vector2f(winWidth/2.0f, winHeight/2.0f)) ,
 	level("new.tmx") ,
-	rect(sf::Vector2f(winWidth, winHeight))
+	rect(sf::Vector2f(winWidth, winHeight)) ,
+	view(sf::FloatRect(0, 0, winWidth, winHeight))
 {
 	//Flag set to false when the game ends
 	isRunning = false;
@@ -16,7 +17,11 @@ Game::Game() :
 	circle.setTexture(circleTexture);
 	circle.setOrigin(circle.getTextureRect().width/2, circle.getTextureRect().height/2);
 	rect.setFillColor(sf::Color());
-	overlay.create(window.getSize().x, window.getSize().y);
+	overlayTexture.create(window.getSize().x, window.getSize().y);
+	overlaySprite.setTexture(overlayTexture.getTexture());
+	overlaySprite.setOrigin(overlayTexture.getSize().x/2, overlayTexture.getSize().y/2);
+
+	window.setView(view);
 }
 
 int Game::Run()
@@ -146,15 +151,44 @@ void Game::Event()
 
 void Game::Update()
 {
+	sf::Vector2f playerPos = player.GetPos();
+	sf::Vector2f viewSize = view.getSize();
+	sf::Vector2f viewPos = view.getCenter();
+	sf::Vector2i levelSize = level.GetSize();
+
 	// --- GAME LOGIC ---
 	//Update the player class
 	player.Update(level);
 
-	circle.setPosition(sf::Vector2f(player.GetPos().x, winHeight-player.GetPos().y));
+	//Update the view to follow the player, but don't make it go offscreen
+	if(playerPos.x - viewSize.x/2 >= 0 && playerPos.x + viewSize.x/2 <= levelSize.x)
+		view.setCenter(sf::Vector2f(playerPos.x, view.getCenter().y));
+	if(playerPos.y - viewSize.y/2 >= 0 && playerPos.y + viewSize.y/2 <= levelSize.y)
+		view.setCenter(sf::Vector2f(view.getCenter().x, playerPos.y));
+	window.setView(view);
+
+	//Update the light circle to follow the player
+	//Note: Since the circle's being drawn to "view coordinates" instead of "global coordinates",
+	// we've got to correct the player's position if we want the circle to be drawn on top of
+	// the player
+	//Theory behind this bit is that view coordinates are just global coordinates translated;
+	// the amount of the translation is the distance from the global axes to the view axes
+	sf::Vector2f viewcorrection(viewPos.x - viewSize.x/2, viewPos.y - viewSize.y/2);
+	//Also, for some reason view coordinates have a reversed y-axis... ?_?
+	circle.setPosition(sf::Vector2f(playerPos.x - viewcorrection.x, viewSize.y-(playerPos.y - viewcorrection.y)));
+
+	//printf("playerpos: (%g, %g), correction:(%g, %g)\n", playerPos.x, playerPos.y, correctpos.x, correctpos.y);
+
+	//Update the overlay rectangle to follow the view
+	//rect.setPosition(view.getCenter());
+	overlaySprite.setPosition(view.getCenter());
 }
 
 void Game::Render()
 {
+	overlayTexture.draw(rect);
+	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
+
 	// --- RENDERING ---
 	//Clear the screen of what was drawn before
 	// This is inefficient, but if we don't call it, then there will be artefacts from the
@@ -166,9 +200,7 @@ void Game::Render()
 	window.draw(level);
 	//Render the player to the screen
 	window.draw(player);
-	overlay.draw(rect);
-	overlay.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
-	window.draw(sf::Sprite(overlay.getTexture()));
+	window.draw(overlaySprite);
 
 	menus.Display(window);
 
