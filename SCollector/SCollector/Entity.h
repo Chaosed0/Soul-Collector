@@ -80,6 +80,7 @@ private:
 	int curAnim;
 	int curAnimFrame;
 	int lastAnim;
+	int totalFrames;
 
 	sf::Clock lastAnimTime;
 	const sf::Time animTime;

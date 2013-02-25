@@ -1,7 +1,7 @@
 
 #include "Entity.h"
 Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
-	: animTime(sf::microseconds(0))
+	: animTime(sf::microseconds(50000))
 {
 	this->collisionBox = collisionBox;
 	this->animBox = animBox;
@@ -12,6 +12,8 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	texture.loadFromFile(imgLoc);
 	sprite.setTexture(texture);
 	sprite.setOrigin(animBox.width/2, animBox.height/2);
+
+	totalFrames = (texture.getSize().x/animBox.width) * (texture.getSize().y/animBox.height);
 
 	AddAnimSet("idle", 0, 0, true);
 	PlayAnim("idle");
@@ -49,15 +51,19 @@ bool Entity::StartAnim(const std::string& animName)
 
 bool Entity::StepAnim()
 {
-	if(curAnimFrame >= animSetEnd[curAnim] && !animLoop[curAnim]) {
+	if(curAnimFrame == animSetEnd[curAnim] && !animLoop[curAnim]) {
 		return false;
 	}
-	if(curAnimFrame > animSetEnd[curAnim] && animLoop[curAnim]) {
+	if(curAnimFrame == animSetEnd[curAnim] && animLoop[curAnim]) {
+		sprite.setTextureRect(GetCurAnimRect());
 		curAnimFrame = animSetBegin[curAnim];
+		//printf("End, loop, reset to %d\n", curAnimFrame);
 	}
-
-	sprite.setTextureRect(GetCurAnimRect());
-	curAnimFrame++;
+	else {
+		//printf("Frame %d\n", curAnimFrame);
+		sprite.setTextureRect(GetCurAnimRect());
+		curAnimFrame = (curAnimFrame+1)%totalFrames;
+	}
 }
 
 void Entity::PlayAnim(const std::string& anim)

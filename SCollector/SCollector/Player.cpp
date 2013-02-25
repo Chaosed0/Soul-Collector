@@ -19,7 +19,7 @@ void Player::Init(sf::Vector2f pos)
 
 	//Initialize animations (maybe offload some of this data to a text file
 	// or something?)
-	AddAnimSet("walk", 1, 15, true);
+	AddAnimSet("walk", 1, 0, true);
 }
 
 void Player::MoveLeft(bool start)
