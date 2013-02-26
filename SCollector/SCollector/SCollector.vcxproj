@@ -84,26 +84,6 @@
       <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-graphics.lib;sfgui.lib;TmxParser.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-<<<<<<< HEAD
-  <ItemGroup>
-    <ClCompile Include="CircleMove.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="HUD.cpp" />
-    <ClCompile Include="HudObject.cpp" />
-    <ClCompile Include="Level.cpp" />
-    <ClCompile Include="MenuManager.cpp" />
-    <ClCompile Include="Player.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="HUD.h" />
-    <ClInclude Include="HudObject.h" />
-    <ClInclude Include="Level.h" />
-    <ClInclude Include="MenuManager.h" />
-    <ClInclude Include="Player.h" />
-  </ItemGroup>
-=======
->>>>>>> 52e2cb23946dd203c36796780aaa091a78d1664b
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -8,14 +8,9 @@ Game::Game() :
 	winWidth(800), winHeight(600),
 	window(sf::VideoMode(winWidth, winHeight), "Test") ,
 	menus(winWidth, winHeight),
-<<<<<<< HEAD
-	player(sf::Vector2f(winWidth/2.0f, winHeight/2.0f), "assets/img/what.png"),
-	level("test2.tmx")
-=======
 	level("new.tmx") ,
 	rect(sf::Vector2f((float)winWidth, (float)winHeight)) ,
 	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
->>>>>>> 52e2cb23946dd203c36796780aaa091a78d1664b
 {
 	//Flag set to false when the game ends
 	isRunning = false;
