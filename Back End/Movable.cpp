@@ -9,25 +9,26 @@ Movable::Movable()
 	currentHP = DEFAULT_HP;
 }
 
-void Movable::moveUp()
-{
+// move them to Player class
+// void Movable::moveUp()
+// {
 
-}
+// }
 
-void Movable::moveDown()
-{
+// void Movable::moveDown()
+// {
 
-}
+// }
 	
-void Movable::moveLeft()
-{
+// void Movable::moveLeft()
+// {
 
-}
+// }
 
-void Movable::moveRight()
-{
+// void Movable::moveRight()
+// {
 
-}
+// }
 
 void Movable::attack()
 {
