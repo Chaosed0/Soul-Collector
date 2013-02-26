@@ -48,6 +48,7 @@ private:
 	sf::Sprite overlaySprite;
 	sf::Texture circleTexture;
 	sf::Sprite circle;
+	sf::Sprite circle2;
 	sf::RectangleShape rect;
 };
 
