@@ -22,14 +22,18 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	menus[0]->Add(mainMenu);
 
 	settingsMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	settingsLabel = sfg::Label::Create("Settings");
 	settingstoMain = sfg::Button::Create("Return");
 	settingstoMain->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
+	settingsMenu->Pack(settingsLabel, false, false);
 	settingsMenu->Pack(settingstoMain, false, false);
 	menus[1]->Add(settingsMenu);
 	
 	helpMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	helpLabel = sfg::Label::Create("Help");
 	helptoMain = sfg::Button::Create("Return");
 	helptoMain->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
+	helpMenu->Pack(helpLabel, false, false);
 	helpMenu->Pack(helptoMain, false, false);
 	menus[2]->Add(helpMenu);
 

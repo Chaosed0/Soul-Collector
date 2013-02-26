@@ -75,6 +75,7 @@ private:
 
 	// --- Main Menu
 	sfg::Box::Ptr mainMenu;
+	sfg::Table::Ptr mainLayout;
 	sfg::Button::Ptr playButton;
 	sfg::Button::Ptr settingsButton;
 	sfg::Button::Ptr helpButton;
@@ -82,10 +83,12 @@ private:
 
 	// --- Settings
 	sfg::Box::Ptr settingsMenu;
+	sfg::Label::Ptr settingsLabel;
 	sfg::Button::Ptr settingstoMain;
 
 	// --- Help
 	sfg::Box::Ptr helpMenu;
+	sfg::Label::Ptr helpLabel;
 	sfg::Button::Ptr helptoMain;
 
 	sfg::SFGUI gui;
