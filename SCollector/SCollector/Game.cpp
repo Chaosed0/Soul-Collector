@@ -159,15 +159,25 @@ void Game::Update()
 	//Update the level
 	level.Update();
 
+	//printf("player: (%g, %g) view: (%g, %g)\n", playerPos.x, playerPos.y, viewPos.x, viewPos.y);
+
 	//Update the view to follow the player, but don't make it go offscreen
 	if(playerPos.x - viewSize.x/2 >= 0 && playerPos.x + viewSize.x/2 <= levelSize.x)
-		view.setCenter(sf::Vector2f(playerPos.x, view.getCenter().y));
-	else
-		view.setCenter(sf::Vector2f(levelSize.x - viewSize.x/2.0f, view.getCenter().y));
+		view.setCenter(sf::Vector2f(playerPos.x, viewPos.y));
+	else if(playerPos.x - viewSize.x/2 < 0)
+		view.setCenter(sf::Vector2f(viewSize.x/2, viewPos.y));
+	else if(playerPos.x + viewSize.x/2 > levelSize.x)
+		view.setCenter(sf::Vector2f(levelSize.x - viewSize.x/2, viewPos.y));
+
+	viewPos = view.getCenter();
+
 	if(playerPos.y - viewSize.y/2 >= 0 && playerPos.y + viewSize.y/2 <= levelSize.y)
-		view.setCenter(sf::Vector2f(view.getCenter().x, playerPos.y));
-	else
-		view.setCenter(sf::Vector2f(view.getCenter().x, levelSize.y - viewSize.y/2.0f));
+		view.setCenter(sf::Vector2f(viewPos.x, playerPos.y));
+	else if(playerPos.y - viewSize.y/2 < 0)
+		view.setCenter(sf::Vector2f(viewPos.x, viewSize.y/2));
+	else if(playerPos.y + viewSize.y/2 > levelSize.x)
+		view.setCenter(sf::Vector2f(viewPos.x, levelSize.y - viewSize.y/2));
+
 	window.setView(view);
 
 	//Update the light circle to follow the player

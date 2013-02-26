@@ -133,44 +133,6 @@ bool Level::Parse(std::string mapName)
 	return true;
 }
 
-bool Level::AdjustY(const sf::Vector2f& pos, int& nearest) const
-{
-	//We need to figure out which tile on the collision tileset this
-	// position corresponds to on the layer
-	int tileWidth = tsetCollision->GetTileWidth();
-	int tileHeight = tsetCollision->GetTileHeight();
-	sf::Vector2i globTile((int)pos.x / tileWidth, (int)pos.y / tileHeight);
-	
-	sf::Vector2i pixel((int)pos.x % tileWidth, (int)pos.y % tileHeight);
-
-	//Get the nearest tile in the layer corresponding to the position
-	//BIG NOTE !!!!!!!!! -----------------------
-	// We assume that tile 0 is unused because that's what GetTileId returns
-	// when there's no tile. It also can be a valid tile id, though!
-	int layerHeight = lyrCollision->GetHeight();
-	int tilesetWidth = tsetCollision->GetImage()->GetWidth() / tileWidth;
-
-	while(globTile.y >= 0 && globTile.y < layerHeight)
-	{
-		unsigned int tileIdx = lyrCollision->GetTileId(globTile.x, globTile.y);
-		sf::Vector2i locTile(tileIdx % tilesetWidth * tileWidth, tileIdx / tilesetWidth * tileHeight);
-		for(int i = pixel.y; i >= 0; i--)
-		{
-			//printf("(%d, %d) -> (%d, %d)\n", globTile.x, globTile.y, locTile.x, locTile.y);
-			//printf("(%d, %d) -> %s\n", locTile.x+pixel.x, locTile.y+i, (collisionMap[locTile.x + pixel.x][locTile.y + i]?"true":"false"));
-			if(!collisionMap[locTile.x + pixel.x][locTile.y + i] || tileIdx == 0)
-			{
-				nearest = globTile.y*tileHeight + i;
-				//printf(" ---- NEAREST = %d\n", nearest);
-				return true;
-			}
-		}
-		globTile.y--;
-		pixel.y = 31;
-	}
-	return false;
-}
-
 const Tmx::Tileset* Level::GetTileset(const Tmx::Layer* layer, const sf::Vector2i& globTile) const
 {
 	int tilesetIdx = layer->GetTileTilesetIndex(globTile.x, globTile.y);
