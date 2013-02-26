@@ -6,9 +6,6 @@
  <tileset firstgid="103" name="Collision" tilewidth="32" tileheight="32">
   <image source="../tileset/Collision.png" width="192" height="192"/>
  </tileset>
- <tileset firstgid="139" name="tmw_desert_spacing" tilewidth="64" tileheight="64" spacing="2">
-  <image source="../tileset/tmw_desert_spacing.png" width="265" height="199"/>
- </tileset>
  <layer name="Background" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJztwwEJAAAMBKEr9P3rrcdQcNVUVVXV1w/Mb7QB
@@ -31,7 +28,7 @@
  </layer>
  <layer name="Tile Layer 5" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztz6ENAAAIBDH2H4B5mQCFIfnWnL4qALjppYmS3wGA3wYkEgJZ
+   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
   </data>
  </layer>
 </map>

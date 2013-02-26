@@ -5,29 +5,39 @@
  */
 
 #include "Level.h"
+#include "Entity.h"
+#include "Player.h"
+#include "Key.h"
 
 Level::Level()
+	: player(sf::Vector2f())
 {
 	lyrCollision = NULL;
 	tsetCollision = NULL;
+	spawn.x = spawn.y = -1;
 }
 
 Level::Level(std::string mapName)
+	: player(sf::Vector2f())
 {
 	lyrCollision = NULL;
 	tsetCollision = NULL;
+	spawn.x = spawn.y = -1;
 
 	Parse(mapName);
+
+	player.SetPos(spawn);
 }
 
 bool Level::Parse(std::string mapName)
 {
+	printf("Parsing map...\n");
 	//Attempt to parse the map, and report any errors
 	map.ParseFile(BASEMAPDIR + mapName);
 	
 	if(map.HasError())
 	{
-		fprintf(stderr, "Error %d: %s\n", map.GetErrorCode(), map.GetErrorText().c_str());
+		fprintf(stderr, "WARNING: Could not parse level: %s\n", map.GetErrorText().c_str());
 		return false;
 	}
 
@@ -42,8 +52,7 @@ bool Level::Parse(std::string mapName)
 		sprTilesets[i] = sf::Sprite(texTilesets[i]);
 
 		//If this is the collision tileset, we want to make a collision map out of it
-		if(tileset->GetName().compare("Collision") == 0)
-		{
+		if(tileset->GetName().compare("Collision") == 0) {
 			//Save the tileset
 			tsetCollision = tileset;		
 
@@ -55,11 +64,9 @@ bool Level::Parse(std::string mapName)
 			sf::Vector2u size = imgCollision.getSize();
 			collisionMap.resize(size.x);
 
-			for(unsigned int x = 0; x < size.x; x++)
-			{
+			for(unsigned int x = 0; x < size.x; x++) {
 				collisionMap[x].resize(size.y);
-				for(unsigned int y = 0; y < size.y; y++)
-				{
+				for(unsigned int y = 0; y < size.y; y++) {
 					//The player should be able to collide with the tile if the
 					// tile is not completely transparent
 					collisionMap[x][y] = (imgCollision.getPixel(x, y).a > 0);
@@ -70,17 +77,15 @@ bool Level::Parse(std::string mapName)
 	}
 
 	//We also need to find the collision layer
-	for(int i = 0; i < map.GetNumLayers(); i++)
-	{
+	for(int i = 0; i < map.GetNumLayers(); i++) {
 		const Tmx::Layer *layer = map.GetLayer(i);
 		//If this is the collision layer, store it
-		if(layer->GetName().compare("Collision") == 0)
-		{
-			//Save the tileset
+		if(layer->GetName().compare("Collision") == 0) {
 			lyrCollision = layer;		
 		}
 	}
 
+<<<<<<< HEAD
 	return true;
 }
 
@@ -114,12 +119,54 @@ bool Level::AdjustY(const sf::Vector2f& pos, int& nearest) const
 				nearest = globTile.y*tileHeight + i;
 				//printf(" ---- NEAREST = %d\n", nearest);
 				return true;
+=======
+	if(lyrCollision == NULL)
+		fprintf(stderr, "WARNING: Could not find collision layer! Attempting to proceed...\n");
+	if(tsetCollision == NULL)
+		fprintf(stderr, "WARNING: Could not find collision tileset! Attempting to proceed...\n");
+
+
+	//Now, parse the map objects
+	for (int i = 0; i < map.GetNumObjectGroups(); ++i) {
+		//Get an object group.
+		const Tmx::ObjectGroup *objectGroup = map.GetObjectGroup(i);
+
+		//Iterate through all objects in the object group
+		for (int j = 0; j < objectGroup->GetNumObjects(); ++j) {
+			//Grab objects from the group
+			const Tmx::Object *object = objectGroup->GetObject(j);
+
+			//Check the objects against our known object types...
+			//Is the object a (the) spawn?
+			if(object->GetType().compare("Spawn") == 0) {
+				//Have we gotten a spawn already?
+				if(spawn.x < 0 && spawn.y < 0) {
+					spawn.x = object->GetX() + object->GetWidth()/2.0f;
+					spawn.y = object->GetY() - object->GetWidth()/2.0f;
+				}
+				//If we've already found a spawnpoint, just ignore this one
+			}
+			else if(object->GetType().compare("Key") == 0) {
+				entityList.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
+					object->GetY() - object->GetHeight()/2.0f)));
+			}
+			//Here, we should do keys, traps, etc...
+			//We don't know what type of object this is, issue an error
+			else {
+				fprintf(stderr, "WARNING: Found unknown object type %s\n", object->GetType());
+>>>>>>> 52e2cb23946dd203c36796780aaa091a78d1664b
 			}
 		}
-		globTile.y--;
-		pixel.y = 31;
 	}
-	return false;
+
+	if(spawn.x < 0 || spawn.y < 0) {
+		printf("WARNING: No spawnpoint found! Defaulting to (0, 0)...\n");
+		spawn = sf::Vector2f(0, 0);
+	}
+
+
+	printf("Map parsing complete\n");
+	return true;
 }
 
 const Tmx::Tileset* Level::GetTileset(const Tmx::Layer* layer, const sf::Vector2i& globTile) const
@@ -144,7 +191,7 @@ sf::Vector2i Level::GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& gl
 
 sf::Vector2i Level::GetGlobalTile(const sf::Vector2f& pos) const
 {
-	return sf::Vector2i(pos.x / map.GetTileWidth(), pos.y / map.GetTileHeight());
+	return sf::Vector2i((int)pos.x / map.GetTileWidth(), (int)pos.y / map.GetTileHeight());
 }
 
 sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const
@@ -159,6 +206,9 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	sf::Vector2i globTile = GetGlobalTile(pos);
 	sf::Vector2i pixel = GetPixel(pos);
 
+	int layerHeight = lyrCollision->GetHeight();
+	int layerWidth = lyrCollision->GetWidth();
+
 	//Get the nearest tile in the layer corresponding to the position
 	//BIG NOTE !!!!!!!!! -----------------------
 	// We assume that tile 0 is unused because that's what GetTileId returns
@@ -170,13 +220,31 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	else
 		step = -1;
 
-	int layerHeight = lyrCollision->GetHeight();
-	int layerWidth = lyrCollision->GetWidth();
+	if(horiz)
+	{
+		globTile.x += step;
+		if(stepPos)
+			pixel.x = 0;
+		else
+			pixel.x = map.GetTileWidth() - 1;
+	}
+	else
+	{
+		globTile.y += step;
+		if(stepPos)
+			pixel.y = 0;
+		else
+			pixel.y = map.GetTileHeight() - 1;
+	}
 
-	while(globTile.y >= 0 && globTile.y < layerHeight &&
+	//printf("(%d, %d)\n", globTile.x, globTile.y);
+	//printf("(%d, %d)\n", layerWidth, layerHeight);
+
+	if(globTile.y >= 0 && globTile.y < layerHeight &&
 			globTile.x >= 0 && globTile.x < layerWidth)
 	{
 		unsigned int tileIdx = lyrCollision->GetTileId(globTile.x, globTile.y);
+		//printf("(%d, %d) %d\n", globTile.x, globTile.y, tileIdx);
 
 		if(tileIdx != 0)
 		{
@@ -185,7 +253,6 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 					pixel.y < map.GetTileHeight() && pixel.y >= 0)
 			{
 				//printf("(%d, %d) -> (%d, %d)\n", globTile.x, globTile.y, locTile.x, locTile.y);
-				//printf("(%d, %d) -> %s\n", locTile.x+pixel.x, locTile.y+i, (collisionMap[locTile.x + pixel.x][locTile.y + i]?"true":"false"));
 				bool collide = collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
 				if(collide)
 				{
@@ -205,133 +272,35 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 					pixel.y += step;
 			}
 		}
-
-		if(horiz)
-		{
-			globTile.x += step;
-			if(stepPos)
-				pixel.x = 0;
-			else
-				pixel.x = map.GetTileWidth() - 1;
-		}
-		else
-		{
-			globTile.y += step;
-			if(stepPos)
-				pixel.y = 0;
-			else
-				pixel.y = map.GetTileHeight() - 1;
-		}
 	}
+
+	nearest = (stepPos?INT_MAX:-INT_MAX);
 	return false;
 }
 
-/*bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool stepPos, int& nearest) const
+sf::Vector2i Level::GetSize() const
 {
-	//If either the collision tileset or layer is NULL, then don't do anything
-	if(tsetCollision == NULL || lyrCollision == NULL)
-		return false;
+	return sf::Vector2i(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
+}
 
-	//Figure out which direction to step
-	int step;
-	if(stepPos)
-		step = 1;
-	else
-		step = -1;
+Player& Level::GetPlayer()
+{
+	return player;
+}
 
-	//We need to figure out which tile on the collision tileset this
-	// position corresponds to on the layer
-	int tileWidth = tsetCollision->GetTileWidth();
-	int tileHeight = tsetCollision->GetTileHeight();
-	sf::Vector2i globTile(pos.x / tileWidth, pos.y / tileHeight);
-	sf::Vector2i pixel((int)pos.x % tileWidth, (int)pos.y % tileHeight);
-
-	//Get the nearest tile in the layer corresponding to the position
-	//BIG NOTE !!!!!!!!! -----------------------
-	// We assume that tile 0 is unused because that's what GetTileId returns
-	// when there's no tile.
-	int layerWidth = lyrCollision->GetWidth();
-	int layerHeight = lyrCollision->GetHeight();
-	int tilesetWidth = tsetCollision->GetImage()->GetWidth() / tileWidth;
-	sf::Vector2i nextTile = globTile;
-	unsigned int tileIdx;
-
-	//Figure out where the closest colliding tile in the specified direction is
-	do
-	{
-		tileIdx = lyrCollision->GetTileId(nextTile.x, nextTile.y);
-		//printf("tileIdx: %d, tile: (%d, %d)\n", tileIdx, nextTile.x, nextTile.y);
-		if(horiz)
-			nextTile.x += step;
-		else
-			nextTile.y += step;
-	} while(tileIdx == 0 &&
-			nextTile.x >= 0 && nextTile.x < layerWidth &&
-			nextTile.y >= 0 && nextTile.y < layerHeight);
-
-	//We still need nextTile, and it's one more step more than it should be
-	if(horiz)
-		nextTile.x -= step;
-	else
-		nextTile.y -= step;
-
-	//Make sure there is a collision to check
-	if(tileIdx != 0)
-	{
-		//Unless we're still on the same tile we started at, we want to
-		// check from the beginning of the tile for the direction we're
-		// checking (but not for the other direction)
-		if(globTile != nextTile)
-		{
-			if(horiz && stepPos)
-				pixel.x = 0;
-			else if(horiz && !stepPos)
-				pixel.x = 32;
-			else if(!horiz && stepPos)
-				pixel.y = 0;
-			else
-				pixel.y = 32;
+void Level::Update()
+{
+	player.Update(*this);
+	for(unsigned int i = 0; i < entityList.size(); i++) {
+		entityList[i]->Update(*this);
+		if(player.IsColliding(*entityList[i]) || entityList[i]->IsColliding(player)) {
+			printf("Player colliding with entity %d\n", i);
 		}
-
-		//Do pixel-perfect collision on this tile
-		//First, figure out which tile in the tileset it is
-		sf::Vector2i locTile(tileIdx % tilesetWidth * tileWidth, tileIdx / tilesetWidth * tileHeight);
-		bool collide = collisionMap[locTile.x+pixel.x][locTile.y+pixel.y];
-
-		//Advance the pixel location until we hit something
-		do
-		{
-			collide = collisionMap[locTile.x+pixel.x][locTile.y+pixel.y];
-			if(horiz)
-				pixel.x += step;
-			else
-				pixel.y += step;
-		} while(!collide &&
-				pixel.x >= 0 && pixel.x < tileWidth &&
-				pixel.y >= 0 && pixel.y < tileHeight);
-
-		if(horiz)
-			pixel.x -= step;
-		else
-			pixel.y -= step;
-		
-		//Note: we subtract step from pixel here because we've gone one in too far;
-		// we don't want the character to intersect with the block
-		if(horiz)
-			nearest = nextTile.x * tileWidth + pixel.x - step;
-		else
-			nearest = nextTile.y * tileHeight + pixel.y - step;
-		
-		//printf("locTile: (%d, %d) - Nearest: (%d, %d) + (%d, %d) %s%s \n", locTile.x, locTile.y, nextTile.x, nextTile.y, pixel.x, pixel.y, (stepPos?"+":"-"), (horiz?"x":"y"));
-		//printf("Position: (%g, %g) vs nearest: %d\n", pos.x, pos.y, nearest);
-
-		return collide;
 	}
-	//If there was no collision with any tiles on this axis, just return false
-	else
-		return false;
-}*/
+}
 
+//Something to think about: Later, this should get passed the view so that
+// we can cull tiles that we don't need
 void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	std::vector<sf::Sprite> sprTilesetsConst = sprTilesets;
@@ -364,7 +333,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 						//Get the part of the sprite corresponding to the tile
 						sprTilesetsConst[tilesetIdx].setTextureRect(sf::IntRect(locTile.x, locTile.y, map.GetTileWidth(), map.GetTileHeight()));
 						//Set the tile's position to the correct place
-						sprTilesetsConst[tilesetIdx].setPosition(x*map.GetTileWidth(), y*map.GetTileHeight());
+						sprTilesetsConst[tilesetIdx].setPosition((float)x*map.GetTileWidth(), (float)y*map.GetTileHeight());
 
 						//Draw that tile
 						target.draw(sprTilesetsConst[tilesetIdx], state);
@@ -373,4 +342,12 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 			}
 		}
 	}
+
+	//Draw all the entities on top of the tiles
+	for(unsigned int i = 0; i < entityList.size(); i++) {
+		target.draw(*entityList[i], state);
+	}
+
+	//Draw the player on top of everything
+	target.draw(player, state);
 }

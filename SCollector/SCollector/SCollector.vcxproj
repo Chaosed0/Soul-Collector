@@ -10,6 +10,23 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CircleMove.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Key.cpp" />
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="Player.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C50427AE-5797-4228-AB0B-15FD90A4698E}</ProjectGuid>
     <RootNamespace>SCollector</RootNamespace>
@@ -19,7 +36,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -42,11 +59,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\SFGUI-0.0.1\extlibs\SFML\include;..\..\SFGUI-0.0.1\include;..\..\TmxParser\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\SFML-2-19-2012\include;..\..\SFGUI-0.1.0\include;..\..\TmxParser\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\SFGUI-0.0.1\extlibs\SFML\lib;..\..\SFGUI-0.0.1\lib;..\..\TmxParser\lib\2012;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\SFML-2-19-2012\lib;..\..\SFGUI-0.1.0\lib;..\..\TmxParser\lib\2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;sfgui-d.lib;TmxParserd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -66,6 +84,7 @@
       <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-graphics.lib;sfgui.lib;TmxParser.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <ClCompile Include="CircleMove.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -83,6 +102,8 @@
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
+=======
+>>>>>>> 52e2cb23946dd203c36796780aaa091a78d1664b
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

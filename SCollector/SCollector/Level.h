@@ -14,8 +14,13 @@
 
 #include "Tmx.h"
 
+#include "Player.h"
+class Entity;
+
 #define BASEMAPDIR "assets/maps/"
 
+//Note: Level is sort of an Entity too, but it's got too many
+// differences to make it a subclass of Entity
 class Level : public sf::Drawable
 {
 public:
@@ -35,6 +40,28 @@ public:
 	bool Parse(std::string mapName);
 
 	/**
+	 * Gets the size of the map.
+	 * \return The size of the map, in pixels.
+	 */
+	sf::Vector2i GetSize() const;
+
+	/**
+	 * Updates the level
+	 * This includes all entities in the level, such as
+	 * - Monsters
+	 * - Display of walls and such
+	 */
+	void Update();
+
+	/**
+	 * Gets the player.
+	 * This is kind of an ugly way to do things, but it's
+	 * better than the alternatives (I believe)
+	 * \return A reference to the player.
+	 */
+	Player& GetPlayer(); 
+
+	/**
 	 * Gets the nearest colliding pixel in a certain diretcion.
 	 *
 	 * Takes a line and a direction and returns the nearest pixel in map coordinates
@@ -47,28 +74,7 @@ public:
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
 	bool GetCollide(const sf::Vector2f& pos, const bool horiz, const bool stepPos, int& nearest) const;
-
-	/**
-	 * Gets the nearest non-colliding pixel in the negative y direction.
-	 *
-	 * Does nearly the same thing as GetCollide, but instead of finding a colliding pixel,
-	 *  it finds a non-colliding pixel, always in the negative y direction. Note that nearest
-	 *  is only valid if this function returns true.
-	 * \param pos The position to start from.
-	 * \param nearest The nearest non-colliding pixel in the negative y direction.
-	 * \return True if there was any non-colliding pixel; false otherwise.
-	 */
-	bool AdjustY(const sf::Vector2f& pos, int& nearest) const;
-
-	/**
-	 * Gets a tile coordinate local to a tileset from a global layer tile.
-	 * 
-	 * \param layer The layer where globTile is located.
-	 * \param globTile The global coordinate of the tile.
-	 * \return The local coordinate of the tile, or sf::Vector2i(-1, -1) if an invalid tile was passed.
-	 */
-	sf::Vector2i GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& globTile) const;
-
+private:
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
 	 * 
@@ -93,7 +99,16 @@ public:
 	 * \return The pixel within the tile of the position.
 	 */
 	sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const;
-private:
+
+	/**
+	 * Gets a tile coordinate local to a tileset from a global layer tile.
+	 * 
+	 * \param layer The layer where globTile is located.
+	 * \param globTile The global coordinate of the tile.
+	 * \return The local coordinate of the tile, or sf::Vector2i(-1, -1) if an invalid tile was passed.
+	 */
+	sf::Vector2i GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& globTile) const;
+
 	/** Draws the level */
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 
@@ -110,6 +125,18 @@ private:
 	const Tmx::Tileset *tsetCollision;
 	/** Collision layer */
 	const Tmx::Layer *lyrCollision;
+
+	/** Spawn point for the player */
+	sf::Vector2f spawn;
+
+	/**
+	 * The player himself 
+	 * He's just another entity, but it's worth keeping him around as a
+	 *  separate entity for clarity sake
+	 */
+	Player player;
+	/** List of entities in the level */
+	std::vector<Entity*> entityList;
 };
 
 #endif

@@ -7,40 +7,40 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
 	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
 
-	win0Box = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
-	button1 = sfg::Button::Create("Go to menu 2");
-	button1->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::button1Click, this);
-	exitButton = sfg::Button::Create("Exit game");
-	win0Box->Pack(button1);
-	win0Box->Pack(exitButton);
-	menus[0]->Add(win0Box);
-
-	win1Box = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
-	button2 = sfg::Button::Create("Go to menu 3");
-	button2->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::button2Click, this);
-	playButton = sfg::Button::Create("Play game");
+	mainMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	playButton = sfg::Button::Create("Start");
 	playButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::playGame, this);
-	win1Box->Pack(button2);
-	win1Box->Pack(playButton);
-	menus[1]->Add(win1Box);
+	helpButton = sfg::Button::Create("Help");
+	helpButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoHelp, this);
+	settingsButton = sfg::Button::Create("Settings");
+	settingsButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoSettings, this);
+	exitButton = sfg::Button::Create("Exit");
+	mainMenu->Pack(playButton, false, false);
+	mainMenu->Pack(helpButton, false, false);
+	mainMenu->Pack(settingsButton, false, false);
+	mainMenu->Pack(exitButton, false, false);
+	menus[0]->Add(mainMenu);
 
-	win2Box = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
-	button3 = sfg::Button::Create("Go to menu 1");
-	button3->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::button3Click, this);
-	playSoundButton = sfg::Button::Create("Sound Test");
-	playSoundButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::playSound, this);
-	win2Box->Pack(button3);
-	win2Box->Pack(playSoundButton);
-	menus[2]->Add(win2Box);
+	settingsMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	settingstoMain = sfg::Button::Create("Return");
+	settingstoMain->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
+	settingsMenu->Pack(settingstoMain, false, false);
+	menus[1]->Add(settingsMenu);
 	
-	for(int i = 0; i < menus.size(); i++)
-		menus[i]->SetRequisition(sf::Vector2f(winWidth, winHeight));
+	helpMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	helptoMain = sfg::Button::Create("Return");
+	helptoMain->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
+	helpMenu->Pack(helptoMain, false, false);
+	menus[2]->Add(helpMenu);
 
-	for(int i = 0; i < menus.size(); i++)
+	for(unsigned int i = 0; i < menus.size(); i++)
+		menus[i]->SetRequisition(sf::Vector2f((float)winWidth, (float)winHeight));
+
+	for(unsigned int i = 0; i < menus.size(); i++)
 		desktop.Add(menus[i]);
 
 	curWindow = menus[0];
-	for(int i = 1; i < menus.size(); i++)
+	for(unsigned int i = 1; i < menus.size(); i++)
 		menus[i]->Show(false);
 
 	visible = true;
@@ -77,17 +77,17 @@ void MenuManager::SetActiveMenu(sfg::Window::Ptr& window)
 	curWindow->Show(true);
 }
 
-void MenuManager::button1Click()
+void MenuManager::gotoSettings()
 {
 	SetActiveMenu(menus[1]);
 }
 
-void MenuManager::button2Click()
+void MenuManager::gotoHelp()
 {
 	SetActiveMenu(menus[2]);
 }
 
-void MenuManager::button3Click()
+void MenuManager::gotoMain()
 {
 	SetActiveMenu(menus[0]);
 }

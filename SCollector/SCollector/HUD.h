@@ -6,7 +6,7 @@ class HUD:public sf::Drawable
 {
 private:
 
-	const int numObjects = 3;
+	static const int numObjects = 3;
 	HudObject objects[numObjects];
 	std::string imageNames[numObjects];
 

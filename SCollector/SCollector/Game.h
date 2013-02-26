@@ -10,7 +10,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "MenuManager.h"
-#include "Player.h"
 #include "Level.h"
 #include "HUD.h"
 
@@ -41,8 +40,16 @@ private:
 	sf::RenderWindow window;
 	bool isRunning;
 
-	Player player;
 	Level level;
+
+	sf::View view;
+
+	//TEST
+	sf::RenderTexture overlayTexture;
+	sf::Sprite overlaySprite;
+	sf::Texture circleTexture;
+	sf::Sprite circle;
+	sf::RectangleShape rect;
 };
 
 #endif

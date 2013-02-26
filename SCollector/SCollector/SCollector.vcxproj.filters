@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MenuManager.cpp">
@@ -27,7 +27,13 @@
     <ClCompile Include="CircleMove.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level.cpp">
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Key.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HudObject.cpp">
@@ -38,7 +44,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MenuManager.h">
@@ -47,7 +53,13 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level.h">
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Key.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HudObject.h">
