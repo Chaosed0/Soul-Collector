@@ -8,6 +8,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
 
 	mainMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	mainLabel = sfg::Label::Create("Soul Collector");
 	playButton = sfg::Button::Create("Start");
 	playButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::playGame, this);
 	helpButton = sfg::Button::Create("Help");
@@ -15,11 +16,35 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	settingsButton = sfg::Button::Create("Settings");
 	settingsButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoSettings, this);
 	exitButton = sfg::Button::Create("Exit");
-	mainMenu->Pack(playButton, false, false);
-	mainMenu->Pack(helpButton, false, false);
-	mainMenu->Pack(settingsButton, false, false);
-	mainMenu->Pack(exitButton, false, false);
-	menus[0]->Add(mainMenu);
+
+	mainLayout = sfg::Table::Create();
+	mainLayout->Attach(mainLabel, 
+		sf::Rect<sf::Uint32>(0,0,3,5), 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sf::Vector2f(10.f,10.f));
+	mainLayout->Attach(playButton, 
+		sf::Rect<sf::Uint32>(0,5,1,1), 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sf::Vector2f(10.f,10.f));
+	mainLayout->Attach(helpButton, 
+		sf::Rect<sf::Uint32>(0,6,1,1), 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sf::Vector2f(10.f,10.f));
+	mainLayout->Attach(settingsButton, 
+		sf::Rect<sf::Uint32>(0,7,1,1), 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sf::Vector2f(10.f,10.f));
+	mainLayout->Attach(exitButton, 
+		sf::Rect<sf::Uint32>(0,8,1,1), 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sfg::Table::FILL | sfg::Table::EXPAND, 
+		sf::Vector2f(10.f,10.f));
+
+	menus[0]->Add(mainLayout);
 
 	settingsMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
 	settingsLabel = sfg::Label::Create("Settings");
