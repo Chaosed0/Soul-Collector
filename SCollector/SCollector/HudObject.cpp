@@ -29,7 +29,6 @@ void HudObject::changeFill(float delta)
 		rect.setSize(sf::Vector2f(rect.getTextureRect().width,rect.getTextureRect().height));
 	else
 		rect.setSize(sf::Vector2f(rect.getTextureRect().width,0));
-		
 }
 
 void HudObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
