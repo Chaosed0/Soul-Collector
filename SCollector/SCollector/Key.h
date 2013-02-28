@@ -7,10 +7,10 @@
 #ifndef __KEY_H
 #define __KEY_H
 
-#include "Entity.h"
+#include "Activatable.h"
 class Level;
 
-class Key : public Entity
+class Key : public Activatable 
 {
 public:
 	Key(sf::Vector2f pos);

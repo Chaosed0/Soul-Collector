@@ -45,11 +45,7 @@ protected:
 	sf::Sprite sprite;
 	sf::Texture texture;
 
-	//These three don't really apply to the player at all, except for
-	// visible
 	bool visible;
-	bool active;
-	bool expended;
 
 	/**
 	 * Adds a set of frames to the animation sets of this entity.

@@ -12,8 +12,6 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	curAnimFrame = 0;
 	lastAnim = 0;
 	visible = true;
-	active = false;
-	expended = false;
 
 	//Load the texture
 	texture.loadFromFile(imgLoc);
