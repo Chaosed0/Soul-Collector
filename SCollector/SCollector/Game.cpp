@@ -207,7 +207,7 @@ void Game::Update()
 #ifdef LINUX
 	overlayTexture.draw(circle, sf::RenderStates(sf::BlendNone));
 #else
-	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode:BlendNone));
+	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
 #endif
 }
 
