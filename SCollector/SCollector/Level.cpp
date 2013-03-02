@@ -118,7 +118,7 @@ bool Level::Parse(std::string mapName)
 			//Here, we should do keys, traps, etc...
 			//We don't know what type of object this is, issue an error
 			else {
-				fprintf(stderr, "WARNING: Found unknown object type %s\n", object->GetType());
+				fprintf(stderr, "WARNING: Found unknown object type %s\n", object->GetType().c_str());
 			}
 		}
 	}

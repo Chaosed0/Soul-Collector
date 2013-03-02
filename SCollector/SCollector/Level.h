@@ -9,6 +9,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <limits.h>
+
 #include <cstdio>
 #include <cmath>
 
@@ -98,7 +100,7 @@ private:
 	 * \param pos The position to translate to a tile.
 	 * \return The pixel within the tile of the position.
 	 */
-	sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const;
+	sf::Vector2i GetPixel(const sf::Vector2f& pos) const;
 
 	/**
 	 * Gets a tile coordinate local to a tileset from a global layer tile.

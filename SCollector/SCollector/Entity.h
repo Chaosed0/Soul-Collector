@@ -39,7 +39,7 @@ public:
 	 * \return True if this entity is colliding with the other, false
 	 *  otherwise.
 	 */
-	bool IsColliding(const Entity& entity);
+	bool IsColliding(const Entity& entity) const;
 protected:
 	sf::IntRect collisionBox;
 	sf::Sprite sprite;

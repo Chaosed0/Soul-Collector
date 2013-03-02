@@ -36,21 +36,21 @@ private:
 	void Exit();
 
 	const int winWidth, winHeight;
-	MenuManager menus;
 	sf::RenderWindow window;
+	MenuManager menus;
 	bool isRunning;
 
 	Level level;
 
-	sf::View view;
-
 	//TEST
+	sf::RectangleShape rect;
 	sf::RenderTexture overlayTexture;
 	sf::Sprite overlaySprite;
 	sf::Texture circleTexture;
 	sf::Sprite circle;
 	sf::Sprite circle2;
-	sf::RectangleShape rect;
+
+	sf::View view;
 };
 
 #endif

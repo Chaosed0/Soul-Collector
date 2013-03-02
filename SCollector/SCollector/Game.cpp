@@ -125,6 +125,8 @@ void Game::Event()
 				case sf::Keyboard::Escape :
 					menus.SetVisible(true);
 					break;
+				default:
+					break;
 				}
 				break;
 			case sf::Event::KeyReleased :
@@ -141,7 +143,11 @@ void Game::Event()
 				case sf::Keyboard::Right :
 					level.GetPlayer().MoveRight(false);
 					break;
+				default:
+					break;
 				}
+				break;
+			default :
 				break;
 			}
 		}
@@ -198,7 +204,11 @@ void Game::Update()
 
 	overlayTexture.clear(sf::Color(0,0,0,0));
 	overlayTexture.draw(rect);
-	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
+#ifdef LINUX
+	overlayTexture.draw(circle, sf::RenderStates(sf::BlendNone));
+#else
+	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode:BlendNone));
+#endif
 }
 
 void Game::Render()
