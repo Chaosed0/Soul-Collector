@@ -18,6 +18,7 @@ Game::Game() :
 	circleTexture.loadFromFile("assets/img/LightAura.png");
 	circle.setTexture(circleTexture);
 	circle.setOrigin(circle.getTextureRect().width/2.0f, circle.getTextureRect().height/2.0f);
+	circle.scale(3.0, 3.0);
 	rect.setFillColor(sf::Color(0,0,0,255));
 	overlayTexture.create(window.getSize().x, window.getSize().y);
 	overlaySprite.setTexture(overlayTexture.getTexture());

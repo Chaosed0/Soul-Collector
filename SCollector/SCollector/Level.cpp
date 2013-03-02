@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Key.h"
+#include "Demon.h"
 
 Level::Level()
 	: player(sf::Vector2f())
@@ -100,10 +101,11 @@ bool Level::Parse(std::string mapName)
 		for (int j = 0; j < objectGroup->GetNumObjects(); ++j) {
 			//Grab objects from the group
 			const Tmx::Object *object = objectGroup->GetObject(j);
+			const std::string &type = object->GetType();
 
 			//Check the objects against our known object types...
 			//Is the object a (the) spawn?
-			if(object->GetType().compare("Spawn") == 0) {
+			if(type.compare("Spawn") == 0) {
 				//Have we gotten a spawn already?
 				if(spawn.x < 0 && spawn.y < 0) {
 					spawn.x = object->GetX() + object->GetWidth()/2.0f;
@@ -111,8 +113,12 @@ bool Level::Parse(std::string mapName)
 				}
 				//If we've already found a spawnpoint, just ignore this one
 			}
-			else if(object->GetType().compare("Key") == 0) {
+			else if(type.compare("Key") == 0) {
 				entityList.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
+					object->GetY() - object->GetHeight()/2.0f)));
+			}
+			else if(type.compare("Demon") == 0) {
+				entityList.push_back(new Demon(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
 					object->GetY() - object->GetHeight()/2.0f)));
 			}
 			//Here, we should do keys, traps, etc...

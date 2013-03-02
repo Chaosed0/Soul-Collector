@@ -18,6 +18,12 @@ class Level;
 class Entity : public sf::Drawable
 {
 public:
+	/**
+	 * Initializing Constructor.
+	 * \param imgLoc The location of the image on the harddrive to load into texture.
+	 * \param collisionBox The size of the entity's collision box.
+	 * \param animBox The size of the frames in the sprite sheet, if any.
+	 */
 	Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox);
 
 	virtual void Update(const Level& level) = 0;

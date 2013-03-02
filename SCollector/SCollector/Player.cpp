@@ -4,7 +4,7 @@
 #include "Level.h"
 
 Player::Player(sf::Vector2f pos)
-	: Entity("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
+	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
 {
 	Init(pos);
 }
@@ -59,8 +59,7 @@ void Player::Update(const Level& level)
 		//printf("(%g, %g), (%g, %g)\n", topLeft.x, topLeft.y, botRight.x, botRight.y);
 		int nearestTopLeft, nearestBotRight, nearest;
 		bool foundTopLeft, foundBotRight, found;
-
-		//Level is needed here to grab collision information
+		sf::Vector2f movement(0, 0);
 
 		if(moveUp) {
 			foundTopLeft = level.GetCollide(topLeft, false, false, nearestTopLeft);
@@ -71,7 +70,7 @@ void Player::Update(const Level& level)
 			if(!found)
 				nearest = -INT_MAX;
 			//printf("Nearest Up: %d\n", nearest);
-			sprite.move(0, std::max(-moveSpeed, (float)nearest));
+			movement.y += std::max(-moveSpeed, (float)nearest);
 		}
 		if(moveDown) {
 			foundTopLeft = level.GetCollide(botLeft, false, true, nearestTopLeft);
@@ -82,7 +81,7 @@ void Player::Update(const Level& level)
 			if(!found)
 				nearest = INT_MAX;
 			//printf("Nearest Down: %d\n", nearest);
-			sprite.move(0, std::min(moveSpeed, (float)nearest));
+			movement.y += std::min(moveSpeed, (float)nearest);
 		}
 		if(moveLeft) {
 			foundTopLeft = level.GetCollide(topLeft, true, false, nearestTopLeft);
@@ -93,7 +92,7 @@ void Player::Update(const Level& level)
 			if(!found)
 				nearest = -INT_MAX;
 			//printf("Nearest Left: %d\n", nearest);
-			sprite.move(std::max(-moveSpeed, (float)nearest), 0);
+			movement.x += std::max(-moveSpeed, (float)nearest), 0;
 		}
 		if(moveRight) {
 			foundTopLeft = level.GetCollide(topRight, true, true, nearestTopLeft);
@@ -104,8 +103,15 @@ void Player::Update(const Level& level)
 			if(!found)
 				nearest = INT_MAX;
 			//printf("Nearest Right: %d\n", nearest);
-			sprite.move(std::min(moveSpeed, (float)nearest), 0);
+			movement.x += std::min(moveSpeed, (float)nearest);
 		}
+
+		//Correct diagonal movement so that player doesn't move faster
+		if(movement.x && movement.y) {
+			movement.x /= 1.414;
+			movement.y /= 1.414;
+		}
+		sprite.move(movement);
 
 		if(moveRight && moveUp && !moveLeft && !moveDown) sprite.setRotation(45);
 		else if(moveRight && moveDown && !moveLeft && !moveUp) sprite.setRotation(135);

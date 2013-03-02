@@ -13,20 +13,24 @@
   <ItemGroup>
     <ClCompile Include="Activatable.cpp" />
     <ClCompile Include="CircleMove.cpp" />
+    <ClCompile Include="Demon.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Activatable.h" />
+    <ClInclude Include="Demon.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

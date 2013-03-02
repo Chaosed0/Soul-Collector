@@ -11,10 +11,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Entity.h"
+#include "Movable.h"
 class Level;
 
-class Player : public Entity
+class Player : public Movable 
 {
 //Public attributes; visible to everyone
 public:
@@ -63,9 +63,6 @@ private:
 
 	/** Flags set to true when the player should move in the corresponding direction */
 	bool moveLeft, moveRight, moveUp, moveDown;
-
-	/** Movement speed of the player */
-	float moveSpeed;
 };
 
 #endif
