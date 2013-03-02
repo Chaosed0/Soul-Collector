@@ -16,6 +16,7 @@ public:
 
 	virtual void Update(const Level& level);
 private:
+	bool moving;
 	bool moveHoriz;
 	bool movePos;
 };
