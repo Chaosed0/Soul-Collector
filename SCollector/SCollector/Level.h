@@ -64,6 +64,12 @@ public:
 	Player& GetPlayer(); 
 
 	/**
+	 * Get a const reference to the player.
+	 * \return A const reference to the player.
+	 */
+	const Player& GetPlayer() const;
+
+	/**
 	 * Gets the nearest colliding pixel in a certain diretcion.
 	 *
 	 * Takes a line and a direction and returns the nearest pixel in map coordinates

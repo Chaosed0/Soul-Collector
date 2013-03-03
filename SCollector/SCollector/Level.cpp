@@ -258,6 +258,11 @@ Player& Level::GetPlayer()
 	return player;
 }
 
+const Player& Level::GetPlayer() const
+{
+	return player;
+}
+
 void Level::Update()
 {
 	player.Update(*this);

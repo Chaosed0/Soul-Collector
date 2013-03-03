@@ -9,6 +9,8 @@
 
 #include "Movable.h"
 
+#define SPOT_RADIUS 50
+
 class Demon : public Movable
 {
 public:
@@ -17,8 +19,8 @@ public:
 	virtual void Update(const Level& level);
 private:
 	bool moving;
-	bool moveHoriz;
-	bool movePos;
+	bool spotted;
+	sf::Vector2f movement;
 };
 
 #endif
