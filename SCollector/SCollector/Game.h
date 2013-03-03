@@ -12,6 +12,7 @@
 #include "MenuManager.h"
 #include "Level.h"
 #include "HUD.h"
+#include "LightOverlay.h"
 
 class Game
 {
@@ -43,14 +44,8 @@ private:
 	Level level;
 
 	//TEST
-	sf::RectangleShape rect;
-	sf::RenderTexture overlayTexture;
-	sf::Sprite overlaySprite;
-	sf::Texture circleTexture;
-	sf::Sprite circle;
-	sf::Sprite circle2;
-
 	sf::View view;
+	LightOverlay overlay;
 };
 
 #endif

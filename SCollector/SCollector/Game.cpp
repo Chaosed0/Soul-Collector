@@ -9,20 +9,11 @@ Game::Game() :
 	window(sf::VideoMode(winWidth, winHeight), "Test") ,
 	menus(winWidth, winHeight),
 	level("new.tmx") ,
-	rect(sf::Vector2f((float)winWidth, (float)winHeight)) ,
-	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
+	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight)) ,
+	overlay(6, 128, view)
 {
 	//Flag set to false when the game ends
 	isRunning = false;
-
-	circleTexture.loadFromFile("assets/img/LightAura.png");
-	circle.setTexture(circleTexture);
-	circle.setOrigin(circle.getTextureRect().width/2.0f, circle.getTextureRect().height/2.0f);
-	circle.scale(3.0, 3.0);
-	rect.setFillColor(sf::Color(0,0,0,255));
-	overlayTexture.create(window.getSize().x, window.getSize().y);
-	overlaySprite.setTexture(overlayTexture.getTexture());
-	overlaySprite.setOrigin(overlayTexture.getSize().x/2.0f, overlayTexture.getSize().y/2.0f);
 
 	window.setView(view);
 }
@@ -188,28 +179,7 @@ void Game::Update()
 	window.setView(view);
 
 	//Update the light circle to follow the player
-	//Note: Since the circle's being drawn to "view coordinates" instead of "global coordinates",
-	// we've got to correct the player's position if we want the circle to be drawn on top of
-	// the player
-	//Theory behind this bit is that view coordinates are just global coordinates translated;
-	// the amount of the translation is the distance from the global axes to the view axes
-	sf::Vector2f viewcorrection(viewPos.x - viewSize.x/2, viewPos.y - viewSize.y/2);
-	//Also, for some reason view coordinates have a reversed y-axis... ?_?
-	circle.setPosition(sf::Vector2f(playerPos.x - viewcorrection.x, viewSize.y-(playerPos.y - viewcorrection.y)));
-
-	//printf("playerpos: (%g, %g), correction:(%g, %g)\n", playerPos.x, playerPos.y, correctpos.x, correctpos.y);
-
-	//Update the overlay rectangle to follow the view
-	//rect.setPosition(view.getCenter());
-	overlaySprite.setPosition(view.getCenter());
-
-	overlayTexture.clear(sf::Color(0,0,0,0));
-	overlayTexture.draw(rect);
-#ifdef LINUX
-	overlayTexture.draw(circle, sf::RenderStates(sf::BlendNone));
-#else
-	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
-#endif
+	overlay.Update(level, view);
 }
 
 void Game::Render()
@@ -226,7 +196,7 @@ void Game::Render()
 	//Render the level to the screen, before the player
 	window.draw(level);
 	//Render the player to the screen
-	window.draw(overlaySprite);
+	window.draw(overlay);
 
 	menus.Display(window);
 

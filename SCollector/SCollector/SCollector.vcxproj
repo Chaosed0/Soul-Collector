@@ -18,6 +18,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LightOverlay.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -29,6 +30,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LightOverlay.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />
