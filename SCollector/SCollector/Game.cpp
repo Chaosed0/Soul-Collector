@@ -196,7 +196,7 @@ void Game::Render()
 	//Render the level to the screen, before the player
 	window.draw(level);
 	//Render the player to the screen
-	window.draw(overlay);
+	//window.draw(overlay);
 
 	menus.Display(window);
 

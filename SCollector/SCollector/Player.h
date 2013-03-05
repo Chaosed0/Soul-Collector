@@ -23,7 +23,7 @@ public:
 	 * Initializes the player with no graphical component whatsoever - Make sure to
 	 *  call LoadTexture() before drawing the player!
 	 */
-	Player(sf::Vector2f pos);
+	Player(const sf::Vector2f& pos);
 
 	/**
 	 * Starts or stops the player moving left.
