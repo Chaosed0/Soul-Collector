@@ -174,18 +174,18 @@ sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const
 	return sf::Vector2i((int)pos.x % map.GetTileWidth(), (int)pos.y % map.GetTileHeight());
 }
 
-bool Level::GetCollide(const sf::Vector2f& pos, float angle, float& dist) const
+bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {
 	const float pi = 3.14159;
 	while(angle < 0) {
 		angle += 2*pi;
 	}
 	float tanDir = tan(angle);
-	printf("%g\n", tanDir);
+	//printf("%g\n", tanDir);
 
 	//The first iteration is different from the others because we
 	// need to figure out how far away the first block is
-	sf::Vector2f nearest(GetGlobalTile(pos).x*map.GetTileWidth(),
+	sf::Vector2f nearestX(GetGlobalTile(pos).x*map.GetTileWidth(),
 		GetGlobalTile(pos).y*map.GetTileHeight());
 	float distX = FLT_MAX, distY = FLT_MAX;
 	bool foundX = false, foundY = false;
@@ -194,66 +194,73 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, float& dist) const
 
 	//GetGlobalTile says tiles include their top-left edges; we have to
 	// fix that for certain lines
-	if(angle > pi && angle < 3*pi/2.0f) {
-		nearest.x--;
+	if(angle > pi/2.0f && angle < 3*pi/2.0f) {
+		nearestX.x+=31;
 	} 
 	if(angle > pi && angle < 2*pi) {
-		nearest.y--;
+		nearestX.y+=31;
 	}
 
-	while(nearest.x > 0 && nearest.x < map.GetWidth()*map.GetTileWidth() &&
-			nearest.y > 0 && nearest.y < map.GetHeight()*map.GetTileHeight()) {
-		sf::Vector2i globTile = GetGlobalTile(nearest);
+	while(nearestX.x > 0 && nearestX.x < map.GetWidth()*map.GetTileWidth() &&
+			nearestX.y > 0 && nearestX.y < map.GetHeight()*map.GetTileHeight()) {
+		sf::Vector2i globTile = GetGlobalTile(nearestX);
 		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0) {
-			sf::Vector2f relDist = pos - nearest;
+			sf::Vector2f relDist = pos - nearestX;
 			distX = sqrt(relDist.x*relDist.x + relDist.y*relDist.y);
 			foundX = true;
 			break;
 		}
 
-		if(angle > 0 && angle < pi/2.0f || angle > 3*pi/2.0f && angle < 2*pi) {
-			nearest.x += map.GetTileWidth();
+		if(!(angle > pi/2.0f && angle < 3*pi/2.0f)) {
+			nearestX.x += map.GetTileWidth();
 		} else {
-			nearest.x -= map.GetTileWidth();
+			nearestX.x -= map.GetTileWidth();
 		}
-		nearest.y = pos.y + (tanDir*(nearest.x - pos.x));
+		nearestX.y = pos.y + (tanDir*(nearestX.x - pos.x));
 		//printf("Nearest: (%g, %g)\n", nearest.x, nearest.y);
 	}
 
-	nearest = sf::Vector2f(GetGlobalTile(pos).x*map.GetTileWidth(),
+	sf::Vector2f nearestY(GetGlobalTile(pos).x*map.GetTileWidth(),
 		GetGlobalTile(pos).y*map.GetTileHeight());
 
 	//GetGlobalTile says tiles include their top-left edges; we have to
 	// fix that for certain lines
-	if(angle > pi && angle < 2*pi/2.0f) {
-		nearest.x--;
+	if(angle > pi/2.0f && angle < 3*pi/2.0f) {
+		nearestY.x += 31;
 	} 
 	if(angle > pi && angle < 2*pi) {
-		nearest.y--;
+		nearestY.y += 31;
 	}
 
 	//printf("Y DIRECTION\n\n");
 
-	while(nearest.y > 0 && nearest.y < map.GetHeight()*map.GetTileHeight() &&
-			nearest.x > 0 && nearest.x < map.GetWidth()*map.GetTileHeight()) {
-		sf::Vector2i globTile = GetGlobalTile(nearest);
+	while(nearestY.y > 0 && nearestY.y < map.GetHeight()*map.GetTileHeight() &&
+			nearestY.x > 0 && nearestY.x < map.GetWidth()*map.GetTileHeight()) {
+		sf::Vector2i globTile = GetGlobalTile(nearestY);
 		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0) {
-			sf::Vector2f relDist = pos - nearest;
+			sf::Vector2f relDist = pos - nearestY;
 			distY = sqrt(relDist.x*relDist.x + relDist.y*relDist.y);
 			foundY = true;
 			break;
 		}
 
 		if(angle > 0.0f && angle < pi) {
-			nearest.y += map.GetTileHeight();
+			nearestY.y += map.GetTileHeight();
 		} else {
-			nearest.y -= map.GetTileHeight();
+			nearestY.y -= map.GetTileHeight();
 		}
-		nearest.x = (nearest.y - pos.y) / tanDir + pos.x;
+		nearestY.x = (nearestY.y - pos.y) / tanDir + pos.x;
 		//printf("Nearest: (%g, %g)\n", nearest.x, nearest.y);
 	}
 
-	dist = std::min(distX, distY);
+	float dist = std::min(distX, distY);
+
+	if(distX < distY) {
+		nearest = nearestX;
+	} else {
+		nearest = nearestY;
+	}
+
 	//printf("%g, %g, returned %g\n", distX, distY, dist);
 	return foundX || foundY;
 }

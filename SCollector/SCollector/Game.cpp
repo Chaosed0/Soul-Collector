@@ -10,7 +10,7 @@ Game::Game() :
 	menus(winWidth, winHeight),
 	level("new.tmx") ,
 	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight)) ,
-	overlay(6, 128, view)
+	overlay(32, 256, view)
 {
 	//Flag set to false when the game ends
 	isRunning = false;
@@ -196,7 +196,7 @@ void Game::Render()
 	//Render the level to the screen, before the player
 	window.draw(level);
 	//Render the player to the screen
-	//window.draw(overlay);
+	window.draw(overlay);
 
 	menus.Display(window);
 

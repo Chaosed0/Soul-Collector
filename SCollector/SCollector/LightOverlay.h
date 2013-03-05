@@ -9,6 +9,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <sstream>
+
 class Level;
 
 class LightOverlay : public sf::Drawable
@@ -47,6 +49,10 @@ private:
 	int rays;
 	/** Cutoff distance for the overlay. */
 	int radius;
+
+	std::vector<sf::CircleShape> circles;
+	std::vector<sf::Text> texts;
+	sf::Font font;
 };
 
 #endif

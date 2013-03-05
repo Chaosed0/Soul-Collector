@@ -98,7 +98,7 @@ public:
 	 * \param nearest The coordinates of the nearest colliding pixel.
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
-	bool Level::GetCollide(const sf::Vector2f& pos, float angle, float& dist) const;
+	bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
 private:
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
