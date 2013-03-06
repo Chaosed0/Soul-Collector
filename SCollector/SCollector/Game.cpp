@@ -10,7 +10,7 @@ Game::Game() :
 	menus(winWidth, winHeight),
 	level("new.tmx") ,
 	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight)) ,
-	overlay(32, 256, view)
+	overlay(128, 256, view)
 {
 	//Flag set to false when the game ends
 	isRunning = false;
