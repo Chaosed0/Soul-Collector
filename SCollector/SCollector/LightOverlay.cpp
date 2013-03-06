@@ -9,6 +9,10 @@ LightOverlay::LightOverlay(int rays, int radius, const sf::Vector2f& pos, const 
 	this->lightPos = pos;
 	needsUpdate = true;
 
+	compositeOverlay.create(radius*2, radius*2);
+	compositeOverlaySprite.setTexture(compositeOverlay.getTexture());
+	compositeOverlaySprite.setOrigin(radius, radius);
+
 	triangleOverlay.create(radius*2, radius*2);
 	triangleOverlaySprite.setTexture(triangleOverlay.getTexture());
 	triangleOverlaySprite.setOrigin(radius, radius);
@@ -54,17 +58,17 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 		found2 = level.GetCollide(level.GetPlayer().GetPos(), angle2, point2);
 
 		for(int i = 0; i <= rays; i++) {
+			sf::Vector2f relPoint1 = point1 - lightPos;
+			sf::Vector2f relPoint2 = point2 - lightPos;
+
 			//Debug code to show where the lines are intersecting the walls and
 			// at what angles
 			/*circles.push_back(sf::CircleShape(2.0f));
-			circles.back().setPosition(point1);
+			circles.back().setPosition(sf::Vector2f(relPoint1.x+radius, -relPoint2.y+radius));
 			std::stringstream sstream;
 			sstream << angle1;
 			texts.push_back(sf::Text(sf::String(sstream.str()), font, 12));
-			texts.back().setPosition(point1);*/
-
-			sf::Vector2f relPoint1 = point1 - lightPos;
-			sf::Vector2f relPoint2 = point2 - lightPos;
+			texts.back().setPosition(relPoint1);*/
 
 			//Allow the points to penetrate the walls a little bit
 			/*if(abs(relPoint1.x) > abs(relPoint1.y)) {
@@ -85,7 +89,6 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 			triangle.setPoint(1, sf::Vector2f(relPoint1.x, relPoint1.y));
 			triangle.setPoint(2, sf::Vector2f(relPoint2.x, relPoint2.y));
 			triangle.setFillColor(sf::Color(0, 0, 0, 0));
-			//triangle.setPosition(sf::Vector2f(playerPos.x - viewcorrection.x, viewSize.y-(playerPos.y - viewcorrection.y)));
 			triangle.setPosition(radius, radius);
 			triangleOverlay.draw(triangle, sf::BlendNone);
 
@@ -96,21 +99,25 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 			found2 = level.GetCollide(level.GetPlayer().GetPos(), angle2, point2);
 		}
 
+		triangleOverlay.display();
+		triangleOverlaySprite.setTexture(triangleOverlay.getTexture());
 		needsUpdate = false;
 	}
 
-	circleSprite.setPosition(sf::Vector2f(lightPos.x - viewcorrection.x, view.getSize().y - (lightPos.y - viewcorrection.y)));
-	triangleOverlaySprite.setPosition(sf::Vector2f(lightPos.x - viewcorrection.x, view.getSize().y - (lightPos.y - viewcorrection.y)));
+	circleSprite.setPosition(radius, radius);
+	triangleOverlaySprite.setPosition(radius, radius);
+
+	compositeOverlay.clear();
+	compositeOverlay.draw(circleSprite, sf::BlendMode::BlendMultiply);
+	compositeOverlay.draw(triangleOverlaySprite, sf::BlendMode::BlendAdd);
+	for(int i = 0; i < circles.size(); i++)
+		compositeOverlay.draw(circles[i]);
+	compositeOverlay.display();
+	compositeOverlaySprite.setTexture(compositeOverlay.getTexture());
+	compositeOverlaySprite.setPosition(sf::Vector2f(lightPos.x - viewcorrection.x, lightPos.y - viewcorrection.y));
 }
 
 void LightOverlay::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
-	target.draw(triangleOverlaySprite, sf::BlendMode::BlendNone);
-	target.draw(circleSprite, sf::BlendMode::BlendAdd);
-	//target.draw(overlaySprite, state);
-	for(int i = 0; i < circles.size(); i++)
-	{
-		target.draw(circles[i]);
-		target.draw(texts[i]);
-	}
+	target.draw(compositeOverlaySprite, state);
 }

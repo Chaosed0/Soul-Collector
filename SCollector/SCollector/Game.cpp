@@ -4,13 +4,14 @@
 #include "Player.h"
 #include "MenuManager.h"
 
-Game::Game() :
-	winWidth(800), winHeight(600),
-	window(sf::VideoMode(winWidth, winHeight), "Test") ,
-	menus(winWidth, winHeight),
-	level("new.tmx") ,
-	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight)) ,
-	playerLight(128, 256, level.GetPlayer().GetPos(), view)
+Game::Game()
+	: winWidth(800), winHeight(600)
+	, window(sf::VideoMode(winWidth, winHeight), "Test")
+	, menus(winWidth, winHeight)
+	, level("new.tmx")
+	, view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
+	, playerLight(128, 256, level.GetPlayer().GetPos(), view)
+	, lel(128, 256, level.GetPlayer().GetPos(), view)
 {
 	//Flag set to false when the game ends
 	isRunning = false;
@@ -185,6 +186,7 @@ void Game::Update()
 	//Update the light circle to follow the player
 	playerLight.SetPos(playerPos);
 	playerLight.Update(level, view);
+	lel.Update(level, view);
 
 	//Update the entire overlay
 	lightOverlaySprite.setPosition(view.getCenter());
@@ -193,7 +195,10 @@ void Game::Update()
 void Game::Render()
 {
 	lightOverlay.clear();
-	lightOverlay.draw(playerLight);
+	lightOverlay.draw(playerLight, sf::BlendMultiply);
+	lightOverlay.draw(lel, sf::BlendMultiply);
+	lightOverlay.display();
+	lightOverlaySprite.setTexture(lightOverlay.getTexture());
 
 	window.clear();
 

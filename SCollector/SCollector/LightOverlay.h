@@ -45,6 +45,9 @@ private:
 	sf::RenderTexture triangleOverlay;
 	sf::Sprite triangleOverlaySprite;
 
+	sf::RenderTexture compositeOverlay;
+	sf::Sprite compositeOverlaySprite;
+
 	/** Number of rays to use when updating the overlay. */
 	int rays;
 	/** Cutoff distance for the overlay. */
