@@ -45,7 +45,9 @@ private:
 
 	//TEST
 	sf::View view;
-	LightOverlay overlay;
+	LightOverlay playerLight;
+	sf::RenderTexture lightOverlay;
+	sf::Sprite lightOverlaySprite;
 };
 
 #endif

@@ -10,12 +10,16 @@ Game::Game() :
 	menus(winWidth, winHeight),
 	level("new.tmx") ,
 	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight)) ,
-	overlay(128, 256, view)
+	playerLight(128, 256, level.GetPlayer().GetPos(), view)
 {
 	//Flag set to false when the game ends
 	isRunning = false;
 
 	window.setView(view);
+
+	lightOverlay.create(view.getSize().x, view.getSize().y);
+	lightOverlaySprite.setTexture(lightOverlay.getTexture());
+	lightOverlaySprite.setOrigin(view.getSize()/2.0f);
 }
 
 int Game::Run()
@@ -179,11 +183,18 @@ void Game::Update()
 	window.setView(view);
 
 	//Update the light circle to follow the player
-	overlay.Update(level, view);
+	playerLight.SetPos(playerPos);
+	playerLight.Update(level, view);
+
+	//Update the entire overlay
+	lightOverlaySprite.setPosition(view.getCenter());
 }
 
 void Game::Render()
 {
+	lightOverlay.clear();
+	lightOverlay.draw(playerLight);
+
 	window.clear();
 
 	// --- RENDERING ---
@@ -196,7 +207,8 @@ void Game::Render()
 	//Render the level to the screen, before the player
 	window.draw(level);
 	//Render the player to the screen
-	window.draw(overlay);
+	window.draw(lightOverlaySprite);
+	//window.draw(playerLight);
 
 	menus.Display(window);
 

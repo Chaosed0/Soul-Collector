@@ -21,11 +21,15 @@ public:
 	 * \param rays The number of rays to cast when forming the overlay.
 	 * \param radius The absolute cutoff distance for the light.
 	 */
-	LightOverlay(int rays, int radius, const sf::View& view);
+	LightOverlay(int rays, int radius, const sf::Vector2f& pos, const sf::View& view);
+
+	void SetPos(const sf::Vector2f& pos);
 
 	/**
-	 * Updates the overlay, calculating rays.
+	 * Updates the overlay, recomputing the lighting textures and repositioning
+	 *  the overlay to the view.
 	 * \param level The current level.
+	 * \param view The active view.
 	 */
 	void Update(const Level& level, const sf::View& view);
 private:
@@ -37,21 +41,18 @@ private:
 	sf::Texture circleTexture;
 	/** The sprite that loads texture, which is drawn to the screen */
 	sf::Sprite circleSprite;
-	sf::Sprite circleSprite2;
-	/** Black rectangle */
-	sf::RectangleShape blackRect;
-	sf::RenderTexture circleOverlay;
-	sf::Sprite circleOverlaySprite;
 
-	/** The actual overlay */
-	sf::RenderTexture overlayTexture;
-	/** Sprite for the overlay */
-	sf::Sprite overlaySprite;
+	sf::RenderTexture triangleOverlay;
+	sf::Sprite triangleOverlaySprite;
 
 	/** Number of rays to use when updating the overlay. */
 	int rays;
 	/** Cutoff distance for the overlay. */
 	int radius;
+	/** Position of the light source */
+	sf::Vector2f lightPos;
+	/** Flag set to true when update needs to be run. */
+	bool needsUpdate;
 
 	std::vector<sf::CircleShape> circles;
 	std::vector<sf::Text> texts;
