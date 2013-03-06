@@ -17,6 +17,7 @@
 #include "Tmx.h"
 
 #include "Player.h"
+#include "Utility.h"
 class Entity;
 
 #define BASEMAPDIR "assets/maps/"

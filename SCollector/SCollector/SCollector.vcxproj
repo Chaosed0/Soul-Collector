@@ -22,6 +22,7 @@
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Activatable.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C50427AE-5797-4228-AB0B-15FD90A4698E}</ProjectGuid>

@@ -13,12 +13,12 @@ LightOverlay::LightOverlay(int rays, int radius, const sf::Vector2f& pos, const 
 	//Create textures
 	compositeOverlay.create(radius*2, radius*2);
 	compositeOverlaySprite.setTexture(compositeOverlay.getTexture());
-	compositeOverlaySprite.setOrigin(radius, radius);
+	compositeOverlaySprite.setOrigin((float)radius, (float)radius);
 
 	triangleOverlay.create(radius*2, radius*2);
 	triangleOverlaySprite.setTexture(triangleOverlay.getTexture());
-	triangleOverlaySprite.setOrigin(radius, radius);
-	triangleOverlaySprite.setPosition(radius, radius);
+	triangleOverlaySprite.setOrigin((float)radius, (float)radius);
+	triangleOverlaySprite.setPosition((float)radius, (float)radius);
 	
 	//Load the light circle image
 	circleImage.loadFromFile("assets/img/LightAura.png");
@@ -27,7 +27,7 @@ LightOverlay::LightOverlay(int rays, int radius, const sf::Vector2f& pos, const 
 	circleSprite.setScale(sf::Vector2f(radius*2.0f/circleTexture.getSize().x,
 							radius*2.0f/circleTexture.getSize().y));
 	circleSprite.setOrigin(circleTexture.getSize().x/2.0f, circleTexture.getSize().y/2.0f);
-	circleSprite.setPosition(radius, radius);
+	circleSprite.setPosition((float)radius, (float)radius);
 }
 
 void LightOverlay::SetPos(const sf::Vector2f& pos)
@@ -64,7 +64,7 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 		// (rather than slopes) crossing through the point defined by the light's
 		// position
 		float angle1 = 0;
-		float angle2 = 2*3.14159/(float)rays;
+		float angle2 = 2*PI/(float)rays;
 		sf::Vector2f point1, point2;
 		bool found1, found2;
 
@@ -77,8 +77,8 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 			//Get the relative position of the points we intersected at
 			sf::Vector2f relPoint1 = point1 - lightPos;
 			sf::Vector2f relPoint2 = point2 - lightPos;
-			float mag1 = sqrt(relPoint1.x*relPoint1.x + relPoint1.y*relPoint1.y);
-			float mag2 = sqrt(relPoint2.x*relPoint2.x + relPoint2.y*relPoint2.y);
+			float mag1 = magnitude(relPoint1);
+			float mag2 = magnitude(relPoint2);
 
 			//Allow the points to penetrate the walls a little bit
 			relPoint1 = relPoint1 * (mag1+8.0f)/mag1;
@@ -91,14 +91,16 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 			triangle.setPoint(1, sf::Vector2f(relPoint1.x, relPoint1.y));
 			triangle.setPoint(2, sf::Vector2f(relPoint2.x, relPoint2.y));
 			triangle.setFillColor(sf::Color(0, 0, 0, 0));
-			triangle.setPosition(radius, radius);
+			//The triangle's origin is (0, 0), where the light source is located, and
+			// (radius, radius) is where the light source is located in the texture
+			triangle.setPosition((float)radius, (float)radius);
 			triangleOverlay.draw(triangle, sf::BlendNone);
 
 			//Get the next point, preserving the current one for the next triangle
 			found1 = found2;
 			point1 = point2;
 			angle1 = angle2;
-			angle2 = 2.0f*3.14159/(float)rays * (i+1);
+			angle2 = 2.0f*PI/(float)rays * (i+1);
 			found2 = level.GetCollide(lightPos, angle2, point2);
 		}
 

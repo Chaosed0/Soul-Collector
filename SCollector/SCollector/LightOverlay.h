@@ -11,6 +11,9 @@
 
 #include <sstream>
 
+#include "Utility.h"
+
+
 class Level;
 
 class LightOverlay : public sf::Drawable
