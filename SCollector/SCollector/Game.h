@@ -47,6 +47,7 @@ private:
 	sf::View view;
 	LightOverlay playerLight;
 	LightOverlay lel;
+	LightOverlay lel2;
 	sf::RenderTexture lightOverlay;
 	sf::Sprite lightOverlaySprite;
 };

@@ -16,6 +16,7 @@ LightOverlay::LightOverlay(int rays, int radius, const sf::Vector2f& pos, const 
 	triangleOverlay.create(radius*2, radius*2);
 	triangleOverlaySprite.setTexture(triangleOverlay.getTexture());
 	triangleOverlaySprite.setOrigin(radius, radius);
+	triangleOverlaySprite.setPosition(radius, radius);
 	
 	circleImage.loadFromFile("assets/img/LightAura.png");
 	circleTexture.loadFromImage(circleImage);
@@ -23,6 +24,7 @@ LightOverlay::LightOverlay(int rays, int radius, const sf::Vector2f& pos, const 
 	circleSprite.setScale(sf::Vector2f(radius*2.0f/circleTexture.getSize().x,
 							radius*2.0f/circleTexture.getSize().y));
 	circleSprite.setOrigin(circleTexture.getSize().x/2.0f, circleTexture.getSize().y/2.0f);
+	circleSprite.setPosition(radius, radius);
 
 	font.loadFromFile("assets/fonts/LiberationMono-Regular.ttf");
 }
@@ -54,8 +56,8 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 		bool found1, found2;
 		float minDist;
 		sf::Vector2u imgSize = circleImage.getSize();
-		found1 = level.GetCollide(level.GetPlayer().GetPos(), angle1, point1);
-		found2 = level.GetCollide(level.GetPlayer().GetPos(), angle2, point2);
+		found1 = level.GetCollide(lightPos, angle1, point1);
+		found2 = level.GetCollide(lightPos, angle2, point2);
 
 		for(int i = 0; i <= rays; i++) {
 			sf::Vector2f relPoint1 = point1 - lightPos;
@@ -96,24 +98,23 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 			point1 = point2;
 			angle1 = angle2;
 			angle2 = 2.0f*3.14159/(float)rays * (i+1);
-			found2 = level.GetCollide(level.GetPlayer().GetPos(), angle2, point2);
+			found2 = level.GetCollide(lightPos, angle2, point2);
 		}
 
 		triangleOverlay.display();
 		triangleOverlaySprite.setTexture(triangleOverlay.getTexture());
+
+		compositeOverlay.clear();
+		compositeOverlay.draw(circleSprite, sf::BlendMode::BlendMultiply);
+		compositeOverlay.draw(triangleOverlaySprite, sf::BlendMode::BlendAdd);
+		for(int i = 0; i < circles.size(); i++)
+			compositeOverlay.draw(circles[i]);
+		compositeOverlay.display();
+		compositeOverlaySprite.setTexture(compositeOverlay.getTexture());
+
 		needsUpdate = false;
 	}
 
-	circleSprite.setPosition(radius, radius);
-	triangleOverlaySprite.setPosition(radius, radius);
-
-	compositeOverlay.clear();
-	compositeOverlay.draw(circleSprite, sf::BlendMode::BlendMultiply);
-	compositeOverlay.draw(triangleOverlaySprite, sf::BlendMode::BlendAdd);
-	for(int i = 0; i < circles.size(); i++)
-		compositeOverlay.draw(circles[i]);
-	compositeOverlay.display();
-	compositeOverlaySprite.setTexture(compositeOverlay.getTexture());
 	compositeOverlaySprite.setPosition(sf::Vector2f(lightPos.x - viewcorrection.x, lightPos.y - viewcorrection.y));
 }
 

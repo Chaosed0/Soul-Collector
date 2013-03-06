@@ -11,7 +11,8 @@ Game::Game()
 	, level("new.tmx")
 	, view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
 	, playerLight(128, 256, level.GetPlayer().GetPos(), view)
-	, lel(128, 256, level.GetPlayer().GetPos(), view)
+	, lel(64, 128, level.GetPlayer().GetPos(), view)
+	, lel2(64, 128, sf::Vector2f(800, 288), view)
 {
 	//Flag set to false when the game ends
 	isRunning = false;
@@ -187,6 +188,7 @@ void Game::Update()
 	playerLight.SetPos(playerPos);
 	playerLight.Update(level, view);
 	lel.Update(level, view);
+	lel2.Update(level, view);
 
 	//Update the entire overlay
 	lightOverlaySprite.setPosition(view.getCenter());
@@ -197,6 +199,7 @@ void Game::Render()
 	lightOverlay.clear();
 	lightOverlay.draw(playerLight, sf::BlendMultiply);
 	lightOverlay.draw(lel, sf::BlendMultiply);
+	lightOverlay.draw(lel2, sf::BlendMultiply);
 	lightOverlay.display();
 	lightOverlaySprite.setTexture(lightOverlay.getTexture());
 
