@@ -36,15 +36,23 @@ private:
 	/** Exits the game */
 	void Exit();
 
+	/** Width and height of the window */
 	const int winWidth, winHeight;
+	/** The window itself */
 	sf::RenderWindow window;
+	/** The menu manger */
 	MenuManager menus;
+
+	/** Flag set to true when the game is running */
 	bool isRunning;
 
+	/** The level object */
 	Level level;
 
-	//TEST
+	/** The camera */
 	sf::View view;
+
+	//TEST
 	LightOverlay playerLight;
 	LightOverlay lel;
 	LightOverlay lel2;

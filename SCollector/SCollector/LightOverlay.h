@@ -35,17 +35,21 @@ public:
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 
-	/** The image the circle gradient will be drawn to. */
+	/** The image of the circle gradient. */
 	sf::Image circleImage;
-	/** The texture that loads image. */
+	/** The texture that holds circleImage. */
 	sf::Texture circleTexture;
-	/** The sprite that loads texture, which is drawn to the screen */
+	/** The sprite that loads circleTexture, which is drawn to the screen */
 	sf::Sprite circleSprite;
 
+	/** The visibility portion of the lighting, consisting of triangles */
 	sf::RenderTexture triangleOverlay;
+	/** The sprite associated with triangleOverlay */
 	sf::Sprite triangleOverlaySprite;
 
+	/** The lighted area, composited from circleSprite and triangleOverlaySprite */
 	sf::RenderTexture compositeOverlay;
+	/** The sprite associated with compositeOverlay */
 	sf::Sprite compositeOverlaySprite;
 
 	/** Number of rays to use when updating the overlay. */
@@ -56,10 +60,6 @@ private:
 	sf::Vector2f lightPos;
 	/** Flag set to true when update needs to be run. */
 	bool needsUpdate;
-
-	std::vector<sf::CircleShape> circles;
-	std::vector<sf::Text> texts;
-	sf::Font font;
 };
 
 #endif
