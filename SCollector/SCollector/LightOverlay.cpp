@@ -3,6 +3,7 @@
 #include "Level.h"
 
 LightOverlay::LightOverlay(int rays, int radius, const sf::View& view)
+	: blackRect(view.getSize())
 {
 	this->rays = rays;
 	this->radius = radius;
@@ -11,22 +12,28 @@ LightOverlay::LightOverlay(int rays, int radius, const sf::View& view)
 	overlayTexture.create(view.getSize().x, view.getSize().y);
 	overlaySprite.setTexture(overlayTexture.getTexture());
 	overlaySprite.setOrigin(overlayTexture.getSize().x/2.0f, overlayTexture.getSize().y/2.0f);
+	
+	circleOverlay.create(view.getSize().x, view.getSize().y);
+	circleOverlaySprite.setTexture(circleOverlay.getTexture());
+	circleOverlaySprite.setPosition(0, 0);
 
-	circleImage.create(radius*2, radius*2, sf::Color());
+	circleImage.loadFromFile("assets/img/LightAura.png");
+	circleTexture.loadFromImage(circleImage);
+	circleSprite.setTexture(circleTexture);
+	circleSprite.setScale(sf::Vector2f(radius*2.0f/circleTexture.getSize().x,
+							radius*2.0f/circleTexture.getSize().y));
+	circleSprite.setOrigin(circleTexture.getSize().x/2.0f, circleTexture.getSize().y/2.0f);
 
-	circleSprite.setTexture(circleTexture.getTexture());
-	circleSprite.setOrigin(radius, radius);
-	blackRect.setSize(view.getSize());
 	blackRect.setFillColor(sf::Color());
+	blackRect.setPosition(0, 0);
 
 	font.loadFromFile("assets/fonts/LiberationMono-Regular.ttf");
 }
 
 void LightOverlay::Update(const Level& level, const sf::View& view)
 {
-
-	overlayTexture.clear(sf::Color(0,0,0,0));
-	overlayTexture.draw(blackRect);
+	overlayTexture.clear(sf::Color(0,0,0,255));
+	circleOverlay.clear(sf::Color(0,0,0,255));
 
 	circles.clear();
 	texts.clear();
@@ -55,7 +62,8 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 
 
 	sf::Vector2f viewcorrection(viewPos.x - viewSize.x/2, viewPos.y - viewSize.y/2);
-	for(int i = 1; i <= rays; i++) {
+
+	for(int i = 0; i <= rays; i++) {
 		/*circles.push_back(sf::CircleShape(2.0f));
 		circles.back().setPosition(point1);
 		std::stringstream sstream;
@@ -65,6 +73,20 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 
 		sf::Vector2f relPoint1 = point1 - playerPos;
 		sf::Vector2f relPoint2 = point2 - playerPos;
+
+		//Allow the points to penetrate the walls a little bit
+		/*if(abs(relPoint1.x) > abs(relPoint1.y)) {
+			relPoint1.x += relPoint1.x/abs(relPoint1.x) * 16;
+		} else {
+			relPoint1.y += relPoint1.y/abs(relPoint1.y) * 16;
+		}
+
+		if(abs(relPoint2.x) > abs(relPoint2.y)) {
+			relPoint2.x += relPoint2.x/abs(relPoint2.x) * 16;
+		} else {
+			relPoint2.y += relPoint2.y/abs(relPoint2.y) * 16;
+		}*/
+
 		sf::ConvexShape triangle;
 		triangle.setPointCount(3);
 		triangle.setPoint(0, sf::Vector2f(0.0f, 0.0f));
@@ -81,24 +103,12 @@ void LightOverlay::Update(const Level& level, const sf::View& view)
 		found2 = level.GetCollide(level.GetPlayer().GetPos(), angle2, point2);
 	}
 
-	//Note: Since the circle's being drawn to "view coordinates" instead of "global coordinates",
-	// we've got to correct the player's position if we want the circle to be drawn on top of
-	// the player
-	//Theory behind this bit is that view coordinates are just global coordinates translated;
-	// the amount of the translation is the distance from the global axes to the view axes
-	//Also, for some reason view coordinates have a reversed y-axis... ?_?
+	circleSprite.setPosition(sf::Vector2f(playerPos.x - viewcorrection.x, playerPos.y - viewcorrection.y));
+	//circleOverlay.draw(blackRect);
+	circleOverlay.draw(circleSprite, sf::BlendMode::BlendMultiply);
 
-	//printf("playerpos: (%g, %g), correction:(%g, %g)\n", playerPos.x, playerPos.y, correctpos.x, correctpos.y);
-
-	//Update the overlay rectangle to follow the view
-	//rect.setPosition(view.getCenter());
+	overlayTexture.draw(circleOverlaySprite, sf::BlendMode::BlendAdd);
 	overlaySprite.setPosition(view.getCenter());
-
-#ifdef LINUX
-	overlayTexture.draw(circleSprite, sf::RenderStates(sf::BlendNone));
-#else
-	//overlayTexture.draw(circleSprite, sf::RenderStates(sf::BlendMode::BlendNone));
-#endif
 }
 
 void LightOverlay::draw(sf::RenderTarget& target, sf::RenderStates state) const

@@ -34,11 +34,14 @@ private:
 	/** The image the circle gradient will be drawn to. */
 	sf::Image circleImage;
 	/** The texture that loads image. */
-	sf::RenderTexture circleTexture;
+	sf::Texture circleTexture;
 	/** The sprite that loads texture, which is drawn to the screen */
 	sf::Sprite circleSprite;
+	sf::Sprite circleSprite2;
 	/** Black rectangle */
 	sf::RectangleShape blackRect;
+	sf::RenderTexture circleOverlay;
+	sf::Sprite circleOverlaySprite;
 
 	/** The actual overlay */
 	sf::RenderTexture overlayTexture;
