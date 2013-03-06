@@ -19,7 +19,7 @@ Game::Game()
 
 	window.setView(view);
 
-	lightOverlay.create(view.getSize().x, view.getSize().y);
+	lightOverlay.create((unsigned int)view.getSize().x, (unsigned int)view.getSize().y);
 	lightOverlaySprite.setTexture(lightOverlay.getTexture());
 	lightOverlaySprite.setOrigin(view.getSize()/2.0f);
 }

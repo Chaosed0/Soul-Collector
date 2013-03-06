@@ -8,6 +8,7 @@
 #define __DEMON_H
 
 #include "Movable.h"
+#include "Utility.h"
 
 #define SPOT_RADIUS 50
 

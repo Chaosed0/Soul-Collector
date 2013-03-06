@@ -20,7 +20,7 @@ void Demon::Update(const Level& level)
 	//Check if the demon's been spotted by the player
 	sf::Vector2f playerPos = level.GetPlayer().GetPos();
 	sf::Vector2f relDist = playerPos - GetPos();
-	float dist = sqrt(relDist.x*relDist.x + relDist.y*relDist.y);
+	float dist = magnitude(relDist);
 	if(dist < SPOT_RADIUS) {
 		moveSpeed = 1.5f;
 		spotted = true;
@@ -99,16 +99,16 @@ void Demon::Update(const Level& level)
 		}
 
 		sprite.move(movement);
-		sprite.setRotation(360/(2*3.14159)*atan2f(movement.y, movement.x)+90);
+		sprite.setRotation(360/(2*PI)*atan2f(movement.y, movement.x)+90);
 	} else {
 		PlayAnim("idle");
 	}
 
 	if(!spotted && rand()%100 > 95) {
-		float angle = ((float)rand()/(float)RAND_MAX)*2*3.14159;
+		float angle = ((float)rand()/(float)RAND_MAX)*2*PI;
 		movement.x = moveSpeed*cos(angle);
 		movement.y = moveSpeed*sin(angle);
-		moving = rand()%2;
+		moving = (bool)(rand()%2);
 		//printf("New movement: (%g, %g)\n", movement.x, movement.y);
 	}
 }

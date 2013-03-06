@@ -108,8 +108,8 @@ void Player::Update(const Level& level)
 
 		//Correct diagonal movement so that player doesn't move faster
 		if(movement.x && movement.y) {
-			movement.x /= 1.414;
-			movement.y /= 1.414;
+			movement.x /= 1.414f;
+			movement.y /= 1.414f;
 		}
 		sprite.move(movement);
 

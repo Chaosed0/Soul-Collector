@@ -176,17 +176,16 @@ sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const
 
 bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {
-	const float pi = 3.14159;
 	while(angle < 0) {
-		angle += 2*pi;
+		angle += 2*PI;
 	}
 	float tanDir = tan(angle);
 	//printf("%g\n", tanDir);
 
 	//The first iteration is different from the others because we
 	// need to figure out how far away the first block is
-	sf::Vector2f nearestX(GetGlobalTile(pos).x*map.GetTileWidth(),
-		GetGlobalTile(pos).y*map.GetTileHeight());
+	sf::Vector2f nearestX((float)GetGlobalTile(pos).x*map.GetTileWidth(),
+		(float)GetGlobalTile(pos).y*map.GetTileHeight());
 	float distX = FLT_MAX, distY = FLT_MAX;
 	bool foundX = false, foundY = false;
 
@@ -194,10 +193,10 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 	//GetGlobalTile says tiles include their top-left edges; we have to
 	// fix that for certain lines
-	if(angle > pi/2.0f && angle < 3*pi/2.0f) {
+	if(angle > PI/2.0f && angle < 3*PI/2.0f) {
 		nearestX.x+=31;
 	} 
-	if(angle > pi && angle < 2*pi) {
+	if(angle > PI && angle < 2*PI) {
 		nearestX.y+=31;
 	}
 
@@ -206,12 +205,12 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 		sf::Vector2i globTile = GetGlobalTile(nearestX);
 		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0) {
 			sf::Vector2f relDist = pos - nearestX;
-			distX = sqrt(relDist.x*relDist.x + relDist.y*relDist.y);
+			distX = magnitude(relDist);
 			foundX = true;
 			break;
 		}
 
-		if(!(angle > pi/2.0f && angle < 3*pi/2.0f)) {
+		if(!(angle > PI/2.0f && angle < 3*PI/2.0f)) {
 			nearestX.x += map.GetTileWidth();
 		} else {
 			nearestX.x -= map.GetTileWidth();
@@ -220,15 +219,15 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 		//printf("Nearest: (%g, %g)\n", nearest.x, nearest.y);
 	}
 
-	sf::Vector2f nearestY(GetGlobalTile(pos).x*map.GetTileWidth(),
-		GetGlobalTile(pos).y*map.GetTileHeight());
+	sf::Vector2f nearestY((float)GetGlobalTile(pos).x*map.GetTileWidth(),
+		(float)GetGlobalTile(pos).y*map.GetTileHeight());
 
 	//GetGlobalTile says tiles include their top-left edges; we have to
 	// fix that for certain lines
-	if(angle > pi/2.0f && angle < 3*pi/2.0f) {
+	if(angle > PI/2.0f && angle < 3*PI/2.0f) {
 		nearestY.x += 31;
 	} 
-	if(angle > pi && angle < 2*pi) {
+	if(angle > PI && angle < 2*PI) {
 		nearestY.y += 31;
 	}
 
@@ -239,12 +238,12 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 		sf::Vector2i globTile = GetGlobalTile(nearestY);
 		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0) {
 			sf::Vector2f relDist = pos - nearestY;
-			distY = sqrt(relDist.x*relDist.x + relDist.y*relDist.y);
+			distY = magnitude(relDist);
 			foundY = true;
 			break;
 		}
 
-		if(angle > 0.0f && angle < pi) {
+		if(angle > 0.0f && angle < PI) {
 			nearestY.y += map.GetTileHeight();
 		} else {
 			nearestY.y -= map.GetTileHeight();

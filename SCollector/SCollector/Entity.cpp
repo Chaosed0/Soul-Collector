@@ -32,10 +32,10 @@ bool Entity::IsColliding(const Entity& entity) const
 	// on their component axes (x and y)
 	sf::IntRect entCollisionBox  = entity.collisionBox;
 	sf::IntRect thisCollisionBox = collisionBox;
-	entCollisionBox.left = entity.GetPos().x;
-	entCollisionBox.top = entity.GetPos().y;
-	thisCollisionBox.left = GetPos().x;
-	thisCollisionBox.top = GetPos().y;
+	entCollisionBox.left = (int)entity.GetPos().x;
+	entCollisionBox.top = (int)entity.GetPos().y;
+	thisCollisionBox.left = (int)GetPos().x;
+	thisCollisionBox.top = (int)GetPos().y;
 
 	//Left side of the other box in this one
 	bool leftCollide =
