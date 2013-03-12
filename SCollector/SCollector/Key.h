@@ -16,11 +16,26 @@ class Level;
 class Key : public Activatable 
 {
 public:
-	Key(sf::Vector2f pos);
-	virtual void Update(const Level& level);
-	void pickup(const Player& player);
+	/**
+	 * Default constructor.
+	 * \param pos The position of the key within the level.
+	 */
+	Key(const sf::Vector2f& pos);
 
+	/**
+	 * Update function.
+	 * \param level The level in which the key is located.
+	 */
+	virtual void Update(const Level& level);
+
+	/**
+	 * Gets the name of the door the key opens.
+	 * \return The name of the door that the key should open.
+	 */
+	std::string GetDoorName();
 private:
+	/** The name of the door this key opens. */
+	std::string doorName;
 };
 
 #endif

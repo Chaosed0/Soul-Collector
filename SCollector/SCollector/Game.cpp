@@ -107,17 +107,20 @@ void Game::Event()
 				//  key is held down! Yes, there is a property on the window that allows keys to repeat
 				//  their presses if held down that I turned off earlier, but I did that because there's
 				//  a delay between getting the press and actually determining that the key is held down.
-				case sf::Keyboard::Up :
+				case sf::Keyboard::W :
 					level.GetPlayer().MoveUp(true);
 					break;
-				case sf::Keyboard::Down :
+				case sf::Keyboard::S :
 					level.GetPlayer().MoveDown(true);
 					break;
-				case sf::Keyboard::Left :
+				case sf::Keyboard::A :
 					level.GetPlayer().MoveLeft(true);
 					break;
-				case sf::Keyboard::Right :
+				case sf::Keyboard::D :
 					level.GetPlayer().MoveRight(true);
+					break;
+				case sf::Keyboard::Space :
+					level.DoActivate();
 					break;
 				case sf::Keyboard::Escape :
 					menus.SetVisible(true);
@@ -128,16 +131,16 @@ void Game::Event()
 				break;
 			case sf::Event::KeyReleased :
 				switch(anEvent.key.code) {
-				case sf::Keyboard::Up :
+				case sf::Keyboard::W :
 					level.GetPlayer().MoveUp(false);
 					break;
-				case sf::Keyboard::Down :
+				case sf::Keyboard::S :
 					level.GetPlayer().MoveDown(false);
 					break;
-				case sf::Keyboard::Left :
+				case sf::Keyboard::A :
 					level.GetPlayer().MoveLeft(false);
 					break;
-				case sf::Keyboard::Right :
+				case sf::Keyboard::D :
 					level.GetPlayer().MoveRight(false);
 					break;
 				default:
