@@ -18,7 +18,10 @@
 
 #include "Player.h"
 #include "Utility.h"
-class Entity;
+
+#include "Entity.h"
+#include "Activatable.h"
+#include "Movable.h"
 
 #define BASEMAPDIR "assets/maps/"
 
@@ -100,6 +103,12 @@ public:
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
 	bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
+
+	/**
+	 * Attempts to activate an object, if the player is colliding with one.
+	 * \return True if some object was activated, false if not.
+	 */
+	bool DoActivate();
 private:
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
@@ -169,8 +178,10 @@ private:
 	 *  separate entity for clarity sake
 	 */
 	Player player;
-	/** List of entities in the level */
-	std::vector<Entity*> entityList;
+
+	/** List(s) of entities in the level */
+	std::vector<Activatable*> activatables;
+	std::vector<Movable*> enemies;
 };
 
 #endif

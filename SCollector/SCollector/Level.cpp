@@ -5,7 +5,6 @@
  */
 
 #include "Level.h"
-#include "Entity.h"
 #include "Player.h"
 #include "Key.h"
 #include "Demon.h"
@@ -114,11 +113,16 @@ bool Level::Parse(std::string mapName)
 				//If we've already found a spawnpoint, just ignore this one
 			}
 			else if(type.compare("Key") == 0) {
-				entityList.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
-					object->GetY() - object->GetHeight()/2.0f)));
+				/*std::string door = object->GetProperties().GetLiteralProperty("Door");
+				if(door.empty()) {
+					fprintf(stderr, "WARNING: Key has no associated door! Ignored...");
+				} else {*/
+					activatables.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
+						object->GetY() - object->GetHeight()/2.0f)));
+				//}
 			}
 			else if(type.compare("Demon") == 0) {
-				entityList.push_back(new Demon(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
+				enemies.push_back(new Demon(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
 					object->GetY() - object->GetHeight()/2.0f)));
 			}
 			//Here, we should do keys, traps, etc...
@@ -343,6 +347,21 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	return false;
 }
 
+bool Level::DoActivate()
+{
+	bool didActivate = false;
+
+	for(unsigned int i = 0; i < activatables.size(); i++) {
+		if(activatables[i]->IsColliding(player)) {
+			activatables[i]->Activate();
+			printf("Activated activatable %d\n", i);
+			didActivate = true;
+		}
+	}
+	
+	return didActivate;
+}
+
 sf::Vector2i Level::GetSize() const
 {
 	return sf::Vector2i(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
@@ -361,10 +380,14 @@ const Player& Level::GetPlayer() const
 void Level::Update()
 {
 	player.Update(*this);
-	for(unsigned int i = 0; i < entityList.size(); i++) {
-		entityList[i]->Update(*this);
-		if(player.IsColliding(*entityList[i]) || entityList[i]->IsColliding(player)) {
-			printf("Player colliding with entity %d\n", i);
+	for(unsigned int i = 0; i < activatables.size(); i++) {
+		activatables[i]->Update(*this);
+	}
+
+	for(unsigned int i = 0; i < enemies.size(); i++) {
+		enemies[i]->Update(*this);
+		if(player.IsColliding(*enemies[i]) || enemies[i]->IsColliding(player)) {
+			printf("Player colliding with enemy %d\n", i);
 		}
 	}
 }
@@ -414,8 +437,11 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	}
 
 	//Draw all the entities on top of the tiles
-	for(unsigned int i = 0; i < entityList.size(); i++) {
-		target.draw(*entityList[i], state);
+	for(unsigned int i = 0; i < activatables.size(); i++) {
+		target.draw(*activatables[i], state);
+	}
+	for(unsigned int i = 0; i < enemies.size(); i++) {
+		target.draw(*enemies[i], state);
 	}
 
 	//Draw the player on top of everything
