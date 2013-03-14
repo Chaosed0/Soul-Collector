@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "Player.h"
 #include "Key.h"
+#include "Torch.h"
 #include "Demon.h"
 
 Level::Level()
@@ -173,6 +174,12 @@ bool Level::Parse(std::string mapName)
 					activatables.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
 						object->GetY() - object->GetHeight()/2.0f)));
 				//}
+			}
+			else if(type.compare("Torch") == 0) {
+				activatables.push_back(new Torch(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
+					object->GetY() - object->GetHeight()/2.0f)));
+				//This is a bad thing and I feel bad for doing it
+				((Torch*)activatables.back())->AddLight(*this);
 			}
 			else if(type.compare("Demon") == 0) {
 				enemies.push_back(new Demon(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,

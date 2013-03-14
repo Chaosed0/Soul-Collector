@@ -22,6 +22,7 @@
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +36,7 @@
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Torch.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
