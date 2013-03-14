@@ -1,0 +1,8 @@
+Unit tests
+
+Player movement test
+1. Open Player.cpp. Scroll down to Player::Update and place a breakpoint at the start of the "if(moveUp)" block of code.
+2. Run the game while debugging. Press the "start" button.
+3. Press the 'w' key.
+4. Step through the code until the line "movement.y += std::max(-moveSpeed, (float)nearest);" is encountered.
+5. Step once more. Verify that the value of "movement.y" has changed to "(0.0, -2.0)".

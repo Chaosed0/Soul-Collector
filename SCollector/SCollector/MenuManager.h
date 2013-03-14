@@ -64,7 +64,6 @@ private:
 	void gotoHelp();
 	void gotoMain();
 	void playGame();
-	void playSound();
 
 	/** Flag set to true when the active menu is visible */
 	bool visible;
@@ -81,6 +80,10 @@ private:
 	sfg::Button::Ptr settingsButton;
 	sfg::Button::Ptr helpButton;
 	sfg::Button::Ptr exitButton;
+	sfg::Box::Ptr selection;
+
+	// --- No Selection
+	sfg::Box::Ptr noSelection;
 
 	// --- Settings
 	sfg::Box::Ptr settingsMenu;

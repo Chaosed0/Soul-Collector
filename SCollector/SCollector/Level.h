@@ -9,13 +9,19 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <limits.h>
+
 #include <cstdio>
 #include <cmath>
 
 #include "Tmx.h"
 
 #include "Player.h"
-class Entity;
+#include "Utility.h"
+
+#include "Entity.h"
+#include "Activatable.h"
+#include "Movable.h"
 
 #define BASEMAPDIR "assets/maps/"
 
@@ -62,11 +68,19 @@ public:
 	Player& GetPlayer(); 
 
 	/**
+	 * Get a const reference to the player.
+	 * \return A const reference to the player.
+	 */
+	const Player& GetPlayer() const;
+
+	/**
 	 * Gets the nearest colliding pixel in a certain diretcion.
 	 *
-	 * Takes a line and a direction and returns the nearest pixel in map coordinates
+	 * Takes an axis direction and returns the nearest pixel in map coordinates
 	 *  that is marked as colliding. If this function returns false, the value of
 	 *  nearest should be considered invalid.
+	 * NOTE: Changed this function to only return a nearest intersecting point if
+	 *  there's one in the adjacent map tile. Otherwise, it just returns false.
 	 * \param pos The starting position of the line.
 	 * \param horiz True if the line is horizontal, false if vertical.
 	 * \param stepPos True if the line goes in the positive direction, false for negative.
@@ -74,6 +88,33 @@ public:
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
 	bool GetCollide(const sf::Vector2f& pos, const bool horiz, const bool stepPos, int& nearest) const;
+
+	/**
+	 * Gets the nearest colliding pixel in a certain diretcion.
+	 *
+	 * Takes a direction and returns the nearest pixel in map coordinates
+	 *  that is marked as colliding. If this function returns false, the value of
+	 *  nearest should be considered invalid.
+	 * NOTE: This function, unlike its other overload, returns the nearest intersecting
+	 *  point no matter where it is.
+	 * \param pos The starting position of the line.
+	 * \param angle The angle of the ray we're shooting, in radians
+	 * \param nearest The coordinates of the nearest colliding pixel.
+	 * \return True if there is a collision in the line's direction, false otherwise.
+	 */
+	bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
+
+	/**
+	 * Attempts to activate an object, if the player is colliding with one.
+	 * \return True if some object was activated, false if not.
+	 */
+	bool DoActivate();
+
+	/**
+	 * Adds a light to the level for drawing.
+	 * \param light The light to be added.
+	 */
+	void AddLight(const LightSource& light);
 private:
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
@@ -91,6 +132,14 @@ private:
 	 * \return The tile corresponding to that position.
 	 */
 	sf::Vector2i GetGlobalTile(const sf::Vector2f& pos) const;
+	/**
+	 * This tile includes the bottom right of the tile instead of
+	 *  the top left.
+	 *
+	 * \param pos The position to translate to a tile.
+	 * \return The tile corresponding to that position.
+	 */
+	sf::Vector2i GetGlobalTileBR(const sf::Vector2f& pos) const;
 
 	/**
 	 * Gets the number of pixels within the tile that the position is.
@@ -98,7 +147,7 @@ private:
 	 * \param pos The position to translate to a tile.
 	 * \return The pixel within the tile of the position.
 	 */
-	sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const;
+	sf::Vector2i GetPixel(const sf::Vector2f& pos) const;
 
 	/**
 	 * Gets a tile coordinate local to a tileset from a global layer tile.
@@ -129,14 +178,29 @@ private:
 	/** Spawn point for the player */
 	sf::Vector2f spawn;
 
+	/** The tilemap texture */
+	sf::RenderTexture tilemapTexture;
+	/** The tilemap sprite */
+	sf::Sprite tilemapSprite;
+
+	/** The light overlay texture */
+	sf::RenderTexture lightTexture;
+	/** The light overlay sprite */
+	sf::Sprite lightSprite;
+
 	/**
 	 * The player himself 
 	 * He's just another entity, but it's worth keeping him around as a
 	 *  separate entity for clarity sake
 	 */
 	Player player;
-	/** List of entities in the level */
-	std::vector<Entity*> entityList;
+
+	/** List(s) of entities in the level */
+	std::vector<Activatable*> activatables;
+	std::vector<Movable*> enemies;
+
+	/** A list of lights in the level, only to be used for drawing */
+	std::vector<const LightSource*> lights;
 };
 
 #endif

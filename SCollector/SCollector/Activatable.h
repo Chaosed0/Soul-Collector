@@ -4,6 +4,9 @@
  * \date February 28 2013
  */
 
+#ifndef __ACTIVATABLE_H
+#define __ACTIVATABLE_H
+
 #include "Entity.h"
 
 class Activatable : public Entity
@@ -20,3 +23,5 @@ protected:
 	bool isFinished;
 private:
 };
+
+#endif
