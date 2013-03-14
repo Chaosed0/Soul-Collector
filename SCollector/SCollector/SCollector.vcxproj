@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Activatable.cpp" />
     <ClCompile Include="CircleMove.cpp" />
     <ClCompile Include="Demon.cpp" />
     <ClCompile Include="Entity.cpp" />
