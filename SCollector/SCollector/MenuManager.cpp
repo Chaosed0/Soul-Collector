@@ -16,6 +16,8 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	settingsButton = sfg::Button::Create("Settings");
 	settingsButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoSettings, this);
 	exitButton = sfg::Button::Create("Exit");
+	noSelection = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	selection = noSelection;
 
 	mainLayout = sfg::Table::Create();
 	mainLayout->Attach(mainLabel, 
@@ -43,6 +45,11 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 		sfg::Table::FILL | sfg::Table::EXPAND, 
 		sfg::Table::FILL | sfg::Table::EXPAND, 
 		sf::Vector2f(10.f,10.f));
+	mainLayout->Attach(selection,
+		sf::Rect<sf::Uint32>(1,5,2,4),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
 
 	menus[0]->Add(mainLayout);
 
@@ -51,7 +58,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	settingstoMain = sfg::Button::Create("Return");
 	settingstoMain->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
 	settingsMenu->Pack(settingsLabel, false, false);
-	settingsMenu->Pack(settingstoMain, false, false);
+	settingsMenu->Pack(settingstoMain);
 	menus[1]->Add(settingsMenu);
 	
 	helpMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
@@ -59,7 +66,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	helptoMain = sfg::Button::Create("Return");
 	helptoMain->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
 	helpMenu->Pack(helpLabel, false, false);
-	helpMenu->Pack(helptoMain, false, false);
+	helpMenu->Pack(helptoMain);
 	menus[2]->Add(helpMenu);
 
 	for(unsigned int i = 0; i < menus.size(); i++)
@@ -108,25 +115,44 @@ void MenuManager::SetActiveMenu(sfg::Window::Ptr& window)
 
 void MenuManager::gotoSettings()
 {
-	SetActiveMenu(menus[1]);
+	curWindow->Show(false);
+	mainLayout->Remove(selection);
+	selection = settingsMenu;
+	mainLayout->Attach(selection,
+		sf::Rect<sf::Uint32>(1,5,2,4),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	curWindow->Show(true);
 }
 
 void MenuManager::gotoHelp()
 {
-	SetActiveMenu(menus[2]);
+	curWindow->Show(false);
+	mainLayout->Remove(selection);
+	selection = helpMenu;
+	mainLayout->Attach(selection,
+		sf::Rect<sf::Uint32>(1,5,2,4),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	curWindow->Show(true);
 }
 
 void MenuManager::gotoMain()
 {
-	SetActiveMenu(menus[0]);
+	curWindow->Show(false);
+	mainLayout->Remove(selection);
+	selection = noSelection;
+	mainLayout->Attach(selection,
+		sf::Rect<sf::Uint32>(1,5,2,4),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	curWindow->Show(true);
 }
 
 void MenuManager::playGame()
 {
 	SetVisible(false);
-}
-
-void MenuManager::playSound()
-{
-
 }
