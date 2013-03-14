@@ -26,6 +26,59 @@ Level::Level(std::string mapName)
 
 	Parse(mapName);
 
+	//Now that we've got the map, draw it to a texture
+	//Create the texture and attach the sprite to it
+	tilemapTexture.create(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
+	//Now draw to the texture
+	for(int i = 0; i < map.GetNumLayers(); i++)
+	{
+		const Tmx::Layer *layer = map.GetLayer(i);
+
+		//Render tiles of the layer
+		for(int y = 0; y < layer->GetHeight(); y++)
+		{
+			for(int x = 0; x < layer->GetWidth(); x++)
+			{
+				//If there is no tile on this location in the map, GetTileTilesetIndex()
+				// returns -1, so just do nothing
+				int tilesetIdx = layer->GetTileTilesetIndex(x, y);
+				//printf("tilesetIdx: %d\n", tilesetIdx);
+				if(tilesetIdx >= 0)
+				{
+					//Otherwise, get the sprite representing that tileset
+					//const Tmx::Tileset *tileset = map.GetTileset(tilesetIdx);
+
+					//Map the tile index to a coordinate in the tileset
+					//unsigned int tileIdx = layer->GetTileId(x, y);
+					sf::Vector2i locTile = GetLocalTile(layer, sf::Vector2i(x, y));
+
+					if(locTile.x >= 0 && locTile.y >= 0)
+					{
+						//Get the part of the sprite corresponding to the tile
+						sprTilesets[tilesetIdx].setTextureRect(sf::IntRect(locTile.x, locTile.y, map.GetTileWidth(), map.GetTileHeight()));
+						//Set the tile's position to the correct place
+						sprTilesets[tilesetIdx].setPosition((float)x*map.GetTileWidth(), (float)y*map.GetTileHeight());
+
+						//Draw that tile
+						tilemapTexture.draw(sprTilesets[tilesetIdx]);
+					}
+				}
+			}
+		}
+	}
+	//We're finished drawing to it - let SFML finalize the texture
+	tilemapTexture.display();
+	tilemapSprite.setTexture(tilemapTexture.getTexture());
+
+	//Create the light overlay texture and sprite
+	lightTexture.create(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
+	lightTexture.clear();
+	lightTexture.display();
+	lightSprite.setTexture(lightTexture.getTexture());
+	//Add the player's light
+	player.AddLight(*this);
+
+	//Set the player's position to the spawn
 	player.SetPos(spawn);
 }
 
@@ -362,6 +415,11 @@ bool Level::DoActivate()
 	return didActivate;
 }
 
+void Level::AddLight(const LightSource& light)
+{
+	lights.push_back(&light);
+}
+
 sf::Vector2i Level::GetSize() const
 {
 	return sf::Vector2i(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
@@ -390,51 +448,20 @@ void Level::Update()
 			printf("Player colliding with enemy %d\n", i);
 		}
 	}
+
+	//The owners of the lights should take care of updating them, we're just
+	// going to draw them to the overlay texture
+	lightTexture.clear(sf::Color());
+	for(unsigned int i = 0; i < lights.size(); i++) {
+		lightTexture.draw(*lights[i], sf::BlendMultiply);
+	}
+	lightTexture.display();
 }
 
-//Something to think about: Later, this should get passed the view so that
-// we can cull tiles that we don't need
 void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
-	std::vector<sf::Sprite> sprTilesetsConst = sprTilesets;
-
-	//Render the layers of the map
-	for(int i = 0; i < map.GetNumLayers(); i++)
-	{
-		const Tmx::Layer *layer = map.GetLayer(i);
-
-		//Render tiles of the layer
-		for(int y = 0; y < layer->GetHeight(); y++)
-		{
-			for(int x = 0; x < layer->GetWidth(); x++)
-			{
-				//If there is no tile on this location in the map, GetTileTilesetIndex()
-				// returns -1, so just do nothing
-				int tilesetIdx = layer->GetTileTilesetIndex(x, y);
-				//printf("tilesetIdx: %d\n", tilesetIdx);
-				if(tilesetIdx >= 0)
-				{
-					//Otherwise, get the sprite representing that tileset
-					//const Tmx::Tileset *tileset = map.GetTileset(tilesetIdx);
-
-					//Map the tile index to a coordinate in the tileset
-					//unsigned int tileIdx = layer->GetTileId(x, y);
-					sf::Vector2i locTile = GetLocalTile(layer, sf::Vector2i(x, y));
-
-					if(locTile.x >= 0 && locTile.y >= 0)
-					{
-						//Get the part of the sprite corresponding to the tile
-						sprTilesetsConst[tilesetIdx].setTextureRect(sf::IntRect(locTile.x, locTile.y, map.GetTileWidth(), map.GetTileHeight()));
-						//Set the tile's position to the correct place
-						sprTilesetsConst[tilesetIdx].setPosition((float)x*map.GetTileWidth(), (float)y*map.GetTileHeight());
-
-						//Draw that tile
-						target.draw(sprTilesetsConst[tilesetIdx], state);
-					}
-				}
-			}
-		}
-	}
+	//Draw the tilemap
+	target.draw(tilemapSprite, state);
 
 	//Draw all the entities on top of the tiles
 	for(unsigned int i = 0; i < activatables.size(); i++) {
@@ -444,6 +471,9 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 		target.draw(*enemies[i], state);
 	}
 
-	//Draw the player on top of everything
+	//Draw the player
 	target.draw(player, state);
+
+	//Draw the light overlay on top of everything else
+	target.draw(lightSprite, state);
 }

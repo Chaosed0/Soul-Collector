@@ -12,6 +12,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Movable.h"
+#include "LightSource.h"
 class Level;
 
 class Player : public Movable 
@@ -51,6 +52,12 @@ public:
 	void MoveDown(bool start);
 
 	/**
+	 * Adds the player's light to the level so it can be drawn.
+	 * \param level The level.
+	 */
+	void AddLight(Level& level);
+
+	/**
 	 * Updates the player's position.
 	 * This function should be called once per frame.
 	 */
@@ -58,11 +65,11 @@ public:
 
 //Private attributes; visible only within this class
 private:
-	/** Initialization procedures that are shared between the constructors of the player */
-	void Init(sf::Vector2f pos);
-
 	/** Flags set to true when the player should move in the corresponding direction */
 	bool moveLeft, moveRight, moveUp, moveDown;
+
+	/** Player's light source */
+	LightSource lighter;
 };
 
 #endif

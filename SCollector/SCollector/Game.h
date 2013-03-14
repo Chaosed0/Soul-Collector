@@ -12,7 +12,6 @@
 #include "MenuManager.h"
 #include "Level.h"
 #include "HUD.h"
-#include "LightOverlay.h"
 
 class Game
 {
@@ -51,12 +50,6 @@ private:
 
 	/** The camera */
 	sf::View view;
-
-	//TEST
-	LightOverlay playerLight;
-	LightOverlay lel;
-	sf::RenderTexture lightOverlay;
-	sf::Sprite lightOverlaySprite;
 };
 
 #endif

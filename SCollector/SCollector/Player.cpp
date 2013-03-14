@@ -5,11 +5,7 @@
 
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
-{
-	Init(pos);
-}
-
-void Player::Init(sf::Vector2f pos)
+	, lighter(128, 256, sf::Color(255, 0, 0, 255), pos)
 {
 	//When the player starts, he isn't moving anywhere
 	moveLeft = moveRight = moveUp = moveDown = false;
@@ -21,6 +17,13 @@ void Player::Init(sf::Vector2f pos)
 	//Initialize animations (maybe offload some of this data to a text file
 	// or something?)
 	AddAnimSet("walk", 1, 0, true);
+
+	lighter.Toggle();
+}
+
+void Player::AddLight(Level& level)
+{
+	level.AddLight(lighter);
 }
 
 void Player::MoveLeft(bool start)
@@ -124,4 +127,8 @@ void Player::Update(const Level& level)
 	}
 	else
 		PlayAnim("idle");
+
+	//Update the light
+	lighter.SetPos(GetPos());
+	lighter.Update(level);
 }

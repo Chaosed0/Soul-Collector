@@ -45,10 +45,10 @@
     <ClCompile Include="Demon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LightOverlay.cpp">
+    <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utility.cpp">
+    <ClCompile Include="LightSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,10 +80,10 @@
     <ClInclude Include="Movable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LightOverlay.h">
+    <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utility.h">
+    <ClInclude Include="LightSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

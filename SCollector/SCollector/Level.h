@@ -109,6 +109,12 @@ public:
 	 * \return True if some object was activated, false if not.
 	 */
 	bool DoActivate();
+
+	/**
+	 * Adds a light to the level for drawing.
+	 * \param light The light to be added.
+	 */
+	void AddLight(const LightSource& light);
 private:
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
@@ -172,6 +178,16 @@ private:
 	/** Spawn point for the player */
 	sf::Vector2f spawn;
 
+	/** The tilemap texture */
+	sf::RenderTexture tilemapTexture;
+	/** The tilemap sprite */
+	sf::Sprite tilemapSprite;
+
+	/** The light overlay texture */
+	sf::RenderTexture lightTexture;
+	/** The light overlay sprite */
+	sf::Sprite lightSprite;
+
 	/**
 	 * The player himself 
 	 * He's just another entity, but it's worth keeping him around as a
@@ -182,6 +198,9 @@ private:
 	/** List(s) of entities in the level */
 	std::vector<Activatable*> activatables;
 	std::vector<Movable*> enemies;
+
+	/** A list of lights in the level, only to be used for drawing */
+	std::vector<const LightSource*> lights;
 };
 
 #endif
