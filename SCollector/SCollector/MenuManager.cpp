@@ -4,8 +4,6 @@
 MenuManager::MenuManager(int winWidth, int winHeight)
 {
 	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
-	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
-	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
 
 	mainMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
 	mainLabel = sfg::Label::Create("Soul Collector");
@@ -55,19 +53,22 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 
 	settingsMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
 	settingsLabel = sfg::Label::Create("Settings");
-	settingstoMain = sfg::Button::Create("Return");
-	settingstoMain->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
 	settingsMenu->Pack(settingsLabel, false, false);
-	settingsMenu->Pack(settingstoMain);
-	menus[1]->Add(settingsMenu);
 	
-	helpMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	helpMenu = sfg::Table::Create();
 	helpLabel = sfg::Label::Create("Help");
-	helptoMain = sfg::Button::Create("Return");
-	helptoMain->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
-	helpMenu->Pack(helpLabel, false, false);
-	helpMenu->Pack(helptoMain);
-	menus[2]->Add(helpMenu);
+	goalLabel = sfg::Label::Create("Goal");
+	controlsLabel = sfg::Label::Create("Controls");
+	timeLabel = sfg::Label::Create("Time is Running Out");
+	goalBody = sfg::Label::Create("");
+	timeBody = sfg::Label::Create("");
+	upKey = sfg::Button::Create("W");
+	downKey = sfg::Button::Create("S");
+	leftKey = sfg::Button::Create("A");
+	rightKey = sfg::Button::Create("D");
+	actKey = sfg::Button::Create("Space");
+	moveLabel = sfg::Label::Create("Move");
+	actLabel = sfg::Label::Create("Action/Attack");
 
 	for(unsigned int i = 0; i < menus.size(); i++)
 		menus[i]->SetRequisition(sf::Vector2f((float)winWidth, (float)winHeight));
@@ -76,8 +77,6 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 		desktop.Add(menus[i]);
 
 	curWindow = menus[0];
-	for(unsigned int i = 1; i < menus.size(); i++)
-		menus[i]->Show(false);
 
 	visible = true;
 }
@@ -124,6 +123,8 @@ void MenuManager::gotoSettings()
 		sfg::Table::FILL | sfg::Table::EXPAND,
 		sf::Vector2f(10.f,10.f));
 	curWindow->Show(true);
+
+	printf("Go to Settings\n");
 }
 
 void MenuManager::gotoHelp()
@@ -137,19 +138,8 @@ void MenuManager::gotoHelp()
 		sfg::Table::FILL | sfg::Table::EXPAND,
 		sf::Vector2f(10.f,10.f));
 	curWindow->Show(true);
-}
 
-void MenuManager::gotoMain()
-{
-	curWindow->Show(false);
-	mainLayout->Remove(selection);
-	selection = noSelection;
-	mainLayout->Attach(selection,
-		sf::Rect<sf::Uint32>(1,5,2,4),
-		sfg::Table::FILL | sfg::Table::EXPAND,
-		sfg::Table::FILL | sfg::Table::EXPAND,
-		sf::Vector2f(10.f,10.f));
-	curWindow->Show(true);
+	printf("Go to Help\n");
 }
 
 void MenuManager::playGame()
