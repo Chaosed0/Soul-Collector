@@ -11,10 +11,11 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Entity.h"
+#include "Movable.h"
+#include "LightSource.h"
 class Level;
 
-class Player : public Entity
+class Player : public Movable 
 {
 //Public attributes; visible to everyone
 public:
@@ -23,7 +24,7 @@ public:
 	 * Initializes the player with no graphical component whatsoever - Make sure to
 	 *  call LoadTexture() before drawing the player!
 	 */
-	Player(sf::Vector2f pos);
+	Player(const sf::Vector2f& pos);
 
 	/**
 	 * Starts or stops the player moving left.
@@ -51,6 +52,12 @@ public:
 	void MoveDown(bool start);
 
 	/**
+	 * Adds the player's light to the level so it can be drawn.
+	 * \param level The level.
+	 */
+	void AddLight(Level& level);
+
+	/**
 	 * Updates the player's position.
 	 * This function should be called once per frame.
 	 */
@@ -58,14 +65,11 @@ public:
 
 //Private attributes; visible only within this class
 private:
-	/** Initialization procedures that are shared between the constructors of the player */
-	void Init(sf::Vector2f pos);
-
 	/** Flags set to true when the player should move in the corresponding direction */
 	bool moveLeft, moveRight, moveUp, moveDown;
 
-	/** Movement speed of the player */
-	float moveSpeed;
+	/** Player's light source */
+	LightSource lighter;
 };
 
 #endif

@@ -26,16 +26,16 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	sprite.setTextureRect(animBox);
 }
 
-bool Entity::IsColliding(const Entity& entity)
+bool Entity::IsColliding(const Entity& entity) const
 {
 	//Separating Axis Theorem: Two boxes are colliding if and only if they are colliding
 	// on their component axes (x and y)
 	sf::IntRect entCollisionBox  = entity.collisionBox;
 	sf::IntRect thisCollisionBox = collisionBox;
-	entCollisionBox.left = entity.GetPos().x;
-	entCollisionBox.top = entity.GetPos().y;
-	thisCollisionBox.left = GetPos().x;
-	thisCollisionBox.top = GetPos().y;
+	entCollisionBox.left = (int)entity.GetPos().x;
+	entCollisionBox.top = (int)entity.GetPos().y;
+	thisCollisionBox.left = (int)GetPos().x;
+	thisCollisionBox.top = (int)GetPos().y;
 
 	//Left side of the other box in this one
 	bool leftCollide =

@@ -57,6 +57,8 @@ int main(int argc, char* argv[])
 		}
 
 		window.draw(play, sf::RenderStates());
+		play.move(10,15);
+		window.draw(play, sf::RenderStates());
 		//Render things using window.draw()
 		window.display();
 

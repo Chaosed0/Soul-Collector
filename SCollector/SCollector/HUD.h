@@ -1,5 +1,7 @@
-#include <SFML/Graphics.hpp>
+#ifndef HUD_H
+#define HUD_H
 
+#include <SFML/Graphics.hpp>
 #include "HudObject.h"
 
 class HUD:public sf::Drawable
@@ -16,3 +18,5 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
+
+#endif

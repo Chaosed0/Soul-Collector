@@ -9,7 +9,9 @@ class player: public sf::Drawable
 public:
 	player(string imageLocation);
 	~player(void);
-	void move();
+	void move(float offset_x, float offset_y);
+	void faster();
+	void slower();
 
 private:
 	sf::Texture texture;

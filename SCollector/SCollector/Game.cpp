@@ -4,24 +4,15 @@
 #include "Player.h"
 #include "MenuManager.h"
 
-Game::Game() :
-	winWidth(800), winHeight(600),
-	window(sf::VideoMode(winWidth, winHeight), "Test") ,
-	menus(winWidth, winHeight),
-	level("new.tmx") ,
-	rect(sf::Vector2f((float)winWidth, (float)winHeight)) ,
-	view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
+Game::Game()
+	: winWidth(800), winHeight(600)
+	, window(sf::VideoMode(winWidth, winHeight), "Test")
+	, menus(winWidth, winHeight)
+	, level("new.tmx")
+	, view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
 {
 	//Flag set to false when the game ends
 	isRunning = false;
-
-	circleTexture.loadFromFile("assets/img/LightAura.png");
-	circle.setTexture(circleTexture);
-	circle.setOrigin(circle.getTextureRect().width/2.0f, circle.getTextureRect().height/2.0f);
-	rect.setFillColor(sf::Color(0,0,0,255));
-	overlayTexture.create(window.getSize().x, window.getSize().y);
-	overlaySprite.setTexture(overlayTexture.getTexture());
-	overlaySprite.setOrigin(overlayTexture.getSize().x/2.0f, overlayTexture.getSize().y/2.0f);
 
 	window.setView(view);
 }
@@ -110,38 +101,47 @@ void Game::Event()
 				//  key is held down! Yes, there is a property on the window that allows keys to repeat
 				//  their presses if held down that I turned off earlier, but I did that because there's
 				//  a delay between getting the press and actually determining that the key is held down.
-				case sf::Keyboard::Up :
+				case sf::Keyboard::W :
 					level.GetPlayer().MoveUp(true);
 					break;
-				case sf::Keyboard::Down :
+				case sf::Keyboard::S :
 					level.GetPlayer().MoveDown(true);
 					break;
-				case sf::Keyboard::Left :
+				case sf::Keyboard::A :
 					level.GetPlayer().MoveLeft(true);
 					break;
-				case sf::Keyboard::Right :
+				case sf::Keyboard::D :
 					level.GetPlayer().MoveRight(true);
+					break;
+				case sf::Keyboard::Space :
+					level.DoActivate();
 					break;
 				case sf::Keyboard::Escape :
 					menus.SetVisible(true);
+					break;
+				default:
 					break;
 				}
 				break;
 			case sf::Event::KeyReleased :
 				switch(anEvent.key.code) {
-				case sf::Keyboard::Up :
+				case sf::Keyboard::W :
 					level.GetPlayer().MoveUp(false);
 					break;
-				case sf::Keyboard::Down :
+				case sf::Keyboard::S :
 					level.GetPlayer().MoveDown(false);
 					break;
-				case sf::Keyboard::Left :
+				case sf::Keyboard::A :
 					level.GetPlayer().MoveLeft(false);
 					break;
-				case sf::Keyboard::Right :
+				case sf::Keyboard::D :
 					level.GetPlayer().MoveRight(false);
 					break;
+				default:
+					break;
 				}
+				break;
+			default :
 				break;
 			}
 		}
@@ -179,26 +179,6 @@ void Game::Update()
 		view.setCenter(sf::Vector2f(viewPos.x, levelSize.y - viewSize.y/2));
 
 	window.setView(view);
-
-	//Update the light circle to follow the player
-	//Note: Since the circle's being drawn to "view coordinates" instead of "global coordinates",
-	// we've got to correct the player's position if we want the circle to be drawn on top of
-	// the player
-	//Theory behind this bit is that view coordinates are just global coordinates translated;
-	// the amount of the translation is the distance from the global axes to the view axes
-	sf::Vector2f viewcorrection(viewPos.x - viewSize.x/2, viewPos.y - viewSize.y/2);
-	//Also, for some reason view coordinates have a reversed y-axis... ?_?
-	circle.setPosition(sf::Vector2f(playerPos.x - viewcorrection.x, viewSize.y-(playerPos.y - viewcorrection.y)));
-
-	//printf("playerpos: (%g, %g), correction:(%g, %g)\n", playerPos.x, playerPos.y, correctpos.x, correctpos.y);
-
-	//Update the overlay rectangle to follow the view
-	//rect.setPosition(view.getCenter());
-	overlaySprite.setPosition(view.getCenter());
-
-	overlayTexture.clear(sf::Color(0,0,0,0));
-	overlayTexture.draw(rect);
-	overlayTexture.draw(circle, sf::RenderStates(sf::BlendMode::BlendNone));
 }
 
 void Game::Render()
@@ -215,7 +195,6 @@ void Game::Render()
 	//Render the level to the screen, before the player
 	window.draw(level);
 	//Render the player to the screen
-	window.draw(overlaySprite);
 
 	menus.Display(window);
 

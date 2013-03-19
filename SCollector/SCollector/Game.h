@@ -35,22 +35,21 @@ private:
 	/** Exits the game */
 	void Exit();
 
+	/** Width and height of the window */
 	const int winWidth, winHeight;
-	MenuManager menus;
+	/** The window itself */
 	sf::RenderWindow window;
+	/** The menu manger */
+	MenuManager menus;
+
+	/** Flag set to true when the game is running */
 	bool isRunning;
 
+	/** The level object */
 	Level level;
 
+	/** The camera */
 	sf::View view;
-
-	//TEST
-	sf::RenderTexture overlayTexture;
-	sf::Sprite overlaySprite;
-	sf::Texture circleTexture;
-	sf::Sprite circle;
-	sf::Sprite circle2;
-	sf::RectangleShape rect;
 };
 
 #endif

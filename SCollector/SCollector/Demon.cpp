@@ -1,53 +1,43 @@
-//Implementation of Player class
 
-#include "Player.h"
+#include "Demon.h"
 #include "Level.h"
 
-Player::Player(const sf::Vector2f& pos)
-	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
-	, lighter(128, 256, sf::Color(255, 0, 0, 255), pos)
+Demon::Demon(sf::Vector2f pos)
+	: Movable("assets/img/zombie_topdown.png", sf::IntRect(20, 20, 27, 23), sf::IntRect(0, 0, 64, 64))
 {
-	//When the player starts, he isn't moving anywhere
-	moveLeft = moveRight = moveUp = moveDown = false;
-	SetPos(pos);
+	moveSpeed = 1.0f;
+	sprite.setPosition(pos);
+	movement = sf::Vector2f(0, 0);
+	moving = true;
+	spotted = false;
 
-	//ARGH CONSTANTS IT BURNS
-	moveSpeed = 2.0f;
-
-	//Initialize animations (maybe offload some of this data to a text file
-	// or something?)
-	AddAnimSet("walk", 1, 0, true);
-
-	lighter.Toggle();
+	ModifyAnimSet("idle", 0, 3, true);
+	AddAnimSet("walk", 4, 11, true);
 }
 
-void Player::AddLight(Level& level)
+void Demon::Update(const Level& level)
 {
-	level.AddLight(lighter);
-}
+	//Check if the demon's been spotted by the player
+	sf::Vector2f playerPos = level.GetPlayer().GetPos();
+	sf::Vector2f relDist = playerPos - GetPos();
+	float dist = magnitude(relDist);
+	if(dist < SPOT_RADIUS) {
+		moveSpeed = 1.5f;
+		spotted = true;
+		moving = true;
+	} else {
+		moveSpeed = 1.0f;
+		spotted = false;
+	}
 
-void Player::MoveLeft(bool start)
-{
-	moveLeft = start;
-}
-void Player::MoveRight(bool start)
-{
-	moveRight = start;
-}
-void Player::MoveUp(bool start)
-{
-	moveUp = start;
-}
-void Player::MoveDown(bool start)
-{
-	moveDown = start;
-}
-
-void Player::Update(const Level& level)
-{
-	bool moving = moveLeft || moveRight || moveUp || moveDown;
 	if(moving) {
 		PlayAnim("walk");
+
+		//If the demon's been spotted, make it follow the player instead of
+		// wandering around
+		if(spotted) {
+			movement = relDist*(moveSpeed/dist);
+		}
 
 		//Get the sides of the player's collision rectangle
 		sf::Vector2f pos = sprite.getPosition();
@@ -62,9 +52,8 @@ void Player::Update(const Level& level)
 		//printf("(%g, %g), (%g, %g)\n", topLeft.x, topLeft.y, botRight.x, botRight.y);
 		int nearestTopLeft, nearestBotRight, nearest;
 		bool foundTopLeft, foundBotRight, found;
-		sf::Vector2f movement(0, 0);
 
-		if(moveUp) {
+		if(movement.y<0) {
 			foundTopLeft = level.GetCollide(topLeft, false, false, nearestTopLeft);
 			foundBotRight = level.GetCollide(topRight, false, false, nearestBotRight);
 			nearest = std::max(nearestTopLeft, nearestBotRight);
@@ -73,9 +62,9 @@ void Player::Update(const Level& level)
 			if(!found)
 				nearest = -INT_MAX;
 			//printf("Nearest Up: %d\n", nearest);
-			movement.y += std::max(-moveSpeed, (float)nearest);
+			movement.y = std::max(movement.y, (float)nearest);
 		}
-		if(moveDown) {
+		if(movement.y>0) {
 			foundTopLeft = level.GetCollide(botLeft, false, true, nearestTopLeft);
 			foundBotRight = level.GetCollide(botRight, false, true, nearestBotRight);
 			nearest = std::min(nearestTopLeft, nearestBotRight);
@@ -84,9 +73,9 @@ void Player::Update(const Level& level)
 			if(!found)
 				nearest = INT_MAX;
 			//printf("Nearest Down: %d\n", nearest);
-			movement.y += std::min(moveSpeed, (float)nearest);
+			movement.y = std::min(movement.y, (float)nearest);
 		}
-		if(moveLeft) {
+		if(movement.x<0) {
 			foundTopLeft = level.GetCollide(topLeft, true, false, nearestTopLeft);
 			foundBotRight = level.GetCollide(botLeft, true, false, nearestBotRight);
 			nearest = std::max(nearestTopLeft, nearestBotRight);
@@ -95,9 +84,9 @@ void Player::Update(const Level& level)
 			if(!found)
 				nearest = -INT_MAX;
 			//printf("Nearest Left: %d\n", nearest);
-			movement.x += std::max(-moveSpeed, (float)nearest), 0;
+			movement.x = std::max(movement.x, (float)nearest);
 		}
-		if(moveRight) {
+		if(movement.x>0) {
 			foundTopLeft = level.GetCollide(topRight, true, true, nearestTopLeft);
 			foundBotRight = level.GetCollide(botRight, true, true, nearestBotRight);
 			nearest = std::min(nearestTopLeft, nearestBotRight);
@@ -106,29 +95,20 @@ void Player::Update(const Level& level)
 			if(!found)
 				nearest = INT_MAX;
 			//printf("Nearest Right: %d\n", nearest);
-			movement.x += std::min(moveSpeed, (float)nearest);
+			movement.x = std::min(movement.x, (float)nearest);
 		}
 
-		//Correct diagonal movement so that player doesn't move faster
-		if(movement.x && movement.y) {
-			movement.x /= 1.414f;
-			movement.y /= 1.414f;
-		}
 		sprite.move(movement);
-
-		if(moveRight && moveUp && !moveLeft && !moveDown) sprite.setRotation(45);
-		else if(moveRight && moveDown && !moveLeft && !moveUp) sprite.setRotation(135);
-		else if(moveLeft && moveDown && !moveRight && !moveUp) sprite.setRotation(225);
-		else if(moveLeft && moveUp && !moveRight && !moveDown) sprite.setRotation(315);
-		else if(moveUp && !moveDown) sprite.setRotation(0);
-		else if(moveRight && !moveLeft) sprite.setRotation(90);
-		else if(moveDown && !moveUp) sprite.setRotation(180);
-		else if(moveLeft && !moveRight) sprite.setRotation(270);
-	}
-	else
+		sprite.setRotation(360/(2*PI)*atan2f(movement.y, movement.x)+90);
+	} else {
 		PlayAnim("idle");
+	}
 
-	//Update the light
-	lighter.SetPos(GetPos());
-	lighter.Update(level);
+	if(!spotted && rand()%100 > 95) {
+		float angle = ((float)rand()/(float)RAND_MAX)*2*PI;
+		movement.x = moveSpeed*cos(angle);
+		movement.y = moveSpeed*sin(angle);
+		moving = (bool)(rand()%2);
+		//printf("New movement: (%g, %g)\n", movement.x, movement.y);
+	}
 }
