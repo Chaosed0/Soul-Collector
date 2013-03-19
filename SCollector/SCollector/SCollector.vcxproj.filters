@@ -77,12 +77,6 @@
     <ClInclude Include="Key.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HUD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HudObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Demon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,6 +90,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Torch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Activatable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HudObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

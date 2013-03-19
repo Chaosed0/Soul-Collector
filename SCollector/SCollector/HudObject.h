@@ -1,3 +1,6 @@
+#ifndef HUDOBJECT_H
+#define HUDOBJECT_H
+
 #include <SFML/Graphics.hpp>
 
 class HudObject:public sf::Drawable
@@ -20,3 +23,5 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
+
+#endif

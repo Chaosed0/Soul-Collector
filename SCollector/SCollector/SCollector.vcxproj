@@ -27,11 +27,8 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-=======
     <ClInclude Include="Activatable.h" />
     <ClInclude Include="Demon.h" />
->>>>>>> 861e1707444cfa27f1fb7cb4a646ef43be468cd1
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HUD.h" />

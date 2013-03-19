@@ -2,6 +2,7 @@
 #define HUD_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include "HudObject.h"
 
 class HUD:public sf::Drawable
@@ -9,12 +10,11 @@ class HUD:public sf::Drawable
 private:
 
 	static const int numObjects = 3;
-	HudObject objects[numObjects];
-	std::string imageNames[numObjects];
+	std::vector<HudObject> objects;
 
 public:
 
-	HUD(std::string names[numObjects], int winHeight);
+	HUD(const std::vector<std::string>& names, int winHeight);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
