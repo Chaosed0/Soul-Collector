@@ -7,8 +7,6 @@
 #ifndef __KEY_H
 #define __KEY_H
 
-#include <list>
-
 #include "Activatable.h"
 class Player;
 class Level;
