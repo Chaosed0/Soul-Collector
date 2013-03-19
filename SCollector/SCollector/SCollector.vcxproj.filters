@@ -57,6 +57,9 @@
     <ClCompile Include="Torch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Activatable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Level.h">
@@ -95,11 +98,14 @@
     <ClInclude Include="Activatable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="HUD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HudObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+=======
+>>>>>>> 37d72b42a8ab8317e381351df9cd3d60cc23c395
   </ItemGroup>
 </Project>
