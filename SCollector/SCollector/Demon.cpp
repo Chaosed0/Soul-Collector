@@ -2,14 +2,18 @@
 #include "Demon.h"
 #include "Level.h"
 
+const sf::Time Demon::alertTime = sf::milliseconds(1500);
+const sf::Time Demon::chargeTime = sf::milliseconds(5000);
+
 Demon::Demon(sf::Vector2f pos)
 	: Movable("assets/img/zombie_topdown.png", sf::IntRect(20, 20, 27, 23), sf::IntRect(0, 0, 64, 64))
 {
 	moveSpeed = 1.0f;
 	sprite.setPosition(pos);
 	movement = sf::Vector2f(0, 0);
-	moving = true;
-	spotted = false;
+	state = IDLE;
+
+	timer.restart();
 
 	ModifyAnimSet("idle", 0, 3, true);
 	AddAnimSet("walk", 4, 11, true);
@@ -21,23 +25,39 @@ void Demon::Update(const Level& level)
 	sf::Vector2f playerPos = level.GetPlayer().GetPos();
 	sf::Vector2f relDist = playerPos - GetPos();
 	float dist = magnitude(relDist);
-	if(dist < SPOT_RADIUS) {
-		moveSpeed = 1.5f;
-		spotted = true;
-		moving = true;
-	} else {
+
+	sf::Int64 time = timer.getElapsedTime().asMicroseconds();
+
+	//Demon behavior controls
+	
+	if(state == CHARGING && time > chargeTime.asMicroseconds()) {
+		//If the demon's charged for long enough, stop charging
 		moveSpeed = 1.0f;
-		spotted = false;
+		timer.restart();
+		state = IDLE;
 	}
 
-	if(moving) {
-		PlayAnim("walk");
+	if((state != ALERT && state != CHARGING) && dist < SPOT_RADIUS) {
+		//If the player is close to the demon, put on alert
+		state = ALERT;
+		timer.restart();
+	} else if(state == ALERT && dist > SPOT_RADIUS) {
+		//If the player moved out of the monster's visibility range, then go back to
+		// idling
+		moveSpeed = 1.0f;
+		state = IDLE;
+		timer.restart();
+	} else if((state != CHARGING && dist < CHARGE_RADIUS) || (state == ALERT && time > alertTime.asMicroseconds())) {
+		//If the player was close to the demon for too long, or got inside their
+		// charge radius, start charging at where the player currently is
+		moveSpeed = 5.0f;
+		state = CHARGING;
+		movement = relDist*(moveSpeed/dist);
+		timer.restart();
+	}
 
-		//If the demon's been spotted, make it follow the player instead of
-		// wandering around
-		if(spotted) {
-			movement = relDist*(moveSpeed/dist);
-		}
+	if(state == MOVING || state == CHARGING) {
+		PlayAnim("walk");
 
 		//Get the sides of the player's collision rectangle
 		sf::Vector2f pos = sprite.getPosition();
@@ -100,15 +120,32 @@ void Demon::Update(const Level& level)
 
 		sprite.move(movement);
 		sprite.setRotation(360/(2*PI)*atan2f(movement.y, movement.x)+90);
-	} else {
+	} else if(state == IDLE) {
 		PlayAnim("idle");
+	} else if(state == ALERT) {
+		//Change to alert animation later
+		PlayAnim("idle");
+		//Rotate the sprite to face the player
+		sprite.setRotation(360/(2*PI)*atan2f(relDist.y, relDist.x)+90);
 	}
 
-	if(!spotted && rand()%100 > 95) {
+	//If the monster was charging and collided into a wall, stop charging
+	if(state == CHARGING && (movement.x == 0 || movement.y == 0)) {
+		state = IDLE;
+		timer.restart();
+	}
+
+	if((state == MOVING || state == IDLE) && (float)rand()/(float)RAND_MAX > 0.95f) {
 		float angle = ((float)rand()/(float)RAND_MAX)*2*PI;
 		movement.x = moveSpeed*cos(angle);
 		movement.y = moveSpeed*sin(angle);
-		moving = (bool)(rand()%2);
+		//ARGH CONSTANTS
+		bool isMoving = ((float)rand()/(float)RAND_MAX > 0.90f);
+		if(isMoving) {
+			state = MOVING;
+		} else {
+			state = IDLE;
+		}
 		//printf("New movement: (%g, %g)\n", movement.x, movement.y);
 	}
 }

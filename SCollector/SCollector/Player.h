@@ -52,6 +52,12 @@ public:
 	void MoveDown(bool start);
 
 	/**
+	 * Turns the player's sprinting on or off.
+	 * \param start True if the player should start sprinting, false otherwise.
+	 */
+	void Sprint(bool start);
+
+	/**
 	 * Adds the player's light to the level so it can be drawn.
 	 * \param level The level.
 	 */
@@ -63,6 +69,11 @@ public:
 	 */
 	virtual void Update(const Level& level);
 
+	/**
+	 * Toggles the player's lighter on/off state
+	 */
+	void ToggleLighter();
+
 //Private attributes; visible only within this class
 private:
 	/** Flags set to true when the player should move in the corresponding direction */
@@ -70,6 +81,21 @@ private:
 
 	/** Player's light source */
 	LightSource lighter;
+	/** Player's light source when the lighter is off */
+	LightSource ambientLight;
+
+	/** True when the player is sprinting, false when he is walking at regSpeed */
+	bool isSprinting;
+
+	/** Amount of fatigue the player has - directly proportional to the time he can run. */
+	int fatigue;
+
+	/** Regular walking speed. */
+	static const float regSpeed;
+	/** Running speed. */
+	static const float sprintSpeed;
+	/** Max amount of fatigue. */
+	static const int maxFatigue;
 };
 
 #endif

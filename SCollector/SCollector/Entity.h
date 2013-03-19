@@ -42,10 +42,18 @@ public:
 
 	/**
 	 * Does a collision check on this entity and another.
+	 * \param entity The entity to check collisions against.
 	 * \return True if this entity is colliding with the other, false
 	 *  otherwise.
 	 */
 	bool IsColliding(const Entity& entity) const;
+
+	/**
+	 * Does a collision check on this entity and a bounding box.
+	 * \param box The box to check collisions against.
+	 * \return True if this entity is colliding with the other, false otherwise.
+	 */
+	bool Entity::IsColliding(const sf::IntRect& box) const;
 protected:
 	sf::IntRect collisionBox;
 	sf::Sprite sprite;

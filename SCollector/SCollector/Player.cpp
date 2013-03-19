@@ -3,27 +3,35 @@
 #include "Player.h"
 #include "Level.h"
 
+const float Player::regSpeed = 2.0f;
+const float Player::sprintSpeed = 3.5f;
+const int Player::maxFatigue = 100;
+
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
-	, lighter(128, 256, sf::Color(255, 0, 0, 255), pos)
+	, lighter(128, 200, sf::Color(0, 0, 0, 50), pos)
+	, ambientLight(128, 700, sf::Color(0, 0, 0, 210), pos)
 {
 	//When the player starts, he isn't moving anywhere
 	moveLeft = moveRight = moveUp = moveDown = false;
 	SetPos(pos);
 
-	//ARGH CONSTANTS IT BURNS
-	moveSpeed = 2.0f;
+	isSprinting = false;
+
+	fatigue = 0;
 
 	//Initialize animations (maybe offload some of this data to a text file
 	// or something?)
 	AddAnimSet("walk", 1, 0, true);
 
 	lighter.Toggle();
+	ambientLight.Toggle();
 }
 
 void Player::AddLight(Level& level)
 {
 	level.AddLight(lighter);
+	level.AddLight(ambientLight);
 }
 
 void Player::MoveLeft(bool start)
@@ -41,6 +49,16 @@ void Player::MoveUp(bool start)
 void Player::MoveDown(bool start)
 {
 	moveDown = start;
+}
+
+void Player::Sprint(bool start)
+{
+	isSprinting = start;
+}
+
+void Player::ToggleLighter()
+{
+	lighter.Toggle();
 }
 
 void Player::Update(const Level& level)
@@ -62,7 +80,20 @@ void Player::Update(const Level& level)
 		//printf("(%g, %g), (%g, %g)\n", topLeft.x, topLeft.y, botRight.x, botRight.y);
 		int nearestTopLeft, nearestBotRight, nearest;
 		bool foundTopLeft, foundBotRight, found;
+		float moveSpeed;
 		sf::Vector2f movement(0, 0);
+
+		if(isSprinting) {
+			moveSpeed = sprintSpeed;
+			fatigue++;
+		} else {
+			moveSpeed = regSpeed;
+			fatigue = std::max(0, fatigue-1);
+		}
+
+		if(fatigue >= maxFatigue) {
+			isSprinting = false;
+		}
 
 		if(moveUp) {
 			foundTopLeft = level.GetCollide(topLeft, false, false, nearestTopLeft);
@@ -130,5 +161,7 @@ void Player::Update(const Level& level)
 
 	//Update the light
 	lighter.SetPos(GetPos());
+	ambientLight.SetPos(GetPos());
 	lighter.Update(level);
+	ambientLight.Update(level);
 }

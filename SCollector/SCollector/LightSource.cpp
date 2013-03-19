@@ -124,7 +124,7 @@ void LightSource::Update(const Level& level)
 		// overlay together
 		compositeOverlay.clear();
 		compositeOverlay.draw(circleSprite, sf::BlendMode::BlendMultiply);
-		//compositeOverlay.draw(circleOverlay, sf::BlendMode::BlendMultiply);
+		compositeOverlay.draw(circleOverlay, sf::BlendMode::BlendAlpha);
 		compositeOverlay.draw(triangleOverlaySprite, sf::BlendMode::BlendAdd);
 		compositeOverlay.display();
 		compositeOverlaySprite.setTexture(compositeOverlay.getTexture());
@@ -136,4 +136,9 @@ void LightSource::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	if(isOn)
 		target.draw(compositeOverlaySprite, state);
+}
+
+bool LightSource::GetIsOn()
+{
+	return isOn;
 }

@@ -10,7 +10,8 @@
 #include "Movable.h"
 #include "Utility.h"
 
-#define SPOT_RADIUS 50
+#define SPOT_RADIUS 200
+#define CHARGE_RADIUS 100
 
 class Demon : public Movable
 {
@@ -19,9 +20,21 @@ public:
 
 	virtual void Update(const Level& level);
 private:
-	bool moving;
-	bool spotted;
+	enum {
+		IDLE,
+		MOVING,
+		ALERT,
+		CHARGING
+	} state;
 	sf::Vector2f movement;
+
+	/** Clock for general purpose */
+	sf::Clock timer;
+
+	/** How much time the monster is alerted before it decides to charge */
+	static const sf::Time alertTime;
+	/** How much time the monster is charging before it stops */
+	static const sf::Time chargeTime;
 };
 
 #endif

@@ -9,10 +9,12 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <limits.h>
-
+#include <climits>
 #include <cstdio>
 #include <cmath>
+
+#include <vector>
+#include <list>
 
 #include "Tmx.h"
 
@@ -20,8 +22,9 @@
 #include "Utility.h"
 
 #include "Entity.h"
-#include "Activatable.h"
-#include "Movable.h"
+#include "AttackBox.h"
+class Activatable;
+class Movable;
 
 #define BASEMAPDIR "assets/maps/"
 
@@ -198,6 +201,8 @@ private:
 	/** List(s) of entities in the level */
 	std::vector<Activatable*> activatables;
 	std::vector<Movable*> enemies;
+	/** This one's a list because things will be added and removed often and unpredictably */
+	std::list<AttackBox> attacks;
 
 	/** A list of lights in the level, only to be used for drawing */
 	std::vector<const LightSource*> lights;

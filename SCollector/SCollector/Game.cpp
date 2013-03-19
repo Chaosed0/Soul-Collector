@@ -113,6 +113,13 @@ void Game::Event()
 				case sf::Keyboard::D :
 					level.GetPlayer().MoveRight(true);
 					break;
+				case sf::Keyboard::F :
+					level.GetPlayer().ToggleLighter();
+					break;
+				case sf::Keyboard::LShift :
+				case sf::Keyboard::RShift :
+					level.GetPlayer().Sprint(true);
+					break;
 				case sf::Keyboard::Space :
 					level.DoActivate();
 					break;
@@ -136,6 +143,10 @@ void Game::Event()
 					break;
 				case sf::Keyboard::D :
 					level.GetPlayer().MoveRight(false);
+					break;
+				case sf::Keyboard::LShift :
+				case sf::Keyboard::RShift :
+					level.GetPlayer().Sprint(false);
 					break;
 				default:
 					break;

@@ -50,6 +50,12 @@ public:
 	 * If the light is on, this sets it to off, and vice versa.
 	 */
 	void Toggle();
+
+	/**
+	 * Gets the state of the light.
+	 * \return True if the light is on, false otherwise.
+	 */
+	bool GetIsOn();
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 

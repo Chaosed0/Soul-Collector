@@ -9,6 +9,8 @@
 #include "Key.h"
 #include "Torch.h"
 #include "Demon.h"
+#include "Activatable.h"
+#include "Movable.h"
 
 Level::Level()
 	: player(sf::Vector2f())
