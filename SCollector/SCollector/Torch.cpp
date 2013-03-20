@@ -14,7 +14,7 @@ Torch::Torch(const sf::Vector2f& pos)
 	AddAnimSet("on", 1, 7, true);
 }
 
-void Torch::Update(const Level& level)
+void Torch::Update(const Level& level, const sf::Time& timePassed)
 {
 	light.Update(level);
 	if(IsActive() && !IsFinished()) {
@@ -23,9 +23,9 @@ void Torch::Update(const Level& level)
 	}
 
 	if(light.GetIsOn()) {
-		PlayAnim("on");
+		PlayAnim("on", timePassed);
 	} else {
-		PlayAnim("idle");
+		PlayAnim("idle", timePassed);
 	}
 }
 

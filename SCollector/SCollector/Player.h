@@ -67,7 +67,7 @@ public:
 	 * Updates the player's position.
 	 * This function should be called once per frame.
 	 */
-	virtual void Update(const Level& level);
+	virtual void Update(const Level& level, const sf::Time& timePassed);
 
 	/**
 	 * Toggles the player's lighter on/off state
@@ -90,9 +90,9 @@ private:
 	/** Amount of fatigue the player has - directly proportional to the time he can run. */
 	int fatigue;
 
-	/** Regular walking speed. */
+	/** Regular walking speed, in pixels per second. */
 	static const float regSpeed;
-	/** Running speed. */
+	/** Running speed, in pixels per second. */
 	static const float sprintSpeed;
 	/** Max amount of fatigue. */
 	static const int maxFatigue;

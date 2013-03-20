@@ -444,15 +444,15 @@ const Player& Level::GetPlayer() const
 	return player;
 }
 
-void Level::Update()
+void Level::Update(const sf::Time& timePassed)
 {
-	player.Update(*this);
+	player.Update(*this, timePassed);
 	for(unsigned int i = 0; i < activatables.size(); i++) {
-		activatables[i]->Update(*this);
+		activatables[i]->Update(*this, timePassed);
 	}
 
 	for(unsigned int i = 0; i < enemies.size(); i++) {
-		enemies[i]->Update(*this);
+		enemies[i]->Update(*this, timePassed);
 		if(player.IsColliding(*enemies[i]) || enemies[i]->IsColliding(player)) {
 			printf("Player colliding with enemy %d\n", i);
 		}

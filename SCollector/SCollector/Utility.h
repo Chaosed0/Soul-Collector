@@ -5,6 +5,7 @@
 #include <SFML/System.hpp>
 
 #define PI 3.14159f
+#define TO_DEG 57.2958279f
 
 float magnitude(const sf::Vector2f& vec);
 

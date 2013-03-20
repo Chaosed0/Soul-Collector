@@ -18,7 +18,7 @@ class Demon : public Movable
 public:
 	Demon(sf::Vector2f pos);
 
-	virtual void Update(const Level& level);
+	virtual void Update(const Level& level, const sf::Time& timePassed);
 private:
 	enum {
 		IDLE,
@@ -26,15 +26,18 @@ private:
 		ALERT,
 		CHARGING
 	} state;
-	sf::Vector2f movement;
 
-	/** Clock for general purpose */
-	sf::Clock timer;
+	/** Timer to keep track of how much time passed since the last action */
+	sf::Time timer;
 
 	/** How much time the monster is alerted before it decides to charge */
 	static const sf::Time alertTime;
 	/** How much time the monster is charging before it stops */
 	static const sf::Time chargeTime;
+	/** Wandering speed, in pixels per second */
+	static const float wanderSpeed;
+	/** Charging speed, in pixels per second */
+	static const float chargeSpeed;
 };
 
 #endif

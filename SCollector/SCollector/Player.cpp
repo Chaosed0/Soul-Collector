@@ -3,8 +3,8 @@
 #include "Player.h"
 #include "Level.h"
 
-const float Player::regSpeed = 2.0f;
-const float Player::sprintSpeed = 3.5f;
+const float Player::regSpeed = 120.0f;
+const float Player::sprintSpeed = 210.0f;
 const int Player::maxFatigue = 100;
 
 Player::Player(const sf::Vector2f& pos)
@@ -61,11 +61,11 @@ void Player::ToggleLighter()
 	lighter.Toggle();
 }
 
-void Player::Update(const Level& level)
+void Player::Update(const Level& level, const sf::Time& timePassed)
 {
 	bool moving = moveLeft || moveRight || moveUp || moveDown;
 	if(moving) {
-		PlayAnim("walk");
+		PlayAnim("walk", timePassed);
 
 		//Get the sides of the player's collision rectangle
 		sf::Vector2f pos = sprite.getPosition();
@@ -84,10 +84,10 @@ void Player::Update(const Level& level)
 		sf::Vector2f movement(0, 0);
 
 		if(isSprinting) {
-			moveSpeed = sprintSpeed;
+			moveSpeed = sprintSpeed*timePassed.asSeconds();
 			fatigue++;
 		} else {
-			moveSpeed = regSpeed;
+			moveSpeed = regSpeed*timePassed.asSeconds();
 			fatigue = std::max(0, fatigue-1);
 		}
 
@@ -155,9 +155,9 @@ void Player::Update(const Level& level)
 		else if(moveRight && !moveLeft) sprite.setRotation(90);
 		else if(moveDown && !moveUp) sprite.setRotation(180);
 		else if(moveLeft && !moveRight) sprite.setRotation(270);
+	} else {
+		PlayAnim("idle", timePassed);
 	}
-	else
-		PlayAnim("idle");
 
 	//Update the light
 	lighter.SetPos(GetPos());

@@ -14,8 +14,8 @@ class Movable : public Entity
 public:
 	Movable(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox);
 protected:
-	/** Movement speed of the entity, in pixels per frame */
-	float moveSpeed;
+	/** Movement direction of the entity*/
+	float moveAngle;
 	/** Attack power of the entity */
 	int attackPower;
 	/** Health of the entity*/

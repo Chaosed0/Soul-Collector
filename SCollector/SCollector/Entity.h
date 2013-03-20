@@ -26,7 +26,7 @@ public:
 	 */
 	Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox);
 
-	virtual void Update(const Level& level) = 0;
+	virtual void Update(const Level& level, const sf::Time& timePassed) = 0;
 
 	/**
 	 * Sets the Elayer's position.
@@ -93,11 +93,15 @@ protected:
 
 	/**
 	 * Plays an animation.
-	 * If the animation is not currently the one that's playing, then
-	 * StartAnim(anim) is called; otherwise, StepAnim() is called.
+	 *
+	 * If the animation is not currently the one that's playing, then StartAnim(anim)
+	 *  is called; otherwise, StepAnim() is called.
+	 * This ought to be called every time Update() is called, or the clock might get
+	 *  out of sync.
 	 * \param anim The name of the animation to play.
+	 * \param timePassed The amount of time since the last time this function was called.
 	 */
-	void PlayAnim(const std::string& anim);
+	void PlayAnim(const std::string& anim, const sf::Time& timePassed);
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 
@@ -116,6 +120,10 @@ private:
 	 */
 	bool StepAnim();
 	
+	/**
+	 * Gets the current animation frame. 
+	 * \return The sub-rectangle of the image where the current frame is located.
+	 */
 	sf::IntRect GetCurAnimRect();
 
 	sf::IntRect animBox;
@@ -129,8 +137,13 @@ private:
 	int lastAnim;
 	int totalFrames;
 
-	sf::Clock lastAnimTime;
-	const sf::Time animTime;
+	/** Time passed since last animation frame was played */
+	sf::Time animTimer;
+	/** Time between animation frames to wait */
+	sf::Time animDelay;
+
+	/** The default animation delay. */
+	static const sf::Time defaultAnimDelay;
 };
 
 #endif

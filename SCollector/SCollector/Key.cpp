@@ -10,10 +10,13 @@ Key::Key(const sf::Vector2f& pos)
 	SetPos(pos);
 }
 
-void Key::Update(const Level& level)
+void Key::Update(const Level& level, const sf::Time& timePassed)
 {
 	if(IsActive() && !IsFinished()) {
 		visible = false;
 		Finish();
 	}
+
+	//Just play the idle animation to keep the clock in sync
+	PlayAnim("idle", timePassed);
 }

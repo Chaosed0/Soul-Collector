@@ -59,8 +59,9 @@ public:
 	 * This includes all entities in the level, such as
 	 * - Monsters
 	 * - Display of walls and such
+	 * \param timePassed The amount of time passed since the last time this function was called.
 	 */
-	void Update();
+	void Update(const sf::Time& timePassed);
 
 	/**
 	 * Gets the player.

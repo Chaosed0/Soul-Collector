@@ -4,60 +4,72 @@
 
 const sf::Time Demon::alertTime = sf::milliseconds(1500);
 const sf::Time Demon::chargeTime = sf::milliseconds(5000);
+const float Demon::wanderSpeed = 60.0f;
+const float Demon::chargeSpeed = 300.0f;
 
 Demon::Demon(sf::Vector2f pos)
 	: Movable("assets/img/zombie_topdown.png", sf::IntRect(20, 20, 27, 23), sf::IntRect(0, 0, 64, 64))
 {
-	moveSpeed = 1.0f;
 	sprite.setPosition(pos);
-	movement = sf::Vector2f(0, 0);
 	state = IDLE;
 
-	timer.restart();
+	timer = sf::Time::Zero;
 
 	ModifyAnimSet("idle", 0, 3, true);
 	AddAnimSet("walk", 4, 11, true);
 }
 
-void Demon::Update(const Level& level)
+void Demon::Update(const Level& level, const sf::Time& timePassed)
 {
 	//Check if the demon's been spotted by the player
 	sf::Vector2f playerPos = level.GetPlayer().GetPos();
 	sf::Vector2f relDist = playerPos - GetPos();
 	float dist = magnitude(relDist);
+	float moveSpeed = 0.0f;
+	sf::Vector2f movement;
 
-	sf::Int64 time = timer.getElapsedTime().asMicroseconds();
+	timer += timePassed;
 
 	//Demon behavior controls
 	
-	if(state == CHARGING && time > chargeTime.asMicroseconds()) {
+	if(state == CHARGING && timer > chargeTime) {
 		//If the demon's charged for long enough, stop charging
-		moveSpeed = 1.0f;
-		timer.restart();
 		state = IDLE;
+		printf("Demon charge timer expired\n");
+		timer = sf::Time::Zero;
 	}
 
 	if((state != ALERT && state != CHARGING) && dist < SPOT_RADIUS) {
 		//If the player is close to the demon, put on alert
 		state = ALERT;
-		timer.restart();
+		printf("Demon is alerted\n");
+		timer = sf::Time::Zero;
+	} else if((state != CHARGING && dist < CHARGE_RADIUS) || (state == ALERT && timer > alertTime)) {
+		//If the player was close to the demon for too long, or got inside their
+		// charge radius, start charging at where the player currently is
+		state = CHARGING;
+		moveAngle = atan2f(relDist.y, relDist.x);
+		printf("Demon is charging player after %g seconds\n", timer.asSeconds());
+		timer = sf::Time::Zero;
 	} else if(state == ALERT && dist > SPOT_RADIUS) {
 		//If the player moved out of the monster's visibility range, then go back to
 		// idling
-		moveSpeed = 1.0f;
 		state = IDLE;
-		timer.restart();
-	} else if((state != CHARGING && dist < CHARGE_RADIUS) || (state == ALERT && time > alertTime.asMicroseconds())) {
-		//If the player was close to the demon for too long, or got inside their
-		// charge radius, start charging at where the player currently is
-		moveSpeed = 5.0f;
-		state = CHARGING;
-		movement = relDist*(moveSpeed/dist);
-		timer.restart();
+		printf("Demon is no longer alerted\n");
+		timer = sf::Time::Zero;
+	}
+	
+	if(state == MOVING || state == IDLE) {
+		moveSpeed = wanderSpeed*timePassed.asSeconds();
+	} else if(state == CHARGING || state == ALERT) {
+		moveSpeed = chargeSpeed*timePassed.asSeconds();
 	}
 
+	movement.x = moveSpeed*cos(moveAngle);
+	movement.y = moveSpeed*sin(moveAngle);
+
 	if(state == MOVING || state == CHARGING) {
-		PlayAnim("walk");
+		PlayAnim("walk", timePassed);
 
 		//Get the sides of the player's collision rectangle
 		sf::Vector2f pos = sprite.getPosition();
@@ -119,26 +131,28 @@ void Demon::Update(const Level& level)
 		}
 
 		sprite.move(movement);
-		sprite.setRotation(360/(2*PI)*atan2f(movement.y, movement.x)+90);
+		sprite.setRotation(TO_DEG*atan2f(movement.y, movement.x)+90);
 	} else if(state == IDLE) {
-		PlayAnim("idle");
+		PlayAnim("idle", timePassed);
 	} else if(state == ALERT) {
 		//Change to alert animation later
-		PlayAnim("idle");
+		PlayAnim("idle", timePassed);
 		//Rotate the sprite to face the player
-		sprite.setRotation(360/(2*PI)*atan2f(relDist.y, relDist.x)+90);
+		sprite.setRotation(TO_DEG*atan2f(relDist.y, relDist.x)+90);
+	} else {
+		// ???
+		PlayAnim("idle", timePassed);
 	}
 
 	//If the monster was charging and collided into a wall, stop charging
 	if(state == CHARGING && (movement.x == 0 || movement.y == 0)) {
 		state = IDLE;
-		timer.restart();
+		timer = sf::Time::Zero;
 	}
 
+	// Decide on a new direction of movement randomly
 	if((state == MOVING || state == IDLE) && (float)rand()/(float)RAND_MAX > 0.95f) {
-		float angle = ((float)rand()/(float)RAND_MAX)*2*PI;
-		movement.x = moveSpeed*cos(angle);
-		movement.y = moveSpeed*sin(angle);
+		moveAngle = ((float)rand()/(float)RAND_MAX)*2*PI;
 		//ARGH CONSTANTS
 		bool isMoving = ((float)rand()/(float)RAND_MAX > 0.90f);
 		if(isMoving) {

@@ -50,6 +50,9 @@ private:
 
 	/** The camera */
 	sf::View view;
+
+	/** Timer to pass to Level::Update */
+	sf::Clock updateTimer;
 };
 
 #endif

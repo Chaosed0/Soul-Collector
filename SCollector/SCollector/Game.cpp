@@ -41,22 +41,25 @@ void Game::Loop()
 {
 	//Timer for regulating framerate - for an explanation of this, go to the end of
 	// the main game loop
-	sf::Clock timer;
+	sf::Clock frameTimer;
 	//How many frames per second we want the game to run
 	const int ticksPerSec = 60;
 	//The time needed for that frame
 	sf::Time frameTime = sf::microseconds(sf::seconds(1).asMicroseconds()/ticksPerSec);
 
+	updateTimer.restart();
+
 	// --- MAIN GAME LOOP ---
 	while(isRunning)
 	{
 		//Reset the framerate regulation timer
-		timer.restart();
+		frameTimer.restart();
 
 		Event();
 		//Only update the game if the gui is not currently shown
-		if(!menus.IsVisible())
+		if(!menus.IsVisible()) {
 			Update();
+		}
 		Render();
 
 		// --- FRAME CORRECTION ---
@@ -64,10 +67,10 @@ void Game::Loop()
 		// such in this for loop will run faster and faster. We don't want that to happen, since
 		// the movement code is here - the player speed shouldn't depend on the hardware! So, we
 		// force the game to wait for a bit if we processed the loop too fast.
-		//The SFML time functions are a bit unwieldy to use, but fairly easy to follow
-		sf::Time timeSleep = sf::microseconds(frameTime.asMicroseconds() - timer.getElapsedTime().asMicroseconds());
+		sf::Time timeSleep = frameTime - frameTimer.getElapsedTime();
 		if(timeSleep.asMicroseconds() >= 0)
 			sf::sleep(timeSleep);
+		//printf("Frame length: %lld milliseconds\n", frameTimer.getElapsedTime());
 		//If the time to sleep is less than 0, we don't have to do anything, though the game will
 		// start to lag
 	}
@@ -87,6 +90,12 @@ void Game::Event()
 		//If the menu system isn't visible, then it can't receive events
 		else if(menus.IsVisible()) {
 			menus.HandleEvent(anEvent);
+			//If the menu just turned invisible after handling an event, restart the
+			// update timer so that entities don't think they were simulating while
+			// the menu was up
+			if(!menus.IsVisible()) {
+				updateTimer.restart();
+			}
 		}
 		//Otherwise, the game is visible, and it should receive events
 		// Note: May change later!
@@ -168,7 +177,13 @@ void Game::Update()
 
 	// --- GAME LOGIC ---
 	//Update the level
-	level.Update();
+	//We have to store the update time and re-get it BEFORE passing it to the level
+	// because the update function is the most time consuming; the time taken within
+	// the function itself is not negligible, so we can't put the restart() after it
+	//printf("Update length: %lld milliseconds\n", updateTimer.getElapsedTime());
+	sf::Time updateTime = updateTimer.getElapsedTime();
+	updateTimer.restart();
+	level.Update(updateTime);
 
 	//printf("player: (%g, %g) view: (%g, %g)\n", playerPos.x, playerPos.y, viewPos.x, viewPos.y);
 

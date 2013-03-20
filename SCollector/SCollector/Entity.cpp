@@ -2,8 +2,9 @@
 #include "Entity.h"
 #include "Level.h"
 
+const sf::Time Entity::defaultAnimDelay = sf::microseconds(50000);
+
 Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
-	: animTime(sf::microseconds(50000))
 {
 	//Set default values
 	this->collisionBox = collisionBox;
@@ -12,6 +13,9 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	curAnimFrame = 0;
 	lastAnim = 0;
 	visible = true;
+
+	animTimer = sf::Time::Zero;
+	animDelay = defaultAnimDelay;
 
 	//Load the texture
 	texture.loadFromFile(imgLoc);
@@ -22,7 +26,7 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 
 	//Create the default animation and play it
 	AddAnimSet("idle", 0, 0, true);
-	PlayAnim("idle");
+	PlayAnim("idle", animDelay);
 	sprite.setTextureRect(animBox);
 }
 
@@ -133,15 +137,16 @@ bool Entity::StepAnim()
 	}
 }
 
-void Entity::PlayAnim(const std::string& anim)
+void Entity::PlayAnim(const std::string& anim, const sf::Time& timePassed)
 {
-	if(lastAnimTime.getElapsedTime() >= animTime)
+	animTimer += timePassed;
+	if(animTimer > animDelay)
 	{
 		if(curAnim == animNames[anim])
 			StepAnim();
 		else
 			StartAnim(anim);
-		lastAnimTime.restart();
+		animTimer = sf::Time::Zero;
 	}
 }
 

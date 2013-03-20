@@ -1,6 +1,8 @@
 #ifndef __DOOR_H
 #define __DOOR_H
 
+#include <string>
+
 class Door
 {
 public:
@@ -11,6 +13,6 @@ private:
 	int health;
 	bool isOpened;
 	bool isBroken;
-}
+};
 
 #endif
