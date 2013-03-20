@@ -9,7 +9,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Utility.h"
+
 class Level;
+class Movable;
 
 class AttackCone
 {
@@ -41,6 +44,18 @@ public:
 	bool Contains(const sf::Vector2f point) const;
 
 	/**
+	 * Adds a Movable to the list of Movables already hit by the attack.
+	 * \param movable The Movable hit by the attack.
+	 */
+	void MovableHit(const Movable& movable);
+
+	/**
+	 * Checks if a Movable has been hit by this attack.
+	 * \param movable The Movable to check.
+	 */
+	bool IsMovableHit(const Movable& movable) const;
+
+	/**
 	 * Gets a triangle approximating the cone.
 	 *
 	 * For debug purposes only, so we just stick the definition in the header.
@@ -53,10 +68,12 @@ public:
 		sf::Vector2f point2 = sf::Vector2f(length*cos(angleEnd), length*sin(angleEnd));
 		triangle.setPointCount(3);
 		triangle.setPoint(0, sf::Vector2f(0.0f, 0.0f));
-		triangle.setPoint(0, point1);
-		triangle.setPoint(0, point2);
-		triangle.setFillColor(sf::Color());
-		printf("Draw cone at (%g, %g), (%g, %g)\n", point1.x, point1.y, point2.x, point2.y);
+		triangle.setPoint(1, point1);
+		triangle.setPoint(2, point2);
+		triangle.setFillColor(sf::Color(0, 0, 0, 100));
+		triangle.setOutlineColor(sf::Color(255, 255, 255, 200));
+		triangle.setOutlineThickness(2);
+		//printf("Draw cone at (%g, %g), (%g, %g)\n", point1.x, point1.y, point2.x, point2.y);
 		return triangle;
 	}
 private:
@@ -75,6 +92,9 @@ private:
 	sf::Time livedTime;
 	/** Flag set to true when the attack box is no longer valid */
 	bool isExpired;
+
+	/** Vector of entities already hit by the attack (so they can't be hit multiple times) */
+	std::vector<const Movable*> movablesHit;
 };
 
 #endif

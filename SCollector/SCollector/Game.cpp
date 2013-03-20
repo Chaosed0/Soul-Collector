@@ -129,7 +129,7 @@ void Game::Event()
 					level.DoActivate();
 					break;
 				case sf::Keyboard::Space :
-					level.AddAttack(level.GetPlayer().GetAttackCone());
+					level.AddAttack(level.GetPlayer().GetAttackCone(), false);
 					break;
 				case sf::Keyboard::LShift :
 				case sf::Keyboard::RShift :

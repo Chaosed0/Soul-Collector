@@ -123,8 +123,10 @@ public:
 	/**
 	 * Adds an attack to the level for processing.
 	 * \param attack The attack to be added.
+	 * \param enemy Flag set to true if this is an attack made by an enemy;
+	 *  otherwise, it is assumed to be the player's attack.
 	 */
-	void AddAttack(const AttackCone& attack);
+	void AddAttack(const AttackCone& attack, bool enemy);
 private:
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
@@ -209,7 +211,8 @@ private:
 	std::vector<Activatable*> activatables;
 	std::vector<Movable*> enemies;
 	/** This one's a list because things will be added and removed often and unpredictably */
-	std::list<AttackCone> attacks;
+	std::list<AttackCone> playerAttacks;
+	std::list<AttackCone> enemyAttacks;
 
 	/** A list of lights in the level, only to be used for drawing */
 	std::vector<const LightSource*> lights;

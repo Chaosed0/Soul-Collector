@@ -7,3 +7,9 @@ Movable::Movable(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animB
 	attackPower = 25;
 	health = 100;
 }
+
+void Movable::Attack(Movable& movable)
+{
+	movable.health -= attackPower;
+	printf("Hit monster\n");
+}

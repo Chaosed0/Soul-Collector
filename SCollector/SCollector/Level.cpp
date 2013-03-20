@@ -345,15 +345,19 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	// We assume that tile 0 is unused because that's what GetTileId returns
 	// when there's no tile. It also can be a valid tile id, though!
 
+	//Identify whether we are going in a positive or negative direction
 	int step;
 	if(stepPos == true)
 		step = 1;
 	else
 		step = -1;
 
+	//Identify whether we're going horizontally or vertically
 	if(horiz)
 	{
 		globTile.x += step;
+		//If we're going in a negative direction, we want to start at
+		// the right of the tile rather than the left
 		if(stepPos)
 			pixel.x = 0;
 		else
@@ -362,38 +366,37 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	else
 	{
 		globTile.y += step;
+		//If we're going in a positive direction, we want to start at
+		// the right of the tile rather than the left
 		if(stepPos)
 			pixel.y = 0;
 		else
 			pixel.y = map.GetTileHeight() - 1;
 	}
 
-	//printf("(%d, %d)\n", globTile.x, globTile.y);
-	//printf("(%d, %d)\n", layerWidth, layerHeight);
-
+	//Make sure we're within the map bounds
 	if(globTile.y >= 0 && globTile.y < layerHeight &&
 			globTile.x >= 0 && globTile.x < layerWidth)
 	{
+		//Get the tile ID
 		unsigned int tileIdx = lyrCollision->GetTileId(globTile.x, globTile.y);
-		//printf("(%d, %d) %d\n", globTile.x, globTile.y, tileIdx);
 
+		//If the tile ID is 0, this tile isn't a colliding tile
 		if(tileIdx != 0)
 		{
+			//Do pixel-by-pixel checks until we reach a colliding pixel
 			sf::Vector2i locTile = GetLocalTile(lyrCollision, globTile);
 			while(pixel.x < map.GetTileWidth() && pixel.x >= 0 &&
 					pixel.y < map.GetTileHeight() && pixel.y >= 0)
 			{
-				//printf("(%d, %d) -> (%d, %d)\n", globTile.x, globTile.y, locTile.x, locTile.y);
 				bool collide = collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
+				//Once we find a colliding pixel, return its location
 				if(collide)
 				{
 					if(horiz)
 						nearest = globTile.x * map.GetTileWidth() + pixel.x - step;
 					else
 						nearest = globTile.y * map.GetTileHeight() + pixel.y - step;
-					//printf("(%d, %d) -> %u\n", globTile.x, globTile.y, tileIdx);
-					//printf("(%d, %d), %d\n", pixel.x, pixel.y, nearest);
-					//printf(" ---- NEAREST = %d\n", nearest);
 					return true;
 				}
 				
@@ -405,6 +408,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 		}
 	}
 
+	//If we didn't return within the above block of code, we didn't find anything; set
+	// the nearest tile's location to infinity and return false
 	nearest = (stepPos?INT_MAX:-INT_MAX);
 	return false;
 }
@@ -429,9 +434,13 @@ void Level::AddLight(const LightSource& light)
 	lights.push_back(&light);
 }
 
-void Level::AddAttack(const AttackCone& attack)
+void Level::AddAttack(const AttackCone& attack, bool enemy)
 {
-	attacks.push_back(attack);
+	if(enemy) {
+		enemyAttacks.push_back(attack);
+	} else {
+		playerAttacks.push_back(attack);
+	}
 }
 
 sf::Vector2i Level::GetSize() const
@@ -462,13 +471,47 @@ void Level::Update(const sf::Time& timePassed)
 			printf("Player colliding with enemy %d\n", i);
 		}
 	}
-	std::list<AttackCone>::iterator p = attacks.begin();
-	while(p != attacks.end()) {
-		std::list<AttackCone>::iterator temp = p;
-		p++;
+
+	//Iterate through all the player's attacks
+	std::list<AttackCone>::iterator p = playerAttacks.begin();
+	while(p != playerAttacks.end()) {
+		//Grab p's current value into a temporary value and then increment p
+		//We do this so that we delete the temp value, not p itself
+		std::list<AttackCone>::iterator temp = p++;
+		//Update the attack box
 		temp->Update(*this, timePassed);
 		if(temp->IsExpired()) {
-			attacks.erase(temp);
+			//If it's now expired, destroy it
+			playerAttacks.erase(temp);
+		} else {
+			//Otherwise, check for collisions with enemies
+			for(unsigned int i = 0; i < enemies.size(); i++) {
+				if(!temp->IsMovableHit(player) && enemies[i]->IsColliding(*temp)) {
+					player.Attack(*enemies[i]);
+					temp->MovableHit(player);
+				}
+			}
+		}
+	}
+
+	//Iterate through all the monsters' attacks
+	p = enemyAttacks.begin();
+	while(p != enemyAttacks.end()) {
+		//Grab p's current value into a temporary value and then increment p
+		//We do this so that we delete the temp value, not p itself
+		std::list<AttackCone>::iterator temp = p++;
+		//Update the attack box
+		temp->Update(*this, timePassed);
+		if(temp->IsExpired()) {
+			//If it's now expired, destroy it
+			enemyAttacks.erase(temp);
+		} else {
+			//Otherwise, check for collisions with enemies
+			for(unsigned int i = 0; i < enemies.size(); i++) {
+				if(player.IsColliding(*temp)) {
+					enemies[i]->Attack(player);
+				}
+			}
 		}
 	}
 
@@ -493,7 +536,8 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	for(unsigned int i = 0; i < enemies.size(); i++) {
 		target.draw(*enemies[i], state);
 	}
-	for(std::list<AttackCone>::const_iterator p = attacks.begin(); p != attacks.end(); p++) {
+	//Uncomment to draw attack cones
+	for(std::list<AttackCone>::const_iterator p = playerAttacks.begin(); p != playerAttacks.end(); p++) {
 		sf::ConvexShape triangle = p->GetTriangle();
 		triangle.setPosition(player.GetPos());
 		target.draw(triangle, state);

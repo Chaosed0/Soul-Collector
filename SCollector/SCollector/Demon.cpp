@@ -16,12 +16,25 @@ Demon::Demon(sf::Vector2f pos)
 
 	timer = sf::Time::Zero;
 
-	ModifyAnimSet("idle", 0, 3, true);
+	ModifyAnimSet("idle", 0, 0, true);
+	AddAnimSet("alert", 0, 3, true);
 	AddAnimSet("walk", 4, 11, true);
+	AddAnimSet("death", 21, 27, false);
 }
 
 void Demon::Update(const Level& level, const sf::Time& timePassed)
 {
+	//First, before anything, check if the demon is dead
+	if(health <= 0) {
+		//Since the PlayAnim() function simply stops on the last frame for non-looping
+		// animations, we don't have to do anything to stop the animation playing
+		PlayAnim("death", timePassed);
+		state = DEAD;
+		//Rather than encompassing everything else in here with a huge if statement,
+		// just return from the function; much cleaner
+		return;
+	}
+
 	//Check if the demon's been spotted by the player
 	sf::Vector2f playerPos = level.GetPlayer().GetPos();
 	sf::Vector2f relDist = playerPos - GetPos();
@@ -136,14 +149,13 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 		}
 
 		sprite.move(movement);
-		sprite.setRotation(TO_DEG*atan2f(movement.y, movement.x)+90);
+		sprite.setRotation(TO_DEG*atan2f(movement.y, movement.x));
 	} else if(state == IDLE) {
 		PlayAnim("idle", timePassed);
 	} else if(state == ALERT) {
-		//Change to alert animation later
-		PlayAnim("idle", timePassed);
+		PlayAnim("alert", timePassed);
 		//Rotate the sprite to face the player
-		sprite.setRotation(TO_DEG*atan2f(relDist.y, relDist.x)+90);
+		sprite.setRotation(TO_DEG*atan2f(relDist.y, relDist.x));
 	} else {
 		// ???
 		PlayAnim("idle", timePassed);

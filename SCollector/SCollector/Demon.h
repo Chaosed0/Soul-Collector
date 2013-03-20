@@ -24,7 +24,8 @@ private:
 		MOVING,
 		ALERT,
 		CHARGING,
-		RECOVERING
+		RECOVERING,
+		DEAD
 	} state;
 
 	/** Timer to keep track of how much time passed since the last action */

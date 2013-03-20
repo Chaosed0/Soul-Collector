@@ -13,6 +13,14 @@ class Movable : public Entity
 {
 public:
 	Movable(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox);
+
+	/**
+	 * Prompts this Movable to attack another.
+	 *
+	 * Simply subtracts this->attackPower from movable.health .
+	 * \param movable The Movable that is getting attacked.
+	 */
+	void Attack(Movable& movable);
 protected:
 	/** Movement direction of the entity*/
 	float moveAngle;

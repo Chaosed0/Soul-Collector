@@ -6,7 +6,7 @@
 
 const sf::Time Player::attackConeLife = sf::seconds(1.0f);
 const float Player::attackConeLength = 100.0f;
-const float Player::attackConeSweep = 2*PI/4;
+const float Player::attackConeSweep = 2*PI/8;
 const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
 const int Player::maxFatigue = 100;
@@ -40,9 +40,11 @@ void Player::AddLight(Level& level)
 
 AttackCone Player::GetAttackCone()
 {
+	//Conventionally, the positive x-axis is 0 degrees; however, here, the positive
+	// y-axis is 0 degrees so we have to rotate by 90 degrees
 	return AttackCone(attackConeLife, GetPos(), attackConeLength,
-		sprite.getRotation()*TO_RAD + attackConeSweep/2.0f,
-		sprite.getRotation()*TO_RAD - attackConeSweep/2.0f);
+		sprite.getRotation()*TO_RAD - attackConeSweep/2.0f,
+		sprite.getRotation()*TO_RAD + attackConeSweep/2.0f);
 }
 
 void Player::MoveLeft(bool start)
@@ -158,14 +160,14 @@ void Player::Update(const Level& level, const sf::Time& timePassed)
 		}
 		sprite.move(movement);
 
-		if(moveRight && moveUp && !moveLeft && !moveDown) sprite.setRotation(45);
-		else if(moveRight && moveDown && !moveLeft && !moveUp) sprite.setRotation(135);
-		else if(moveLeft && moveDown && !moveRight && !moveUp) sprite.setRotation(225);
-		else if(moveLeft && moveUp && !moveRight && !moveDown) sprite.setRotation(315);
-		else if(moveUp && !moveDown) sprite.setRotation(0);
-		else if(moveRight && !moveLeft) sprite.setRotation(90);
-		else if(moveDown && !moveUp) sprite.setRotation(180);
-		else if(moveLeft && !moveRight) sprite.setRotation(270);
+		if(moveRight && moveDown && !moveLeft && !moveUp) sprite.setRotation(45);
+		else if(moveLeft && moveDown && !moveRight && !moveUp) sprite.setRotation(135);
+		else if(moveLeft && moveUp && !moveRight && !moveDown) sprite.setRotation(225);
+		else if(moveRight && moveUp && !moveLeft && !moveDown) sprite.setRotation(315);
+		else if(moveRight && !moveLeft) sprite.setRotation(0);
+		else if(moveDown && !moveUp) sprite.setRotation(90);
+		else if(moveLeft && !moveRight) sprite.setRotation(180);
+		else if(moveUp && !moveDown) sprite.setRotation(270);
 	} else {
 		PlayAnim("idle", timePassed);
 	}
