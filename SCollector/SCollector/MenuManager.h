@@ -62,7 +62,6 @@ private:
 	// --- Button callbacks ---
 	void gotoSettings();
 	void gotoHelp();
-	void gotoMain();
 	void playGame();
 
 	/** Flag set to true when the active menu is visible */
@@ -80,7 +79,7 @@ private:
 	sfg::Button::Ptr settingsButton;
 	sfg::Button::Ptr helpButton;
 	sfg::Button::Ptr exitButton;
-	sfg::Box::Ptr selection;
+	sfg::Container::Ptr selection;
 
 	// --- No Selection
 	sfg::Box::Ptr noSelection;
@@ -88,12 +87,22 @@ private:
 	// --- Settings
 	sfg::Box::Ptr settingsMenu;
 	sfg::Label::Ptr settingsLabel;
-	sfg::Button::Ptr settingstoMain;
 
 	// --- Help
-	sfg::Box::Ptr helpMenu;
+	sfg::Table::Ptr helpMenu;
 	sfg::Label::Ptr helpLabel;
-	sfg::Button::Ptr helptoMain;
+	sfg::Label::Ptr goalLabel;
+	sfg::Label::Ptr controlsLabel;
+	sfg::Label::Ptr timeLabel;
+	sfg::Label::Ptr goalBody;
+	sfg::Label::Ptr timeBody;
+	sfg::Button::Ptr upKey;
+	sfg::Button::Ptr downKey;
+	sfg::Button::Ptr leftKey;
+	sfg::Button::Ptr rightKey;
+	sfg::Button::Ptr actKey;
+	sfg::Label::Ptr moveLabel;
+	sfg::Label::Ptr actLabel;
 
 	sfg::SFGUI gui;
 	sfg::Desktop desktop;

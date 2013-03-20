@@ -13,10 +13,10 @@ private:
 public:
 	Movable();
 
-	void moveUp();
-	void moveDown();
-	void moveLeft();
-	void moveRight();
+	// void moveUp();
+	// void moveDown();
+	// void moveLeft();
+	// void moveRight();
 	void attack();
 	
 	double getCurrentSpeed();

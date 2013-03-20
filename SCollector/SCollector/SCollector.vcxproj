@@ -15,6 +15,7 @@
     <ClCompile Include="AttackBox.cpp" />
     <ClCompile Include="CircleMove.cpp" />
     <ClCompile Include="Demon.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HUD.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="Activatable.h" />
     <ClInclude Include="AttackBox.h" />
     <ClInclude Include="Demon.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HUD.h" />
