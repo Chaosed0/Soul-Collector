@@ -22,7 +22,7 @@
 #include "Utility.h"
 
 #include "Entity.h"
-#include "AttackBox.h"
+#include "AttackCone.h"
 class Activatable;
 class Movable;
 
@@ -119,6 +119,12 @@ public:
 	 * \param light The light to be added.
 	 */
 	void AddLight(const LightSource& light);
+
+	/**
+	 * Adds an attack to the level for processing.
+	 * \param attack The attack to be added.
+	 */
+	void AddAttack(const AttackCone& attack);
 private:
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
@@ -203,7 +209,7 @@ private:
 	std::vector<Activatable*> activatables;
 	std::vector<Movable*> enemies;
 	/** This one's a list because things will be added and removed often and unpredictably */
-	std::list<AttackBox> attacks;
+	std::list<AttackCone> attacks;
 
 	/** A list of lights in the level, only to be used for drawing */
 	std::vector<const LightSource*> lights;

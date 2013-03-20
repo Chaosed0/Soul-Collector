@@ -14,6 +14,7 @@
 #include "Movable.h"
 #include "LightSource.h"
 class Level;
+class AttackCone;
 
 class Player : public Movable 
 {
@@ -64,6 +65,12 @@ public:
 	void AddLight(Level& level);
 
 	/**
+	 * Gets the player's AttackCone.
+	 * \return An AttackCone representing the area the player would hit.
+	 */
+	AttackCone Player::GetAttackCone();
+
+	/**
 	 * Updates the player's position.
 	 * This function should be called once per frame.
 	 */
@@ -90,6 +97,10 @@ private:
 	/** Amount of fatigue the player has - directly proportional to the time he can run. */
 	int fatigue;
 
+	/** Time-to-live for any attack the player initiates. */
+	static const sf::Time attackConeLife;
+	static const float attackConeLength;
+	static const float attackConeSweep;
 	/** Regular walking speed, in pixels per second. */
 	static const float regSpeed;
 	/** Running speed, in pixels per second. */

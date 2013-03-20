@@ -60,7 +60,10 @@
     <ClCompile Include="Activatable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AttackBox.cpp">
+    <ClCompile Include="Door.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackCone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,7 +104,16 @@
     <ClInclude Include="Activatable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AttackBox.h">
+    <ClInclude Include="Door.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HudObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackCone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

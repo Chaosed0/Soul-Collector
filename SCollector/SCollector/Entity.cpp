@@ -73,6 +73,22 @@ bool Entity::IsColliding(const Entity& entity) const
 	return IsColliding(entCollisionBox);
 }
 
+bool Entity::IsColliding(const AttackCone& cone) const
+{
+	//The entity is colliding with the cone if any of its four corners are within
+	// the cone
+	// (not strictly true, the cone might be inside the entity, but we ignore that possibility)
+	sf::Vector2f topLeft(GetPos());
+	sf::Vector2f topRight(topLeft.x+collisionBox.height, topLeft.y);
+	sf::Vector2f botLeft(topLeft.x, topLeft.y+collisionBox.width);
+	sf::Vector2f botRight(topRight.x, botLeft.y);
+
+	return cone.Contains(topLeft) ||
+		cone.Contains(topRight) ||
+		cone.Contains(botLeft) ||
+		cone.Contains(botRight);
+}
+
 bool Entity::ModifyAnimSet(const std::string& animName, int begin, int end, bool loop)
 {
 	//Make sure the animation exists already

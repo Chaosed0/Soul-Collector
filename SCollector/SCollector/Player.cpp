@@ -2,7 +2,11 @@
 
 #include "Player.h"
 #include "Level.h"
+#include "AttackCone.h"
 
+const sf::Time Player::attackConeLife = sf::seconds(1.0f);
+const float Player::attackConeLength = 100.0f;
+const float Player::attackConeSweep = 2*PI/4;
 const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
 const int Player::maxFatigue = 100;
@@ -32,6 +36,13 @@ void Player::AddLight(Level& level)
 {
 	level.AddLight(lighter);
 	level.AddLight(ambientLight);
+}
+
+AttackCone Player::GetAttackCone()
+{
+	return AttackCone(attackConeLife, GetPos(), attackConeLength,
+		sprite.getRotation()*TO_RAD + attackConeSweep/2.0f,
+		sprite.getRotation()*TO_RAD - attackConeSweep/2.0f);
 }
 
 void Player::MoveLeft(bool start)

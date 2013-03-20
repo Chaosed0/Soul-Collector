@@ -429,6 +429,11 @@ void Level::AddLight(const LightSource& light)
 	lights.push_back(&light);
 }
 
+void Level::AddAttack(const AttackCone& attack)
+{
+	attacks.push_back(attack);
+}
+
 sf::Vector2i Level::GetSize() const
 {
 	return sf::Vector2i(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
@@ -457,6 +462,15 @@ void Level::Update(const sf::Time& timePassed)
 			printf("Player colliding with enemy %d\n", i);
 		}
 	}
+	std::list<AttackCone>::iterator p = attacks.begin();
+	while(p != attacks.end()) {
+		std::list<AttackCone>::iterator temp = p;
+		p++;
+		temp->Update(*this, timePassed);
+		if(temp->IsExpired()) {
+			attacks.erase(temp);
+		}
+	}
 
 	//The owners of the lights should take care of updating them, we're just
 	// going to draw them to the overlay texture
@@ -478,6 +492,11 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	}
 	for(unsigned int i = 0; i < enemies.size(); i++) {
 		target.draw(*enemies[i], state);
+	}
+	for(std::list<AttackCone>::const_iterator p = attacks.begin(); p != attacks.end(); p++) {
+		sf::ConvexShape triangle = p->GetTriangle();
+		triangle.setPosition(player.GetPos());
+		target.draw(triangle, state);
 	}
 
 	//Draw the player

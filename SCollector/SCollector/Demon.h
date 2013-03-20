@@ -11,7 +11,6 @@
 #include "Utility.h"
 
 #define SPOT_RADIUS 200
-#define CHARGE_RADIUS 100
 
 class Demon : public Movable
 {
@@ -24,7 +23,8 @@ private:
 		IDLE,
 		MOVING,
 		ALERT,
-		CHARGING
+		CHARGING,
+		RECOVERING
 	} state;
 
 	/** Timer to keep track of how much time passed since the last action */
@@ -34,6 +34,8 @@ private:
 	static const sf::Time alertTime;
 	/** How much time the monster is charging before it stops */
 	static const sf::Time chargeTime;
+	/** How much time the monster is stunned after it charges */
+	static const sf::Time stunTime;
 	/** Wandering speed, in pixels per second */
 	static const float wanderSpeed;
 	/** Charging speed, in pixels per second */

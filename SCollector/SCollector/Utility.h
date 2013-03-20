@@ -6,6 +6,7 @@
 
 #define PI 3.14159f
 #define TO_DEG 57.2958279f
+#define TO_RAD 0.174532778f
 
 float magnitude(const sf::Vector2f& vec);
 

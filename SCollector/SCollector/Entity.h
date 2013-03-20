@@ -14,6 +14,7 @@
 #include <SFML/Graphics.hpp>
 
 class Level;
+class AttackCone;
 
 class Entity : public sf::Drawable
 {
@@ -53,7 +54,14 @@ public:
 	 * \param box The box to check collisions against.
 	 * \return True if this entity is colliding with the other, false otherwise.
 	 */
-	bool Entity::IsColliding(const sf::IntRect& box) const;
+	bool IsColliding(const sf::IntRect& box) const;
+
+	/**
+	 * Does a collision check on this entity and an attack cone.
+	 * \param cone The cone to check collisions against.
+	 * \return True if this entity is colliding with the cone, false otherwise.
+	 */
+	bool IsColliding(const AttackCone& cone) const;
 protected:
 	sf::IntRect collisionBox;
 	sf::Sprite sprite;

@@ -125,12 +125,15 @@ void Game::Event()
 				case sf::Keyboard::F :
 					level.GetPlayer().ToggleLighter();
 					break;
+				case sf::Keyboard::E :
+					level.DoActivate();
+					break;
+				case sf::Keyboard::Space :
+					level.AddAttack(level.GetPlayer().GetAttackCone());
+					break;
 				case sf::Keyboard::LShift :
 				case sf::Keyboard::RShift :
 					level.GetPlayer().Sprint(true);
-					break;
-				case sf::Keyboard::Space :
-					level.DoActivate();
 					break;
 				case sf::Keyboard::Escape :
 					menus.SetVisible(true);

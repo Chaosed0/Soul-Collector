@@ -2,10 +2,11 @@
 #include "Demon.h"
 #include "Level.h"
 
-const sf::Time Demon::alertTime = sf::milliseconds(1500);
+const sf::Time Demon::alertTime = sf::milliseconds(1000);
 const sf::Time Demon::chargeTime = sf::milliseconds(5000);
+const sf::Time Demon::stunTime = sf::milliseconds(500);
 const float Demon::wanderSpeed = 60.0f;
-const float Demon::chargeSpeed = 300.0f;
+const float Demon::chargeSpeed = 360.0f;
 
 Demon::Demon(sf::Vector2f pos)
 	: Movable("assets/img/zombie_topdown.png", sf::IntRect(20, 20, 27, 23), sf::IntRect(0, 0, 64, 64))
@@ -34,28 +35,32 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 	
 	if(state == CHARGING && timer > chargeTime) {
 		//If the demon's charged for long enough, stop charging
+		state = RECOVERING;
+		//printf("Demon charge timer expired\n");
+		timer = sf::Time::Zero;
+	} else if(state == RECOVERING && timer > stunTime) {
+		//If the monster hit a wall and is finished recovering, go back to idle
 		state = IDLE;
-		printf("Demon charge timer expired\n");
 		timer = sf::Time::Zero;
 	}
 
-	if((state != ALERT && state != CHARGING) && dist < SPOT_RADIUS) {
+	if((state == IDLE || state == MOVING) && dist < SPOT_RADIUS) {
 		//If the player is close to the demon, put on alert
 		state = ALERT;
-		printf("Demon is alerted\n");
+		//printf("Demon is alerted\n");
 		timer = sf::Time::Zero;
-	} else if((state != CHARGING && dist < CHARGE_RADIUS) || (state == ALERT && timer > alertTime)) {
+	} else if(state == ALERT && timer > alertTime) {
 		//If the player was close to the demon for too long, or got inside their
 		// charge radius, start charging at where the player currently is
 		state = CHARGING;
 		moveAngle = atan2f(relDist.y, relDist.x);
-		printf("Demon is charging player after %g seconds\n", timer.asSeconds());
+		//printf("Demon is charging player after %g seconds\n", timer.asSeconds());
 		timer = sf::Time::Zero;
 	} else if(state == ALERT && dist > SPOT_RADIUS) {
 		//If the player moved out of the monster's visibility range, then go back to
 		// idling
 		state = IDLE;
-		printf("Demon is no longer alerted\n");
+		//printf("Demon is no longer alerted\n");
 		timer = sf::Time::Zero;
 	}
 	
@@ -146,7 +151,7 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 
 	//If the monster was charging and collided into a wall, stop charging
 	if(state == CHARGING && (movement.x == 0 || movement.y == 0)) {
-		state = IDLE;
+		state = RECOVERING;
 		timer = sf::Time::Zero;
 	}
 
