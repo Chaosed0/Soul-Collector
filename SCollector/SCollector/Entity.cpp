@@ -3,7 +3,7 @@
 #include "Level.h"
 
 Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
-	: animManager(animBox)
+	: animManager(animBox, soundManager)
 {
 	//Set default values
 	this->collisionBox = collisionBox;

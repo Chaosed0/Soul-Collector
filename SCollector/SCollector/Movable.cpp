@@ -10,6 +10,11 @@ Movable::Movable(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animB
 
 void Movable::Attack(Movable& movable)
 {
-	movable.health -= attackPower;
-	//printf("Hit monster\n");
+	movable.RemoveHealth(attackPower);
+	//printf("Hit Movable\n");
+}
+
+void Movable::RemoveHealth(int amount)
+{
+	health -= amount;
 }

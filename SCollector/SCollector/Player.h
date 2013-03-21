@@ -71,6 +71,22 @@ public:
 	AttackCone Player::GetAttackCone();
 
 	/**
+	 * Makes the player hit another Movable with his attack.
+	 * 
+	 * Overriden so we can play some sounds.
+	 * \param movable The Movable to attack.
+	 */
+	void Attack(Movable& movable);
+
+	/**
+	 * Makes the player take damage from another attack.
+	 *
+	 * Overriden so we can play a sound.
+	 * \param amount The amount of health to remove.
+	 */
+	void RemoveHealth(int amount);
+
+	/**
 	 * Updates the player's position.
 	 * This function should be called once per frame.
 	 */

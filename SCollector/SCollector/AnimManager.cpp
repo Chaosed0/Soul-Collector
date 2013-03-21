@@ -1,9 +1,11 @@
 
 #include "AnimManager.h"
+#include "SoundManager.h"
 
 const sf::Time AnimManager::defaultAnimDelay = sf::microseconds(50000);
 
-AnimManager::AnimManager(const sf::IntRect& animBox)
+AnimManager::AnimManager(const sf::IntRect& animBox, SoundManager& soundManager)
+	: soundManager(soundManager)
 {
 	this->animBox = animBox;
 	curAnim = 0;
@@ -50,6 +52,7 @@ bool AnimManager::AddAnimSet(const std::string& animName, int begin, int end, bo
 		animSetBegin.push_back(begin);
 		animSetEnd.push_back(end);
 		animLoop.push_back(loop);
+		animSound.push_back(std::vector<std::string>());
 		lastAnimAdded++;
 		return true;
 	}
@@ -76,12 +79,16 @@ bool AnimManager::StepAnim()
 	}
 	if(curAnimFrame == animSetEnd[curAnim] && animLoop[curAnim]) {
 		curAnimFrame = animSetBegin[curAnim];
+		if(!animSound[curAnim].empty())
+			soundManager.PlaySound(animSound[curAnim][0]);
 		return true;
 		//printf("End, loop, reset to %d\n", curAnimFrame);
 	}
 	else {
 		//printf("Frame %d\n", curAnimFrame);
 		curAnimFrame = (curAnimFrame+1)%totalFrames;
+		if(!animSound[curAnim].empty())
+			soundManager.PlaySound(animSound[curAnim][0]);
 		return true;
 	}
 }
@@ -112,4 +119,14 @@ sf::IntRect AnimManager::GetCurAnimRect()
 	if(curAnimFrameRect.top+curAnimFrameRect.height > sheetSize.y)
 		return animBox;
 	return curAnimFrameRect;
+}
+
+bool AnimManager::AttachSound(const std::string& animName, const std::string& sound)
+{
+	if(animNames.find(animName) != animNames.end()) {
+		int anim = animNames[animName];
+		animSound[anim].push_back(sound);
+		return true;
+	}
+	return false;
 }

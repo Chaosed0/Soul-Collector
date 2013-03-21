@@ -20,6 +20,9 @@ Demon::Demon(sf::Vector2f pos)
 	animManager.AddAnimSet("alert", 0, 3, true);
 	animManager.AddAnimSet("walk", 4, 11, true);
 	animManager.AddAnimSet("death", 21, 27, false);
+
+	soundManager.AddSound("assets/sound/charge.wav", "charge", true);
+	soundManager.AddSound("assets/sound/alert.wav", "alert", false);
 }
 
 void Demon::Attack(Movable& movable)
@@ -28,6 +31,7 @@ void Demon::Attack(Movable& movable)
 		Movable::Attack(movable);
 		state = RECOVERING;
 		timer = sf::Time::Zero;
+		soundManager.StopSound("charge");
 	}
 }
 
@@ -44,7 +48,7 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 		return;
 	}
 
-	//Check if the demon's been spotted by the player
+	//Check if the player's been spotted by the demon
 	sf::Vector2f playerPos = level.GetPlayer().GetPos();
 	sf::Vector2f relDist = playerPos - GetPos();
 	float dist = magnitude(relDist);
@@ -58,6 +62,7 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 	if(state == CHARGING && timer > chargeTime) {
 		//If the demon's charged for long enough, stop charging
 		state = RECOVERING;
+		soundManager.StopSound("charge");
 		//printf("Demon charge timer expired\n");
 		timer = sf::Time::Zero;
 	} else if(state == RECOVERING && timer > stunTime) {
@@ -69,12 +74,14 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 	if((state == IDLE || state == MOVING) && dist < SPOT_RADIUS) {
 		//If the player is close to the demon, put on alert
 		state = ALERT;
+		soundManager.PlaySound("alert");
 		//printf("Demon is alerted\n");
 		timer = sf::Time::Zero;
 	} else if(state == ALERT && timer > alertTime) {
 		//If the player was close to the demon for too long, or got inside their
 		// charge radius, start charging at where the player currently is
 		state = CHARGING;
+		soundManager.PlaySound("charge");
 		moveAngle = atan2f(relDist.y, relDist.x);
 		//printf("Demon is charging player after %g seconds\n", timer.asSeconds());
 		timer = sf::Time::Zero;
@@ -172,6 +179,7 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 
 	//If the monster was charging and collided into a wall, stop charging
 	if(state == CHARGING && (movement.x == 0 || movement.y == 0)) {
+		soundManager.StopSound("charge");
 		state = RECOVERING;
 		timer = sf::Time::Zero;
 	}

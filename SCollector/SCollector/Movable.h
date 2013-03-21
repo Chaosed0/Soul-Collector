@@ -21,6 +21,14 @@ public:
 	 * \param movable The Movable that is getting attacked.
 	 */
 	virtual void Attack(Movable& movable);
+
+	/**
+	 * Removes health from this movable.
+	 *
+	 * Prefer calling this over simply removing from health so that
+	 *  the other movable can play a sound or something.
+	 */
+	virtual void RemoveHealth(int amount);
 protected:
 	/** Movement direction of the entity*/
 	float moveAngle;

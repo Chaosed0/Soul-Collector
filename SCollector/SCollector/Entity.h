@@ -14,6 +14,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "AnimManager.h"
+#include "SoundManager.h"
 
 class Level;
 class AttackCone;
@@ -77,6 +78,8 @@ protected:
 
 	/** Animation Manager. */
 	AnimManager animManager;
+	/** Sound manager. */
+	SoundManager soundManager;
 
 	/**
 	 * Plays an animation.

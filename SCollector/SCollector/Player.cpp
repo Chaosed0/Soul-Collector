@@ -28,6 +28,14 @@ Player::Player(const sf::Vector2f& pos)
 	// or something?)
 	animManager.AddAnimSet("walk", 1, 0, true);
 
+	//Initialize sounds
+	soundManager.AddSound("assets/sound/test.wav", "init", false);
+	soundManager.AddSound("assets/sound/swoosh.wav", "swing", false);
+	soundManager.AddSound("assets/sound/thwack.wav", "hit", false);
+	soundManager.AddSound("assets/sound/ow.wav", "got_hit", false);
+
+	soundManager.PlaySound("init");
+
 	lighter.Toggle();
 	ambientLight.Toggle();
 }
@@ -40,11 +48,23 @@ void Player::AddLight(Level& level)
 
 AttackCone Player::GetAttackCone()
 {
-	//Conventionally, the positive x-axis is 0 degrees; however, here, the positive
-	// y-axis is 0 degrees so we have to rotate by 90 degrees
+	soundManager.PlaySound("swing");
+
 	return AttackCone(attackConeLife, GetPos(), attackConeLength,
 		sprite.getRotation()*TO_RAD - attackConeSweep/2.0f,
 		sprite.getRotation()*TO_RAD + attackConeSweep/2.0f);
+}
+
+void Player::Attack(Movable& movable)
+{
+	Movable::Attack(movable);
+	soundManager.PlaySound("hit");
+}
+
+void Player::RemoveHealth(int amount)
+{
+	Movable::RemoveHealth(amount);
+	soundManager.PlaySound("got_hit");
 }
 
 void Player::MoveLeft(bool start)
