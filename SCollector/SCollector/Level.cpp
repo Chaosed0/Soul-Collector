@@ -468,7 +468,8 @@ void Level::Update(const sf::Time& timePassed)
 	for(unsigned int i = 0; i < enemies.size(); i++) {
 		enemies[i]->Update(*this, timePassed);
 		if(player.IsColliding(*enemies[i]) || enemies[i]->IsColliding(player)) {
-			printf("Player colliding with enemy %d\n", i);
+			enemies[i]->Attack(player);
+			//printf("Player colliding with enemy %d\n", i);
 		}
 	}
 

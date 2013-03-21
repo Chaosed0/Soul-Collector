@@ -22,6 +22,15 @@ Demon::Demon(sf::Vector2f pos)
 	AddAnimSet("death", 21, 27, false);
 }
 
+void Demon::Attack(Movable& movable)
+{
+	if(state == CHARGING) {
+		Movable::Attack(movable);
+		state = RECOVERING;
+		timer = sf::Time::Zero;
+	}
+}
+
 void Demon::Update(const Level& level, const sf::Time& timePassed)
 {
 	//First, before anything, check if the demon is dead

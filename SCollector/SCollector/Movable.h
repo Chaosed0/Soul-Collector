@@ -20,7 +20,7 @@ public:
 	 * Simply subtracts this->attackPower from movable.health .
 	 * \param movable The Movable that is getting attacked.
 	 */
-	void Attack(Movable& movable);
+	virtual void Attack(Movable& movable);
 protected:
 	/** Movement direction of the entity*/
 	float moveAngle;

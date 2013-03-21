@@ -18,6 +18,13 @@ public:
 	Demon(sf::Vector2f pos);
 
 	virtual void Update(const Level& level, const sf::Time& timePassed);
+
+	/**
+	 * Simply checks if the demon is currently charging (otherwise it can't
+	 *  deal damage) and calls Movable::Attack if so
+	 * \param movable The movable the demon is attacking.
+	 */
+	void Attack(Movable& movable);
 private:
 	enum {
 		IDLE,
