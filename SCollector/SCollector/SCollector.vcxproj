@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Activatable.cpp" />
+    <ClCompile Include="AnimManager.cpp" />
     <ClCompile Include="AttackCone.cpp" />
     <ClCompile Include="CircleMove.cpp" />
     <ClCompile Include="Demon.cpp" />
@@ -31,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Activatable.h" />
+    <ClInclude Include="AnimManager.h" />
     <ClInclude Include="AttackCone.h" />
     <ClInclude Include="Demon.h" />
     <ClInclude Include="Door.h" />

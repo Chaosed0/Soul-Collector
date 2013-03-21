@@ -11,7 +11,7 @@ Torch::Torch(const sf::Vector2f& pos)
 	SetPos(pos);
 	light.SetPos(pos);
 
-	AddAnimSet("on", 1, 7, true);
+	animManager.AddAnimSet("on", 1, 7, true);
 }
 
 void Torch::Update(const Level& level, const sf::Time& timePassed)

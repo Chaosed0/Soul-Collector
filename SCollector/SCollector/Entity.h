@@ -13,6 +13,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "AnimManager.h"
+
 class Level;
 class AttackCone;
 
@@ -63,95 +65,30 @@ public:
 	 */
 	bool IsColliding(const AttackCone& cone) const;
 protected:
+	/** Collision rectangle. */
 	sf::IntRect collisionBox;
+	/** Sprite to draw the texture on screen. */
 	sf::Sprite sprite;
+	/** Texture representing this entity. */
 	sf::Texture texture;
 
+	/** Flag set to true when the entity should be drawn to screen. */
 	bool visible;
 
-	/**
-	 * Adds a set of frames to the animation sets of this entity.
-	 * begin and end denote the number of frames to begin and end at;
-	 * if the image wraps around, simply number them like so:
-	 *
-	 * 0 1 2 3
-	 * 4 5 6 7
-	 *
-	 * NOTE: The animation set "idle" is added with begin==0, end==0
-	 *  on the creation of an entity.
-	 * \param animName The name of this animation.
-	 * \param begin The first frame of the animation.
-	 * \param end The last frame of the animation.
-	 * \param loop Flag that makes the animation loop when set to true.
-	 * \return True if the animation was successfully added, false otherwise.
-	 */
-	bool AddAnimSet(const std::string& animName, int begin, int end, bool loop = false);
-
-	/**
-	 * Changes the properties of an existing animation.
-	 * If begin or end are set to <0, then they remain unchanged.
-	 *
-	 * \param animName The name of this animation.
-	 * \param begin The first frame of the animation.
-	 * \param end The last frame of the animation.
-	 * \param loop Flag that makes the animation loop when set to true.
-	 * \return True if the animation was successfully modified, false otherwise.
-	 */
-	bool ModifyAnimSet(const std::string& animName, int begin, int end, bool loop = false);
+	/** Animation Manager. */
+	AnimManager animManager;
 
 	/**
 	 * Plays an animation.
 	 *
-	 * If the animation is not currently the one that's playing, then StartAnim(anim)
-	 *  is called; otherwise, StepAnim() is called.
-	 * This ought to be called every time Update() is called, or the clock might get
-	 *  out of sync.
+	 * Needed because AnimManager::PlayAnim can't set the sprite's subrectangle.
 	 * \param anim The name of the animation to play.
-	 * \param timePassed The amount of time since the last time this function was called.
+	 * \param timePassed The amount of time passed since the last call to this function.
 	 */
 	void PlayAnim(const std::string& anim, const sf::Time& timePassed);
+
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
-
-	/**
-	 * Starts the entity playing the animation, if it exists.
-	 * The animation set should have been added using AddAnimSet first.
-	 * \param animName The name of the animation to start playing.
-	 * \return True if the animation existed, false otherwise.
-	 */
-	bool StartAnim(const std::string& animName);
-
-	/**
-	 * Steps the current animation forward one frame.
-	 * \return False if there is no current animation OR the current
-	 *  animation finished; false otherwise.
-	 */
-	bool StepAnim();
-	
-	/**
-	 * Gets the current animation frame. 
-	 * \return The sub-rectangle of the image where the current frame is located.
-	 */
-	sf::IntRect GetCurAnimRect();
-
-	sf::IntRect animBox;
-	sf::IntRect sheetSize;
-	std::map<std::string, int> animNames;
-	std::vector<int> animSetBegin;
-	std::vector<int> animSetEnd;
-	std::vector<bool> animLoop;
-	int curAnim;
-	int curAnimFrame;
-	int lastAnim;
-	int totalFrames;
-
-	/** Time passed since last animation frame was played */
-	sf::Time animTimer;
-	/** Time between animation frames to wait */
-	sf::Time animDelay;
-
-	/** The default animation delay. */
-	static const sf::Time defaultAnimDelay;
 };
 
 #endif

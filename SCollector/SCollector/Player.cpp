@@ -26,7 +26,7 @@ Player::Player(const sf::Vector2f& pos)
 
 	//Initialize animations (maybe offload some of this data to a text file
 	// or something?)
-	AddAnimSet("walk", 1, 0, true);
+	animManager.AddAnimSet("walk", 1, 0, true);
 
 	lighter.Toggle();
 	ambientLight.Toggle();

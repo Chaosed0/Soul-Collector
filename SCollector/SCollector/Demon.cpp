@@ -16,10 +16,10 @@ Demon::Demon(sf::Vector2f pos)
 
 	timer = sf::Time::Zero;
 
-	ModifyAnimSet("idle", 0, 0, true);
-	AddAnimSet("alert", 0, 3, true);
-	AddAnimSet("walk", 4, 11, true);
-	AddAnimSet("death", 21, 27, false);
+	animManager.ModifyAnimSet("idle", 0, 0, true);
+	animManager.AddAnimSet("alert", 0, 3, true);
+	animManager.AddAnimSet("walk", 4, 11, true);
+	animManager.AddAnimSet("death", 21, 27, false);
 }
 
 void Demon::Attack(Movable& movable)
