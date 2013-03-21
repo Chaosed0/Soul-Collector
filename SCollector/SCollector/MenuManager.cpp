@@ -45,8 +45,8 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 		sf::Vector2f(10.f,10.f));
 	mainLayout->Attach(selection,
 		sf::Rect<sf::Uint32>(1,5,2,4),
-		sfg::Table::FILL | sfg::Table::EXPAND,
-		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL,
+		sfg::Table::FILL,
 		sf::Vector2f(10.f,10.f));
 
 	menus[0]->Add(mainLayout);
@@ -60,8 +60,10 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	goalLabel = sfg::Label::Create("Goal");
 	controlsLabel = sfg::Label::Create("Controls");
 	timeLabel = sfg::Label::Create("Time is Running Out");
-	goalBody = sfg::Label::Create("");
-	timeBody = sfg::Label::Create("");
+	goalBody = sfg::Label::Create("Find your way through the labyrinthine purgatory to find the shattered pieces of your soul. Use your lighter sparingly and get around the beasts by either attacking them head on or utilizing traps and doors. ");
+	goalBody->SetLineWrap(true);
+	timeBody = sfg::Label::Create("You are slowly becoming a beast. Being beast-like grants you heightened strength, but once you fully turn, you can never leave purgatory. Utilizing this extra strength speeds up the process as well.");
+	timeBody->SetLineWrap(true);
 	upKey = sfg::Button::Create("W");
 	downKey = sfg::Button::Create("S");
 	leftKey = sfg::Button::Create("A");
@@ -69,6 +71,72 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	actKey = sfg::Button::Create("Space");
 	moveLabel = sfg::Label::Create("Move");
 	actLabel = sfg::Label::Create("Action/Attack");
+
+	helpMenu->Attach(helpLabel,
+		sf::Rect<sf::Uint32>(0,0,5,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(goalLabel,
+		sf::Rect<sf::Uint32>(0,1,1,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(controlsLabel,
+		sf::Rect<sf::Uint32>(1,3,4,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(timeLabel,
+		sf::Rect<sf::Uint32>(1,1,4,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(goalBody,
+		sf::Rect<sf::Uint32>(0,2,1,5),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(timeBody,
+		sf::Rect<sf::Uint32>(1,2,4,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(upKey,
+		sf::Rect<sf::Uint32>(2,4,1,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(downKey,
+		sf::Rect<sf::Uint32>(2,5,1,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(leftKey,
+		sf::Rect<sf::Uint32>(1,5,1,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(rightKey,
+		sf::Rect<sf::Uint32>(3,5,1,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(actKey,
+		sf::Rect<sf::Uint32>(1,6,3,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(moveLabel,
+		sf::Rect<sf::Uint32>(4,4,1,2),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
+	helpMenu->Attach(actLabel,
+		sf::Rect<sf::Uint32>(4,6,1,1),
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::FILL | sfg::Table::EXPAND,
+		sf::Vector2f(10.f,10.f));
 
 	for(unsigned int i = 0; i < menus.size(); i++)
 		menus[i]->SetRequisition(sf::Vector2f((float)winWidth, (float)winHeight));
@@ -119,8 +187,8 @@ void MenuManager::gotoSettings()
 	selection = settingsMenu;
 	mainLayout->Attach(selection,
 		sf::Rect<sf::Uint32>(1,5,2,4),
-		sfg::Table::FILL | sfg::Table::EXPAND,
-		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::EXPAND,
+		sfg::Table::EXPAND,
 		sf::Vector2f(10.f,10.f));
 	curWindow->Show(true);
 
@@ -134,8 +202,8 @@ void MenuManager::gotoHelp()
 	selection = helpMenu;
 	mainLayout->Attach(selection,
 		sf::Rect<sf::Uint32>(1,5,2,4),
-		sfg::Table::FILL | sfg::Table::EXPAND,
-		sfg::Table::FILL | sfg::Table::EXPAND,
+		sfg::Table::EXPAND,
+		sfg::Table::EXPAND,
 		sf::Vector2f(10.f,10.f));
 	curWindow->Show(true);
 
