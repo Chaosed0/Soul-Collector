@@ -29,10 +29,10 @@ Player::Player(const sf::Vector2f& pos)
 	animManager.AddAnimSet("walk", 1, 0, true);
 
 	//Initialize sounds
-	soundManager.AddSound("assets/sound/test.wav", "init", false);
-	soundManager.AddSound("assets/sound/swoosh.wav", "swing", false);
-	soundManager.AddSound("assets/sound/thwack.wav", "hit", false);
-	soundManager.AddSound("assets/sound/ow.wav", "got_hit", false);
+	soundManager.AddSound("assets/sound/test.ogg", "init", false);
+	soundManager.AddSound("assets/sound/swoosh.ogg", "swing", false);
+	soundManager.AddSound("assets/sound/thwack.ogg", "hit", false);
+	soundManager.AddSound("assets/sound/ow.ogg", "got_hit", false);
 
 	soundManager.PlaySound("init");
 

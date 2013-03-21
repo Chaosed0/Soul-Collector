@@ -21,8 +21,8 @@ Demon::Demon(sf::Vector2f pos)
 	animManager.AddAnimSet("walk", 4, 11, true);
 	animManager.AddAnimSet("death", 21, 27, false);
 
-	soundManager.AddSound("assets/sound/charge.wav", "charge", true);
-	soundManager.AddSound("assets/sound/alert.wav", "alert", false);
+	soundManager.AddSound("assets/sound/charge.ogg", "charge", true);
+	soundManager.AddSound("assets/sound/alert.ogg", "alert", false);
 }
 
 void Demon::Attack(Movable& movable)
