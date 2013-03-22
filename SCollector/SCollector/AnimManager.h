@@ -116,7 +116,7 @@ private:
 	std::vector<int> animSetEnd;
 	/** Whether or not animations should loop. */
 	std::vector<bool> animLoop;
-	/** Sounds associated with the animations. */
+	/** Sounds associated with the animation frames. */
 	std::vector<std::vector<std::string>> animSound;
 	/** Current animation that is playing. */
 	int curAnim;

@@ -7,9 +7,12 @@
  */
 
 #include "Game.h"
+#include "Utility.h"
 
 int main(int argc, char* argv[])
 {
+	initRandom();
+
 	Game game;
 	return game.Run();
 }

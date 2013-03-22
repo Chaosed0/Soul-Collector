@@ -38,6 +38,8 @@ private:
 	/** Timer to keep track of how much time passed since the last action */
 	sf::Time timer;
 
+	//sf::ConvexShape shape;
+
 	/** How much time the monster is alerted before it decides to charge */
 	static const sf::Time alertTime;
 	/** How much time the monster is charging before it stops */

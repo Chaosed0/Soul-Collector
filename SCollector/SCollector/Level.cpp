@@ -5,12 +5,13 @@
  */
 
 #include "Level.h"
-#include "Player.h"
+#include "Entity.h"
 #include "Key.h"
 #include "Torch.h"
 #include "Demon.h"
 #include "Activatable.h"
 #include "Movable.h"
+#include "Stairs.h"
 
 Level::Level()
 	: player(sf::Vector2f())
@@ -18,24 +19,88 @@ Level::Level()
 	lyrCollision = NULL;
 	tsetCollision = NULL;
 	spawn.x = spawn.y = -1;
+	isActive = false;
+	activeStairs = -1;
 }
 
-Level::Level(std::string mapName)
+Level::Level(const std::string& mapName, const std::string& spawnName)
 	: player(sf::Vector2f())
 {
 	lyrCollision = NULL;
 	tsetCollision = NULL;
 	spawn.x = spawn.y = -1;
+	activeStairs = -1;
 
-	Parse(mapName);
+	LoadMap(mapName, spawnName);
+}
 
-	//Now that we've got the map, draw it to a texture
-	//Create the texture and attach the sprite to it
-	tilemapTexture.create(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
-	//Now draw to the texture
-	for(int i = 0; i < map.GetNumLayers(); i++)
+bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
+{
+	if(!Parse(mapName, spawnName)) {
+		return false;
+	}
+	InitTextures();
+	DrawMap();
+
+	//Create the light overlay texture and sprite
+	lightTexture.clear();
+	lightTexture.display();
+	lightSprite.setTexture(lightTexture.getTexture());
+	//Add the player's light
+	player.AddLight(*this);
+
+	//Set the player's position to the spawn
+	player.SetPos(spawn);
+
+	//The level is now active and can be used.
+	isActive = true;
+	
+	return true;
+}
+
+void Level::UnloadMap()
+{
+	//Destroy all pointer vectors
+	for(unsigned int i = 0; i < activatables.size(); i++)
+		delete(activatables[i]);
+	activatables.clear();
+	for(unsigned int i = 0; i < enemies.size(); i++)
+		delete(enemies[i]);
+	enemies.clear();
+	//We don't need to delete the lights; since they're all owned by some entity or another,
+	// they'll get deleted there instead
+	lights.clear();
+	//Remove all attack cones
+	playerAttacks.clear();
+	enemyAttacks.clear();
+	//Clear the collision map
+	collisionMap.clear();
+	texTilesets.clear();
+	sprTilesets.clear();
+	//Don't delete the collision tileset/layer, just set them to null
+	tsetCollision = NULL;
+	lyrCollision = NULL;
+	//Clear the spawn
+	spawn.x = spawn.y = -1;
+	//Clear active stairs
+	activeStairs = -1;
+	//Clear the map
+	delete(map);
+	map = NULL;
+}
+
+void Level::InitTextures()
+{
+	tilemapTexture.create(map->GetWidth()*map->GetTileWidth(), map->GetHeight()*map->GetTileHeight());
+	lightTexture.create(map->GetWidth()*map->GetTileWidth(), map->GetHeight()*map->GetTileHeight());
+}
+
+void Level::DrawMap()
+{
+	//Draw to the tilemap texture
+	for(int i = 0; i < map->GetNumLayers(); i++)
 	{
-		const Tmx::Layer *layer = map.GetLayer(i);
+		const Tmx::Layer *layer = map->GetLayer(i);
 
 		//Render tiles of the layer
 		for(int y = 0; y < layer->GetHeight(); y++)
@@ -49,7 +114,7 @@ Level::Level(std::string mapName)
 				if(tilesetIdx >= 0)
 				{
 					//Otherwise, get the sprite representing that tileset
-					//const Tmx::Tileset *tileset = map.GetTileset(tilesetIdx);
+					//const Tmx::Tileset *tileset = map->GetTileset(tilesetIdx);
 
 					//Map the tile index to a coordinate in the tileset
 					//unsigned int tileIdx = layer->GetTileId(x, y);
@@ -58,9 +123,9 @@ Level::Level(std::string mapName)
 					if(locTile.x >= 0 && locTile.y >= 0)
 					{
 						//Get the part of the sprite corresponding to the tile
-						sprTilesets[tilesetIdx].setTextureRect(sf::IntRect(locTile.x, locTile.y, map.GetTileWidth(), map.GetTileHeight()));
+						sprTilesets[tilesetIdx].setTextureRect(sf::IntRect(locTile.x, locTile.y, map->GetTileWidth(), map->GetTileHeight()));
 						//Set the tile's position to the correct place
-						sprTilesets[tilesetIdx].setPosition((float)x*map.GetTileWidth(), (float)y*map.GetTileHeight());
+						sprTilesets[tilesetIdx].setPosition((float)x*map->GetTileWidth(), (float)y*map->GetTileHeight());
 
 						//Draw that tile
 						tilemapTexture.draw(sprTilesets[tilesetIdx]);
@@ -72,37 +137,29 @@ Level::Level(std::string mapName)
 	//We're finished drawing to it - let SFML finalize the texture
 	tilemapTexture.display();
 	tilemapSprite.setTexture(tilemapTexture.getTexture());
-
-	//Create the light overlay texture and sprite
-	lightTexture.create(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
-	lightTexture.clear();
-	lightTexture.display();
-	lightSprite.setTexture(lightTexture.getTexture());
-	//Add the player's light
-	player.AddLight(*this);
-
-	//Set the player's position to the spawn
-	player.SetPos(spawn);
 }
 
-bool Level::Parse(std::string mapName)
+bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 {
+	//Initialize the map pointer
+	map = new Tmx::Map();
+
 	printf("Parsing map...\n");
 	//Attempt to parse the map, and report any errors
-	map.ParseFile(BASEMAPDIR + mapName);
+	map->ParseFile(BASEMAPDIR + mapName);
 	
-	if(map.HasError())
-	{
-		fprintf(stderr, "WARNING: Could not parse level: %s\n", map.GetErrorText().c_str());
+	if(map->HasError()) {
+		fprintf(stderr, "WARNING: Could not parse level %s: %s\n",
+			mapName.c_str(), map->GetErrorText().c_str());
 		return false;
 	}
 
 	//Make the tilesets of the map into sprites
-	texTilesets.resize(map.GetNumTilesets());
-	sprTilesets.resize(map.GetNumTilesets());
-	for(int i = 0; i < map.GetNumTilesets(); i++)
+	texTilesets.resize(map->GetNumTilesets());
+	sprTilesets.resize(map->GetNumTilesets());
+	for(int i = 0; i < map->GetNumTilesets(); i++)
 	{
-		const Tmx::Tileset *tileset = map.GetTileset(i);
+		const Tmx::Tileset *tileset = map->GetTileset(i);
 		if(!texTilesets[i].loadFromFile(BASEMAPDIR + tileset->GetImage()->GetSource()))
 			fprintf(stderr, "Error loading tileset %d: %s\n", i, tileset->GetName().c_str());
 		sprTilesets[i] = sf::Sprite(texTilesets[i]);
@@ -133,8 +190,8 @@ bool Level::Parse(std::string mapName)
 	}
 
 	//We also need to find the collision layer
-	for(int i = 0; i < map.GetNumLayers(); i++) {
-		const Tmx::Layer *layer = map.GetLayer(i);
+	for(int i = 0; i < map->GetNumLayers(); i++) {
+		const Tmx::Layer *layer = map->GetLayer(i);
 		//If this is the collision layer, store it
 		if(layer->GetName().compare("Collision") == 0) {
 			lyrCollision = layer;		
@@ -148,9 +205,9 @@ bool Level::Parse(std::string mapName)
 
 
 	//Now, parse the map objects
-	for (int i = 0; i < map.GetNumObjectGroups(); ++i) {
+	for (int i = 0; i < map->GetNumObjectGroups(); ++i) {
 		//Get an object group.
-		const Tmx::ObjectGroup *objectGroup = map.GetObjectGroup(i);
+		const Tmx::ObjectGroup *objectGroup = map->GetObjectGroup(i);
 
 		//Iterate through all objects in the object group
 		for (int j = 0; j < objectGroup->GetNumObjects(); ++j) {
@@ -162,7 +219,10 @@ bool Level::Parse(std::string mapName)
 			//Is the object a (the) spawn?
 			if(type.compare("Spawn") == 0) {
 				//Have we gotten a spawn already?
-				if(spawn.x < 0 && spawn.y < 0) {
+				//Is the spawn the one we're looking for, if we're looking for one?
+				if(spawn.x < 0 && spawn.y < 0 &&
+						(spawnName.compare("any") == 0 ||
+						spawnName.compare(object->GetName()) == 0)) {
 					spawn.x = object->GetX() + object->GetWidth()/2.0f;
 					spawn.y = object->GetY() - object->GetWidth()/2.0f;
 				}
@@ -187,6 +247,17 @@ bool Level::Parse(std::string mapName)
 				enemies.push_back(new Demon(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
 					object->GetY() - object->GetHeight()/2.0f)));
 			}
+			else if(type.compare("Stairs") == 0) {
+				std::string nextLevel = object->GetProperties().GetLiteralProperty("NextLevel");
+				std::string nextSpawn = object->GetProperties().GetLiteralProperty("NextSpawn");
+				if(nextLevel.empty() || nextSpawn.empty()) {
+					fprintf(stderr, "WARNING: Stairs named %s have missing properties! Ignored...\n",
+						object->GetName().c_str());
+				} else {
+					activatables.push_back(new Stairs(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
+						object->GetY() - object->GetHeight()/2.0f), nextLevel, nextSpawn));
+				}
+			}
 			//Here, we should do keys, traps, etc...
 			//We don't know what type of object this is, issue an error
 			else {
@@ -196,7 +267,7 @@ bool Level::Parse(std::string mapName)
 	}
 
 	if(spawn.x < 0 || spawn.y < 0) {
-		printf("WARNING: No spawnpoint found! Defaulting to (0, 0)...\n");
+		printf("WARNING: Spawnpoint %s not found! Defaulting to (0, 0)...\n", spawnName.c_str());
 		spawn = sf::Vector2f(0, 0);
 	}
 
@@ -208,14 +279,14 @@ bool Level::Parse(std::string mapName)
 const Tmx::Tileset* Level::GetTileset(const Tmx::Layer* layer, const sf::Vector2i& globTile) const
 {
 	int tilesetIdx = layer->GetTileTilesetIndex(globTile.x, globTile.y);
-	return (tilesetIdx < 0 ? NULL : map.GetTileset(tilesetIdx));
+	return (tilesetIdx < 0 ? NULL : map->GetTileset(tilesetIdx));
 }
 
 sf::Vector2i Level::GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& globTile) const
 {
 	const Tmx::Tileset* tileset = GetTileset(layer, globTile);
-	int tileWidth = map.GetTileWidth();
-	int tileHeight = map.GetTileHeight();
+	int tileWidth = map->GetTileWidth();
+	int tileHeight = map->GetTileHeight();
 	int tilesetWidth = tileset->GetImage()->GetWidth() / tileWidth;
 	int tileIdx = layer->GetTileId(globTile.x, globTile.y);
 
@@ -227,31 +298,30 @@ sf::Vector2i Level::GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& gl
 
 sf::Vector2i Level::GetGlobalTile(const sf::Vector2f& pos) const
 {
-	return sf::Vector2i((int)pos.x / map.GetTileWidth(), (int)pos.y / map.GetTileHeight());
+	return sf::Vector2i((int)pos.x / map->GetTileWidth(), (int)pos.y / map->GetTileHeight());
 }
 
 sf::Vector2i Level::GetGlobalTileBR(const sf::Vector2f& pos) const
 {
-	return sf::Vector2i(((int)pos.x-1) / map.GetTileWidth(), ((int)pos.y - 1) / map.GetTileHeight());
+	return sf::Vector2i(((int)pos.x-1) / map->GetTileWidth(), ((int)pos.y - 1) / map->GetTileHeight());
 }
 
 sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const
 {
-	return sf::Vector2i((int)pos.x % map.GetTileWidth(), (int)pos.y % map.GetTileHeight());
+	return sf::Vector2i((int)pos.x % map->GetTileWidth(), (int)pos.y % map->GetTileHeight());
 }
 
 bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {
-	while(angle < 0) {
-		angle += 2*PI;
-	}
+	angle = shiftAngle(angle);
+	//printf("%g\n", angle);
 	float tanDir = tan(angle);
 	//printf("%g\n", tanDir);
 
 	//The first iteration is different from the others because we
 	// need to figure out how far away the first block is
-	sf::Vector2f nearestX((float)GetGlobalTile(pos).x*map.GetTileWidth(),
-		(float)GetGlobalTile(pos).y*map.GetTileHeight());
+	sf::Vector2f nearestX((float)GetGlobalTile(pos).x*map->GetTileWidth(),
+		(float)GetGlobalTile(pos).y*map->GetTileHeight());
 	float distX = FLT_MAX, distY = FLT_MAX;
 	bool foundX = false, foundY = false;
 
@@ -259,15 +329,15 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 	//GetGlobalTile says tiles include their top-left edges; we have to
 	// fix that for certain lines
-	if(angle > PI/2.0f && angle < 3*PI/2.0f) {
+	if(angle > PI/2.0f || angle < -PI/2.0f) {
 		nearestX.x+=31;
 	} 
-	if(angle > PI && angle < 2*PI) {
+	if(angle > -PI && angle < 0) {
 		nearestX.y+=31;
 	}
 
-	while(nearestX.x > 0 && nearestX.x < map.GetWidth()*map.GetTileWidth() &&
-			nearestX.y > 0 && nearestX.y < map.GetHeight()*map.GetTileHeight()) {
+	while(nearestX.x > 0 && nearestX.x < map->GetWidth()*map->GetTileWidth() &&
+			nearestX.y > 0 && nearestX.y < map->GetHeight()*map->GetTileHeight()) {
 		sf::Vector2i globTile = GetGlobalTile(nearestX);
 		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0) {
 			sf::Vector2f relDist = pos - nearestX;
@@ -276,31 +346,31 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 			break;
 		}
 
-		if(!(angle > PI/2.0f && angle < 3*PI/2.0f)) {
-			nearestX.x += map.GetTileWidth();
+		if(!(angle > PI/2.0f || angle < -PI/2.0f)) {
+			nearestX.x += map->GetTileWidth();
 		} else {
-			nearestX.x -= map.GetTileWidth();
+			nearestX.x -= map->GetTileWidth();
 		}
 		nearestX.y = pos.y + (tanDir*(nearestX.x - pos.x));
 		//printf("Nearest: (%g, %g)\n", nearest.x, nearest.y);
 	}
 
-	sf::Vector2f nearestY((float)GetGlobalTile(pos).x*map.GetTileWidth(),
-		(float)GetGlobalTile(pos).y*map.GetTileHeight());
+	sf::Vector2f nearestY((float)GetGlobalTile(pos).x*map->GetTileWidth(),
+		(float)GetGlobalTile(pos).y*map->GetTileHeight());
 
 	//GetGlobalTile says tiles include their top-left edges; we have to
 	// fix that for certain lines
-	if(angle > PI/2.0f && angle < 3*PI/2.0f) {
+	if(angle > PI/2.0f && angle < -PI/2.0f) {
 		nearestY.x += 31;
 	} 
-	if(angle > PI && angle < 2*PI) {
+	if(angle > -PI && angle < 0) {
 		nearestY.y += 31;
 	}
 
 	//printf("Y DIRECTION\n\n");
 
-	while(nearestY.y > 0 && nearestY.y < map.GetHeight()*map.GetTileHeight() &&
-			nearestY.x > 0 && nearestY.x < map.GetWidth()*map.GetTileHeight()) {
+	while(nearestY.y > 0 && nearestY.y < map->GetHeight()*map->GetTileHeight() &&
+			nearestY.x > 0 && nearestY.x < map->GetWidth()*map->GetTileHeight()) {
 		sf::Vector2i globTile = GetGlobalTile(nearestY);
 		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0) {
 			sf::Vector2f relDist = pos - nearestY;
@@ -309,10 +379,10 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 			break;
 		}
 
-		if(angle > 0.0f && angle < PI) {
-			nearestY.y += map.GetTileHeight();
+		if(!(angle > -PI && angle < 0)) {
+			nearestY.y += map->GetTileHeight();
 		} else {
-			nearestY.y -= map.GetTileHeight();
+			nearestY.y -= map->GetTileHeight();
 		}
 		nearestY.x = (nearestY.y - pos.y) / tanDir + pos.x;
 		//printf("Nearest: (%g, %g)\n", nearest.x, nearest.y);
@@ -361,7 +431,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 		if(stepPos)
 			pixel.x = 0;
 		else
-			pixel.x = map.GetTileWidth() - 1;
+			pixel.x = map->GetTileWidth() - 1;
 	}
 	else
 	{
@@ -371,7 +441,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 		if(stepPos)
 			pixel.y = 0;
 		else
-			pixel.y = map.GetTileHeight() - 1;
+			pixel.y = map->GetTileHeight() - 1;
 	}
 
 	//Make sure we're within the map bounds
@@ -386,17 +456,17 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 		{
 			//Do pixel-by-pixel checks until we reach a colliding pixel
 			sf::Vector2i locTile = GetLocalTile(lyrCollision, globTile);
-			while(pixel.x < map.GetTileWidth() && pixel.x >= 0 &&
-					pixel.y < map.GetTileHeight() && pixel.y >= 0)
+			while(pixel.x < map->GetTileWidth() && pixel.x >= 0 &&
+					pixel.y < map->GetTileHeight() && pixel.y >= 0)
 			{
 				bool collide = collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
 				//Once we find a colliding pixel, return its location
 				if(collide)
 				{
 					if(horiz)
-						nearest = globTile.x * map.GetTileWidth() + pixel.x - step;
+						nearest = globTile.x * map->GetTileWidth() + pixel.x - step;
 					else
-						nearest = globTile.y * map.GetTileHeight() + pixel.y - step;
+						nearest = globTile.y * map->GetTileHeight() + pixel.y - step;
 					return true;
 				}
 				
@@ -445,7 +515,7 @@ void Level::AddAttack(const AttackCone& attack, bool enemy)
 
 sf::Vector2i Level::GetSize() const
 {
-	return sf::Vector2i(map.GetWidth()*map.GetTileWidth(), map.GetHeight()*map.GetTileHeight());
+	return sf::Vector2i(map->GetWidth()*map->GetTileWidth(), map->GetHeight()*map->GetTileHeight());
 }
 
 Player& Level::GetPlayer()
@@ -463,6 +533,13 @@ void Level::Update(const sf::Time& timePassed)
 	player.Update(*this, timePassed);
 	for(unsigned int i = 0; i < activatables.size(); i++) {
 		activatables[i]->Update(*this, timePassed);
+		//Check for stairs, the only activatable that can be both active and finished
+		if(activatables[i]->IsActive() && activatables[i]->IsFinished()) {
+			//We've got to notify the Game that this level is done and we'd like to
+			// transition to another.
+			isActive = false;
+			activeStairs = i;
+		}
 	}
 
 	for(unsigned int i = 0; i < enemies.size(); i++) {
@@ -549,4 +626,15 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 
 	//Draw the light overlay on top of everything else
 	target.draw(lightSprite, state);
+}
+
+bool Level::CheckLevelTransition(std::string& levelName, std::string& spawnName)
+{
+	if(!isActive && activeStairs >= 0) {
+		//Also a bad thing and feel bad etc
+		levelName = ((Stairs*)activatables[activeStairs])->GetNextLevel();
+		spawnName = ((Stairs*)activatables[activeStairs])->GetNextSpawn();
+		return true;
+	}
+	return false;
 }

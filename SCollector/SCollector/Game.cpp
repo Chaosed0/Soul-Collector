@@ -8,7 +8,6 @@ Game::Game()
 	: winWidth(800), winHeight(600)
 	, window(sf::VideoMode(winWidth, winHeight), "Test")
 	, menus(winWidth, winHeight)
-	, level("new.tmx")
 	, view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
 {
 	//Flag set to false when the game ends
@@ -35,6 +34,8 @@ void Game::Init()
 
 	//Connect the exit button of the menus to the exit function here
 	menus.connectExitFunc(&Game::Exit, this);
+
+	level.LoadMap("Debug1.tmx", "Init");
 }
 
 void Game::Loop()
@@ -188,6 +189,17 @@ void Game::Update()
 	updateTimer.restart();
 	level.Update(updateTime);
 
+	//Check if we need to transition levels
+	std::string levelName;
+	std::string spawnName;
+	bool transition;
+	transition = level.CheckLevelTransition(levelName, spawnName);
+	//If we need to change levels, do so
+	if(transition) {
+		level.UnloadMap();
+		level.LoadMap(levelName, spawnName);
+	}
+
 	//printf("player: (%g, %g) view: (%g, %g)\n", playerPos.x, playerPos.y, viewPos.x, viewPos.y);
 
 	//Update the view to follow the player, but don't make it go offscreen
@@ -212,15 +224,12 @@ void Game::Update()
 
 void Game::Render()
 {
-	window.clear();
-
 	// --- RENDERING ---
 	//Clear the screen of what was drawn before
 	// This is inefficient, but if we don't call it, then there will be artefacts from the
 	// previous frame
-	//Note: Since we're rendering the level and that takes up all of the screen, we don't
-	// need to clear the screen
-	//window.clear(sf::Color(255, 255, 255, 255));
+	window.clear();
+
 	//Render the level to the screen, before the player
 	window.draw(level);
 	//Render the player to the screen

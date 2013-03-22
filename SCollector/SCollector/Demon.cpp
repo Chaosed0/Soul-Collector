@@ -23,6 +23,7 @@ Demon::Demon(sf::Vector2f pos)
 
 	soundManager.AddSound("assets/sound/charge.ogg", "charge", true);
 	soundManager.AddSound("assets/sound/alert.ogg", "alert", false);
+	soundManager.AddSound("assets/sound/thwack.ogg", "hit", false);
 }
 
 void Demon::Attack(Movable& movable)
@@ -32,6 +33,7 @@ void Demon::Attack(Movable& movable)
 		state = RECOVERING;
 		timer = sf::Time::Zero;
 		soundManager.StopSound("charge");
+		soundManager.PlaySound("hit");
 	}
 }
 
@@ -49,11 +51,27 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 	}
 
 	//Check if the player's been spotted by the demon
+	//First, make sure the player can be seen
 	sf::Vector2f playerPos = level.GetPlayer().GetPos();
 	sf::Vector2f relDist = playerPos - GetPos();
 	float dist = magnitude(relDist);
+	sf::Vector2f nearest;
+	level.GetCollide(GetPos(), atan2(relDist.y, relDist.x), nearest);
+	float distFromWall = magnitude(GetPos()-nearest);
+	bool canSeePlayer = dist <= distFromWall;
+	//printf("player:(%g,%g), nearest:(%g,%g), angle: %g\n", playerPos.x, playerPos.y, nearest.x, nearest.y, atan2(relDist.y, relDist.x)*TO_DEG);
+	//printf("dist:%g, nearest:%g, cansee:%d\n", dist, distFromWall, canSeePlayer);
 	float moveSpeed = 0.0f;
 	sf::Vector2f movement;
+
+	/*shape.setPointCount(4);
+	shape.setPoint(0, GetPos()-sf::Vector2f(1,1));
+	shape.setPoint(1, GetPos()+sf::Vector2f(1,1));
+	shape.setPoint(2, nearest+sf::Vector2f(1,1));
+	shape.setPoint(3, nearest-sf::Vector2f(1,1));
+	PlayAnim("idle", timePassed);
+	return;*/
+
 
 	timer += timePassed;
 
@@ -71,7 +89,7 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 		timer = sf::Time::Zero;
 	}
 
-	if((state == IDLE || state == MOVING) && dist < SPOT_RADIUS) {
+	if((state == IDLE || state == MOVING) && canSeePlayer && dist < SPOT_RADIUS) {
 		//If the player is close to the demon, put on alert
 		state = ALERT;
 		soundManager.PlaySound("alert");
@@ -85,7 +103,7 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 		moveAngle = atan2f(relDist.y, relDist.x);
 		//printf("Demon is charging player after %g seconds\n", timer.asSeconds());
 		timer = sf::Time::Zero;
-	} else if(state == ALERT && dist > SPOT_RADIUS) {
+	} else if(state == ALERT && (dist >= SPOT_RADIUS || !canSeePlayer)) {
 		//If the player moved out of the monster's visibility range, then go back to
 		// idling
 		state = IDLE;
@@ -178,17 +196,20 @@ void Demon::Update(const Level& level, const sf::Time& timePassed)
 	}
 
 	//If the monster was charging and collided into a wall, stop charging
-	if(state == CHARGING && (movement.x == 0 || movement.y == 0)) {
+	// Note: Simply hard-stopping the monster produces some unintended behavior
+	// when charging down straight hallways; we need to stop him only if he's
+	// going slowly in both directions
+	if(state == CHARGING && magnitude(movement) <= moveSpeed/2.0f) {
 		soundManager.StopSound("charge");
 		state = RECOVERING;
 		timer = sf::Time::Zero;
 	}
 
 	// Decide on a new direction of movement randomly
-	if((state == MOVING || state == IDLE) && (float)rand()/(float)RAND_MAX > 0.95f) {
-		moveAngle = ((float)rand()/(float)RAND_MAX)*2*PI;
+	if((state == MOVING || state == IDLE) && getRandom() > 0.95f) {
+		moveAngle = getRandom()*2*PI;
 		//ARGH CONSTANTS
-		bool isMoving = ((float)rand()/(float)RAND_MAX > 0.90f);
+		bool isMoving = getRandom() > 0.90f;
 		if(isMoving) {
 			state = MOVING;
 		} else {

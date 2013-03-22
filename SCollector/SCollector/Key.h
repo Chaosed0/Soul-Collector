@@ -8,7 +8,6 @@
 #define __KEY_H
 
 #include "Activatable.h"
-class Player;
 class Level;
 
 class Key : public Activatable 

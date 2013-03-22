@@ -1,6 +1,8 @@
 
 #include "Utility.h"
 
+std::mt19937 randgen;
+
 float magnitude(const sf::Vector2f& vec)
 {
 	return sqrt(vec.x*vec.x+vec.y*vec.y);
@@ -17,4 +19,19 @@ float shiftAngle(float angle)
 	}
 
 	return angle;
+}
+
+void initRandom()
+{
+	randgen.seed((unsigned long)time(NULL));
+}
+
+float getRandom()
+{
+	return (float)randgen()/(float)randgen.max();
+}
+
+float getRandom(float begin, float end)
+{
+	return getRandom()*(end-begin)+begin;
 }

@@ -21,8 +21,8 @@
 #include "Player.h"
 #include "Utility.h"
 
-#include "Entity.h"
 #include "AttackCone.h"
+class Entity;
 class Activatable;
 class Movable;
 
@@ -35,18 +35,39 @@ class Level : public sf::Drawable
 public:
 	/** Default constructor */
 	Level();
+
 	/**
 	 * Init constructor
+	 *
+	 * Equivalent to calling Level() then LoadMap()
 	 * \param mapName The name of the map in BASEMAPDIR to parse.
+	 * \param spawnName Name of the spawn to look for within the map
 	 */
-	Level(std::string mapName);
+	Level(const std::string& mapName, const std::string& spawnName = "any");
+
+	/**
+	 * Loads a map into the level object.
+	 * \param mapName The name of the map in BASEMAPDIR to parse.
+	 * \param spawnName the name of the spawn to look for within the map.
+	 * \return True if the map was loaded successfully, false otherwise.
+	 */
+	bool LoadMap(const std::string& mapName, const std::string& spawnName = "any");
+
+	/**
+	 * Unloads the map currently loaded, and does cleanup.
+	 *
+	 * This should be called before loading another map, but not the first time
+	 *  a map is loaded.
+	 */
+	void UnloadMap();
 
 	/**
 	 * Parses a .tmx format map.
 	 * \param mapName The name of the map in BASEMAPDIR to parse.
+	 * \param spawnName the name of the spawn we're looking for in the map.
 	 * \return True if the map was parsed without error, false otherwise.
 	 */
-	bool Parse(std::string mapName);
+	bool Parse(const std::string& mapName, const std::string& spawnName);
 
 	/**
 	 * Gets the size of the map.
@@ -127,7 +148,37 @@ public:
 	 *  otherwise, it is assumed to be the player's attack.
 	 */
 	void AddAttack(const AttackCone& attack, bool enemy);
+
+	/**
+	 * Checks whether we are transitioning levels because the player activated
+	 *  a level transition object.
+	 * \param levelName Return parameter, valid only if the function returns true,
+	 *  containing the name of the level to transition to.
+	 * \param spawnName Return parameter, valid only if the function returns true,
+	 *  containing the name of the spawnpoint in the next level.
+	 * \return True if the level should transition, false otherwise.
+	 */
+	bool CheckLevelTransition(std::string& levelName, std::string& spawnName);
 private:
+	/**
+	 * Initializes textures to be drawn to.
+	 *
+	 * Parse() must have been called beforehand and returned true.
+	 */
+	void InitTextures();
+
+	/**
+	 * Draws the map onto tilemapTexture.
+	 *
+	 * InitTextures() must have been called beforehand.
+	 */
+	void DrawMap();
+
+	/**
+	 * Helper function for GetCollide
+	 */
+	bool GetCollideHelp(const sf::Vector2f& pos, float tanDir, sf::Vector2f& nearest) const;
+
 	/**
 	 * Gets the Tmx::tileset* of a global tile.
 	 * 
@@ -180,14 +231,14 @@ private:
 	/** Tileset sprites */
 	std::vector<sf::Sprite> sprTilesets;
 	/** TmxParser representation of the map */
-	Tmx::Map map;
+	Tmx::Map* map;
 
 	/** Collision tileset */
 	const Tmx::Tileset *tsetCollision;
 	/** Collision layer */
 	const Tmx::Layer *lyrCollision;
 
-	/** Spawn point for the player */
+	/** Spawn point location for the player, once it's found */
 	sf::Vector2f spawn;
 
 	/** The tilemap texture */
@@ -216,6 +267,11 @@ private:
 
 	/** A list of lights in the level, only to be used for drawing */
 	std::vector<const LightSource*> lights;
+
+	/** Whether or not this level is still active; if false, the Game should transition */
+	bool isActive;
+	/** The index in activatables of the stairs that are active; -1 for no stairs. */
+	int activeStairs;
 };
 
 #endif

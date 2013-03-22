@@ -14,7 +14,7 @@
     <ClCompile Include="Activatable.cpp" />
     <ClCompile Include="AnimManager.cpp" />
     <ClCompile Include="AttackCone.cpp" />
-    <ClCompile Include="CircleMove.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Demon.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -28,6 +28,7 @@
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Stairs.cpp" />
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
@@ -48,6 +49,7 @@
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Stairs.h" />
     <ClInclude Include="Torch.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
