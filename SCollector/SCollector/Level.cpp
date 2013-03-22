@@ -339,7 +339,10 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	while(nearestX.x > 0 && nearestX.x < map->GetWidth()*map->GetTileWidth() &&
 			nearestX.y > 0 && nearestX.y < map->GetHeight()*map->GetTileHeight()) {
 		sf::Vector2i globTile = GetGlobalTile(nearestX);
-		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0) {
+		int globTileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+		const Tmx::Tile* tile = tsetCollision->GetTile(globTileId);
+		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0 && (tile != NULL?
+				!tile->GetProperties().HasProperty("Clear"):true)) {
 			sf::Vector2f relDist = pos - nearestX;
 			distX = magnitude(relDist);
 			foundX = true;
@@ -372,7 +375,10 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	while(nearestY.y > 0 && nearestY.y < map->GetHeight()*map->GetTileHeight() &&
 			nearestY.x > 0 && nearestY.x < map->GetWidth()*map->GetTileHeight()) {
 		sf::Vector2i globTile = GetGlobalTile(nearestY);
-		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0) {
+		int globTileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+		const Tmx::Tile* tile = tsetCollision->GetTile(globTileId);
+		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0 && (tile != NULL?
+				!tile->GetProperties().HasProperty("Clear"):true)) {
 			sf::Vector2f relDist = pos - nearestY;
 			distY = magnitude(relDist);
 			foundY = true;

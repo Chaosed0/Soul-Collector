@@ -2,6 +2,26 @@
 <map version="1.0" orientation="orthogonal" width="30" height="30" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
   <image source="../tileset/tileset.png" width="160" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="Clear" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="51" name="Object" tilewidth="32" tileheight="32">
   <image source="../tileset/ObjectTiles.png" width="160" height="320"/>
@@ -18,11 +38,11 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzNlFEKwDAIQ6X3P3R/pUghGo2Bwhgsb8HYY2ZHdKpCPTy38s8/jynu6z+dd5Ib+Xdzkc6y+oyKuYOTeV9u9PzjMvqU4WbF4LLmi3KZ2s7t3CP0TkFzIT6VXjG5yHds7ua8EWtqvpVOdu0vwlXlVc7Xv9vYZzZXcV9lVOUqzgXrQQMd
+   eJzNlFEKwDAIQ6Xs/mfebxm2MybVBoSxMt+CscPMRlOxQnvMXOafdz0iXFQe1zuv4EZ6qrmr8z9upB7zfSGZVeUZlXIHK/1+ud7zjsvubZablYKrmi/KVep27sk9Qu8U1BfSh8mVkot8p+be7NdjVc2XyeSp/UW4XX475zu/uzHPam7HfZURy+2oF51EAtc=
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
-  <object name="Init" type="Spawn" gid="52" x="768" y="384" width="32" height="32"/>
+  <object name="Init" type="Spawn" gid="52" x="384" y="256" width="32" height="32"/>
   <object type="Key" gid="53" x="384" y="608" width="32" height="32"/>
   <object type="Key" gid="53" x="32" y="320" width="32" height="32"/>
   <object type="Key" gid="53" x="736" y="736" width="32" height="32"/>
@@ -32,9 +52,16 @@
   <object type="Stairs" gid="56" x="704" y="480" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug2.tmx"/>
-    <property name="NextSpawn" value="FromDebug1"/>
+    <property name="NextSpawn" value="FromDebug1_1"/>
    </properties>
   </object>
-  <object name="FromDebug2" type="Spawn" gid="52" x="704" y="448" width="32" height="32"/>
+  <object name="FromDebug2_1" type="Spawn" gid="52" x="704" y="448" width="32" height="32"/>
+  <object name="FromDebug2_2" type="Spawn" gid="52" x="384" y="160" width="32" height="32"/>
+  <object type="Stairs" gid="56" x="384" y="128" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="Debug2.tmx"/>
+    <property name="NextSpawn" value="FromDebug1_2"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
