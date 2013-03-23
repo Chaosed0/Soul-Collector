@@ -147,7 +147,7 @@ void Player::Update(const Level& level, const sf::Time& timePassed)
 			found = foundTopLeft || foundBotRight;
 			if(!found)
 				nearest = INT_MAX;
-			//printf("Nearest Down: %d\n", nearest);
+			printf("Nearest Down: %d\n", nearest);
 			movement.y += std::min(moveSpeed, (float)nearest);
 		}
 		if(moveLeft) {

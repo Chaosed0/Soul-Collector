@@ -408,6 +408,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool stepPos, int& nearest) const
 {
+	const int maxSteps = 2;
+
 	//We need to figure out which tile on the collision tileset this
 	// position corresponds to on the layer
 	sf::Vector2i globTile = GetGlobalTile(pos);
@@ -415,6 +417,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 
 	int layerHeight = lyrCollision->GetHeight();
 	int layerWidth = lyrCollision->GetWidth();
+	int& pixelRef = (horiz?pixel.x:pixel.y);
+	int& tileRef = (horiz?globTile.x:globTile.y);
 
 	//Get the nearest tile in the layer corresponding to the position
 	//BIG NOTE !!!!!!!!! -----------------------
@@ -428,61 +432,43 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	else
 		step = -1;
 
-	//Identify whether we're going horizontally or vertically
-	if(horiz)
-	{
-		globTile.x += step;
+	for(int i = 0; i < maxSteps; i++) {
+		//Make sure we're within the map bounds
+		if(globTile.y >= 0 && globTile.y < layerHeight &&
+				globTile.x >= 0 && globTile.x < layerWidth)
+		{
+			//Get the tile ID
+			unsigned int tileIdx = lyrCollision->GetTileId(globTile.x, globTile.y);
+
+			//If the tile ID is 0, this tile isn't a colliding tile
+			if(tileIdx != 0)
+			{
+				//Do pixel-by-pixel checks until we reach a colliding pixel
+				sf::Vector2i locTile = GetLocalTile(lyrCollision, globTile);
+				while(pixel.x < map->GetTileWidth() && pixel.x >= 0 &&
+						pixel.y < map->GetTileHeight() && pixel.y >= 0)
+				{
+					bool collide = collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
+					//Once we find a colliding pixel, return its location
+					if(collide) {
+						nearest = tileRef * (horiz?map->GetTileWidth():map->GetTileHeight())
+							+ pixelRef - step;
+						return true;
+					}
+					pixelRef += step;				
+				}
+			}
+		}
+
 		//If we're going in a negative direction, we want to start at
 		// the right of the tile rather than the left
 		if(stepPos)
-			pixel.x = 0;
+			pixelRef = 0;
 		else
-			pixel.x = map->GetTileWidth() - 1;
-	}
-	else
-	{
-		globTile.y += step;
-		//If we're going in a positive direction, we want to start at
-		// the right of the tile rather than the left
-		if(stepPos)
-			pixel.y = 0;
-		else
-			pixel.y = map->GetTileHeight() - 1;
+			pixelRef = (horiz?map->GetTileWidth():map->GetTileHeight()) - 1;
+		tileRef += step;
 	}
 
-	//Make sure we're within the map bounds
-	if(globTile.y >= 0 && globTile.y < layerHeight &&
-			globTile.x >= 0 && globTile.x < layerWidth)
-	{
-		//Get the tile ID
-		unsigned int tileIdx = lyrCollision->GetTileId(globTile.x, globTile.y);
-
-		//If the tile ID is 0, this tile isn't a colliding tile
-		if(tileIdx != 0)
-		{
-			//Do pixel-by-pixel checks until we reach a colliding pixel
-			sf::Vector2i locTile = GetLocalTile(lyrCollision, globTile);
-			while(pixel.x < map->GetTileWidth() && pixel.x >= 0 &&
-					pixel.y < map->GetTileHeight() && pixel.y >= 0)
-			{
-				bool collide = collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
-				//Once we find a colliding pixel, return its location
-				if(collide)
-				{
-					if(horiz)
-						nearest = globTile.x * map->GetTileWidth() + pixel.x - step;
-					else
-						nearest = globTile.y * map->GetTileHeight() + pixel.y - step;
-					return true;
-				}
-				
-				if(horiz)
-					pixel.x += step;
-				else
-					pixel.y += step;
-			}
-		}
-	}
 
 	//If we didn't return within the above block of code, we didn't find anything; set
 	// the nearest tile's location to infinity and return false
