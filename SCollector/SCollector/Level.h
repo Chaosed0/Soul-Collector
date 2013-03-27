@@ -62,14 +62,6 @@ public:
 	void UnloadMap();
 
 	/**
-	 * Parses a .tmx format map.
-	 * \param mapName The name of the map in BASEMAPDIR to parse.
-	 * \param spawnName the name of the spawn we're looking for in the map.
-	 * \return True if the map was parsed without error, false otherwise.
-	 */
-	bool Parse(const std::string& mapName, const std::string& spawnName);
-
-	/**
 	 * Gets the size of the map.
 	 * \return The size of the map, in pixels.
 	 */
@@ -161,6 +153,14 @@ public:
 	bool CheckLevelTransition(std::string& levelName, std::string& spawnName);
 private:
 	/**
+	 * Parses a .tmx format map.
+	 * \param mapName The name of the map in BASEMAPDIR to parse.
+	 * \param spawnName the name of the spawn we're looking for in the map.
+	 * \return NULL if the map was not able to be parsed, a Tmx::Map* otherwise.
+	 */
+	Tmx::Map* Parse(const std::string& mapName, const std::string& spawnName);
+
+	/**
 	 * Initializes textures to be drawn to.
 	 *
 	 * Parse() must have been called beforehand and returned true.
@@ -171,8 +171,9 @@ private:
 	 * Draws the map onto tilemapTexture.
 	 *
 	 * InitTextures() must have been called beforehand.
+	 * \param map The map returned from Parse() to draw.
 	 */
-	void DrawMap();
+	void DrawMap(Tmx::Map* map);
 
 	/**
 	 * Helper function for GetCollide
@@ -230,8 +231,11 @@ private:
 	std::vector<sf::Texture> texTilesets;
 	/** Tileset sprites */
 	std::vector<sf::Sprite> sprTilesets;
-	/** TmxParser representation of the map */
-	Tmx::Map* map;
+
+	/** Size of a single tile, in pixels. */
+	sf::Vector2f tileSize;
+	/** Size of the entire map, in tiles. */
+	sf::Vector2f mapSize;
 
 	/** Collision tileset */
 	const Tmx::Tileset *tsetCollision;

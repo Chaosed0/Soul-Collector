@@ -16,6 +16,8 @@
 Level::Level()
 	: player(sf::Vector2f())
 {
+	mapSize = sf::Vector2f(0, 0);
+	tileSize = sf::Vector2f(0, 0);
 	lyrCollision = NULL;
 	tsetCollision = NULL;
 	spawn.x = spawn.y = -1;
@@ -26,6 +28,8 @@ Level::Level()
 Level::Level(const std::string& mapName, const std::string& spawnName)
 	: player(sf::Vector2f())
 {
+	mapSize = sf::Vector2f(0, 0);
+	tileSize = sf::Vector2f(0, 0);
 	lyrCollision = NULL;
 	tsetCollision = NULL;
 	spawn.x = spawn.y = -1;
@@ -36,11 +40,12 @@ Level::Level(const std::string& mapName, const std::string& spawnName)
 
 bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 {
-	if(!Parse(mapName, spawnName)) {
+	Tmx::Map* map;
+	if((map = Parse(mapName, spawnName)) == NULL) {
 		return false;
 	}
 	InitTextures();
-	DrawMap();
+	DrawMap(map);
 
 	//Create the light overlay texture and sprite
 	lightTexture.clear();
@@ -54,6 +59,9 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 
 	//The level is now active and can be used.
 	isActive = true;
+
+	//Destroy the Tmx::map; we've extracted all the info we need from it
+	delete map;
 	
 	return true;
 }
@@ -84,18 +92,15 @@ void Level::UnloadMap()
 	spawn.x = spawn.y = -1;
 	//Clear active stairs
 	activeStairs = -1;
-	//Clear the map
-	delete(map);
-	map = NULL;
 }
 
 void Level::InitTextures()
 {
-	tilemapTexture.create(map->GetWidth()*map->GetTileWidth(), map->GetHeight()*map->GetTileHeight());
-	lightTexture.create(map->GetWidth()*map->GetTileWidth(), map->GetHeight()*map->GetTileHeight());
+	tilemapTexture.create(mapSize.x*tileSize.y, mapSize.y*mapSize.y);
+	lightTexture.create(mapSize.x*tileSize.y, mapSize.y*mapSize.y);
 }
 
-void Level::DrawMap()
+void Level::DrawMap(Tmx::Map* map)
 {
 	//Draw to the tilemap texture
 	for(int i = 0; i < map->GetNumLayers(); i++)
@@ -139,10 +144,14 @@ void Level::DrawMap()
 	tilemapSprite.setTexture(tilemapTexture.getTexture());
 }
 
-bool Level::Parse(const std::string& mapName, const std::string& spawnName)
+Tmx::Map* Level::Parse(const std::string& mapName, const std::string& spawnName)
 {
 	//Initialize the map pointer
-	map = new Tmx::Map();
+	Tmx::Map *map = new Tmx::Map();
+
+	//Initialize some properties
+	mapSize = sf::Vector2f(0, 0);
+	tileSize = sf::Vector2f(0, 0);
 
 	printf("Parsing map...\n");
 	//Attempt to parse the map, and report any errors
@@ -151,7 +160,7 @@ bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 	if(map->HasError()) {
 		fprintf(stderr, "WARNING: Could not parse level %s: %s\n",
 			mapName.c_str(), map->GetErrorText().c_str());
-		return false;
+		return NULL;
 	}
 
 	//Make the tilesets of the map into sprites
@@ -273,7 +282,7 @@ bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 
 
 	printf("Map parsing complete\n");
-	return true;
+	return map;
 }
 
 const Tmx::Tileset* Level::GetTileset(const Tmx::Layer* layer, const sf::Vector2i& globTile) const
