@@ -35,7 +35,7 @@ void Game::Init()
 	//Connect the exit button of the menus to the exit function here
 	menus.connectExitFunc(&Game::Exit, this);
 
-	level.LoadMap("Debug1.tmx", "Init");
+	levelManager.LoadMap("Debug1.tmx", "Init");
 }
 
 void Game::Loop()
@@ -112,29 +112,30 @@ void Game::Event()
 				//  their presses if held down that I turned off earlier, but I did that because there's
 				//  a delay between getting the press and actually determining that the key is held down.
 				case sf::Keyboard::W :
-					level.GetPlayer().MoveUp(true);
+					levelManager.GetCurrentLevel().GetPlayer().MoveUp(true);
 					break;
 				case sf::Keyboard::S :
-					level.GetPlayer().MoveDown(true);
+					levelManager.GetCurrentLevel().GetPlayer().MoveDown(true);
 					break;
 				case sf::Keyboard::A :
-					level.GetPlayer().MoveLeft(true);
+					levelManager.GetCurrentLevel().GetPlayer().MoveLeft(true);
 					break;
 				case sf::Keyboard::D :
-					level.GetPlayer().MoveRight(true);
+					levelManager.GetCurrentLevel().GetPlayer().MoveRight(true);
 					break;
 				case sf::Keyboard::F :
-					level.GetPlayer().ToggleLighter();
+					levelManager.GetCurrentLevel().GetPlayer().ToggleLighter();
 					break;
 				case sf::Keyboard::E :
-					level.DoActivate();
+					levelManager.GetCurrentLevel().DoActivate();
 					break;
 				case sf::Keyboard::Space :
-					level.AddAttack(level.GetPlayer().GetAttackCone(), false);
+					levelManager.GetCurrentLevel().AddAttack(
+						levelManager.GetCurrentLevel().GetPlayer().GetAttackCone(), false);
 					break;
 				case sf::Keyboard::LShift :
 				case sf::Keyboard::RShift :
-					level.GetPlayer().Sprint(true);
+					levelManager.GetCurrentLevel().GetPlayer().Sprint(true);
 					break;
 				case sf::Keyboard::Escape :
 					menus.SetVisible(true);
@@ -146,20 +147,20 @@ void Game::Event()
 			case sf::Event::KeyReleased :
 				switch(anEvent.key.code) {
 				case sf::Keyboard::W :
-					level.GetPlayer().MoveUp(false);
+					levelManager.GetCurrentLevel().GetPlayer().MoveUp(false);
 					break;
 				case sf::Keyboard::S :
-					level.GetPlayer().MoveDown(false);
+					levelManager.GetCurrentLevel().GetPlayer().MoveDown(false);
 					break;
 				case sf::Keyboard::A :
-					level.GetPlayer().MoveLeft(false);
+					levelManager.GetCurrentLevel().GetPlayer().MoveLeft(false);
 					break;
 				case sf::Keyboard::D :
-					level.GetPlayer().MoveRight(false);
+					levelManager.GetCurrentLevel().GetPlayer().MoveRight(false);
 					break;
 				case sf::Keyboard::LShift :
 				case sf::Keyboard::RShift :
-					level.GetPlayer().Sprint(false);
+					levelManager.GetCurrentLevel().GetPlayer().Sprint(false);
 					break;
 				default:
 					break;
@@ -174,10 +175,10 @@ void Game::Event()
 
 void Game::Update()
 {
-	sf::Vector2f playerPos = level.GetPlayer().GetPos();
+	sf::Vector2f playerPos = levelManager.GetCurrentLevel().GetPlayer().GetPos();
+	sf::Vector2i levelSize = levelManager.GetCurrentLevel().GetSize();
 	sf::Vector2f viewSize = view.getSize();
 	sf::Vector2f viewPos = view.getCenter();
-	sf::Vector2i levelSize = level.GetSize();
 
 	// --- GAME LOGIC ---
 	//Update the level
@@ -187,18 +188,7 @@ void Game::Update()
 	//printf("Update length: %lld milliseconds\n", updateTimer.getElapsedTime());
 	sf::Time updateTime = updateTimer.getElapsedTime();
 	updateTimer.restart();
-	level.Update(updateTime);
-
-	//Check if we need to transition levels
-	std::string levelName;
-	std::string spawnName;
-	bool transition;
-	transition = level.CheckLevelTransition(levelName, spawnName);
-	//If we need to change levels, do so
-	if(transition) {
-		level.UnloadMap();
-		level.LoadMap(levelName, spawnName);
-	}
+	levelManager.Update(updateTime);
 
 	//printf("player: (%g, %g) view: (%g, %g)\n", playerPos.x, playerPos.y, viewPos.x, viewPos.y);
 
@@ -231,7 +221,7 @@ void Game::Render()
 	window.clear();
 
 	//Render the level to the screen, before the player
-	window.draw(level);
+	window.draw(levelManager.GetCurrentLevel());
 	//Render the player to the screen
 
 	menus.Display(window);

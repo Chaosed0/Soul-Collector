@@ -4,9 +4,13 @@
  * \date March 27 2013
  */
 
-#include "Level.h"
+#ifndef __LEVELMANAGER_H
+#define __LEVELMANAGER_H
 
-#include <list>
+#include "Level.h"
+#include "Player.h"
+
+#include <map>
 
 class LevelManager
 {
@@ -34,15 +38,25 @@ public:
 	bool LoadMap(const std::string& mapName, const std::string& spawnName);
 
 	/**
+	 * Gets the current Level.
+	 * \return The current Level.
+	 */
+	Level& GetCurrentLevel();
+
+	/**
 	 * Updates the current map.
 	 *
 	 * Also checks for level transitions.
 	 * \param timePassed The amount of time past since the last time Update() was called.
 	 */
-	void Update(const sf::Time& timePassed);
+	bool Update(const sf::Time& timePassed);
 private:
 	/** List of levels */
-	std::map<std::string, Level> levels;
+	std::map<std::string, Level*> levels;
 	/** Name of the current map. */
 	std::string curLevelName;
+	/** The actual player. */
+	Player player;
 };
+
+#endif

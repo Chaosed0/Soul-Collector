@@ -1,6 +1,7 @@
 
 #include "Demon.h"
 #include "Level.h"
+#include "Player.h"
 
 const sf::Time Demon::alertTime = sf::milliseconds(1000);
 const sf::Time Demon::chargeTime = sf::milliseconds(5000);
