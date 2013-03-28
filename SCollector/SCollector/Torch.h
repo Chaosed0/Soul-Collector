@@ -25,7 +25,7 @@ public:
 	 * Update function.
 	 * \param level The level in which the torch is located.
 	 */
-	virtual void Update(const Level& level, const sf::Time& timePassed);
+	virtual void Update(Level& level, const sf::Time& timePassed);
 
 	/**
 	 * Adds the light source of the torch to the level.

@@ -256,6 +256,7 @@ bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 				} else {
 					activatables.push_back(new Stairs(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
 						object->GetY() - object->GetHeight()/2.0f), nextLevel, nextSpawn));
+					//activatables.back()->SetRot(object->GetRot());
 				}
 			}
 			//Here, we should do keys, traps, etc...

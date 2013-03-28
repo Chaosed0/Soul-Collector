@@ -69,6 +69,9 @@ namespace Tmx
 		// Get the height of the object, in pixels.
 		int GetHeight() const { return height; }
 
+		// Get the rotation of the object, in degrees.
+		int GetRot() const { return rot; }
+
 		// Get the Global ID of the tile associated with this object.
 		int GetGid() const { return gid; }
 
@@ -90,6 +93,7 @@ namespace Tmx
 
 		int x;
 		int y;
+		float rot;
 		int width;
 		int height;
 		int gid;

@@ -37,7 +37,7 @@ void Demon::Attack(Movable& movable)
 	}
 }
 
-void Demon::Update(const Level& level, const sf::Time& timePassed)
+void Demon::Update(Level& level, const sf::Time& timePassed)
 {
 	//First, before anything, check if the demon is dead
 	if(health <= 0) {

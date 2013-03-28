@@ -30,10 +30,10 @@ public:
 	 */
 	Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox);
 
-	virtual void Update(const Level& level, const sf::Time& timePassed) = 0;
+	virtual void Update(Level& level, const sf::Time& timePassed) = 0;
 
 	/**
-	 * Sets the Elayer's position.
+	 * Sets the Entity's position.
 	 * \param newpos The new position of the Entity.
 	 */
 	void SetPos(sf::Vector2f newpos);
@@ -43,6 +43,12 @@ public:
 	 * \return The position of the entity.
 	 */
 	sf::Vector2f GetPos() const;
+
+	/**
+	 * Sets the Entity's rotation.
+	 * \param newrot The new rotation of the Entity, in degrees.
+	 */
+	void SetRot(float newrot);
 
 	/**
 	 * Does a collision check on this entity and another.

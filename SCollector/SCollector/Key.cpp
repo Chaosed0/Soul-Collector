@@ -10,7 +10,7 @@ Key::Key(const sf::Vector2f& pos)
 	SetPos(pos);
 }
 
-void Key::Update(const Level& level, const sf::Time& timePassed)
+void Key::Update(Level& level, const sf::Time& timePassed)
 {
 	if(IsActive() && !IsFinished()) {
 		visible = false;
