@@ -18,7 +18,7 @@ bool LevelManager::LoadMap(const std::string& mapName, const std::string& spawnN
 {
 	bool loadMapResult = true;
 	std::pair<std::map<std::string, Level*>::iterator, bool> insertPair;
-	insertPair = levels.insert(std::pair<std::string, Level*>(mapName, NULL));
+	insertPair = levels.insert(std::pair<std::string, Level*>(mapName, (Level*)NULL));
 	//If we did actually insert a level, we need to initialize it
 	if(insertPair.second) {
 		insertPair.first->second = new Level(player, mapName, spawnName);

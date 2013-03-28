@@ -220,7 +220,6 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 	if(tsetCollision == NULL)
 		fprintf(stderr, "WARNING: Could not find collision tileset! Attempting to proceed...\n");
 
-
 	//Now, parse the map objects
 	for (int i = 0; i < map->GetNumObjectGroups(); ++i) {
 		//Get an object group.
