@@ -24,7 +24,7 @@ public:
 	 * \param level The level in which the key is located.
 	 * \param timePassed time past since the last time the function was called.
 	 */
-	virtual void Update(const Level& level, const sf::Time& timePassed);
+	virtual void Update(Level& level, const sf::Time& timePassed);
 
 	/**
 	 * Gets the name of the door the key opens.

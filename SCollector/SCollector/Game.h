@@ -10,7 +10,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "MenuManager.h"
-#include "Level.h"
+#include "LevelManager.h"
 #include "HUD.h"
 
 class Game
@@ -45,8 +45,8 @@ private:
 	/** Flag set to true when the game is running */
 	bool isRunning;
 
-	/** The level object */
-	Level level;
+	/** The level manager object */
+	LevelManager levelManager;
 
 	/** The camera */
 	sf::View view;

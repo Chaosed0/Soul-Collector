@@ -10,13 +10,13 @@ Stairs::Stairs(const sf::Vector2f& pos, const std::string& nextLevel, const std:
 	this->nextSpawn = nextSpawn;
 }
 
-void Stairs::Update(const Level& level, const sf::Time& timePassed)
+void Stairs::Update(Level& level, const sf::Time& timePassed)
 {
-	//This activatable is different from others; when activated, it stays activated.
-	//We are going to hack this a bit; no other activatable can be both activated
-	// and expended at the same time, so when the level sees an activatable that is
-	// both, it will know that the activatable is activated stairs.
-	isFinished = true;
+	if(IsActive()) {
+		//The beginning of the end...
+		level.SetLevelTransition(nextLevel, nextSpawn);
+		isActive = false;
+	}
 }
 
 std::string Stairs::GetNextLevel()

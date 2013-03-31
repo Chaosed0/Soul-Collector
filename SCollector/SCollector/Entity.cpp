@@ -3,7 +3,7 @@
 #include "Level.h"
 
 Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
-	: animManager(animBox, soundManager)
+	: animManager(animBox)
 {
 	//Set default values
 	this->collisionBox = collisionBox;
@@ -94,6 +94,12 @@ void Entity::SetPos(sf::Vector2f newpos)
 sf::Vector2f Entity::GetPos() const
 {
 	return sprite.getPosition();
+}
+
+void Entity::SetRot(float newrot)
+{
+	sprite.setRotation(newrot);
+	printf("Got rot of %g\n", newrot);
 }
 
 void Entity::PlayAnim(const std::string& anim, const sf::Time& timePassed)

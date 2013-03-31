@@ -94,7 +94,7 @@ void Player::ToggleLighter()
 	lighter.Toggle();
 }
 
-void Player::Update(const Level& level, const sf::Time& timePassed)
+void Player::Update(Level& level, const sf::Time& timePassed)
 {
 	bool moving = moveLeft || moveRight || moveUp || moveDown;
 	if(moving) {
@@ -147,7 +147,7 @@ void Player::Update(const Level& level, const sf::Time& timePassed)
 			found = foundTopLeft || foundBotRight;
 			if(!found)
 				nearest = INT_MAX;
-			printf("Nearest Down: %d\n", nearest);
+			//printf("Nearest Down: %d\n", nearest);
 			movement.y += std::min(moveSpeed, (float)nearest);
 		}
 		if(moveLeft) {

@@ -1,6 +1,7 @@
 
 #include "Demon.h"
 #include "Level.h"
+#include "Player.h"
 
 const sf::Time Demon::alertTime = sf::milliseconds(1000);
 const sf::Time Demon::chargeTime = sf::milliseconds(5000);
@@ -37,7 +38,7 @@ void Demon::Attack(Movable& movable)
 	}
 }
 
-void Demon::Update(const Level& level, const sf::Time& timePassed)
+void Demon::Update(Level& level, const sf::Time& timePassed)
 {
 	//First, before anything, check if the demon is dead
 	if(health <= 0) {

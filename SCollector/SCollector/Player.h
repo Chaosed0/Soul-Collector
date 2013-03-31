@@ -90,7 +90,7 @@ public:
 	 * Updates the player's position.
 	 * This function should be called once per frame.
 	 */
-	virtual void Update(const Level& level, const sf::Time& timePassed);
+	virtual void Update(Level& level, const sf::Time& timePassed);
 
 	/**
 	 * Toggles the player's lighter on/off state

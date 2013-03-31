@@ -21,7 +21,7 @@ public:
 	/**
 	 * Constructor. 
 	 */
-	AnimManager(const sf::IntRect& animBox, SoundManager& soundManager);
+	AnimManager(const sf::IntRect& animBox);
 
 	/**
 	 * Setter for sheet size.
@@ -76,18 +76,6 @@ public:
 	 * \param timePassed The amount of time since the last time this function was called.
 	 */
 	void PlayAnim(const std::string& anim, const sf::Time& timePassed);
-
-	/**
-	 * Attaches a sound to an animation.
-	 *
-	 * When a frame of the animation is played, the corresponding sound is also played.
-	 *  Multiple sounds can be attached to a given animation, in which case a random sound
-	 *  will be played every time the animation is played.
-	 * \param anim The name of the animation to attach the sound to.
-	 * \param sound The name of the sound to attach, in soundManager.
-	 * \return True if the animation exists, false otherwise.
-	 */
-	bool AttachSound(const std::string& anim, const std::string& sound);
 private:
 	/**
 	 * Starts the entity playing the animation, if it exists.
@@ -116,8 +104,6 @@ private:
 	std::vector<int> animSetEnd;
 	/** Whether or not animations should loop. */
 	std::vector<bool> animLoop;
-	/** Sounds associated with the animation frames. */
-	std::vector<std::vector<std::string>> animSound;
 	/** Current animation that is playing. */
 	int curAnim;
 	/** Frame of the current animation we are playing. */
@@ -134,9 +120,6 @@ private:
 
 	/** The default animation delay. */
 	static const sf::Time defaultAnimDelay;
-
-	/** Sound manager associated with this animation manager. */
-	SoundManager& soundManager;
 };
 
 #endif

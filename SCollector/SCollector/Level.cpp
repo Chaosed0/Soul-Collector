@@ -12,31 +12,33 @@
 #include "Activatable.h"
 #include "Movable.h"
 #include "Stairs.h"
+#include "Player.h"
+#include "LightSource.h"
 
-Level::Level()
-	: player(sf::Vector2f())
+Level::Level(Player& player)
+	: player(player)
 {
+	mapSize = sf::Vector2f(0, 0);
+	tileSize = sf::Vector2f(0, 0);
 	lyrCollision = NULL;
 	tsetCollision = NULL;
-	spawn.x = spawn.y = -1;
 	isActive = false;
-	activeStairs = -1;
 }
 
-Level::Level(const std::string& mapName, const std::string& spawnName)
-	: player(sf::Vector2f())
+Level::Level(Player& player, const std::string& mapName, const std::string& spawnName)
+	: player(player)
 {
+	mapSize = sf::Vector2f(0, 0);
+	tileSize = sf::Vector2f(0, 0);
 	lyrCollision = NULL;
 	tsetCollision = NULL;
-	spawn.x = spawn.y = -1;
-	activeStairs = -1;
 
 	LoadMap(mapName, spawnName);
 }
 
 bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 {
-	if(!Parse(mapName, spawnName)) {
+	if(Parse(mapName) == NULL) {
 		return false;
 	}
 	InitTextures();
@@ -49,13 +51,30 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 	//Add the player's light
 	player.AddLight(*this);
 
-	//Set the player's position to the spawn
-	player.SetPos(spawn);
+	//Spawn the player
+	SpawnPlayer(spawnName);
 
 	//The level is now active and can be used.
 	isActive = true;
 	
 	return true;
+}
+
+void Level::SpawnPlayer(const std::string& spawnName)
+{
+	std::map<std::string, sf::Vector2f>::iterator spawnIter;
+	spawnIter = spawns.find(spawnName);
+	if(spawnIter != spawns.end()) {
+		player.SetPos(spawnIter->second);
+	} else {
+		printf("WARNING: Spawnpoint %s not found! Defaulting to (0, 0)...\n", spawnName.c_str());
+		player.SetPos(sf::Vector2f(0, 0));
+	}
+}
+
+void Level::SetActive(bool active)
+{
+	isActive = active;
 }
 
 void Level::UnloadMap()
@@ -80,19 +99,13 @@ void Level::UnloadMap()
 	//Don't delete the collision tileset/layer, just set them to null
 	tsetCollision = NULL;
 	lyrCollision = NULL;
-	//Clear the spawn
-	spawn.x = spawn.y = -1;
 	//Clear active stairs
-	activeStairs = -1;
-	//Clear the map
-	delete(map);
-	map = NULL;
 }
 
 void Level::InitTextures()
 {
-	tilemapTexture.create(map->GetWidth()*map->GetTileWidth(), map->GetHeight()*map->GetTileHeight());
-	lightTexture.create(map->GetWidth()*map->GetTileWidth(), map->GetHeight()*map->GetTileHeight());
+	tilemapTexture.create(mapSize.x*tileSize.y, mapSize.y*mapSize.y);
+	lightTexture.create(mapSize.x*tileSize.y, mapSize.y*mapSize.y);
 }
 
 void Level::DrawMap()
@@ -139,7 +152,7 @@ void Level::DrawMap()
 	tilemapSprite.setTexture(tilemapTexture.getTexture());
 }
 
-bool Level::Parse(const std::string& mapName, const std::string& spawnName)
+Tmx::Map* Level::Parse(const std::string& mapName)
 {
 	//Initialize the map pointer
 	map = new Tmx::Map();
@@ -147,11 +160,15 @@ bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 	printf("Parsing map...\n");
 	//Attempt to parse the map, and report any errors
 	map->ParseFile(BASEMAPDIR + mapName);
+
+	//Initialize some properties
+	mapSize = sf::Vector2f(map->GetWidth(), map->GetHeight());
+	tileSize = sf::Vector2f(map->GetTileWidth(), map->GetTileHeight());
 	
 	if(map->HasError()) {
 		fprintf(stderr, "WARNING: Could not parse level %s: %s\n",
 			mapName.c_str(), map->GetErrorText().c_str());
-		return false;
+		return NULL;
 	}
 
 	//Make the tilesets of the map into sprites
@@ -203,7 +220,6 @@ bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 	if(tsetCollision == NULL)
 		fprintf(stderr, "WARNING: Could not find collision tileset! Attempting to proceed...\n");
 
-
 	//Now, parse the map objects
 	for (int i = 0; i < map->GetNumObjectGroups(); ++i) {
 		//Get an object group.
@@ -214,38 +230,36 @@ bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 			//Grab objects from the group
 			const Tmx::Object *object = objectGroup->GetObject(j);
 			const std::string &type = object->GetType();
+			sf::Vector2f objectPos(object->GetX() + object->GetWidth()/2.0f,
+						object->GetY() - object->GetHeight()/2.0f);
 
 			//Check the objects against our known object types...
 			//Is the object a (the) spawn?
 			if(type.compare("Spawn") == 0) {
-				//Have we gotten a spawn already?
-				//Is the spawn the one we're looking for, if we're looking for one?
-				if(spawn.x < 0 && spawn.y < 0 &&
-						(spawnName.compare("any") == 0 ||
-						spawnName.compare(object->GetName()) == 0)) {
-					spawn.x = object->GetX() + object->GetWidth()/2.0f;
-					spawn.y = object->GetY() - object->GetWidth()/2.0f;
+				//If the spawn has no name, we can't store it
+				std::string spawnName = object->GetName();
+				if(spawnName.empty()) {
+					fprintf(stderr, "WARNING: Spawn at %d, %d has no name! Ignoring...\n",
+						object->GetX(), object->GetY());
+				} else {
+					spawns.insert(std::pair<std::string, sf::Vector2f>(spawnName, objectPos));
 				}
-				//If we've already found a spawnpoint, just ignore this one
 			}
 			else if(type.compare("Key") == 0) {
 				/*std::string door = object->GetProperties().GetLiteralProperty("Door");
 				if(door.empty()) {
 					fprintf(stderr, "WARNING: Key has no associated door! Ignored...");
 				} else {*/
-					activatables.push_back(new Key(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
-						object->GetY() - object->GetHeight()/2.0f)));
+					activatables.push_back(new Key(objectPos));
 				//}
 			}
 			else if(type.compare("Torch") == 0) {
-				activatables.push_back(new Torch(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
-					object->GetY() - object->GetHeight()/2.0f)));
+				activatables.push_back(new Torch(objectPos));
 				//This is a bad thing and I feel bad for doing it
 				((Torch*)activatables.back())->AddLight(*this);
 			}
 			else if(type.compare("Demon") == 0) {
-				enemies.push_back(new Demon(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
-					object->GetY() - object->GetHeight()/2.0f)));
+				enemies.push_back(new Demon(objectPos));
 			}
 			else if(type.compare("Stairs") == 0) {
 				std::string nextLevel = object->GetProperties().GetLiteralProperty("NextLevel");
@@ -254,8 +268,8 @@ bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 					fprintf(stderr, "WARNING: Stairs named %s have missing properties! Ignored...\n",
 						object->GetName().c_str());
 				} else {
-					activatables.push_back(new Stairs(sf::Vector2f(object->GetX() + object->GetWidth()/2.0f,
-						object->GetY() - object->GetHeight()/2.0f), nextLevel, nextSpawn));
+					activatables.push_back(new Stairs(objectPos, nextLevel, nextSpawn));
+					//activatables.back()->SetRot(object->GetRot());
 				}
 			}
 			//Here, we should do keys, traps, etc...
@@ -266,14 +280,8 @@ bool Level::Parse(const std::string& mapName, const std::string& spawnName)
 		}
 	}
 
-	if(spawn.x < 0 || spawn.y < 0) {
-		printf("WARNING: Spawnpoint %s not found! Defaulting to (0, 0)...\n", spawnName.c_str());
-		spawn = sf::Vector2f(0, 0);
-	}
-
-
 	printf("Map parsing complete\n");
-	return true;
+	return map;
 }
 
 const Tmx::Tileset* Level::GetTileset(const Tmx::Layer* layer, const sf::Vector2i& globTile) const
@@ -530,7 +538,6 @@ void Level::Update(const sf::Time& timePassed)
 			//We've got to notify the Game that this level is done and we'd like to
 			// transition to another.
 			isActive = false;
-			activeStairs = i;
 		}
 	}
 
@@ -622,11 +629,17 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 
 bool Level::CheckLevelTransition(std::string& levelName, std::string& spawnName)
 {
-	if(!isActive && activeStairs >= 0) {
-		//Also a bad thing and feel bad etc
-		levelName = ((Stairs*)activatables[activeStairs])->GetNextLevel();
-		spawnName = ((Stairs*)activatables[activeStairs])->GetNextSpawn();
+	if(!isActive) {
+		levelName = nextLevel;
+		spawnName = nextSpawn;
 		return true;
 	}
 	return false;
+}
+
+void Level::SetLevelTransition(const std::string& levelName, const std::string& spawnName)
+{
+	nextLevel = levelName;
+	nextSpawn = spawnName;
+	isActive = false;
 }

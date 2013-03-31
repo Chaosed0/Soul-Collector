@@ -17,7 +17,7 @@ class Demon : public Movable
 public:
 	Demon(sf::Vector2f pos);
 
-	virtual void Update(const Level& level, const sf::Time& timePassed);
+	virtual void Update(Level& level, const sf::Time& timePassed);
 
 	/**
 	 * Simply checks if the demon is currently charging (otherwise it can't
