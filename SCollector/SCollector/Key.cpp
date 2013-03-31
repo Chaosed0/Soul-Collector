@@ -20,3 +20,13 @@ void Key::Update(const Level& level, const sf::Time& timePassed)
 	//Just play the idle animation to keep the clock in sync
 	PlayAnim("idle", timePassed);
 }
+
+int Key::getKeyID()
+{
+	return KeyID;
+}
+
+void Key::setKeyID(int keyID)
+{
+	KeyID = keyID;
+}

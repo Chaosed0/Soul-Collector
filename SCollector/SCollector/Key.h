@@ -31,9 +31,13 @@ public:
 	 * \return The name of the door that the key should open.
 	 */
 	std::string GetDoorName();
+
+	void setKeyID(int keyID);
+	int getKeyID();
 private:
 	/** The name of the door this key opens. */
 	std::string doorName;
+	int KeyID;
 };
 
 #endif
