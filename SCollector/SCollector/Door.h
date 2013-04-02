@@ -20,7 +20,7 @@ public:
 
 	Key *GetNewKey(const sf::Vector2f& pos) const;
 	double GetHealth() const; 
-	bool IsOpened() const;
+	bool IsCollidable() const;
 	
 	virtual void Update(Level& level, const sf::Time& timePassed);
 private:

@@ -12,7 +12,6 @@ Door::Door(const sf::Vector2f& pos)
 	SetPos(pos);
 }
 
-
 void Door::Break()
 {
 	if(this->health == 0)
@@ -25,7 +24,7 @@ void Door::Open(std::list<Key> listKeys)
 
 	while (it != listKeys.end() )
 	{
-		if (it->getKeyID == this->doorID)
+		if (it->getKeyID() == this->doorID)
 		{
 			isOpened = true;
 			break;
@@ -42,9 +41,22 @@ double Door::GetHealth() const
 	return health;
 }
 
-bool Door::IsOpened() const
+bool Door::IsCollidable() const
 {
-	return isOpened;
+	if (isOpened && isBroken) {
+		return false;
+	}
+	else if (isOpened && !isBroken) {
+		return false;
+	}
+	else if (!isOpened && isBroken)
+	{
+		return false;
+	}
+	else if (!isOpened && !isBroken)
+	{
+		return true;
+	}
 }
 
 // this functions to create door and key with IDs
