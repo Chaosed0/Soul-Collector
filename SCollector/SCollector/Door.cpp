@@ -3,7 +3,17 @@
 #include "Level.h"
 #include "Player.h"
 
-Door::Door(const sf::Vector2f& pos)
+int Door::CurrentID = 0;
+
+Door::Door()
+	: Activatable("Door.png", sf::IntRect(0,0,32,32), sf::IntRect(0,0,32,32))
+{
+	health = 100.0f;
+	isOpened = false;
+	isBroken = false;
+}
+
+Door::Door(const sf::Vector2f& pos, int doorID)
 	: Activatable(" ", sf::IntRect(0,0,32,32), sf::IntRect(0,0,32,32))
 {
 	health = 100.0;
@@ -87,6 +97,10 @@ void Door::Update(Level& level, const sf::Time& timePassed)
 {
 	if(IsActive() && !IsFinished()) {
 		visible = false;
-		Finish();
+		if(level.GetPlayer().HasKey(doorID)) {
+			Finish();
+		} else {
+			isActive = false;
+		}
 	}
 }

@@ -12,7 +12,7 @@ public:
 	static int Door::CurrentID; 
 
 	Door();
-	Door(const sf::Vector2f& pos);
+	Door(const sf::Vector2f& pos, int doorID);
 	Door *Instantiate(Key *key, const sf::Vector2f& pos);	//set up Door and its key
 	
 	void Break();
