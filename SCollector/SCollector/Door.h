@@ -12,19 +12,15 @@ public:
 	Door();
 	Door(const sf::Vector2f& pos);
 
-	Door(const sf::Vector2f& pos, int doorID);
-	Door *Instantiate(Key *key, const sf::Vector2f& pos);	//set up Door and its key
+	Door(const sf::Vector2f& pos, std::string doorName);
 	
 	void Break();
-	void Open(std::list<Key> listKeys);
 
-	Key *GetNewKey(const sf::Vector2f& pos) const;
 	double GetHealth() const; 
 	bool IsCollidable() const;
 	
 	virtual void Update(Level& level, const sf::Time& timePassed);
 private:
-	int doorID;				// door ID
 	std::string doorName;
 	int health;
 	bool isOpened;

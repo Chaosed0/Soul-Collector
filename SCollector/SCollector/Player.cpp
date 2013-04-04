@@ -94,6 +94,18 @@ void Player::ToggleLighter()
 	lighter.Toggle();
 }
 
+void Player::AddKey(std::string doorName)
+{
+	this->doorNameList.push_back(doorName);
+}
+
+bool Player::HasKey(std::string doorName, std::list<std::string> DoorNameList)
+{
+
+
+
+}
+
 void Player::Update(Level& level, const sf::Time& timePassed)
 {
 	bool moving = moveLeft || moveRight || moveUp || moveDown;
@@ -191,6 +203,8 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 	} else {
 		PlayAnim("idle", timePassed);
 	}
+
+
 
 	//Update the light
 	lighter.SetPos(GetPos());

@@ -10,6 +10,7 @@
 #define __PLAYER_H
 
 #include <SFML/Graphics.hpp>
+#include <list>
 
 #include "Movable.h"
 #include "LightSource.h"
@@ -26,6 +27,8 @@ public:
 	 *  call LoadTexture() before drawing the player!
 	 */
 	Player(const sf::Vector2f& pos);
+
+	
 
 	/**
 	 * Starts or stops the player moving left.
@@ -97,6 +100,9 @@ public:
 	 */
 	void ToggleLighter();
 
+	void AddKey(std::string);
+	bool HasKey(std::string doorName, std::list<std::string> doorNameList);
+
 //Private attributes; visible only within this class
 private:
 	/** Flags set to true when the player should move in the corresponding direction */
@@ -123,6 +129,8 @@ private:
 	static const float sprintSpeed;
 	/** Max amount of fatigue. */
 	static const int maxFatigue;
+
+	std::list<std::string> doorNameList;
 };
 
 #endif
