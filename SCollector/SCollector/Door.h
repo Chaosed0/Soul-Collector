@@ -9,10 +9,9 @@
 class Door : public Activatable
 {
 public:
-	static int Door::CurrentID; 
-
 	Door();
 	Door(const sf::Vector2f& pos);
+	
 	Door *Instantiate(Key *key, const sf::Vector2f& pos);	//set up Door and its key
 	
 	void Break();
@@ -24,13 +23,11 @@ public:
 	
 	virtual void Update(Level& level, const sf::Time& timePassed);
 private:
-	
+	int doorID;				// door ID
 	std::string doorName;
 	int health;
 	bool isOpened;
-	bool isBroken;
-
-	int doorID;				// door ID
+	bool isBroken;	
 };
 
 #endif
