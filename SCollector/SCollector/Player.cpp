@@ -96,14 +96,12 @@ void Player::ToggleLighter()
 
 void Player::AddKey(std::string doorName)
 {
-	this->doorNameList.push_back(doorName);
+	this->doorNameSet.insert(doorName);
 }
 
-bool Player::HasKey(std::string doorName, std::list<std::string> DoorNameList)
+bool Player::HasKey(std::string doorName)
 {
-
-
-
+	return (this->doorNameSet).find(doorName) != doorNameSet.end();
 }
 
 void Player::Update(Level& level, const sf::Time& timePassed)

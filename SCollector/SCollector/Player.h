@@ -101,7 +101,7 @@ public:
 	void ToggleLighter();
 
 	void AddKey(std::string);
-	bool HasKey(std::string doorName, std::list<std::string> doorNameList);
+	bool HasKey(std::string doorName);
 
 //Private attributes; visible only within this class
 private:
@@ -130,7 +130,7 @@ private:
 	/** Max amount of fatigue. */
 	static const int maxFatigue;
 
-	std::list<std::string> doorNameList;
+	std::set<std::string> doorNameSet;
 };
 
 #endif
