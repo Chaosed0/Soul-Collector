@@ -12,8 +12,8 @@ AttackCone::AttackCone(const sf::Time& time, const sf::Vector2f& origin,
 	this->angleEnd = angleEnd;
 
 	//Make the angles between -PI and PI 
-	angleBegin = shiftAngle(angleBegin);
-	angleEnd = shiftAngle(angleEnd);
+	this->angleBegin = shiftAngle(angleBegin);
+	this->angleEnd = shiftAngle(angleEnd);
 
 	isExpired = false;
 	liveTime = time;
@@ -38,6 +38,7 @@ bool AttackCone::Contains(const sf::Vector2f point) const
 	angleBetween = shiftAngle(angleBetween);
 	//The point is within the cone if it's within the circle defined
 	// by the radius, and within the sector defined by the angles
+	printf("%g vs %g, %g vs (%g, %g)\n", magnitude(relPoint), length, angleBetween, angleBegin, angleEnd);
 	return magnitude(relPoint) < length &&
 		angleBetween > angleBegin && angleBetween < angleEnd;
 }
