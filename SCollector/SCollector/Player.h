@@ -10,7 +10,7 @@
 #define __PLAYER_H
 
 #include <SFML/Graphics.hpp>
-#include <list>
+#include <set>
 
 #include "Movable.h"
 #include "LightSource.h"

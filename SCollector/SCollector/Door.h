@@ -2,9 +2,9 @@
 #define __DOOR_H
 
 #include <string>
-#include <list>
-#include "key.h"
+#include "Key.h"
 #include "Activatable.h"
+
 
 class Door : public Activatable
 {
