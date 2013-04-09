@@ -246,12 +246,12 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 				}
 			}
 			else if(type.compare("Key") == 0) {
-				/*std::string door = object->GetProperties().GetLiteralProperty("Door");
+				std::string door = object->GetProperties().GetLiteralProperty("Door");
 				if(door.empty()) {
 					fprintf(stderr, "WARNING: Key has no associated door! Ignored...");
-				} else {*/
-					activatables.push_back(new Key(objectPos));
-				//}
+				} else {
+					activatables.push_back(new Key(objectPos,door));
+				}
 			}
 			else if(type.compare("Torch") == 0) {
 				activatables.push_back(new Torch(objectPos));
