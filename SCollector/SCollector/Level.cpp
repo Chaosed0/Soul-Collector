@@ -104,8 +104,8 @@ void Level::UnloadMap()
 
 void Level::InitTextures()
 {
-	tilemapTexture.create(mapSize.x*tileSize.y, mapSize.y*mapSize.y);
-	lightTexture.create(mapSize.x*tileSize.y, mapSize.y*mapSize.y);
+	tilemapTexture.create(mapSize.x*tileSize.y, mapSize.y*tileSize.y);
+	lightTexture.create(mapSize.x*tileSize.y, mapSize.y*tileSize.y);
 }
 
 void Level::DrawMap()
@@ -257,11 +257,9 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 				activatables.push_back(new Torch(objectPos));
 				//This is a bad thing and I feel bad for doing it
 				((Torch*)activatables.back())->AddLight(*this);
-			}
-			else if(type.compare("Demon") == 0) {
+			} else if(type.compare("Demon") == 0) {
 				enemies.push_back(new Demon(objectPos));
-			}
-			else if(type.compare("Stairs") == 0) {
+			} else if(type.compare("Stairs") == 0) {
 				std::string nextLevel = object->GetProperties().GetLiteralProperty("NextLevel");
 				std::string nextSpawn = object->GetProperties().GetLiteralProperty("NextSpawn");
 				if(nextLevel.empty() || nextSpawn.empty()) {
@@ -271,6 +269,9 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 					activatables.push_back(new Stairs(objectPos, nextLevel, nextSpawn));
 					//activatables.back()->SetRot(object->GetRot());
 				}
+			} else if(type.compare("Door") == 0) {
+				int doorID = object->GetProperties().GetNumericProperty("DoorID");
+				//Note that doorID defaults to 0 (probably)
 			}
 			//Here, we should do keys, traps, etc...
 			//We don't know what type of object this is, issue an error
