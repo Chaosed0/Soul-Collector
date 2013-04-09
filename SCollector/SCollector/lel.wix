@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="TARGETDIR">
+            <Directory Id="dir3E2540AF12E50DC5024026EF5D0C4548" Name="assets" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="AssetsGroup">
+            <Component Id="cmp1F6AC2DF2669640F8B1A47A59C4C180D" Directory="dirEEC7441B6124F9B2D132D1A1F36A8DB3" Guid="{B79371EA-7A21-4D2B-949F-FDFC423A0813}">
+                <File Id="fil10A2990643848CBB969AA29E57907F3C" KeyPath="yes" Source="SourceDir\font\LiberationMono-Regular.ttf" />
+            </Component>
+            <Component Id="cmp657FA69B3FDC237A38C44669FC8F5D4E" Directory="dirEEC7441B6124F9B2D132D1A1F36A8DB3" Guid="{3F017B30-C72E-483D-8818-1251EA559309}">
+                <File Id="fil1AF6A8EF161F1B3998412616852590C1" KeyPath="yes" Source="SourceDir\font\License.txt" />
+            </Component>
+            <Component Id="cmp61CCEFCEFEEB7751560FDADAD1BF928A" Directory="dirEEC7441B6124F9B2D132D1A1F36A8DB3" Guid="{B85F3C55-9567-43E7-B87E-6BBFA52A9EE1}">
+                <File Id="fil684ED81F01CDFDF566B2E2C66D64644F" KeyPath="yes" Source="SourceDir\font\monkey.ttf" />
+            </Component>
+            <Component Id="cmpCE6AFD37F8685EBC93E3A0EF24A58D47" Directory="dirFF20A551081C0CB9F09A35E246733EE4" Guid="{73CBC5B7-BF0E-4667-A1B3-20761C55005A}">
+                <File Id="fil9DC26B43C5E1AED69CCC31056BD68047" KeyPath="yes" Source="SourceDir\img\Door.png" />
+            </Component>
+            <Component Id="cmp6044657D9D5E350E870EDAD9438E5138" Directory="dirFF20A551081C0CB9F09A35E246733EE4" Guid="{72F449E3-C3A4-4F9B-ADA2-151FCF28F94B}">
+                <File Id="filB67C875E566834321FA5DE7DADE8B1AD" KeyPath="yes" Source="SourceDir\img\Key.png" />
+            </Component>
+            <Component Id="cmp9C475C25D44835300187E2AAFB945916" Directory="dirFF20A551081C0CB9F09A35E246733EE4" Guid="{C174F8FC-6AAB-4C84-B701-D488E2A018EE}">
+                <File Id="filFB91B332062175770A71B430289B20E2" KeyPath="yes" Source="SourceDir\img\LightAura.png" />
+            </Component>
+            <Component Id="cmp22FD43555E7403A8927030EDF6733350" Directory="dirFF20A551081C0CB9F09A35E246733EE4" Guid="{78E5B0CD-543D-40CF-9236-C2B25D6B605F}">
+                <File Id="fil0A87C378285F928354F027FCC718FAE9" KeyPath="yes" Source="SourceDir\img\Stairs.png" />
+            </Component>
+            <Component Id="cmpBC74B5942F3C56AFF84225801BE1F86A" Directory="dirFF20A551081C0CB9F09A35E246733EE4" Guid="{E2E68EC1-AE53-4DDC-B71B-8EB416392566}">
+                <File Id="fil9D27410AE24DB0FFA8783B01DF6821D6" KeyPath="yes" Source="SourceDir\img\testsheet.png" />
+            </Component>
+            <Component Id="cmpD6DAF0A717AB3C9DA7F7D4862CBE2462" Directory="dirFF20A551081C0CB9F09A35E246733EE4" Guid="{09EC2ED5-24E7-4DF7-8883-F46F3A9555AC}">
+                <File Id="fil336AB995FA9B7457942CAB96E69EED84" KeyPath="yes" Source="SourceDir\img\Torch.png" />
+            </Component>
+            <Component Id="cmpFC6E50D016331A5E1F3D8CE61CF22C89" Directory="dirFF20A551081C0CB9F09A35E246733EE4" Guid="{2FF38B2E-E2DD-4DD5-BEC7-43E4BCA217B3}">
+                <File Id="fil4833D33B46C65441D7AF331C8FAC4C87" KeyPath="yes" Source="SourceDir\img\zombie_topdown.png" />
+            </Component>
+            <Component Id="cmp37540254A63DBB7DFAA2B2A40CA0DB75" Directory="dirC4F474F9585625D71A3BEDFDD43A7E80" Guid="{4A594516-19BF-4BDE-BA85-83E6E2E518AD}">
+                <File Id="filA98AC4887B5520466B83BFA4D9A5139F" KeyPath="yes" Source="SourceDir\maps\Debug1.tmx" />
+            </Component>
+            <Component Id="cmp1B4E190DE966C87211BA463BA35AF3AA" Directory="dirC4F474F9585625D71A3BEDFDD43A7E80" Guid="{FB546840-4536-4C14-A920-26EB94CA8E2C}">
+                <File Id="fil81B3F63026DC8B108957B72A794506D7" KeyPath="yes" Source="SourceDir\maps\Debug2.tmx" />
+            </Component>
+            <Component Id="cmp5BC43122B478C505AFEE49F6A92A0310" Directory="dirC4F474F9585625D71A3BEDFDD43A7E80" Guid="{AC3480F3-3204-40F0-A692-9BF9532887D9}">
+                <File Id="filE0E06682BF6059770FF8BFD6A985677C" KeyPath="yes" Source="SourceDir\maps\template.tmx" />
+            </Component>
+            <Component Id="cmpB672BB4099631C85D670C513D63AA527" Directory="dir1F495502CC2DDD729E44F46E29BEFDFD" Guid="{A1FFFFE4-DCCD-4F7E-B879-AD96F53FB951}">
+                <File Id="fil096E33FFC71DD26DF800B9DDA51592CE" KeyPath="yes" Source="SourceDir\sound\alert.ogg" />
+            </Component>
+            <Component Id="cmp055592FAD00677F0C292C13C8FAFEDD9" Directory="dir1F495502CC2DDD729E44F46E29BEFDFD" Guid="{FF272D8C-4C92-4EB4-8AB1-5A4727A74E53}">
+                <File Id="fil2F9E20540767021EF71858F4F2C5D74B" KeyPath="yes" Source="SourceDir\sound\charge.ogg" />
+            </Component>
+            <Component Id="cmp9B62449BB0EA953D6BCF2C17B1A735DE" Directory="dir1F495502CC2DDD729E44F46E29BEFDFD" Guid="{D555C22C-939F-4DED-9C87-1D1EC9B36FAE}">
+                <File Id="fil6BE20718535BE5FA30C43BB390051AFD" KeyPath="yes" Source="SourceDir\sound\ow.ogg" />
+            </Component>
+            <Component Id="cmpADBA2068A8A2CDB00C8D5B9B42F3AB5F" Directory="dir1F495502CC2DDD729E44F46E29BEFDFD" Guid="{24358E7B-08A3-4918-AA10-00A18E6B7B5E}">
+                <File Id="fil09D8FAB113D90CE94D6ACDBAA3BC1A6F" KeyPath="yes" Source="SourceDir\sound\swoosh.ogg" />
+            </Component>
+            <Component Id="cmp2EBBE430848BB6A764997D91CF631DA3" Directory="dir1F495502CC2DDD729E44F46E29BEFDFD" Guid="{0F9C4D95-2569-4F67-AB3F-C9A865883B8D}">
+                <File Id="filED2AF4F229D71D5642D24A40AC5AB602" KeyPath="yes" Source="SourceDir\sound\test.ogg" />
+            </Component>
+            <Component Id="cmp3C5112549AFDE6E43C6D82B35B6D451B" Directory="dir1F495502CC2DDD729E44F46E29BEFDFD" Guid="{E231C85B-2B21-463F-970B-4F3BE5B45620}">
+                <File Id="fil75D2F7A357DC5ED0738AAD0F076A7477" KeyPath="yes" Source="SourceDir\sound\thwack.ogg" />
+            </Component>
+            <Component Id="cmp0A08D80AF7C57C4327EFA883FBC29D5B" Directory="dir89AAC56577F14F600A082F14510060D9" Guid="{A5086E80-E314-43EF-B7CD-2DE79FC1A57E}">
+                <File Id="fil3DEBE73C295552E104BB8D82EA7E3ADA" KeyPath="yes" Source="SourceDir\tileset\ObjectTiles.png" />
+            </Component>
+            <Component Id="cmpCEE76834B4C590A45572A1CFC3600DD3" Directory="dir89AAC56577F14F600A082F14510060D9" Guid="{E6114DB3-76E4-4668-B72B-BFEF0C7981D6}">
+                <File Id="filA4AEBDA6BD65B7FBEDDC5EE0E9482078" KeyPath="yes" Source="SourceDir\tileset\tileset.png" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir3E2540AF12E50DC5024026EF5D0C4548">
+            <Directory Id="dir1F495502CC2DDD729E44F46E29BEFDFD" Name="sound" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir3E2540AF12E50DC5024026EF5D0C4548">
+            <Directory Id="dir89AAC56577F14F600A082F14510060D9" Name="tileset" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir3E2540AF12E50DC5024026EF5D0C4548">
+            <Directory Id="dirC4F474F9585625D71A3BEDFDD43A7E80" Name="maps" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir3E2540AF12E50DC5024026EF5D0C4548">
+            <Directory Id="dirEEC7441B6124F9B2D132D1A1F36A8DB3" Name="font" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir3E2540AF12E50DC5024026EF5D0C4548">
+            <Directory Id="dirFF20A551081C0CB9F09A35E246733EE4" Name="img" />
+        </DirectoryRef>
+    </Fragment>
+</Wix>

@@ -1,32 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="SCollectorSetup" Language="1033" Version="1.0.0.0" Manufacturer="The UN" UpgradeCode="42d1792c-d48e-470c-92b0-f080d5c07438">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+  <Product Id="*" Name="Soul Collector" Language="1033" Version="1.0.0.0" Manufacturer="The UN" UpgradeCode="42d1792c-d48e-470c-92b0-f080d5c07438">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <Media Id='1' Cabinet='SCollector.cab' EmbedCab='yes' />
+    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_ErrorProgressText" />
 
-		<Feature Id="ProductFeature" Title="SCollectorSetup" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
-		</Feature>
-	</Product>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+    <?define SFMLLibDir=$(var.SCollector.ProjectDir)../../SFML-2-19-2012/bin/?>
+    <?define SFGUILibDir=$(var.SCollector.ProjectDir)../../SFGUI-0.1.0/bin/?>
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+    <Icon Id="progicon" SourceFile="icon.ico" />
 
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="SCollector">
-					<Directory Id="assets" Name ="Assets"> </Directory>
-				</Directory>
-			</Directory>
-		</Directory>
-	</Fragment>
+    <Feature Id="Complete" Title="SCollector" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="AssetComponents" />
+      <ComponentGroupRef Id="LibraryComponents" />
+      <ComponentGroupRef Id="ProgMenuShortcutCompGroup"/>
+    </Feature>
 
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<Component Id="ProductComponent">
-				<File Source="$(var.SCollector.TargetPath)" />
-			</Component>
-		</ComponentGroup>
-	</Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="SCollector">
+          <Directory Id="assetsdir" Name="assets">
+            <Directory Id="sounddir" Name="sound" />
+            <Directory Id="tilesetdir" Name="tileset" />
+            <Directory Id="mapsdir" Name="maps" />
+            <Directory Id="fontdir" Name="font" />
+            <Directory Id="imgdir" Name="img" />
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="Soul Collector" />
+      </Directory>
+    </Directory>
+
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLDIR">
+      <Component Id="ProductComponent" Guid="440ccb86-cd90-49f1-9631-4196b86c8dae">
+        <File Source="$(var.SCollector.TargetPath)" Name="Soul Collector"/>
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="LibraryComponents" Directory="INSTALLDIR">
+      <Component Id="SFMLGraphicsLib">
+        <File Source="$(var.SFMLLibDir)sfml-graphics-2.dll" />
+      </Component>
+      <Component Id="SFMLAudioLib">
+        <File Source="$(var.SFMLLibDir)sfml-audio-2.dll" />
+      </Component>
+      <Component Id="SFMLSystemLib">
+        <File Source="$(var.SFMLLibDir)sfml-system-2.dll" />
+      </Component>
+      <Component Id="SFMLWindowLib">
+        <File Source="$(var.SFMLLibDir)sfml-window-2.dll" />
+      </Component>
+      <Component Id="SFMLlibsndfileLib">
+        <File Source="$(var.SFMLLibDir)libsndfile-1.dll" />
+      </Component>
+      <Component Id="SFMLopenal32Lib">
+        <File Source="$(var.SFMLLibDir)openal32.dll" />
+      </Component>
+      <Component Id="SFGUILib">
+        <File Source="$(var.SFGUILibDir)sfgui.dll" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="ProgMenuShortcutCompGroup">
+      <Component Id="ProgMenuShortcutComp" Directory="ProgramMenuDir" Guid="{a52958ae-c5c1-42c3-96de-c5c8172407ff}">
+        <Shortcut Id="ProgMenuShortcut" Target="[INSTALLDIR]SCollector.exe"
+                  Name="Soul Collector" WorkingDirectory='INSTALLDIR' Icon="progicon" IconIndex="0" />
+		<RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+		<RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="AssetComponents">
+      <Component Directory="fontdir" Guid="{B79371EA-7A21-4D2B-949F-FDFC423A0813}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\font\LiberationMono-Regular.ttf" />
+      </Component>
+      <Component Directory="fontdir" Guid="{3F017B30-C72E-483D-8818-1251EA559309}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\font\License.txt" />
+      </Component>
+      <Component Directory="fontdir" Guid="{B85F3C55-9567-43E7-B87E-6BBFA52A9EE1}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\font\monkey.ttf" />
+      </Component>
+      <Component Directory="imgdir" Guid="{73CBC5B7-BF0E-4667-A1B3-20761C55005A}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\Door.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{72F449E3-C3A4-4F9B-ADA2-151FCF28F94B}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\Key.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{C174F8FC-6AAB-4C84-B701-D488E2A018EE}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\LightAura.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{78E5B0CD-543D-40CF-9236-C2B25D6B605F}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\Stairs.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{E2E68EC1-AE53-4DDC-B71B-8EB416392566}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\testsheet.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{09EC2ED5-24E7-4DF7-8883-F46F3A9555AC}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\Torch.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{2FF38B2E-E2DD-4DD5-BEC7-43E4BCA217B3}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\zombie_topdown.png" />
+      </Component>
+      <Component Directory="mapsdir" Guid="{4A594516-19BF-4BDE-BA85-83E6E2E518AD}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\maps\Debug1.tmx" />
+      </Component>
+      <Component Directory="mapsdir" Guid="{FB546840-4536-4C14-A920-26EB94CA8E2C}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\maps\Debug2.tmx" />
+      </Component>
+      <Component Directory="mapsdir" Guid="{AC3480F3-3204-40F0-A692-9BF9532887D9}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\maps\template.tmx" />
+      </Component>
+      <Component Directory="sounddir" Guid="{A1FFFFE4-DCCD-4F7E-B879-AD96F53FB951}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\alert.ogg" />
+      </Component>
+      <Component Directory="sounddir" Guid="{FF272D8C-4C92-4EB4-8AB1-5A4727A74E53}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\charge.ogg" />
+      </Component>
+      <Component Directory="sounddir" Guid="{D555C22C-939F-4DED-9C87-1D1EC9B36FAE}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\ow.ogg" />
+      </Component>
+      <Component Directory="sounddir" Guid="{24358E7B-08A3-4918-AA10-00A18E6B7B5E}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\swoosh.ogg" />
+      </Component>
+      <Component Directory="sounddir" Guid="{0F9C4D95-2569-4F67-AB3F-C9A865883B8D}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\test.ogg" />
+      </Component>
+      <Component Directory="sounddir" Guid="{E231C85B-2B21-463F-970B-4F3BE5B45620}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\thwack.ogg" />
+      </Component>
+      <Component Directory="tilesetdir" Guid="{A5086E80-E314-43EF-B7CD-2DE79FC1A57E}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\tileset\ObjectTiles.png" />
+      </Component>
+      <Component Directory="tilesetdir" Guid="{E6114DB3-76E4-4668-B72B-BFEF0C7981D6}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\tileset\tileset.png" />
+      </Component>
+    </ComponentGroup>
+    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+  </Product>
 </Wix>
