@@ -5,15 +5,14 @@ HudObject::HudObject()
 
 HudObject::HudObject(std::string image, float xPos, int winHeight)
 {
-	filled = 100;
 	texture.loadFromFile(image);
 	sprite.setTexture(texture);
 	sprite.setOrigin(0,sprite.getTextureRect().height/2);
 	sprite.setPosition(xPos,winHeight-sprite.getTextureRect().height/2);
-	rect.setFillColor(sf::Color::Green);
+	rect.setFillColor(sf::Color::Red);
 	rect.setOrigin(sprite.getOrigin());
 	rect.setPosition(sprite.getPosition());
-	rect.setSize(sf::Vector2f(sprite.getTextureRect().height,sprite.getTextureRect().width));
+	rect.setSize(sf::Vector2f(sprite.getTextureRect().width,sprite.getTextureRect().height));
 }
 
 float HudObject::getWidth()
@@ -23,15 +22,26 @@ float HudObject::getWidth()
 
 void HudObject::changeFill(float delta)
 {
-	if (rect.getSize().y + delta <= sprite.getTextureRect().height || rect.getSize().y + delta >= 0)
-		rect.setSize(sf::Vector2f(rect.getTextureRect().width,rect.getTextureRect().height+delta));
+	if (rect.getSize().y + delta <= sprite.getTextureRect().height && rect.getSize().y + delta >= 0)
+	{
+		//printf("Changing fill..\n");
+		rect.setSize(sf::Vector2f(rect.getSize().x,rect.getSize().y+delta));
+		printf("Height is now %d\n",rect.getTextureRect().height);
+	}
 	else if (delta > 0)
-		rect.setSize(sf::Vector2f(rect.getTextureRect().width,rect.getTextureRect().height));
+	{
+		//printf("Full\n");
+		rect.setSize(sf::Vector2f(rect.getSize().x,sprite.getTextureRect().height));
+	}
 	else
-		rect.setSize(sf::Vector2f(rect.getTextureRect().width,0));
+	{
+		//printf("Empty\n");
+		rect.setSize(sf::Vector2f(rect.getSize().x,0));
+	}
 }
 
 void HudObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	target.draw(rect,states);
 	target.draw(sprite, states);
 }

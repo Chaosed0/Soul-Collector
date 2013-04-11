@@ -5,18 +5,20 @@
 #include <vector>
 #include "HudObject.h"
 
-class HUD:public sf::Drawable
+class HUD
 {
 private:
 
 	static const int numObjects = 3;
-	std::vector<HudObject> objects;
+	std::vector<HudObject *> objects;
 
 public:
 
 	HUD(const std::vector<std::string>& names, int winHeight);
 
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	void changeFill(float delta, int which);
+
+	void draw(sf::RenderWindow& window) const;
 };
 
 #endif
