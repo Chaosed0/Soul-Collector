@@ -40,25 +40,25 @@ bool Entity::IsColliding(const sf::IntRect& box) const
 	//Left side of the other box in this one
 	bool leftCollide =
 		box.left >= thisCollisionBox.left &&
-		box.left <= thisCollisionBox.left + thisCollisionBox.width && 
+		box.left <= thisCollisionBox.left + thisCollisionBox.width || 
 		thisCollisionBox.left >= box.left &&
 		thisCollisionBox.left <= box.left + box.width;
 	//Right side of other box in this one
 	bool rightCollide = 
 		box.left + box.width >= thisCollisionBox.left &&
-		box.left + box.width <= thisCollisionBox.left + thisCollisionBox.width &&
+		box.left + box.width <= thisCollisionBox.left + thisCollisionBox.width ||
 		thisCollisionBox.left + thisCollisionBox.width >= box.left &&
 		thisCollisionBox.left + thisCollisionBox.width <= box.left + box.width;
 	//Top side of the other box in this one
 	bool topCollide = 
 		box.top >= thisCollisionBox.top &&
-		box.top <= thisCollisionBox.top + thisCollisionBox.height &&
+		box.top <= thisCollisionBox.top + thisCollisionBox.height ||
 		thisCollisionBox.top >= box.top &&
 		thisCollisionBox.top <= box.top + box.height;
 	//Bottom side of the other box in this one
 	bool botCollide = 
 		box.top + box.height >= thisCollisionBox.top &&
-		box.top + box.height <= thisCollisionBox.top + thisCollisionBox.height &&
+		box.top + box.height <= thisCollisionBox.top + thisCollisionBox.height ||
 		thisCollisionBox.top + thisCollisionBox.height >= box.top &&
 		thisCollisionBox.top + thisCollisionBox.height <= box.top + box.height;
 

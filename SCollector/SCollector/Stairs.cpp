@@ -19,6 +19,8 @@ void Stairs::Update(Level& level, const sf::Time& timePassed)
 		level.SetLevelTransition(nextLevel, nextSpawn);
 		isActive = false;
 	}
+
+	PlayAnim("idle", timePassed);
 }
 
 std::string Stairs::GetNextLevel()
