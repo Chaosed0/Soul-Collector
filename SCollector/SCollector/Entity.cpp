@@ -113,17 +113,18 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	if(visible)
 		target.draw(sprite, state);
-	if(DRAW_COLBOXES) {
-		sf::IntRect thisCollisionBox = collisionBox;
-		thisCollisionBox.left += (int)GetPos().x - sprite.getOrigin().x;
-		thisCollisionBox.top += (int)GetPos().y - sprite.getOrigin().y;
-		sf::RectangleShape rect(sf::Vector2f(thisCollisionBox.width, thisCollisionBox.height));
-		rect.setPosition(thisCollisionBox.left, thisCollisionBox.top);
-		rect.setOutlineColor(sf::Color(0, 255, 0, 255));
-		rect.setFillColor(sf::Color(0,0,0,0));
-		rect.setOutlineThickness(1.0f);
-		target.draw(rect, state);
-	}
+
+#if DRAW_COLBOXES 1 
+	sf::IntRect thisCollisionBox = collisionBox;
+	thisCollisionBox.left += (int)GetPos().x - sprite.getOrigin().x;
+	thisCollisionBox.top += (int)GetPos().y - sprite.getOrigin().y;
+	sf::RectangleShape rect(sf::Vector2f(thisCollisionBox.width, thisCollisionBox.height));
+	rect.setPosition(thisCollisionBox.left, thisCollisionBox.top);
+	rect.setOutlineColor(sf::Color(0, 255, 0, 255));
+	rect.setFillColor(sf::Color(0,0,0,0));
+	rect.setOutlineThickness(1.0f);
+	target.draw(rect, state);
+#endif
 }
 
 

@@ -16,7 +16,7 @@
 #include "AnimManager.h"
 #include "SoundManager.h"
 
-#define DRAW_COLBOXES true
+#define DRAW_COLBOXES 1 
 
 class Level;
 class AttackCone;

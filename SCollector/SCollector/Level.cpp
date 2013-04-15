@@ -482,7 +482,6 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 			sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y,tileSize.x, tileSize.y);
 			for(unsigned int i = 0; i < activatables.size(); i++) {
 				if(activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect)) {
-					printf("Looking at an object\n");
 					//Check the distance to the rectangle
 					while(pixel.x < map->GetTileWidth() && pixel.x >= 0 &&
 							pixel.y < map->GetTileHeight() && pixel.y >= 0 &&
@@ -498,9 +497,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 							if(abs(newNearest) < abs(nearest)) {
 								nearest = newNearest;
 								foundCol = true;
-								printf("Nearest is object\n");
 							}
-							printf("Found an object\n");
 						}
 						pixelRef += step;
 					}
@@ -566,11 +563,11 @@ void Level::Update(const sf::Time& timePassed)
 	for(unsigned int i = 0; i < activatables.size(); i++) {
 		activatables[i]->Update(*this, timePassed);
 		//Check for stairs, the only activatable that can be both active and finished
-		if(activatables[i]->IsActive() && activatables[i]->IsFinished()) {
+		/*if(activatables[i]->IsActive() && activatables[i]->IsFinished()) {
 			//We've got to notify the Game that this level is done and we'd like to
 			// transition to another.
 			isActive = false;
-		}
+		}*/
 	}
 
 	for(unsigned int i = 0; i < enemies.size(); i++) {
