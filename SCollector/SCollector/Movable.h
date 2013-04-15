@@ -29,6 +29,12 @@ public:
 	 *  the other movable can play a sound or something.
 	 */
 	virtual void RemoveHealth(int amount);
+
+	/**
+	 * Gets whether or not the Movable is alive or not.
+	 * \return True if the movable is alive, false otherwise.
+	 */
+	virtual bool IsAlive();
 protected:
 	/** Movement direction of the entity*/
 	float moveAngle;

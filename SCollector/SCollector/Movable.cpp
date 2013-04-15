@@ -18,3 +18,8 @@ void Movable::RemoveHealth(int amount)
 {
 	health -= amount;
 }
+
+bool Movable::IsAlive()
+{
+	return health <= 0;
+}

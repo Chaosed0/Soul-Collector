@@ -57,8 +57,10 @@ AttackCone Player::GetAttackCone()
 
 void Player::Attack(Movable& movable)
 {
-	Movable::Attack(movable);
-	soundManager.PlaySound("hit");
+	if(movable.IsAlive()) {
+		Movable::Attack(movable);
+		soundManager.PlaySound("hit");
+	}
 }
 
 void Player::RemoveHealth(int amount)
