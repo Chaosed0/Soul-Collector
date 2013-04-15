@@ -21,5 +21,5 @@ void Movable::RemoveHealth(int amount)
 
 bool Movable::IsAlive()
 {
-	return health <= 0;
+	return health > 0;
 }

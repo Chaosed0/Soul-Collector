@@ -4,7 +4,8 @@
 #include "Player.h"
 
 Door::Door(const sf::Vector2f& pos, const std::string& doorName)
-	: Activatable("assets/img/Door.png", sf::IntRect(0,0,32,32), sf::IntRect(0,0,32,32))
+	: Activatable("assets/img/Door.png", sf::IntRect(0,0,32,32),
+		sf::IntRect(0,0,32,32), sf::IntRect(-16,-16,64,64))
 {
 	this->doorName = doorName;
 	health = 100.0f;

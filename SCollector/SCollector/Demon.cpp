@@ -41,7 +41,7 @@ void Demon::Attack(Movable& movable)
 void Demon::Update(Level& level, const sf::Time& timePassed)
 {
 	//First, before anything, check if the demon is dead
-	if(health <= 0) {
+	if(!IsAlive()) {
 		//Since the PlayAnim() function simply stops on the last frame for non-looping
 		// animations, we don't have to do anything to stop the animation playing
 		PlayAnim("death", timePassed);

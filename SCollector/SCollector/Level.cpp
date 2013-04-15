@@ -252,14 +252,17 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 					fprintf(stderr, "WARNING: Key has no associated door! Ignored...");
 				} else {
 					activatables.push_back(new Key(objectPos,door));
+					activatables.back()->SetRot(object->GetRot());
 				}
 			}
 			else if(type.compare("Torch") == 0) {
 				activatables.push_back(new Torch(objectPos));
 				//This is a bad thing and I feel bad for doing it
 				((Torch*)activatables.back())->AddLight(*this);
+				activatables.back()->SetRot(object->GetRot());
 			} else if(type.compare("Demon") == 0) {
 				enemies.push_back(new Demon(objectPos));
+				enemies.back()->SetRot(object->GetRot());
 			} else if(type.compare("Stairs") == 0) {
 				std::string nextLevel = object->GetProperties().GetLiteralProperty("NextLevel");
 				std::string nextSpawn = object->GetProperties().GetLiteralProperty("NextSpawn");
@@ -479,6 +482,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 			sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y,tileSize.x, tileSize.y);
 			for(unsigned int i = 0; i < activatables.size(); i++) {
 				if(activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect)) {
+					printf("Looking at an object\n");
 					//Check the distance to the rectangle
 					while(pixel.x < map->GetTileWidth() && pixel.x >= 0 &&
 							pixel.y < map->GetTileHeight() && pixel.y >= 0 &&
@@ -494,9 +498,11 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 							if(abs(newNearest) < abs(nearest)) {
 								nearest = newNearest;
 								foundCol = true;
+								printf("Nearest is object\n");
 							}
+							printf("Found an object\n");
 						}
-						pixelRef += step;				
+						pixelRef += step;
 					}
 				}
 			}

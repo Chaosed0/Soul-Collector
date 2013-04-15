@@ -1,11 +1,13 @@
 
 #include "Activatable.h"
 
-Activatable::Activatable(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
+Activatable::Activatable(std::string imgLoc, sf::IntRect collisionBox,
+	sf::IntRect animBox, sf::IntRect activateBox)
 	: Entity(imgLoc, collisionBox, animBox, false)
 {
 	isActive = false;
 	isFinished = false;
+	this->activateBox = activateBox;
 }
 
 void Activatable::Activate()

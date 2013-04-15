@@ -12,7 +12,8 @@
 class Activatable : public Entity
 {
 public:
-	Activatable(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox);
+	Activatable(std::string imgLoc, sf::IntRect collisionBox,
+		sf::IntRect animBox, sf::IntRect activateBox);
 	
 	void Activate();
 	void Finish();
@@ -22,6 +23,7 @@ protected:
 	bool isActive;
 	bool isFinished;
 private:
+	sf::IntRect activateBox;
 };
 
 #endif
