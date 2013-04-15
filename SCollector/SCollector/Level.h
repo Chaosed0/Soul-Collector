@@ -140,9 +140,8 @@ public:
 
 	/**
 	 * Attempts to activate an object, if the player is colliding with one.
-	 * \return True if some object was activated, false if not.
 	 */
-	bool DoActivate();
+	void DoActivate();
 
 	/**
 	 * Adds a light to the level for drawing.

@@ -96,12 +96,12 @@ void Player::ToggleLighter()
 	lighter.Toggle();
 }
 
-void Player::AddKey(std::string doorName)
+void Player::AddKey(const std::string& doorName)
 {
 	this->doorNameSet.insert(doorName);
 }
 
-bool Player::HasKey(std::string doorName)
+bool Player::HasKey(const std::string& doorName)
 {
 	return (this->doorNameSet).find(doorName) != doorNameSet.end();
 }

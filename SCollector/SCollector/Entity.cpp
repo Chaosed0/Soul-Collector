@@ -42,8 +42,8 @@ bool Entity::IsColliding(const sf::IntRect& box) const
 	//Separating Axis Theorem: Two boxes are colliding if and only if they are colliding
 	// on their component axes (x and y)
 	sf::IntRect thisCollisionBox = collisionBox;
-	thisCollisionBox.left = (int)GetPos().x - sprite.getOrigin().x;
-	thisCollisionBox.top = (int)GetPos().y - sprite.getOrigin().y;
+	thisCollisionBox.left += (int)GetPos().x - sprite.getOrigin().x;
+	thisCollisionBox.top += (int)GetPos().y - sprite.getOrigin().y;
 
 	//Left side of the other box in this one
 	bool leftCollide =
@@ -113,6 +113,17 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	if(visible)
 		target.draw(sprite, state);
+	if(DRAW_COLBOXES) {
+		sf::IntRect thisCollisionBox = collisionBox;
+		thisCollisionBox.left += (int)GetPos().x - sprite.getOrigin().x;
+		thisCollisionBox.top += (int)GetPos().y - sprite.getOrigin().y;
+		sf::RectangleShape rect(sf::Vector2f(thisCollisionBox.width, thisCollisionBox.height));
+		rect.setPosition(thisCollisionBox.left, thisCollisionBox.top);
+		rect.setOutlineColor(sf::Color(0, 255, 0, 255));
+		rect.setFillColor(sf::Color(0,0,0,0));
+		rect.setOutlineThickness(1.0f);
+		target.draw(rect, state);
+	}
 }
 
 
@@ -129,7 +140,7 @@ sf::Vector2f Entity::GetPos() const
 void Entity::SetRot(float newrot)
 {
 	sprite.setRotation(newrot);
-	printf("Got rot of %g\n", newrot);
+	//printf("Got rot of %g\n", newrot);
 }
 
 void Entity::PlayAnim(const std::string& anim, const sf::Time& timePassed)

@@ -9,6 +9,8 @@
 
 #include "Entity.h"
 
+#define DRAW_ACTCOLBOXES true
+
 class Activatable : public Entity
 {
 public:
@@ -16,14 +18,21 @@ public:
 		sf::IntRect animBox, sf::IntRect activateBox);
 	
 	void Activate();
-	void Finish();
 	bool IsFinished();
 	bool IsActive();
+	/**
+	 * If entity is within range of this activatable, this entity
+	 *  activates; otherwise, nothing happens.
+	 * \param entity The entity attempting to activate this activatable.
+	 */
+	void TryActivate(const Entity& entity);
 protected:
 	bool isActive;
 	bool isFinished;
+	void Finish();
 private:
 	sf::IntRect activateBox;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 };
 
 #endif

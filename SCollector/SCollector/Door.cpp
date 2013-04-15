@@ -31,7 +31,6 @@ double Door::GetHealth() const
 void Door::Update(Level& level, const sf::Time& timePassed)
 {
 	if(IsActive() && !IsFinished()) {
-		visible = false;
 		if(level.GetPlayer().HasKey(doorName)) {
 			isOpened = true;
 			Finish();

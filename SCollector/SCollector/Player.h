@@ -28,8 +28,6 @@ public:
 	 */
 	Player(const sf::Vector2f& pos);
 
-	
-
 	/**
 	 * Starts or stops the player moving left.
 	 * \param start If true, the player starts moving left; otherwise, they stop
@@ -100,8 +98,17 @@ public:
 	 */
 	void ToggleLighter();
 
-	void AddKey(std::string);
-	bool HasKey(std::string doorName);
+	/**
+	 * Adds a key to the player's inventory.
+	 * \param doorName The name of the door in the level that the key should open.
+	 */
+	void AddKey(const std::string& doorName);
+	/**
+	 * Checks if the player has a key for a certain door.
+	 * \param doorName The name of the door corresponding to the key.
+	 * \return True if the player has the key, false otherwise.
+	 */
+	bool HasKey(const std::string& doorName);
 
 //Private attributes; visible only within this class
 private:

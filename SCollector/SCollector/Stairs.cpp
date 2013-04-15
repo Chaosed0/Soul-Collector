@@ -3,7 +3,8 @@
 #include "Level.h"
 
 Stairs::Stairs(const sf::Vector2f& pos, const std::string& nextLevel, const std::string& nextSpawn)
-	: Activatable("assets/tileset/ObjectTiles.png", sf::IntRect(0, 0, 32, 32), sf::IntRect(0, 0, 32, 32)) 
+	: Activatable("assets/tileset/ObjectTiles.png", sf::IntRect(0, 0, 32, 32),
+	sf::IntRect(0, 0, 32, 32), sf::IntRect(-8,-8,48,48))
 {
 	sprite.setPosition(pos);
 	this->nextLevel = nextLevel;

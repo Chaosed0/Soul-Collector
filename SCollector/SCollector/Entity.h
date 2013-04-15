@@ -16,6 +16,8 @@
 #include "AnimManager.h"
 #include "SoundManager.h"
 
+#define DRAW_COLBOXES true
+
 class Level;
 class AttackCone;
 
@@ -62,21 +64,21 @@ public:
 	 * \return True if this entity is colliding with the other, false
 	 *  otherwise.
 	 */
-	bool IsColliding(const Entity& entity) const;
+	virtual bool IsColliding(const Entity& entity) const;
 
 	/**
 	 * Does a collision check on this entity and a bounding box.
 	 * \param box The box to check collisions against.
 	 * \return True if this entity is colliding with the other, false otherwise.
 	 */
-	bool IsColliding(const sf::IntRect& box) const;
+	virtual bool IsColliding(const sf::IntRect& box) const;
 
 	/**
 	 * Does a collision check on this entity and an attack cone.
 	 * \param cone The cone to check collisions against.
 	 * \return True if this entity is colliding with the cone, false otherwise.
 	 */
-	bool IsColliding(const AttackCone& cone) const;
+	virtual bool IsColliding(const AttackCone& cone) const;
 
 	/**
 	 * Checks if this entity is collidable with the player or not.
@@ -111,8 +113,14 @@ protected:
 	 */
 	void PlayAnim(const std::string& anim, const sf::Time& timePassed);
 
-private:
+	/**
+	 * Draw the entity. Just calls the private draw().
+	 *
+	 * Here in case any derived class needs to draw something other than its sprite.
+	 */
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
+private:
+	//virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 };
 
 #endif

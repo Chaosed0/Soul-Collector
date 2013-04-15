@@ -520,19 +520,15 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	return foundCol;
 }
 
-bool Level::DoActivate()
+void Level::DoActivate()
 {
-	bool didActivate = false;
-
 	for(unsigned int i = 0; i < activatables.size(); i++) {
-		if(activatables[i]->IsColliding(player)) {
+		/*if(activatables[i]->IsColliding(player)) {
 			activatables[i]->Activate();
-			printf("Activated activatable %d\n", i);
 			didActivate = true;
-		}
+		}*/
+		activatables[i]->TryActivate(player);
 	}
-	
-	return didActivate;
 }
 
 void Level::AddLight(const LightSource& light)
