@@ -9,10 +9,7 @@
 class Door : public Activatable
 {
 public:
-	Door();
-	Door(const sf::Vector2f& pos);
-
-	Door(const sf::Vector2f& pos, std::string doorName);
+	Door(const sf::Vector2f& pos, const std::string& doorName);
 	
 	void Break();
 

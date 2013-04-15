@@ -12,6 +12,7 @@
 #include "Activatable.h"
 #include "Movable.h"
 #include "Stairs.h"
+#include "Door.h"
 #include "Player.h"
 #include "LightSource.h"
 
@@ -267,13 +268,12 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 						object->GetName().c_str());
 				} else {
 					activatables.push_back(new Stairs(objectPos, nextLevel, nextSpawn));
-					//activatables.back()->SetRot(object->GetRot());
+					activatables.back()->SetRot(object->GetRot());
 				}
 			} else if(type.compare("Door") == 0) {
-				int doorID = object->GetProperties().GetNumericProperty("DoorID");
-				//Note that doorID defaults to 0 (probably)
+				activatables.push_back(new Door(objectPos, object->GetName()));
+				activatables.back()->SetRot(object->GetRot());
 			}
-			//Here, we should do keys, traps, etc...
 			//We don't know what type of object this is, issue an error
 			else {
 				fprintf(stderr, "WARNING: Found unknown object type %s\n", object->GetType().c_str());
@@ -444,6 +444,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 		if(globTile.y >= 0 && globTile.y < layerHeight &&
 				globTile.x >= 0 && globTile.x < layerWidth)
 		{
+			int oldPixel = pixelRef;
 			//Get the tile ID
 			unsigned int tileIdx = lyrCollision->GetTileId(globTile.x, globTile.y);
 
@@ -453,7 +454,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 				//Do pixel-by-pixel checks until we reach a colliding pixel
 				sf::Vector2i locTile = GetLocalTile(lyrCollision, globTile);
 				while(pixel.x < map->GetTileWidth() && pixel.x >= 0 &&
-						pixel.y < map->GetTileHeight() && pixel.y >= 0)
+						pixel.y < map->GetTileHeight() && pixel.y >= 0 && 
+						!foundCol)
 				{
 					bool collide = collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
 					//Once we find a colliding pixel, return its location
@@ -469,6 +471,9 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 				}
 			}
 
+			//Reset the pixel so we can check object collisions as well
+			pixelRef = oldPixel;
+
 			//Iterate through all the possible colliding objects and check if
 			// they are on this tile
 			sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y,tileSize.x, tileSize.y);
@@ -476,7 +481,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 				if(activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect)) {
 					//Check the distance to the rectangle
 					while(pixel.x < map->GetTileWidth() && pixel.x >= 0 &&
-							pixel.y < map->GetTileHeight() && pixel.y >= 0)
+							pixel.y < map->GetTileHeight() && pixel.y >= 0 &&
+							!foundCol)
 					{
 						bool collide = activatables[i]->Contains(
 							sf::Vector2f(globTile.x*map->GetTileWidth() + pixel.x,

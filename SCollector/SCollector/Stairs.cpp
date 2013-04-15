@@ -9,7 +9,7 @@ Stairs::Stairs(const sf::Vector2f& pos, const std::string& nextLevel, const std:
 	this->nextLevel = nextLevel;
 	this->nextSpawn = nextSpawn;
 
-	this->animManager.ModifyAnimSet("idle", 0, 0, true);
+	this->animManager.ModifyAnimSet("idle", 5, 5, true);
 }
 
 void Stairs::Update(Level& level, const sf::Time& timePassed)

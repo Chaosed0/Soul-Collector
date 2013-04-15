@@ -3,22 +3,16 @@
 #include "Level.h"
 #include "Player.h"
 
-Door::Door()
-	: Activatable("Door.png", sf::IntRect(0,0,32,32), sf::IntRect(0,0,32,32))
-{
-	health = 100.0f;
-	isOpened = false;
-	isBroken = false;
-	isCollidable = true;
-}
-
-Door::Door(const sf::Vector2f& pos, std::string doorName)
-	: Activatable(" ", sf::IntRect(0,0,32,32), sf::IntRect(0,0,32,32))
+Door::Door(const sf::Vector2f& pos, const std::string& doorName)
+	: Activatable("assets/img/Door.png", sf::IntRect(0,0,32,32), sf::IntRect(0,0,32,32))
 {
 	this->doorName = doorName;
 	health = 100.0f;
 	isOpened = false;
 	isBroken = false;
+	isCollidable = true;
+	animManager.AddAnimSet("open", 1, 1, true);
+	animManager.AddAnimSet("broken", 2, 2, true);
 	SetPos(pos);
 }
 
@@ -44,5 +38,13 @@ void Door::Update(Level& level, const sf::Time& timePassed)
 			isActive = false;
 		}
 		isCollidable = !isOpened && !isBroken;
+	}
+
+	if(isOpened) {
+		PlayAnim("open", timePassed);
+	} else if(isBroken) {
+		PlayAnim("broken", timePassed);
+	} else {
+		PlayAnim("idle", timePassed);
 	}
 }

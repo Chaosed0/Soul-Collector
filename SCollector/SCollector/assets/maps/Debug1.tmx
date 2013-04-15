@@ -49,7 +49,11 @@
     <property name="Door" value="1"/>
    </properties>
   </object>
-  <object type="Key" gid="53" x="736" y="736" width="32" height="32"/>
+  <object type="Key" gid="53" x="736" y="736" width="32" height="32" rotation="10">
+   <properties>
+    <property name="Door" value="Door1"/>
+   </properties>
+  </object>
   <object type="Demon" gid="54" x="672" y="608" width="32" height="32"/>
   <object type="Torch" gid="55" x="608" y="544" width="32" height="32"/>
   <object type="Torch" gid="55" x="608" y="832" width="32" height="32"/>
@@ -67,6 +71,10 @@
     <property name="NextSpawn" value="FromDebug1_2"/>
    </properties>
   </object>
-  <object gid="7" x="768" y="224"/>
+  <object name="Door1" type="Door" gid="57" x="736" y="256" width="32" height="32">
+   <properties>
+    <property name="" value=""/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
