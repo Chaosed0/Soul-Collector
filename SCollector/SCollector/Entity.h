@@ -28,9 +28,15 @@ public:
 	 * \param collisionBox The size of the entity's collision box.
 	 * \param animBox The size of the frames in the sprite sheet, if any.
 	 */
-	Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox);
+	Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox, bool doesCollide);
 
 	virtual void Update(Level& level, const sf::Time& timePassed) = 0;
+
+	/**
+	 * Checks if this entity's bounding box contains a certain point.
+	 * \return True if the entity contains point, false otherwise.
+	 */
+	bool Contains(const sf::Vector2f point) const;
 
 	/**
 	 * Sets the Entity's position.
@@ -71,6 +77,12 @@ public:
 	 * \return True if this entity is colliding with the cone, false otherwise.
 	 */
 	bool IsColliding(const AttackCone& cone) const;
+
+	/**
+	 * Checks if this entity is collidable with the player or not.
+	 * \return True if the entity should collide with the player, false otherwise.
+	 */
+	bool IsCollidable();
 protected:
 	/** Collision rectangle. */
 	sf::IntRect collisionBox;
@@ -81,6 +93,9 @@ protected:
 
 	/** Flag set to true when the entity should be drawn to screen. */
 	bool visible;
+
+	/** Flag set to true when the entity should block the player. */
+	bool isCollidable;
 
 	/** Animation Manager. */
 	AnimManager animManager;

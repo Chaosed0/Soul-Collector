@@ -310,11 +310,6 @@ sf::Vector2i Level::GetGlobalTile(const sf::Vector2f& pos) const
 	return sf::Vector2i((int)pos.x / map->GetTileWidth(), (int)pos.y / map->GetTileHeight());
 }
 
-sf::Vector2i Level::GetGlobalTileBR(const sf::Vector2f& pos) const
-{
-	return sf::Vector2i(((int)pos.x-1) / map->GetTileWidth(), ((int)pos.y - 1) / map->GetTileHeight());
-}
-
 sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const
 {
 	return sf::Vector2i((int)pos.x % map->GetTileWidth(), (int)pos.y % map->GetTileHeight());
@@ -428,6 +423,9 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	int layerWidth = lyrCollision->GetWidth();
 	int& pixelRef = (horiz?pixel.x:pixel.y);
 	int& tileRef = (horiz?globTile.x:globTile.y);
+	nearest = (stepPos?INT_MAX:-INT_MAX);
+	//We haven't found any colliding tile yet
+	bool foundCol = false;
 
 	//Get the nearest tile in the layer corresponding to the position
 	//BIG NOTE !!!!!!!!! -----------------------
@@ -441,7 +439,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	else
 		step = -1;
 
-	for(int i = 0; i < maxSteps; i++) {
+	for(int i = 0; i < maxSteps && !foundCol; i++) {
 		//Make sure we're within the map bounds
 		if(globTile.y >= 0 && globTile.y < layerHeight &&
 				globTile.x >= 0 && globTile.x < layerWidth)
@@ -460,11 +458,40 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 					bool collide = collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
 					//Once we find a colliding pixel, return its location
 					if(collide) {
-						nearest = tileRef * (horiz?map->GetTileWidth():map->GetTileHeight())
+						float newNearest = tileRef * (horiz?map->GetTileWidth():map->GetTileHeight())
 							+ pixelRef - step;
-						return true;
+						if(abs(newNearest) < abs(nearest)) {
+							nearest = newNearest;
+							foundCol = true;
+						}
 					}
 					pixelRef += step;				
+				}
+			}
+
+			//Iterate through all the possible colliding objects and check if
+			// they are on this tile
+			sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y,tileSize.x, tileSize.y);
+			for(unsigned int i = 0; i < activatables.size(); i++) {
+				if(activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect)) {
+					//Check the distance to the rectangle
+					while(pixel.x < map->GetTileWidth() && pixel.x >= 0 &&
+							pixel.y < map->GetTileHeight() && pixel.y >= 0)
+					{
+						bool collide = activatables[i]->Contains(
+							sf::Vector2f(globTile.x*map->GetTileWidth() + pixel.x,
+							globTile.y*map->GetTileHeight() + pixel.y));
+						//Once we find a colliding pixel, return its location
+						if(collide) {
+							float newNearest = tileRef * (horiz?map->GetTileWidth():map->GetTileHeight())
+								+ pixelRef - step;
+							if(abs(newNearest) < abs(nearest)) {
+								nearest = newNearest;
+								foundCol = true;
+							}
+						}
+						pixelRef += step;				
+					}
 				}
 			}
 		}
@@ -478,11 +505,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 		tileRef += step;
 	}
 
-
-	//If we didn't return within the above block of code, we didn't find anything; set
-	// the nearest tile's location to infinity and return false
-	nearest = (stepPos?INT_MAX:-INT_MAX);
-	return false;
+	return foundCol;
 }
 
 bool Level::DoActivate()

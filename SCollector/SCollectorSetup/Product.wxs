@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*" Name="Soul Collector" Language="1033" Version="1.0.0.0" Manufacturer="The UN" UpgradeCode="42d1792c-d48e-470c-92b0-f080d5c07438">
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <Media Id='1' Cabinet='SCollector.cab' EmbedCab='yes' />
@@ -11,8 +11,11 @@
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
     <?define SFMLLibDir=$(var.SCollector.ProjectDir)../../SFML-2-19-2012/bin/?>
     <?define SFGUILibDir=$(var.SCollector.ProjectDir)../../SFGUI-0.1.0/bin/?>
+    <?define VC110ModuleDir=C:\Program Files (x86)\Common Files\Merge Modules\?>
     <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
     <Icon Id="progicon" SourceFile="icon.ico" />
+    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_ErrorProgressText" />
 
     <Feature Id="Complete" Title="SCollector" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
@@ -39,9 +42,16 @@
       </Directory>
     </Directory>
 
+    <DirectoryRef Id="TARGETDIR">
+        <Merge Id="VCRedist" SourceFile="$(var.VC110ModuleDir)Microsoft_VC110_CRT_x86.msm" DiskId="1" Language="0"/>
+    </DirectoryRef>
+    <Feature Id="VCRedist" Title="Visual C++ 2012 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist"/>
+    </Feature>
+
     <ComponentGroup Id="ProductComponents" Directory="INSTALLDIR">
       <Component Id="ProductComponent" Guid="440ccb86-cd90-49f1-9631-4196b86c8dae">
-        <File Source="$(var.SCollector.TargetPath)" Name="Soul Collector"/>
+        <File Source="$(var.SCollector.TargetPath)" Name="Soul Collector.exe"/>
       </Component>
     </ComponentGroup>
 
@@ -72,7 +82,7 @@
     <ComponentGroup Id="ProgMenuShortcutCompGroup">
       <Component Id="ProgMenuShortcutComp" Directory="ProgramMenuDir" Guid="{a52958ae-c5c1-42c3-96de-c5c8172407ff}">
         <Shortcut Id="ProgMenuShortcut" Target="[INSTALLDIR]SCollector.exe"
-                  Name="Soul Collector" WorkingDirectory='INSTALLDIR' Icon="progicon" IconIndex="0" />
+                  Name="Soul Collector.exe" WorkingDirectory='INSTALLDIR' Icon="progicon" IconIndex="0" />
 		<RemoveFolder Id='ProgramMenuDir' On='uninstall' />
 		<RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
       </Component>
@@ -143,7 +153,5 @@
         <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\tileset\tileset.png" />
       </Component>
     </ComponentGroup>
-    <UIRef Id="WixUI_InstallDir" />
-    <UIRef Id="WixUI_ErrorProgressText" />
   </Product>
 </Wix>

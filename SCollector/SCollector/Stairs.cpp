@@ -3,11 +3,13 @@
 #include "Level.h"
 
 Stairs::Stairs(const sf::Vector2f& pos, const std::string& nextLevel, const std::string& nextSpawn)
-	: Activatable("assets/img/stairs.png", sf::IntRect(0, 0, 32, 32), sf::IntRect(0, 0, 32, 32)) 
+	: Activatable("assets/tileset/ObjectTiles.png", sf::IntRect(0, 0, 32, 32), sf::IntRect(0, 0, 32, 32)) 
 {
 	sprite.setPosition(pos);
 	this->nextLevel = nextLevel;
 	this->nextSpawn = nextSpawn;
+
+	this->animManager.ModifyAnimSet("idle", 0, 0, true);
 }
 
 void Stairs::Update(Level& level, const sf::Time& timePassed)

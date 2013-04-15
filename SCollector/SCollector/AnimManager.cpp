@@ -79,11 +79,13 @@ bool AnimManager::StepAnim()
 	}
 	if(curAnimFrame == animSetEnd[curAnim] && animLoop[curAnim]) {
 		curAnimFrame = animSetBegin[curAnim];
+		return true;
 		//printf("End, loop, reset to %d\n", curAnimFrame);
 	}
 	else {
 		//printf("Frame %d\n", curAnimFrame);
 		curAnimFrame = (curAnimFrame+1)%totalFrames;
+		return true;
 	}
 }
 

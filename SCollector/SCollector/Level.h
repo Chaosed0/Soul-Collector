@@ -220,14 +220,6 @@ private:
 	 * \return The tile corresponding to that position.
 	 */
 	sf::Vector2i GetGlobalTile(const sf::Vector2f& pos) const;
-	/**
-	 * This tile includes the bottom right of the tile instead of
-	 *  the top left.
-	 *
-	 * \param pos The position to translate to a tile.
-	 * \return The tile corresponding to that position.
-	 */
-	sf::Vector2i GetGlobalTileBR(const sf::Vector2f& pos) const;
 
 	/**
 	 * Gets the number of pixels within the tile that the position is.

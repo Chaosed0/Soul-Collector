@@ -2,7 +2,7 @@
 #include "Activatable.h"
 
 Activatable::Activatable(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
-	: Entity(imgLoc, collisionBox, animBox)
+	: Entity(imgLoc, collisionBox, animBox, false)
 {
 	isActive = false;
 	isFinished = false;

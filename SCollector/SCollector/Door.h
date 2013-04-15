@@ -17,7 +17,6 @@ public:
 	void Break();
 
 	double GetHealth() const; 
-	bool IsCollidable() const;
 	
 	virtual void Update(Level& level, const sf::Time& timePassed);
 private:

@@ -2,11 +2,12 @@
 #include "Entity.h"
 #include "Level.h"
 
-Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
+Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox, bool isCollidable)
 	: animManager(animBox)
 {
 	//Set default values
 	this->collisionBox = collisionBox;
+	this->isCollidable = isCollidable;
 	visible = true;
 
 	//Load the texture
@@ -20,6 +21,14 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	sprite.setTextureRect(animManager.GetCurAnimRect());
 }
 
+bool Entity::Contains(const sf::Vector2f point) const
+{
+	sf::Vector2f topLeft = GetPos();
+	sf::Vector2f botRight = topLeft + sf::Vector2f(collisionBox.width, collisionBox.height);
+	return topLeft.x >= point.x && botRight.x <= point.x &&
+		topLeft.y >= point.y && botRight.y <= point.y;
+}
+
 bool Entity::IsColliding(const sf::IntRect& box) const
 {
 	//Separating Axis Theorem: Two boxes are colliding if and only if they are colliding
@@ -31,19 +40,27 @@ bool Entity::IsColliding(const sf::IntRect& box) const
 	//Left side of the other box in this one
 	bool leftCollide =
 		box.left >= thisCollisionBox.left &&
-		box.left <= thisCollisionBox.left + thisCollisionBox.width;
+		box.left <= thisCollisionBox.left + thisCollisionBox.width && 
+		thisCollisionBox.left >= box.left &&
+		thisCollisionBox.left <= box.left + box.width;
 	//Right side of other box in this one
 	bool rightCollide = 
 		box.left + box.width >= thisCollisionBox.left &&
-		box.left + box.width <= thisCollisionBox.left + thisCollisionBox.width;
+		box.left + box.width <= thisCollisionBox.left + thisCollisionBox.width &&
+		thisCollisionBox.left + thisCollisionBox.width >= box.left &&
+		thisCollisionBox.left + thisCollisionBox.width <= box.left + box.width;
 	//Top side of the other box in this one
 	bool topCollide = 
 		box.top >= thisCollisionBox.top &&
-		box.top <= thisCollisionBox.top + thisCollisionBox.height;
+		box.top <= thisCollisionBox.top + thisCollisionBox.height &&
+		thisCollisionBox.top >= box.top &&
+		thisCollisionBox.top <= box.top + box.height;
 	//Bottom side of the other box in this one
 	bool botCollide = 
 		box.top + box.height >= thisCollisionBox.top &&
-		box.top + box.height <= thisCollisionBox.top + thisCollisionBox.height;
+		box.top + box.height <= thisCollisionBox.top + thisCollisionBox.height &&
+		thisCollisionBox.top + thisCollisionBox.height >= box.top &&
+		thisCollisionBox.top + thisCollisionBox.height <= box.top + box.height;
 
 	//printf("%d, %d, %d, %d\n", leftCollide, rightCollide, topCollide, botCollide);
 	//printf("%d, %d, %d, %d\n", entity.collisionBox.left, entity.collisionBox.width, collisionBox.left, collisionBox.width);
@@ -77,6 +94,11 @@ bool Entity::IsColliding(const AttackCone& cone) const
 		cone.Contains(topRight) ||
 		cone.Contains(botLeft) ||
 		cone.Contains(botRight);
+}
+
+bool Entity::IsCollidable()
+{
+	return isCollidable;
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates state) const
