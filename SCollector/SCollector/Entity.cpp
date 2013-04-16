@@ -2,6 +2,8 @@
 #include "Entity.h"
 #include "Level.h"
 
+std::map<std::string, sf::Texture> Entity::textures;
+
 Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox, bool isCollidable)
 	: animManager(animBox)
 {
@@ -11,14 +13,22 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 	visible = true;
 
 	//Load the texture
-	texture.loadFromFile(imgLoc);
-	sprite.setTexture(texture);
+	sprite.setTexture(GetTexture(imgLoc));
 	sprite.setOrigin(animBox.width/2.0f, animBox.height/2.0f);
 
 	//Now that we have the texture, initialize the animation manager with it
-	animManager.SetSheetSize(texture.getSize());
+	animManager.SetSheetSize(sprite.getTexture()->getSize());
 
 	sprite.setTextureRect(animManager.GetCurAnimRect());
+}
+
+sf::Texture& Entity::GetTexture(const std::string& imgLoc)
+{
+	if(textures.find(imgLoc) == textures.end()) {
+		textures[imgLoc] = sf::Texture();
+		textures[imgLoc].loadFromFile(imgLoc);
+	}
+	return textures[imgLoc];
 }
 
 bool Entity::Contains(const sf::Vector2f point) const

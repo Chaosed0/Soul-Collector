@@ -9,7 +9,7 @@
 
 #include "Entity.h"
 
-#define DRAW_ACTCOLBOXES 1
+#define DRAW_ACTCOLBOXES 0
 
 class Activatable : public Entity
 {

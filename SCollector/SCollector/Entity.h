@@ -16,7 +16,7 @@
 #include "AnimManager.h"
 #include "SoundManager.h"
 
-#define DRAW_COLBOXES 1 
+#define DRAW_COLBOXES 0 
 
 class Level;
 class AttackCone;
@@ -90,8 +90,6 @@ protected:
 	sf::IntRect collisionBox;
 	/** Sprite to draw the texture on screen. */
 	sf::Sprite sprite;
-	/** Texture representing this entity. */
-	sf::Texture texture;
 
 	/** Flag set to true when the entity should be drawn to screen. */
 	bool visible;
@@ -114,6 +112,15 @@ protected:
 	void PlayAnim(const std::string& anim, const sf::Time& timePassed);
 
 	/**
+	 * Gets the texture from a file.
+	 *
+	 * If the texture has already been loaded once by another Entity, then it isn't
+	 *  loaded again; instead, the Entities will share one texture.
+	 * \param imgLoc The location of the image to load, from hard disk.
+	 */
+	sf::Texture& GetTexture(const std::string& imgLoc);
+
+	/**
 	 * Draw the entity. Just calls the private draw().
 	 *
 	 * Here in case any derived class needs to draw something other than its sprite.
@@ -121,6 +128,9 @@ protected:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 private:
 	//virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
+
+	//List of textures, so that the Entities don't repeat themselves
+	static std::map<std::string, sf::Texture> textures;
 };
 
 #endif
