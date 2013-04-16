@@ -23,7 +23,7 @@
  </layer>
  <layer name="Collision" width="30" height="28">
   <data encoding="base64" compression="zlib">
-   eJztkDEOACAIAwm/8v8fc3cQalAcjqRLQ3oUNzNvUnaU3ShH5SpdbvddfU/4lX9W7qJvTW7k01fnntxF331uViOx83rgwoULF+7f3A5NyfwBsA==
+   eJztkDEOACAIAwmJ//+yu4NQg+JwJF0a0qO4mXmTsqPsRjkqV+lyu+/qe8Kv/LNyF31rciOfvjr35C767nOzGomd1wMXLly4cP/mdmgCbi0BfA==
   </data>
  </layer>
  <layer name="Misc" width="30" height="28">
@@ -48,5 +48,6 @@
     <property name="NextSpawn" value="FromDebug2_2"/>
    </properties>
   </object>
+  <object name="Init" type="Spawn" gid="52" x="704" y="416" width="32" height="32"/>
  </objectgroup>
 </map>

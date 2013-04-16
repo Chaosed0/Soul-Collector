@@ -35,7 +35,7 @@ void Game::Init()
 	//Connect the exit button of the menus to the exit function here
 	menus.connectExitFunc(&Game::Exit, this);
 
-	levelManager.LoadMap("Debug1.tmx", "Init");
+	levelManager.LoadMap("Debug2.tmx", "Init");
 }
 
 void Game::Loop()

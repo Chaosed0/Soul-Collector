@@ -237,6 +237,14 @@ private:
 	 */
 	sf::Vector2i GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& globTile) const;
 
+	/**
+	 * Gets a point in the collision map.
+	 * \param locTile A local tile position from GetLocalTile.
+	 * \param pixel The pixel, relative to locTile, to get.
+	 * \return True if that pixel location should collide, false othwerise.
+	 */
+	bool GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel) const;
+
 	/** Draws the level */
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 
