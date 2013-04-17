@@ -337,7 +337,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	float distX = FLT_MAX, distY = FLT_MAX;
 	bool foundX = false, foundY = false;
 	bool negXDir = angle > PI/2.0F || angle < -PI/2.0f;
-	bool negYDir = angle > -PI && angle < 0;
+	bool negYDir = angle < 0;
 
 	//printf("X DIRECTION\n\n");
 
@@ -362,14 +362,14 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 				if(!foundX) {
 					//If this pixel is not colliding, then keep searching
 					(negXDir?nearestX.x--:nearestX.x++);
-					(negYDir?nearestX.y-=tanDir:nearestX.y+=tanDir);
+					(negYDir?nearestX.y-=abs(tanDir):nearestX.y+=abs(tanDir));
 					pixel.x = nearestX.x-globTile.x*tileSize.x;
 					pixel.y = nearestX.y-globTile.y*tileSize.y;
 				} else {
 					//Otherwise, note down where we found this and break
-					//Back out one pixel; the last pixel was the last non-colliding one
+					//Back out one pixel; the previous pixel was the last non-colliding one
 					(negXDir?nearestX.x++:nearestX.x--);
-					(negYDir?nearestX.y+=tanDir:nearestX.y-=tanDir);
+					(negYDir?nearestX.y+=abs(tanDir):nearestX.y-=abs(tanDir));
 					sf::Vector2f relDist = pos - nearestX;
 					distX = magnitude(relDist);
 				}
@@ -384,7 +384,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 			} else {
 				globTile.x--;
 				//GetGlobalTile says tiles include their top-left edges; we have to
-				// fix that for certain lines
+				// fix that for lines going in the negative direction
 				nearestX.x = (globTile.x+1)*tileSize.x-1;
 			}
 			nearestX.y = pos.y + (tanDir*(nearestX.x - pos.x));
@@ -417,13 +417,13 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 				if(!foundY) {
 					//If this pixel is not colliding, then keep searching
 					(negYDir?nearestY.y--:nearestY.y++);
-					(negXDir?nearestY.x-=1/tanDir:nearestY.x+=1/tanDir);
+					(negXDir?nearestY.x-=1/abs(tanDir):nearestY.x+=1/abs(tanDir));
 					pixel.x = nearestY.x-globTile.x*tileSize.x;
 					pixel.y = nearestY.y-globTile.y*tileSize.y;
 				} else {
 					//Otherwise, note down where we found this and break
 					(negYDir?nearestY.y++:nearestY.y--);
-					(negXDir?nearestY.x+=1/tanDir:nearestY.x-=1/tanDir);
+					(negXDir?nearestY.x+=1/abs(tanDir):nearestY.x-=1/abs(tanDir));
 					sf::Vector2f relDist = pos - nearestY;
 					distY = magnitude(relDist);
 				}
