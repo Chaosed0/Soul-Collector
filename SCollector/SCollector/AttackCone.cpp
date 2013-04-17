@@ -19,7 +19,7 @@ AttackCone::AttackCone(const sf::Time& time, const sf::Vector2f& origin,
 	liveTime = time;
 	livedTime = sf::Time::Zero;
 
-	//printf("Attack cone: (%g, %g), %g, %g, %g\n", origin.x, origin.y, length, angleBegin, angleEnd);
+	//printf("Attack cone: (%g, %g), %g, %g, %g\n", origin.x, origin.y, length, this->angleBegin, this->angleEnd);
 }
 
 void AttackCone::Update(const Level& level, const sf::Time& timePassed)
@@ -36,11 +36,18 @@ bool AttackCone::Contains(const sf::Vector2f point) const
 	sf::Vector2f relPoint = point - origin;
 	float angleBetween = atan2(relPoint.y, relPoint.x);
 	angleBetween = shiftAngle(angleBetween);
+	float corAngleBegin = angleBegin;
+	float corAngleEnd = angleEnd;
+	if(angleBegin > angleEnd && angleBetween > angleBegin) {
+		corAngleEnd += 2*PI;
+	} else if(angleBegin > angleEnd && angleBetween < angleEnd) {
+		corAngleBegin-= 2*PI;
+	}
 	//The point is within the cone if it's within the circle defined
 	// by the radius, and within the sector defined by the angles
 	//printf("%g vs %g, %g vs (%g, %g)\n", magnitude(relPoint), length, angleBetween, angleBegin, angleEnd);
 	return magnitude(relPoint) < length &&
-		angleBetween > angleBegin && angleBetween < angleEnd;
+		angleBetween > corAngleBegin && angleBetween < corAngleEnd;
 }
 
 void AttackCone::MovableHit(const Movable& movable)
