@@ -25,5 +25,7 @@ void initRandom();
 float getRandom();
 /** Gets a random number in the range [begin, end]. */
 float getRandom(float begin, float end);
+/** Checks whether the string is a valid property from GetLiteralProperty() */
+bool IsValidProperty(const std::string& prop);
 
 #endif

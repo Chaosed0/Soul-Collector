@@ -15,6 +15,7 @@
 #include "Door.h"
 #include "Player.h"
 #include "LightSource.h"
+#include "HUD.h"
 
 Level::Level(Player& player)
 	: player(player)
@@ -24,6 +25,7 @@ Level::Level(Player& player)
 	lyrCollision = NULL;
 	tsetCollision = NULL;
 	isActive = false;
+	HUDText = "";
 }
 
 Level::Level(Player& player, const std::string& mapName, const std::string& spawnName)
@@ -33,6 +35,7 @@ Level::Level(Player& player, const std::string& mapName, const std::string& spaw
 	tileSize = sf::Vector2f(0, 0);
 	lyrCollision = NULL;
 	tsetCollision = NULL;
+	isActive = false;
 
 	LoadMap(mapName, spawnName);
 }
@@ -76,6 +79,10 @@ void Level::SpawnPlayer(const std::string& spawnName)
 void Level::SetActive(bool active)
 {
 	isActive = active;
+	//If the level was reactivated, we want to display a message to the player
+	if(active) {
+		SetHUDText("Now in " + description + ".");
+	}
 }
 
 void Level::UnloadMap()
@@ -248,10 +255,11 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 			}
 			else if(type.compare("Key") == 0) {
 				std::string door = object->GetProperties().GetLiteralProperty("Door");
+				std::string description = object->GetProperties().GetLiteralProperty("Description");
 				if(door.empty()) {
 					fprintf(stderr, "WARNING: Key has no associated door! Ignored...");
 				} else {
-					activatables.push_back(new Key(objectPos,door));
+					activatables.push_back(new Key(objectPos, door, description));
 					activatables.back()->SetRot(object->GetRot());
 				}
 			}
@@ -274,7 +282,8 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 					activatables.back()->SetRot(object->GetRot());
 				}
 			} else if(type.compare("Door") == 0) {
-				activatables.push_back(new Door(objectPos, object->GetName()));
+				std::string description = object->GetProperties().GetLiteralProperty("Description");
+				activatables.push_back(new Door(objectPos, object->GetName(), description));
 				activatables.back()->SetRot(object->GetRot());
 			}
 			//We don't know what type of object this is, issue an error
@@ -284,6 +293,8 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 		}
 	}
 
+	//Get a map description to display to the player.
+	description = map->GetProperties().GetLiteralProperty("Description");
 	printf("Map parsing complete\n");
 	return map;
 }
@@ -723,6 +734,20 @@ void Level::Update(const sf::Time& timePassed)
 		lightTexture.draw(*lights[i], sf::BlendMultiply);
 	}
 	lightTexture.display();
+}
+
+void Level::SetHUDText(const std::string text)
+{
+	HUDText = text;
+}
+
+void Level::UpdateHUD(HUD& hud)
+{
+	player.UpdateHud(hud);
+	if(!HUDText.empty()) {
+		hud.changeText(HUDText);
+		HUDText = "";
+	}
 }
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const

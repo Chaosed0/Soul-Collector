@@ -16,6 +16,7 @@
 #include "LightSource.h"
 class Level;
 class AttackCone;
+class HUD;
 
 class Player : public Movable 
 {
@@ -94,6 +95,12 @@ public:
 	virtual void Update(Level& level, const sf::Time& timePassed);
 
 	/**
+	 * Updates the HUD object.
+	 * This function should be called once per frame.
+	 */
+	void UpdateHud(HUD& hud);
+
+	/**
 	 * Toggles the player's lighter on/off state
 	 */
 	void ToggleLighter();
@@ -123,8 +130,12 @@ private:
 	/** True when the player is sprinting, false when he is walking at regSpeed */
 	bool isSprinting;
 
+	/** Amount of fuel the player has left */
+	float fuel;
 	/** Amount of fatigue the player has - directly proportional to the time he can run. */
-	int fatigue;
+	float energy;
+	/** Amount of humanity the player still has - higher is better. */
+	float humanity;
 
 	/** Time-to-live for any attack the player initiates. */
 	static const sf::Time attackConeLife;
@@ -135,7 +146,10 @@ private:
 	/** Running speed, in pixels per second. */
 	static const float sprintSpeed;
 	/** Max amount of fatigue. */
-	static const int maxFatigue;
+	static const float maxEnergy;
+	/** Max burst sprinting time */
+	static const sf::Time sprintTime;
+
 
 	std::set<std::string> doorNameSet;
 };

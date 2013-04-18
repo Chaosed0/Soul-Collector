@@ -53,6 +53,9 @@ private:
 
 	/** Timer to pass to Level::Update */
 	sf::Clock updateTimer;
+
+	/** HUD object */
+	HUD hud;
 };
 
 #endif

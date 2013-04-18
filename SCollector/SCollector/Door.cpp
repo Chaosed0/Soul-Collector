@@ -3,11 +3,12 @@
 #include "Level.h"
 #include "Player.h"
 
-Door::Door(const sf::Vector2f& pos, const std::string& doorName)
+Door::Door(const sf::Vector2f& pos, const std::string& doorName, const std::string& description)
 	: Activatable("assets/img/Door.png", sf::IntRect(0,0,32,32),
 		sf::IntRect(0,0,32,32), sf::IntRect(-16,-16,64,64))
 {
 	this->doorName = doorName;
+	this->description = description;
 	health = 100.0f;
 	isOpened = false;
 	isBroken = false;
@@ -32,9 +33,11 @@ void Door::Update(Level& level, const sf::Time& timePassed)
 {
 	if(IsActive() && !IsFinished()) {
 		if(level.GetPlayer().HasKey(doorName)) {
+			level.SetHUDText("Used " + description + ".");
 			isOpened = true;
 			Finish();
 		} else {
+			level.SetHUDText("Locked; need " + description + ".");
 			isActive = false;
 		}
 		isCollidable = !isOpened && !isBroken;

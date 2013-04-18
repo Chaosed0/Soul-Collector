@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="30" height="28" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="Description" value="level 2"/>
+ </properties>
  <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
   <image source="../tileset/tileset.png" width="160" height="320"/>
   <tile id="3">
@@ -16,39 +19,48 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Background" width="30" height="28">
+ <layer name="Background" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwwEJAAAAw6DB+3d+EQVXTVVV1Q6+EAnZ
+   eJxjZmBgYB7Fo3gUj+JRPIpH8SgexVTDAA7fBwk=
   </data>
  </layer>
- <layer name="Collision" width="30" height="28">
+ <layer name="Collision" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYmBgYBogTCwgRS0hc0i1lxS/0Nq/6OJMRIhTM5xJcdeof6ljLiHxUf+Sbi857hr1L35zCWFWLJjScpJaYNTeUXtH7R21d9TewW3vQGAAvm0BiA==
+   eJxjYmBgYKISJgWQqp5a5pDqH1r7F12ciURxcu0lJI/LfkrtHfUvaeLk2ktIftS/1LF3OPuXEGbFgiktJ0fBKBhOAACbDwDo
   </data>
  </layer>
- <layer name="Misc" width="30" height="28">
+ <layer name="Misc" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T+3sARQAAAA3DSAAAQ==
+   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
   </data>
  </layer>
- <objectgroup name="Object Layer 1" width="30" height="28">
-  <object type="Demon" gid="54" x="512" y="256" width="32" height="32"/>
-  <object type="Torch" gid="55" x="384" y="256" width="32" height="32" rotation="-90"/>
-  <object name="StairsToDebug1_1" type="Stairs" gid="56" x="704" y="416" width="32" height="32">
+ <objectgroup name="Object Layer 1" width="30" height="20">
+  <object type="Demon" gid="54" x="160" y="256" width="32" height="32"/>
+  <object type="Torch" gid="55" x="256" y="320" width="32" height="32" rotation="-360"/>
+  <object name="StairsToDebug1_1" type="Stairs" gid="56" x="352" y="416" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug1.tmx"/>
     <property name="NextSpawn" value="FromDebug2_1"/>
    </properties>
   </object>
-  <object name="FromDebug1_1" type="Spawn" gid="52" x="704" y="384" width="32" height="32"/>
-  <object name="FromDebug1_2" type="Spawn" gid="52" x="416" y="64" width="32" height="32"/>
-  <object name="StairsToDebug1_2" type="Stairs" gid="56" x="384" y="64" width="32" height="32">
+  <object name="FromDebug1_1" type="Spawn" gid="52" x="352" y="384" width="32" height="32"/>
+  <object name="FromDebug1_2" type="Spawn" gid="52" x="64" y="64" width="32" height="32"/>
+  <object name="StairsToDebug1_2" type="Stairs" gid="56" x="32" y="64" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug1.tmx"/>
     <property name="NextSpawn" value="FromDebug2_2"/>
    </properties>
   </object>
-  <object name="Init" type="Spawn" gid="52" x="704" y="416" width="32" height="32"/>
-  <object name="Door1" type="Door" gid="57" x="704" y="128" width="32" height="32"/>
+  <object name="Init" type="Spawn" gid="52" x="352" y="416" width="32" height="32"/>
+  <object name="Door1" type="Door" gid="57" x="352" y="128" width="32" height="32">
+   <properties>
+    <property name="Description" value="a yellow key"/>
+   </properties>
+  </object>
+  <object type="Demon" gid="54" x="160" y="192"/>
+  <object type="Demon" gid="54" x="160" y="128"/>
+  <object type="Demon" gid="54" x="160" y="320"/>
+  <object type="Demon" gid="54" x="160" y="384"/>
+  <object gid="55" x="256" y="192" rotation="-180"/>
  </objectgroup>
 </map>

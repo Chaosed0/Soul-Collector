@@ -15,7 +15,7 @@ private:
 public:
 
 	HudObject();
-	HudObject(std::string image, float xPos, int winHeight);
+	HudObject(const std::string& image, const sf::Vector2f& pos);
 
 	float getWidth();
 	float getHeight();

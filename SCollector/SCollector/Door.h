@@ -9,7 +9,7 @@
 class Door : public Activatable
 {
 public:
-	Door(const sf::Vector2f& pos, const std::string& doorName);
+	Door(const sf::Vector2f& pos, const std::string& doorName, const std::string& description);
 	
 	void Break();
 
@@ -18,9 +18,10 @@ public:
 	virtual void Update(Level& level, const sf::Time& timePassed);
 private:
 	std::string doorName;
+	std::string description;
 	int health;
 	bool isOpened;
-	bool isBroken;	
+	bool isBroken;
 };
 
 #endif

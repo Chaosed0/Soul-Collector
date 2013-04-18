@@ -9,11 +9,17 @@ Game::Game()
 	, window(sf::VideoMode(winWidth, winHeight), "Test")
 	, menus(winWidth, winHeight)
 	, view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
+	, hud(sf::Vector2f(0, winHeight))
 {
 	//Flag set to false when the game ends
 	isRunning = false;
 
 	window.setView(view);
+
+	hud.AddObject("assets/img/hud_heart.png");
+	hud.AddObject("assets/img/hud_lighter.png");
+	hud.AddObject("assets/img/hud_soul_beast010.png");
+	hud.AddObject("assets/img/hud_soul_beast000.png");
 }
 
 int Game::Run()
@@ -190,6 +196,9 @@ void Game::Update()
 	updateTimer.restart();
 	levelManager.Update(updateTime);
 
+	//Update the HUD with values from the level
+	levelManager.GetCurrentLevel().UpdateHUD(hud);
+
 	//printf("player: (%g, %g) view: (%g, %g)\n", playerPos.x, playerPos.y, viewPos.x, viewPos.y);
 
 	//Update the view to follow the player, but don't make it go offscreen
@@ -220,9 +229,13 @@ void Game::Render()
 	// previous frame
 	window.clear();
 
-	//Render the level to the screen, before the player
+	//Render the level to the screen
 	window.draw(levelManager.GetCurrentLevel());
-	//Render the player to the screen
+
+	//Render the HUD over everything, while preserving the view
+	window.setView(window.getDefaultView());
+	hud.draw(window);
+	window.setView(view);
 
 	menus.Display(window);
 

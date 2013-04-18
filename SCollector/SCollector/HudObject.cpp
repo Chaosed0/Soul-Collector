@@ -3,17 +3,17 @@
 HudObject::HudObject()
 {}
 
-HudObject::HudObject(std::string image, float xPos, int winHeight)
+HudObject::HudObject(const std::string& image, const sf::Vector2f& pos)
 {
 	value = 100;
 	texture.loadFromFile(image);
 	sprite.setTexture(texture);
 	sprite.setOrigin(0,sprite.getTextureRect().height/2);
-	sprite.setPosition(xPos,winHeight-sprite.getTextureRect().height/2);
+	sprite.setPosition(pos.x + sprite.getOrigin().x, pos.y - sprite.getOrigin().y);
 	rect.setFillColor(sf::Color::Red);
 	
 	rect.setSize(sf::Vector2f(sprite.getTextureRect().width,sprite.getTextureRect().height));
-	rect.setPosition(xPos,winHeight-rect.getSize().y);
+	rect.setPosition(pos.x,pos.y-rect.getSize().y);
 }
 
 float HudObject::getWidth()

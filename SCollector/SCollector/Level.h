@@ -25,6 +25,7 @@ class Entity;
 class Activatable;
 class Movable;
 class LightSource;
+class HUD;
 
 #define BASEMAPDIR "assets/maps/"
 
@@ -174,6 +175,18 @@ public:
 	 * \param spawnName Name of the spawn in the next level to spawn the player at.
 	 */
 	void SetLevelTransition(const std::string& levelName, const std::string& spawnName);
+
+	/**
+	 * Sets the text to be sent to the HUD on next call to UpdateHUD.
+	 * \param text The text to display on the HUD.
+	 */
+	void SetHUDText(const std::string text);
+
+	/**
+	 * Updates the HUD with text and new values from the player.
+	 * \param hud The HUD.
+	 */
+	void UpdateHUD(HUD& hud);
 private:
 	/**
 	 * Parses a .tmx format map.
@@ -310,6 +323,10 @@ private:
 	/** The next level and next spawn, if the level is not active */
 	std::string nextLevel;
 	std::string nextSpawn;
+	/** The text to send to the HUD; if "", then don't send anything. */
+	std::string HUDText;
+	/** Description of the level. */
+	std::string description;
 };
 
 #endif

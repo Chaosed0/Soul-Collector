@@ -7,22 +7,37 @@
 
 class HUD
 {
-private:
-
-	static const int numObjects = 3;
-	std::vector<HudObject *> objects;
-	sf::Text textObject;
-	sf::Clock clock;
-	static const sf::Time textDisplayTime;
-
 public:
+	HUD(const sf::Vector2f& pos);
 
-	HUD(const std::vector<std::string>& names, int winHeight);
+	/**
+	 * Adds a HUDObject to the HUD.
+	 * \param imgLoc The location of the image to use in the HUDObject.
+	 */
+	void AddObject(const std::string& imgLoc);
 
 	void changeFill(int final, int which);
 	void changeText(std::string text);
 
 	void draw(sf::RenderWindow& window) const;
+
+	static const enum {
+		health = 0,
+		fuel,
+		humanity,
+		fatigue
+	};
+private:
+	std::vector<HudObject *> objects;
+
+	sf::Font font;
+	sf::Text textObject;
+	sf::Clock clock;
+
+	float curXPos;
+	sf::Vector2f pos;
+
+	static const sf::Time textDisplayTime;
 };
 
 #endif

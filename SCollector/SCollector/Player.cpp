@@ -3,13 +3,15 @@
 #include "Player.h"
 #include "Level.h"
 #include "AttackCone.h"
+#include "HUD.h"
 
 const sf::Time Player::attackConeLife = sf::seconds(1.0f);
 const float Player::attackConeLength = 100.0f;
 const float Player::attackConeSweep = 2*PI/8;
 const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
-const int Player::maxFatigue = 100;
+const float Player::maxEnergy = 100;
+const sf::Time Player::sprintTime = sf::seconds(3.0f);
 
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
@@ -22,7 +24,9 @@ Player::Player(const sf::Vector2f& pos)
 
 	isSprinting = false;
 
-	fatigue = 0;
+	energy = 0;
+	humanity = 100;
+	fuel = 100;
 
 	//Initialize animations (maybe offload some of this data to a text file
 	// or something?)
@@ -106,6 +110,14 @@ bool Player::HasKey(const std::string& doorName)
 	return (this->doorNameSet).find(doorName) != doorNameSet.end();
 }
 
+void Player::UpdateHud(HUD& hud)
+{
+	hud.changeFill((int)health, HUD::health);
+	hud.changeFill((int)energy, HUD::fatigue);
+	hud.changeFill((int)fuel, HUD::fuel);
+	hud.changeFill((int)humanity, HUD::humanity);
+}
+
 void Player::Update(Level& level, const sf::Time& timePassed)
 {
 	bool moving = moveLeft || moveRight || moveUp || moveDown;
@@ -130,14 +142,9 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 
 		if(isSprinting) {
 			moveSpeed = sprintSpeed*timePassed.asSeconds();
-			fatigue++;
+			energy -= timePassed.asMicroseconds()/(sprintTime.asMicroseconds()/maxEnergy);
 		} else {
 			moveSpeed = regSpeed*timePassed.asSeconds();
-			fatigue = std::max(0, fatigue-1);
-		}
-
-		if(fatigue >= maxFatigue) {
-			isSprinting = false;
 		}
 
 		if(moveUp) {
@@ -205,6 +212,13 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 	}
 
 
+	//Regenerate stamina when not running
+	if(!isSprinting) {
+		energy = std::min(maxEnergy, energy+timePassed.asMicroseconds()/(sprintTime.asMicroseconds()/maxEnergy));
+	}
+	if(energy <= 0) {
+		isSprinting = false;
+	}
 
 	//Update the light
 	lighter.SetPos(GetPos());

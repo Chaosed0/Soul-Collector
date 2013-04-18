@@ -81,8 +81,8 @@
 
     <ComponentGroup Id="ProgMenuShortcutCompGroup">
       <Component Id="ProgMenuShortcutComp" Directory="ProgramMenuDir" Guid="{a52958ae-c5c1-42c3-96de-c5c8172407ff}">
-        <Shortcut Id="ProgMenuShortcut" Target="[INSTALLDIR]SCollector.exe"
-                  Name="Soul Collector.exe" WorkingDirectory='INSTALLDIR' Icon="progicon" IconIndex="0" />
+        <Shortcut Id="ProgMenuShortcut" Target="[INSTALLDIR]Soul Collector.exe"
+                  Name="Soul Collector" WorkingDirectory='INSTALLDIR' Icon="progicon" IconIndex="0" />
 		<RemoveFolder Id='ProgramMenuDir' On='uninstall' />
 		<RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
       </Component>
@@ -118,6 +118,42 @@
       </Component>
       <Component Directory="imgdir" Guid="{2FF38B2E-E2DD-4DD5-BEC7-43E4BCA217B3}">
         <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\zombie_topdown.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{dbbbb1e5-542b-41af-91b2-ec0136246dc6}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_heart.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{98b9e0f6-df22-4e15-a155-1ffb7a0b39c1}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_lighter.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{b08f67bb-aadf-4bbf-9f8a-7856e81f2eda}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast000.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{f26ad020-0908-42b0-813e-7857357819a0}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast010.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{588c8f3a-bde0-4fde-bd6a-101e007f1b5c}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast020.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{917d4aba-d13f-4e48-a705-0b7fb94a065c}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast030.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{375a9f11-8cf3-4040-a444-4de71d1ce9f3}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast040.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{6895b20a-6f81-4e23-b420-fc327ea1f0db}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast050.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{25d64653-5455-4b16-aaff-2824cc56000c}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast060.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{d19c05c2-2aa5-4302-9358-12f847f9a6f0}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast070.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{576d8d96-468c-41a4-a7ce-5e69a99170ef}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast080.png" />
+      </Component>
+      <Component Directory="imgdir" Guid="{795b6504-3808-4f0c-8f3f-9d931c2efbce}">
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\hud_soul_beast090.png" />
       </Component>
       <Component Directory="mapsdir" Guid="{4A594516-19BF-4BDE-BA85-83E6E2E518AD}">
         <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\maps\Debug1.tmx" />

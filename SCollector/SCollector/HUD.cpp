@@ -2,23 +2,27 @@
 
 const sf::Time HUD::textDisplayTime = sf::seconds(3);
 
-HUD::HUD(const std::vector<std::string>& names, int winHeight)
+HUD::HUD(const sf::Vector2f& pos) :
+	pos(pos) ,
+	font()
 {
-	float xPos = 0;
-	for (int i = 0; i < numObjects; i++)
-	{
-		HudObject *object = new HudObject(names[i], xPos, winHeight);
-		objects.push_back(object);
-		xPos += objects.back()->getWidth();
-	}
+	curXPos = 0;
+	font.loadFromFile("assets/font/monkey.ttf");
+	textObject.setFont(font);
+	textObject.setCharacterSize(20);
+}
 
-
-	textObject.setPosition(0,winHeight-objects[0]->getHeight()-textObject.getCharacterSize());
+void HUD::AddObject(const std::string& imgLoc)
+{
+	HudObject *object = new HudObject(imgLoc, sf::Vector2f(curXPos, pos.y));
+	objects.push_back(object);
+	curXPos += objects.back()->getWidth();
+	textObject.setPosition(0,pos.y-objects[0]->getHeight()-textObject.getCharacterSize());
 }
 
 void HUD::changeFill(int final, int which)
 {
-	(*objects[which]).changeFill(final);
+	objects[which]->changeFill(final);
 }
 
 void HUD::changeText(std::string text)
@@ -29,7 +33,7 @@ void HUD::changeText(std::string text)
 	
 void HUD::draw(sf::RenderWindow &window) const
 {
-	for (int i = 0; i < numObjects; i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 		window.draw(*objects[i]);
 
 	if (clock.getElapsedTime() < textDisplayTime)

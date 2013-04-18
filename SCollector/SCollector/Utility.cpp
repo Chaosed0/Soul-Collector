@@ -35,3 +35,8 @@ float getRandom(float begin, float end)
 {
 	return getRandom()*(end-begin)+begin;
 }
+
+bool IsValidProperty(const std::string& prop)
+{
+	return !prop.empty() && prop.compare("No such property!") != 0;
+}
