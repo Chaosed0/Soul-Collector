@@ -11,12 +11,16 @@ private:
 
 	static const int numObjects = 3;
 	std::vector<HudObject *> objects;
+	sf::Text textObject;
+	sf::Clock clock;
+	static const sf::Time textDisplayTime;
 
 public:
 
 	HUD(const std::vector<std::string>& names, int winHeight);
 
-	void changeFill(float delta, int which);
+	void changeFill(int final, int which);
+	void changeText(std::string text);
 
 	void draw(sf::RenderWindow& window) const;
 };

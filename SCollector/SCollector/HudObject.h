@@ -10,6 +10,7 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 	sf::RectangleShape rect;
+	int value;
 
 public:
 
@@ -17,8 +18,9 @@ public:
 	HudObject(std::string image, float xPos, int winHeight);
 
 	float getWidth();
+	float getHeight();
 
-	void changeFill(float delta);
+	void changeFill(int final);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
