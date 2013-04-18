@@ -297,6 +297,10 @@ const Tmx::Tileset* Level::GetTileset(const Tmx::Layer* layer, const sf::Vector2
 sf::Vector2i Level::GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& globTile) const
 {
 	const Tmx::Tileset* tileset = GetTileset(layer, globTile);
+
+	if(tileset == NULL) {
+		return sf::Vector2i(-1,-1);
+	}
 	int tileWidth = map->GetTileWidth();
 	int tileHeight = map->GetTileHeight();
 	int tilesetWidth = tileset->GetImage()->GetWidth() / tileWidth;
@@ -325,6 +329,7 @@ bool Level::GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel)
 
 bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {
+	std::list<Entity*> collidingEntities;
 	angle = shiftAngle(angle);
 	//printf("%g\n", angle);
 	float tanDir = tan(angle);
@@ -342,15 +347,27 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	//printf("X DIRECTION\n\n");
 
 	//Do the x side first; while we're within map bounds...
-	while(nearestX.x > 0 && nearestX.x < map->GetWidth()*map->GetTileWidth() &&
-			nearestX.y > 0 && nearestX.y < map->GetHeight()*map->GetTileHeight() &&
+	while(nearestX.x >= 0 && nearestX.x < map->GetWidth()*map->GetTileWidth() &&
+			nearestX.y >= 0 && nearestX.y < map->GetHeight()*map->GetTileHeight() &&
 			!foundX) {
 		int globTileId = lyrCollision->GetTileId(globTile.x, globTile.y);
 		const Tmx::Tile* tile = tsetCollision->GetTile(globTileId);
 
-		//If the tile is identified as colliding with light...
-		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0 && (tile != NULL?
-				!tile->GetProperties().HasProperty("Clear"):true)) {
+		//List of entities to also check for collisions
+		collidingEntities.clear();
+		sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y, tileSize.x, tileSize.y);
+		for(unsigned int i = 0; i < activatables.size(); i++) {
+			if(activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect)) {
+				collidingEntities.push_back(activatables[i]);
+				//printf("Found potentially colliding entity, angle %g\n", angle);
+			}
+		}
+
+		//If the tile is identified as colliding with light or we have an entity
+		// to look for
+		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+		if((tileId > 0 && (tile != NULL?!tile->GetProperties().HasProperty("Clear"):true))
+				|| !collidingEntities.empty()) {
 			sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
 			sf::Vector2i pixel(nearestX.x-globTile.x*tileSize.x,
 				nearestX.y-globTile.y*tileSize.y);
@@ -358,7 +375,17 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 			while(pixel.x >= 0 && pixel.x < tileSize.x &&
 					pixel.y >= 0 && pixel.y < tileSize.y &&
 					!foundX) {
-				foundX = GetColliding(locTile, pixel);
+
+				//If the pixel of the tile is colliding, then we have found a colliding tile
+				if(tileId > 0) {
+					foundX = GetColliding(locTile, pixel);
+				}
+				//If some entity contains this point, then we have found a colliding entity
+				for(std::list<Entity*>::iterator p = collidingEntities.begin();
+						p != collidingEntities.end() && !foundX; p++) {
+					foundX = foundX || (*p)->Contains(nearestX);
+				}
+
 				if(!foundX) {
 					//If this pixel is not colliding, then keep searching
 					(negXDir?nearestX.x--:nearestX.x++);
@@ -399,13 +426,25 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 	//printf("Y DIRECTION\n\n");
 
-	while(nearestY.y > 0 && nearestY.y < map->GetHeight()*map->GetTileHeight() &&
-			nearestY.x > 0 && nearestY.x < map->GetWidth()*map->GetTileHeight() &&
+	while(nearestY.y >= 0 && nearestY.y < map->GetHeight()*map->GetTileHeight() &&
+			nearestY.x >= 0 && nearestY.x < map->GetWidth()*map->GetTileHeight() &&
 			!foundY) {
 		int globTileId = lyrCollision->GetTileId(globTile.x, globTile.y);
 		const Tmx::Tile* tile = tsetCollision->GetTile(globTileId);
-		if(lyrCollision->GetTileId(globTile.x, globTile.y) > 0 && (tile != NULL?
-				!tile->GetProperties().HasProperty("Clear"):true)) {
+
+		//List of entities to also check for collisions
+		collidingEntities.clear();
+		sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y, tileSize.x, tileSize.y);
+		for(unsigned int i = 0; i < activatables.size(); i++) {
+			if(activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect)) {
+				collidingEntities.push_back(activatables[i]);
+				//printf("Found potentially colliding entity, angle %g\n", angle);
+			}
+		}
+
+		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+		if((tileId > 0 && (tile != NULL?!tile->GetProperties().HasProperty("Clear"):true))
+				|| !collidingEntities.empty()) {
 			sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
 			sf::Vector2i pixel(nearestY.x-globTile.x*tileSize.x,
 				nearestY.y-globTile.y*tileSize.y);
@@ -413,7 +452,17 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 			while(pixel.x >= 0 && pixel.x < tileSize.x &&
 					pixel.y >= 0 && pixel.y < tileSize.y &&
 					!foundY) {
-				foundY = GetColliding(locTile, pixel);
+
+				//Check if this tile is colliding with the ray, if we even have a tile to check
+				if(tileId > 0) {
+					foundY = GetColliding(locTile, pixel);
+				}
+				//If some entity contains this point, then we have found a colliding entity
+				for(std::list<Entity*>::iterator p = collidingEntities.begin();
+						p != collidingEntities.end() && !foundY; p++) {
+					foundY = foundY || (*p)->Contains(nearestY);
+				}
+
 				if(!foundY) {
 					//If this pixel is not colliding, then keep searching
 					(negYDir?nearestY.y--:nearestY.y++);

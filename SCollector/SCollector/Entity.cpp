@@ -33,13 +33,10 @@ sf::Texture& Entity::GetTexture(const std::string& imgLoc)
 
 bool Entity::Contains(const sf::Vector2f point) const
 {
-	if(point.y==251) {
-		int a = 0;
-	}
 	sf::Vector2f topLeft = GetPos() - sprite.getOrigin();
 	sf::Vector2f botRight = topLeft + sf::Vector2f(collisionBox.width, collisionBox.height);
-	if(botRight.x >= point.x && topLeft.x <= point.x &&
-		botRight.y >= point.y && topLeft.y <= point.y) {
+	if(botRight.x >= point.x && topLeft.x < point.x &&
+		botRight.y >= point.y && topLeft.y < point.y) {
 			//printf("Contains (%g,%g)\n", point.x, point.y);
 			return true;
 	}
@@ -58,27 +55,27 @@ bool Entity::IsColliding(const sf::IntRect& box) const
 	//Left side of the other box in this one
 	bool leftCollide =
 		box.left >= thisCollisionBox.left &&
-		box.left <= thisCollisionBox.left + thisCollisionBox.width || 
+		box.left < thisCollisionBox.left + thisCollisionBox.width || 
 		thisCollisionBox.left >= box.left &&
-		thisCollisionBox.left <= box.left + box.width;
+		thisCollisionBox.left < box.left + box.width;
 	//Right side of other box in this one
 	bool rightCollide = 
-		box.left + box.width >= thisCollisionBox.left &&
-		box.left + box.width <= thisCollisionBox.left + thisCollisionBox.width ||
-		thisCollisionBox.left + thisCollisionBox.width >= box.left &&
-		thisCollisionBox.left + thisCollisionBox.width <= box.left + box.width;
+		box.left + box.width > thisCollisionBox.left &&
+		box.left + box.width < thisCollisionBox.left + thisCollisionBox.width ||
+		thisCollisionBox.left + thisCollisionBox.width > box.left &&
+		thisCollisionBox.left + thisCollisionBox.width < box.left + box.width;
 	//Top side of the other box in this one
 	bool topCollide = 
 		box.top >= thisCollisionBox.top &&
-		box.top <= thisCollisionBox.top + thisCollisionBox.height ||
+		box.top < thisCollisionBox.top + thisCollisionBox.height ||
 		thisCollisionBox.top >= box.top &&
-		thisCollisionBox.top <= box.top + box.height;
+		thisCollisionBox.top < box.top + box.height;
 	//Bottom side of the other box in this one
 	bool botCollide = 
-		box.top + box.height >= thisCollisionBox.top &&
-		box.top + box.height <= thisCollisionBox.top + thisCollisionBox.height ||
-		thisCollisionBox.top + thisCollisionBox.height >= box.top &&
-		thisCollisionBox.top + thisCollisionBox.height <= box.top + box.height;
+		box.top + box.height > thisCollisionBox.top &&
+		box.top + box.height < thisCollisionBox.top + thisCollisionBox.height ||
+		thisCollisionBox.top + thisCollisionBox.height > box.top &&
+		thisCollisionBox.top + thisCollisionBox.height < box.top + box.height;
 
 	//printf("%d, %d, %d, %d\n", leftCollide, rightCollide, topCollide, botCollide);
 	//printf("%d, %d, %d, %d\n", entity.collisionBox.left, entity.collisionBox.width, collisionBox.left, collisionBox.width);
