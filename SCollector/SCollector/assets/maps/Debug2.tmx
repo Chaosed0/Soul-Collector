@@ -23,7 +23,7 @@
  </layer>
  <layer name="Collision" width="30" height="28">
   <data encoding="base64" compression="zlib">
-   eJxjYmBgYBogTCwgRS0hc0i1lxS/0Nq/6OJMRIhTM5xJcdeof6ljLiHxUf+Sbi857hrO/sWmjtrlJCsOjE0/vcGovaP2jto7au+ovYPb3oHAALbhAYc=
+   eJxjYmBgYBogTCwgRS0hc0i1lxS/0Nq/6OJMRIhTM5xJcdeof6ljLiHxUf+Sbi857hr1L35zCWFWLJjScpJaYNTeUXtH7R21d9TewW3vQGAAvm0BiA==
   </data>
  </layer>
  <layer name="Misc" width="30" height="28">
@@ -33,7 +33,7 @@
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="28">
   <object type="Demon" gid="54" x="512" y="256" width="32" height="32"/>
-  <object type="Torch" gid="55" x="384" y="256" width="32" height="32"/>
+  <object type="Torch" gid="55" x="384" y="256" width="32" height="32" rotation="-90"/>
   <object name="StairsToDebug1_1" type="Stairs" gid="56" x="704" y="416" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug1.tmx"/>
@@ -49,5 +49,6 @@
    </properties>
   </object>
   <object name="Init" type="Spawn" gid="52" x="704" y="416" width="32" height="32"/>
+  <object name="Door1" type="Door" gid="57" x="704" y="128" width="32" height="32"/>
  </objectgroup>
 </map>

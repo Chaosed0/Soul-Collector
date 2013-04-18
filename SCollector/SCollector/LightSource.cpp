@@ -2,6 +2,8 @@
 #include "LightSource.h"
 #include "Level.h"
 
+sf::Texture LightSource::circleTexture;
+
 LightSource::LightSource(int rays, int radius, const sf::Color& color, const sf::Vector2f& pos)
 	: circleOverlay((float)radius, 32)
 {
@@ -23,9 +25,10 @@ LightSource::LightSource(int rays, int radius, const sf::Color& color, const sf:
 	triangleOverlaySprite.setOrigin((float)radius, (float)radius);
 	triangleOverlaySprite.setPosition((float)radius, (float)radius);
 	
-	//Load the light circle image
-	circleImage.loadFromFile("assets/img/LightAura.png");
-	circleTexture.loadFromImage(circleImage);
+	//Load the light circle image, if it hasn't already
+	if(circleTexture.getSize().x <= 0 || circleTexture.getSize().y <= 0) {
+		circleTexture.loadFromFile("assets/img/LightAura.png");
+	}
 	circleSprite.setTexture(circleTexture);
 	circleSprite.setScale(sf::Vector2f(radius*2.0f/circleTexture.getSize().x,
 							radius*2.0f/circleTexture.getSize().y));
@@ -42,6 +45,11 @@ void LightSource::SetPos(const sf::Vector2f& pos)
 		lightPos = pos;
 		needsUpdate = true;
 	}
+}
+
+void LightSource::ForceUpdate()
+{
+	needsUpdate = true;
 }
 
 void LightSource::SetColor(const sf::Color& color)

@@ -605,11 +605,24 @@ void Level::DoActivate()
 			activatables[i]->Activate();
 			didActivate = true;
 		}*/
-		activatables[i]->TryActivate(player);
+		bool wasCollidable = activatables[i]->IsCollidable();
+		bool activated = activatables[i]->TryActivate(player);
+		//If something activated and it was blocking light, then force an update of
+		// all lights in the level
+		if(wasCollidable && activated) {
+			ForceUpdateLights();
+		}
 	}
 }
 
-void Level::AddLight(const LightSource& light)
+void Level::ForceUpdateLights()
+{
+	for(int i = 0; i < lights.size(); i++) {
+		lights[i]->ForceUpdate();
+	}
+}
+
+void Level::AddLight(LightSource& light)
 {
 	lights.push_back(&light);
 }
@@ -640,7 +653,6 @@ const Player& Level::GetPlayer() const
 
 void Level::Update(const sf::Time& timePassed)
 {
-	player.Update(*this, timePassed);
 	for(unsigned int i = 0; i < activatables.size(); i++) {
 		activatables[i]->Update(*this, timePassed);
 		//Check for stairs, the only activatable that can be both active and finished
@@ -701,6 +713,8 @@ void Level::Update(const sf::Time& timePassed)
 			}
 		}
 	}
+
+	player.Update(*this, timePassed);
 
 	//The owners of the lights should take care of updating them, we're just
 	// going to draw them to the overlay texture

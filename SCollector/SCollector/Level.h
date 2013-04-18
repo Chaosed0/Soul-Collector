@@ -147,7 +147,7 @@ public:
 	 * Adds a light to the level for drawing.
 	 * \param light The light to be added.
 	 */
-	void AddLight(const LightSource& light);
+	void AddLight(LightSource& light);
 
 	/**
 	 * Adds an attack to the level for processing.
@@ -245,6 +245,13 @@ private:
 	 */
 	bool GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel) const;
 
+	/**
+	 * Forces all lights in the level to update.
+	 *
+	 * Should be called when something in the level changes, such as a door opening.
+	 */
+	void ForceUpdateLights();
+
 	/** Draws the level */
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 
@@ -295,8 +302,8 @@ private:
 	std::list<AttackCone> playerAttacks;
 	std::list<AttackCone> enemyAttacks;
 
-	/** A list of lights in the level, only to be used for drawing */
-	std::vector<const LightSource*> lights;
+	/** A list of lights in the level */
+	std::vector<LightSource*> lights;
 
 	/** Whether or not this level is still active; if false, the level should transition */
 	bool isActive;

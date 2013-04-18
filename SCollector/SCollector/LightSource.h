@@ -33,6 +33,11 @@ public:
 	void SetPos(const sf::Vector2f& pos);
 
 	/**
+	 * Forces this LightSource to update on the next call to Update()
+	 */
+	void ForceUpdate();
+
+	/**
 	 * Updates the overlay, recomputing the lighting textures and repositioning
 	 *  the overlay to the view.
 	 * \param level The current level.
@@ -61,11 +66,6 @@ private:
 
 	/** The color/intensity overlay circle. */
 	sf::CircleShape circleOverlay;
-
-	/** The image of the circle gradient. */
-	sf::Image circleImage;
-	/** The texture that holds circleImage. */
-	sf::Texture circleTexture;
 	/** The sprite that loads circleTexture, which is drawn to the screen */
 	sf::Sprite circleSprite;
 
@@ -92,6 +92,9 @@ private:
 	bool needsRedraw;
 	/** Flag set to true when this light source is on. Defaults to false.*/
 	bool isOn;
+
+	/** Static texture for the circle shared by all light sources */
+	static sf::Texture circleTexture;
 };
 
 #endif

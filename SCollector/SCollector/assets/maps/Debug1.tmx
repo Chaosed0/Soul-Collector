@@ -42,21 +42,14 @@
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
-  <object name="Init" type="Spawn" gid="52" x="640" y="480" width="32" height="32"/>
-  <object type="Key" gid="53" x="384" y="608" width="32" height="32"/>
-  <object type="Key" gid="53" x="32" y="320" width="32" height="32">
-   <properties>
-    <property name="Door" value="1"/>
-   </properties>
-  </object>
+  <object name="Init" type="Spawn" gid="52" x="736" y="736" width="32" height="32"/>
   <object name="akey" type="Key" gid="53" x="736" y="736" width="32" height="32" rotation="50">
    <properties>
     <property name="Door" value="Door1"/>
    </properties>
   </object>
   <object type="Demon" gid="54" x="672" y="608" width="32" height="32"/>
-  <object type="Torch" gid="55" x="608" y="544" width="32" height="32"/>
-  <object type="Torch" gid="55" x="608" y="832" width="32" height="32"/>
+  <object type="Torch" gid="55" x="608" y="832" width="32" height="32" rotation="-90"/>
   <object name="StairsToDebug2_1" type="Stairs" gid="56" x="704" y="480" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug2.tmx"/>
@@ -76,5 +69,6 @@
     <property name="" value=""/>
    </properties>
   </object>
+  <object type="Torch" gid="55" x="640" y="480" width="32" height="32" rotation="-180"/>
  </objectgroup>
 </map>

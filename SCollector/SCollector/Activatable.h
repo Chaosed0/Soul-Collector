@@ -25,7 +25,7 @@ public:
 	 *  activates; otherwise, nothing happens.
 	 * \param entity The entity attempting to activate this activatable.
 	 */
-	void TryActivate(const Entity& entity);
+	bool TryActivate(const Entity& entity);
 protected:
 	bool isActive;
 	bool isFinished;

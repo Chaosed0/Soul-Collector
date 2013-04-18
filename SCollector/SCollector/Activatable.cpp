@@ -10,14 +10,16 @@ Activatable::Activatable(std::string imgLoc, sf::IntRect collisionBox,
 	this->activateBox = activateBox;
 }
 
-void Activatable::TryActivate(const Entity& entity)
+bool Activatable::TryActivate(const Entity& entity)
 {
 	sf::IntRect box = activateBox;
 	box.left += (int)GetPos().x - sprite.getOrigin().x;
 	box.top += (int)GetPos().y - sprite.getOrigin().y;
 	if(entity.IsColliding(box)) {
 		Activate();
+		return true;
 	}
+	return false;
 }
 
 void Activatable::draw(sf::RenderTarget& target, sf::RenderStates state) const
