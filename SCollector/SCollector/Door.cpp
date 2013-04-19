@@ -5,11 +5,11 @@
 
 Door::Door(const sf::Vector2f& pos, const std::string& doorName, const std::string& description)
 	: Activatable("assets/img/Door.png", sf::IntRect(0,0,32,32),
-		sf::IntRect(0,0,32,32), sf::IntRect(-16,-16,64,64))
+		sf::IntRect(0,0,32,32), sf::IntRect(-8,-8,48,48))
 {
 	this->doorName = doorName;
 	this->description = description;
-	health = 100.0f;
+	health = 100;
 	isOpened = false;
 	isBroken = false;
 	isCollidable = true;

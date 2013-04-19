@@ -1,6 +1,7 @@
 #include "HUD.h"
 
 const sf::Time HUD::textDisplayTime = sf::seconds(3);
+const int HUD::textPadding = 5;
 
 HUD::HUD(const sf::Vector2f& pos) :
 	pos(pos) ,
@@ -17,7 +18,7 @@ void HUD::AddObject(const std::string& imgLoc)
 	HudObject *object = new HudObject(imgLoc, sf::Vector2f(curXPos, pos.y));
 	objects.push_back(object);
 	curXPos += objects.back()->getWidth();
-	textObject.setPosition(0,pos.y-objects[0]->getHeight()-textObject.getCharacterSize());
+	textObject.setPosition(0,pos.y-textPadding-objects[0]->getHeight()-textObject.getCharacterSize());
 }
 
 void HUD::changeFill(int final, int which)

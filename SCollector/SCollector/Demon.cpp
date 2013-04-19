@@ -46,6 +46,7 @@ void Demon::Update(Level& level, const sf::Time& timePassed)
 		// animations, we don't have to do anything to stop the animation playing
 		PlayAnim("death", timePassed);
 		state = DEAD;
+		soundManager.StopLastSound();
 		//Rather than encompassing everything else in here with a huge if statement,
 		// just return from the function; much cleaner
 		return;

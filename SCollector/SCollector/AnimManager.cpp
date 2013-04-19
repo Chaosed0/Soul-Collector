@@ -112,7 +112,7 @@ sf::IntRect AnimManager::GetCurAnimRect()
 
 	//printf("curFrame: %d, left:%d, top:%d, width:%d, height:%d\n", curAnimFrame, curAnimFrameRect.left, curAnimFrameRect.top, curAnimFrameRect.width, curAnimFrameRect.height);
 
-	if(curAnimFrameRect.top+curAnimFrameRect.height > sheetSize.y)
+	if(curAnimFrameRect.top+curAnimFrameRect.height > (int)sheetSize.y)
 		return animBox;
 	return curAnimFrameRect;
 }

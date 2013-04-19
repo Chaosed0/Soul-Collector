@@ -38,6 +38,7 @@ private:
 	sf::Vector2f pos;
 
 	static const sf::Time textDisplayTime;
+	static const int textPadding;
 };
 
 #endif

@@ -9,7 +9,7 @@ Game::Game()
 	, window(sf::VideoMode(winWidth, winHeight), "Test")
 	, menus(winWidth, winHeight)
 	, view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
-	, hud(sf::Vector2f(0, winHeight))
+	, hud(sf::Vector2f(0, (float)winHeight))
 {
 	//Flag set to false when the game ends
 	isRunning = false;

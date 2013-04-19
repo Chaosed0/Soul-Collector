@@ -13,8 +13,8 @@ Activatable::Activatable(std::string imgLoc, sf::IntRect collisionBox,
 bool Activatable::TryActivate(const Entity& entity)
 {
 	sf::IntRect box = activateBox;
-	box.left += (int)GetPos().x - sprite.getOrigin().x;
-	box.top += (int)GetPos().y - sprite.getOrigin().y;
+	box.left += (int)(GetPos().x - sprite.getOrigin().x);
+	box.top += (int)(GetPos().y - sprite.getOrigin().y);
 	if(entity.IsColliding(box)) {
 		Activate();
 		return true;

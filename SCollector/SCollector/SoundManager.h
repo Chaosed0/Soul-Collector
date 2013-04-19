@@ -39,6 +39,11 @@ public:
 	 * \return True if the sound exists, false otherwise.
 	 */
 	bool StopSound(const std::string& soundName);
+
+	/**
+	 * Stops playing the last sound played.
+	 */
+	void StopLastSound();
 private:
 	/** Map of sound names to sound identifiers. */
 	std::map<std::string, int> soundNames;
@@ -49,6 +54,8 @@ private:
 
 	/** The last sound identifier used in the map. */
 	int lastSoundAdded;
+	/** The last sound identifier played. */
+	int lastSoundPlayed;
 
 	/** Map of sound locations to sound buffers - if a buffer is
 	 *  re-used between sound managers, then it doesn't get re-loaded */

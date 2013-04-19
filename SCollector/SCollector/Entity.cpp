@@ -34,7 +34,7 @@ sf::Texture& Entity::GetTexture(const std::string& imgLoc)
 bool Entity::Contains(const sf::Vector2f point) const
 {
 	sf::Vector2f topLeft = GetPos() - sprite.getOrigin();
-	sf::Vector2f botRight = topLeft + sf::Vector2f(collisionBox.width, collisionBox.height);
+	sf::Vector2f botRight = topLeft + sf::Vector2f((float)collisionBox.width, (float)collisionBox.height);
 	if(botRight.x >= point.x && topLeft.x < point.x &&
 		botRight.y >= point.y && topLeft.y < point.y) {
 			//printf("Contains (%g,%g)\n", point.x, point.y);
@@ -49,8 +49,8 @@ bool Entity::IsColliding(const sf::IntRect& box) const
 	//Separating Axis Theorem: Two boxes are colliding if and only if they are colliding
 	// on their component axes (x and y)
 	sf::IntRect thisCollisionBox = collisionBox;
-	thisCollisionBox.left += (int)GetPos().x - sprite.getOrigin().x;
-	thisCollisionBox.top += (int)GetPos().y - sprite.getOrigin().y;
+	thisCollisionBox.left += (int)(GetPos().x - sprite.getOrigin().x);
+	thisCollisionBox.top += (int)(GetPos().y - sprite.getOrigin().y);
 
 	//Left side of the other box in this one
 	bool leftCollide =

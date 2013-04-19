@@ -112,8 +112,8 @@ void Level::UnloadMap()
 
 void Level::InitTextures()
 {
-	tilemapTexture.create(mapSize.x*tileSize.y, mapSize.y*tileSize.y);
-	lightTexture.create(mapSize.x*tileSize.y, mapSize.y*tileSize.y);
+	tilemapTexture.create((unsigned int)mapSize.x*tileSize.y, (unsigned int)mapSize.y*tileSize.y);
+	lightTexture.create((unsigned int)mapSize.x*tileSize.y, (unsigned int)mapSize.y*tileSize.y);
 }
 
 void Level::DrawMap()
@@ -170,8 +170,8 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 	map->ParseFile(BASEMAPDIR + mapName);
 
 	//Initialize some properties
-	mapSize = sf::Vector2f(map->GetWidth(), map->GetHeight());
-	tileSize = sf::Vector2f(map->GetTileWidth(), map->GetTileHeight());
+	mapSize = sf::Vector2f((float)map->GetWidth(), (float)map->GetHeight());
+	tileSize = sf::Vector2f((float)map->GetTileWidth(), (float)map->GetTileHeight());
 	
 	if(map->HasError()) {
 		fprintf(stderr, "WARNING: Could not parse level %s: %s\n",
@@ -366,7 +366,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 		//List of entities to also check for collisions
 		foundObj = false;
-		sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y, tileSize.x, tileSize.y);
+		sf::IntRect rect((int)globTile.x*tileSize.x, (int)globTile.y*tileSize.y,
+			(int)tileSize.x, (int)tileSize.y);
 		for(unsigned int i = 0; i < activatables.size() && !foundObj; i++) {
 			foundObj = activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect);
 		}
@@ -377,8 +378,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 		if((tileId > 0 && (tile != NULL?!tile->GetProperties().HasProperty("Clear"):true))
 				|| foundObj) {
 			sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
-			sf::Vector2i pixel(nearestX.x-globTile.x*tileSize.x,
-				nearestX.y-globTile.y*tileSize.y);
+			sf::Vector2i pixel((int)(nearestX.x-globTile.x*tileSize.x),
+				(int)(nearestX.y-globTile.y*tileSize.y));
 			//Check the pixels of the tile along this line
 			while(pixel.x >= 0 && pixel.x < tileSize.x &&
 					pixel.y >= 0 && pixel.y < tileSize.y &&
@@ -396,8 +397,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 					//If this pixel is not colliding, then keep searching
 					(negXDir?nearestX.x--:nearestX.x++);
 					(negYDir?nearestX.y-=abs(tanDir):nearestX.y+=abs(tanDir));
-					pixel.x = nearestX.x-globTile.x*tileSize.x;
-					pixel.y = nearestX.y-globTile.y*tileSize.y;
+					pixel.x = (int)(nearestX.x-globTile.x*tileSize.x);
+					pixel.y = (int)(nearestX.y-globTile.y*tileSize.y);
 				} else {
 					//Otherwise, note down where we found this and break
 					//Back out one pixel; the previous pixel was the last non-colliding one
@@ -440,7 +441,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 		//List of entities to also check for collisions
 		foundObj = false;
-		sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y, tileSize.x, tileSize.y);
+		sf::IntRect rect((int)globTile.x*tileSize.x, (int)globTile.y*tileSize.y,
+			(int)tileSize.x, (int)tileSize.y);
 		for(unsigned int i = 0; i < activatables.size() && !foundObj; i++) {
 			foundObj = activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect);
 		}
@@ -449,8 +451,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 		if((tileId > 0 && (tile != NULL?!tile->GetProperties().HasProperty("Clear"):true))
 				|| foundObj) {
 			sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
-			sf::Vector2i pixel(nearestY.x-globTile.x*tileSize.x,
-				nearestY.y-globTile.y*tileSize.y);
+			sf::Vector2i pixel((int)(nearestY.x-globTile.x*tileSize.x),
+				(int)(nearestY.y-globTile.y*tileSize.y));
 			//Check the pixels of the tile along this line
 			while(pixel.x >= 0 && pixel.x < tileSize.x &&
 					pixel.y >= 0 && pixel.y < tileSize.y &&
@@ -468,8 +470,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 					//If this pixel is not colliding, then keep searching
 					(negYDir?nearestY.y--:nearestY.y++);
 					(negXDir?nearestY.x-=1/abs(tanDir):nearestY.x+=1/abs(tanDir));
-					pixel.x = nearestY.x-globTile.x*tileSize.x;
-					pixel.y = nearestY.y-globTile.y*tileSize.y;
+					pixel.x = (int)(nearestY.x-globTile.x*tileSize.x);
+					pixel.y = (int)(nearestY.y-globTile.y*tileSize.y);
 				} else {
 					//Otherwise, note down where we found this and break
 					(negYDir?nearestY.y++:nearestY.y--);
@@ -555,7 +557,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 				{
 					//Once we find a colliding pixel, return its location
 					if(GetColliding(locTile, pixel)) {
-						float newNearest = tileRef * (horiz?map->GetTileWidth():map->GetTileHeight())
+						int newNearest = tileRef * (horiz?map->GetTileWidth():map->GetTileHeight())
 							+ pixelRef - step;
 						if(abs(newNearest) < abs(nearest)) {
 							nearest = newNearest;
@@ -580,11 +582,11 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 							!foundCol)
 					{
 						bool collide = activatables[i]->Contains(
-							sf::Vector2f(globTile.x*map->GetTileWidth() + pixel.x,
-							globTile.y*map->GetTileHeight() + pixel.y));
+							sf::Vector2f((float)(globTile.x*map->GetTileWidth() + pixel.x),
+								(float)(globTile.y*map->GetTileHeight() + pixel.y)));
 						//Once we find a colliding pixel, return its location
 						if(collide) {
-							float newNearest = tileRef * (horiz?map->GetTileWidth():map->GetTileHeight())
+							int newNearest = tileRef * (horiz?map->GetTileWidth():map->GetTileHeight())
 								+ pixelRef - step;
 							if(abs(newNearest) < abs(nearest)) {
 								nearest = newNearest;
@@ -628,7 +630,7 @@ void Level::DoActivate()
 
 void Level::ForceUpdateLights()
 {
-	for(int i = 0; i < lights.size(); i++) {
+	for(unsigned int i = 0; i < lights.size(); i++) {
 		lights[i]->ForceUpdate();
 	}
 }

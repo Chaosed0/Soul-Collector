@@ -6,7 +6,7 @@
 
 Key::Key(const sf::Vector2f& pos, std::string doorName, const std::string& description)
 	: Activatable("assets/img/Key.png", sf::IntRect(0,0,32,32),
-		sf::IntRect(0,0,32,32), sf::IntRect(-16,-16,64,64))
+		sf::IntRect(0,0,32,32), sf::IntRect(-8,-8,48,48))
 {
 	SetPos(pos);
 	this->doorName = doorName;
