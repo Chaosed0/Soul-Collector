@@ -6,12 +6,13 @@
 #include "HUD.h"
 
 const sf::Time Player::attackConeLife = sf::seconds(1.0f);
+const sf::Time Player::sprintTime = sf::seconds(3.0f);
 const float Player::attackConeLength = 100.0f;
 const float Player::attackConeSweep = 2*PI/8;
 const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
 const float Player::maxEnergy = 100;
-const sf::Time Player::sprintTime = sf::seconds(3.0f);
+const int Player::maxSouls = 6;
 
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
@@ -27,6 +28,7 @@ Player::Player(const sf::Vector2f& pos)
 	energy = 0;
 	humanity = 100;
 	fuel = 100;
+	souls = 0;
 
 	//Initialize animations (maybe offload some of this data to a text file
 	// or something?)
@@ -108,6 +110,15 @@ void Player::AddKey(const std::string& doorName)
 bool Player::HasKey(const std::string& doorName)
 {
 	return (this->doorNameSet).find(doorName) != doorNameSet.end();
+}
+
+void Player::AddSoul()
+{
+	souls++;
+}
+int Player::GetRemainingSouls()
+{
+	return maxSouls - souls;
 }
 
 void Player::UpdateHud(HUD& hud)

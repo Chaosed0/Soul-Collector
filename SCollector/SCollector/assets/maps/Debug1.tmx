@@ -80,5 +80,6 @@
     <property name="Door" value="Door2"/>
    </properties>
   </object>
+  <object type="Soul" gid="58" x="608" y="320" width="32" height="32"/>
  </objectgroup>
 </map>

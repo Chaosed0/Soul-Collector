@@ -1,3 +1,8 @@
+/**
+ * \brief A key to a door.
+ * \author Mustafa Alareed and Mujing Wang
+ * \date April 19 2013
+ */
 
 #include "Key.h"
 #include "Entity.h"

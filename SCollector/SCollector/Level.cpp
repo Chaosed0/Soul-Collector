@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "LightSource.h"
 #include "HUD.h"
+#include "Soul.h"
 
 Level::Level(Player& player)
 	: player(player)
@@ -284,6 +285,9 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 			} else if(type.compare("Door") == 0) {
 				std::string description = object->GetProperties().GetLiteralProperty("Description");
 				activatables.push_back(new Door(objectPos, object->GetName(), description));
+				activatables.back()->SetRot(object->GetRot());
+			} else if(type.compare("Soul") == 0) {
+				activatables.push_back(new Soul(objectPos));
 				activatables.back()->SetRot(object->GetRot());
 			}
 			//We don't know what type of object this is, issue an error

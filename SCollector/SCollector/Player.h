@@ -117,6 +117,17 @@ public:
 	 */
 	bool HasKey(const std::string& doorName);
 
+	/**
+	 * Adds a soul to the player's inventory.
+	 */
+	void AddSoul();
+
+	/**
+	 * Gets how many souls the player still has to collect to win.
+	 * \return The number of souls the player still needs.
+	 */
+	int GetRemainingSouls();
+
 //Private attributes; visible only within this class
 private:
 	/** Flags set to true when the player should move in the corresponding direction */
@@ -136,6 +147,11 @@ private:
 	float energy;
 	/** Amount of humanity the player still has - higher is better. */
 	float humanity;
+	/** Number of pieces of soul the player has. */
+	int souls;
+
+	/** Names of doors the player can open. */
+	std::set<std::string> doorNameSet;
 
 	/** Time-to-live for any attack the player initiates. */
 	static const sf::Time attackConeLife;
@@ -149,9 +165,8 @@ private:
 	static const float maxEnergy;
 	/** Max burst sprinting time */
 	static const sf::Time sprintTime;
-
-
-	std::set<std::string> doorNameSet;
+	/** Number of souls the player needs to win. */
+	static const int maxSouls;
 };
 
 #endif
