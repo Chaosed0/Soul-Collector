@@ -4,6 +4,9 @@
  * \date March 21 2013
  */
 
+#ifndef __SOUNDMANAGER_H
+#define __SOUNDMANAGER_H
+
 #include <map>
 #include <vector>
 
@@ -61,3 +64,5 @@ private:
 	 *  re-used between sound managers, then it doesn't get re-loaded */
 	static std::map<std::string, sf::SoundBuffer> soundBuffers;
 };
+
+#endif

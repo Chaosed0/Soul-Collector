@@ -12,6 +12,7 @@
 #include "MenuManager.h"
 #include "LevelManager.h"
 #include "HUD.h"
+#include "SoundManager.h"
 
 class Game
 {
@@ -41,6 +42,8 @@ private:
 	sf::RenderWindow window;
 	/** The menu manger */
 	MenuManager menus;
+	/** Sound manager for playing sounds at, for example, game over */
+	SoundManager soundManager;
 
 	/** Flag set to true when the game is running */
 	bool isRunning;

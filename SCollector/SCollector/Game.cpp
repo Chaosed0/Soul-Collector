@@ -20,6 +20,8 @@ Game::Game()
 	hud.AddObject("assets/img/hud_lighter.png");
 	hud.AddObject("assets/img/hud_soul_beast000.png");
 	hud.AddObject("assets/img/hud_soul_beast000.png");
+	
+	soundManager.AddSound("assets/sound/init.ogg", "init", false);
 }
 
 int Game::Run()
@@ -42,6 +44,7 @@ void Game::Init()
 	menus.connectExitFunc(&Game::Exit, this);
 
 	levelManager.LoadMap("Debug1.tmx", "Init");
+	soundManager.PlaySound("init");
 }
 
 void Game::Loop()

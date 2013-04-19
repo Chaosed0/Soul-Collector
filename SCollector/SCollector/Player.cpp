@@ -38,12 +38,9 @@ Player::Player(const sf::Vector2f& pos)
 	animManager.AddAnimSet("walk", 1, 0, true);
 
 	//Initialize sounds
-	soundManager.AddSound("assets/sound/test.ogg", "init", false);
 	soundManager.AddSound("assets/sound/swoosh.ogg", "swing", false);
 	soundManager.AddSound("assets/sound/thwack.ogg", "hit", false);
 	soundManager.AddSound("assets/sound/ow.ogg", "got_hit", false);
-
-	soundManager.PlaySound("init");
 
 	lighter.Toggle();
 	ambientLight.Toggle();

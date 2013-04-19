@@ -9,6 +9,7 @@ Soul::Soul(const sf::Vector2f& pos)
 {
 	SetPos(pos);
 	animManager.ModifyAnimSet("idle", 0, 11, true);
+	soundManager.AddSound("assets/sound/pickup.ogg", "pickup", false);
 }
 
 void Soul::Update(Level& level, const sf::Time& timePassed)
@@ -18,8 +19,9 @@ void Soul::Update(Level& level, const sf::Time& timePassed)
 		level.GetPlayer().AddSoul();
 		int soulsRemain = level.GetPlayer().GetRemainingSouls();
 		char msg[60];
-		sprintf(msg, "Got a piece of your soul! %d remain...", soulsRemain);
+		sprintf_s(msg, 60, "Got a piece of your soul! %d remain...", soulsRemain);
 		level.SetHUDText(msg);
+		soundManager.PlaySound("pickup");
 		Finish();
 	}
 

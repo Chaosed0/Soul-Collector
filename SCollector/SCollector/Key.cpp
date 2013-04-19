@@ -16,6 +16,7 @@ Key::Key(const sf::Vector2f& pos, std::string doorName, const std::string& descr
 	SetPos(pos);
 	this->doorName = doorName;
 	this->description = description;
+	soundManager.AddSound("assets/sound/pickup.ogg", "pickup", false);
 }
 
 void Key::Update(Level& level, const sf::Time& timePassed)
@@ -24,6 +25,7 @@ void Key::Update(Level& level, const sf::Time& timePassed)
 		visible = false;
 		level.GetPlayer().AddKey(doorName);
 		level.SetHUDText("Got " + description + ".");
+		soundManager.PlaySound("pickup");
 		Finish();
 	}
 
