@@ -142,11 +142,11 @@ private:
 	bool isSprinting;
 
 	/** Amount of fuel the player has left */
-	float fuel;
+	sf::Time sprintTimer;
 	/** Amount of fatigue the player has - directly proportional to the time he can run. */
-	float energy;
+	sf::Time lighterTimer;
 	/** Amount of humanity the player still has - higher is better. */
-	float humanity;
+	sf::Time humanityTimer;
 	/** Number of pieces of soul the player has. */
 	int souls;
 
@@ -155,16 +155,24 @@ private:
 
 	/** Time-to-live for any attack the player initiates. */
 	static const sf::Time attackConeLife;
+	/** Max burst sprinting time */
+	static const sf::Time maxSprintTime;
+	/** Amount of time the lighter can be on, from 100 fuel to 0 */
+	static const sf::Time maxLighterTime;
+	/** Amount of time before the player loses due to humanity */
+	static const sf::Time maxHumanityTime;
+	/** Length of the player's attack cone */
 	static const float attackConeLength;
+	/** Angle of the player's attack cone */
 	static const float attackConeSweep;
 	/** Regular walking speed, in pixels per second. */
 	static const float regSpeed;
 	/** Running speed, in pixels per second. */
 	static const float sprintSpeed;
-	/** Max amount of fatigue. */
-	static const float maxEnergy;
-	/** Max burst sprinting time */
-	static const sf::Time sprintTime;
+	/** Amount of humanity the player gains by picking up a soul. */
+	static const float humanityIncrease;
+	/** Amount of humanity the player loses by attacking. */
+	static const float humanityDecrease;
 	/** Number of souls the player needs to win. */
 	static const int maxSouls;
 };

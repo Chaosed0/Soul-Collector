@@ -6,12 +6,15 @@
 #include "HUD.h"
 
 const sf::Time Player::attackConeLife = sf::seconds(1.0f);
-const sf::Time Player::sprintTime = sf::seconds(3.0f);
+const sf::Time Player::maxSprintTime = sf::seconds(3.0f);
+const sf::Time Player::maxLighterTime = sf::seconds(150.0f);
+const sf::Time Player::maxHumanityTime = sf::seconds(300.0f);
 const float Player::attackConeLength = 100.0f;
 const float Player::attackConeSweep = 2*PI/8;
 const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
-const float Player::maxEnergy = 100;
+const float Player::humanityDecrease = 0.5f;
+const float Player::humanityIncrease = 20.0f;
 const int Player::maxSouls = 6;
 
 Player::Player(const sf::Vector2f& pos)
@@ -25,9 +28,9 @@ Player::Player(const sf::Vector2f& pos)
 
 	isSprinting = false;
 
-	energy = 0;
-	humanity = 100;
-	fuel = 100;
+	sprintTimer = maxSprintTime;
+	lighterTimer = maxLighterTime;
+	humanityTimer = maxHumanityTime;
 	souls = 0;
 
 	//Initialize animations (maybe offload some of this data to a text file
@@ -115,6 +118,8 @@ bool Player::HasKey(const std::string& doorName)
 void Player::AddSoul()
 {
 	souls++;
+	//Whenever the player gets a soul, his humanity should increase
+	humanityTimer += sf::microseconds((sf::Int64)(maxHumanityTime.asMicroseconds()/humanityIncrease));
 }
 int Player::GetRemainingSouls()
 {
@@ -124,9 +129,9 @@ int Player::GetRemainingSouls()
 void Player::UpdateHud(HUD& hud)
 {
 	hud.changeFill((int)health, HUD::health);
-	hud.changeFill((int)energy, HUD::fatigue);
-	hud.changeFill((int)fuel, HUD::fuel);
-	hud.changeFill((int)humanity, HUD::humanity);
+	hud.changeFill((int)(100*sprintTimer.asMicroseconds()/maxSprintTime.asMicroseconds()), HUD::fatigue);
+	hud.changeFill((int)(100*lighterTimer.asMicroseconds()/maxLighterTime.asMicroseconds()), HUD::fuel);
+	hud.changeFill((int)(100*humanityTimer.asMicroseconds()/maxHumanityTime.asMicroseconds()), HUD::humanity);
 }
 
 void Player::Update(Level& level, const sf::Time& timePassed)
@@ -153,7 +158,7 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 
 		if(isSprinting) {
 			moveSpeed = sprintSpeed*timePassed.asSeconds();
-			energy -= timePassed.asMicroseconds()/(sprintTime.asMicroseconds()/maxEnergy);
+			sprintTimer = std::max(sf::Time::Zero, sprintTimer-timePassed);
 		} else {
 			moveSpeed = regSpeed*timePassed.asSeconds();
 		}
@@ -225,9 +230,9 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 
 	//Regenerate stamina when not running
 	if(!isSprinting) {
-		energy = std::min(maxEnergy, energy+timePassed.asMicroseconds()/(sprintTime.asMicroseconds()/maxEnergy));
+		sprintTimer = std::min(maxSprintTime, sprintTimer+timePassed);
 	}
-	if(energy <= 0) {
+	if(sprintTimer <= sf::seconds(0.0f)) {
 		isSprinting = false;
 	}
 
@@ -236,4 +241,13 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 	ambientLight.SetPos(GetPos());
 	lighter.Update(level);
 	ambientLight.Update(level);
+	//If the lighter's on, reduce fuel
+	if(lighter.GetIsOn()) {
+		lighterTimer = std::max(sf::Time::Zero, lighterTimer-timePassed);
+		if(lighterTimer <= sf::Time::Zero) {
+			lighter.Toggle();
+		}
+	}
+	//Reduce time we have
+	humanityTimer = std::max(sf::Time::Zero, humanityTimer-timePassed);
 }

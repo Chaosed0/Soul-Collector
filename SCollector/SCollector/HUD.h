@@ -35,10 +35,12 @@ private:
 	sf::Clock clock;
 
 	float curXPos;
+	float prevHumanityChange;
 	sf::Vector2f pos;
 
 	static const sf::Time textDisplayTime;
 	static const int textPadding;
+	static const int humanityIncrement;
 };
 
 #endif

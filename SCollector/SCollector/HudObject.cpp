@@ -26,6 +26,11 @@ float HudObject::getHeight()
 	return (float)sprite.getTextureRect().height;
 }
 
+void HudObject::SetImage(const std::string& image)
+{
+	texture.loadFromFile(image);
+}
+
 void HudObject::changeFill(int final)
 {
 	int delta = final - value;

@@ -21,6 +21,7 @@ public:
 	float getHeight();
 
 	void changeFill(int final);
+	void SetImage(const std::string& image);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

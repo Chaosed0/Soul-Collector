@@ -113,8 +113,8 @@ void Level::UnloadMap()
 
 void Level::InitTextures()
 {
-	tilemapTexture.create((unsigned int)mapSize.x*tileSize.y, (unsigned int)mapSize.y*tileSize.y);
-	lightTexture.create((unsigned int)mapSize.x*tileSize.y, (unsigned int)mapSize.y*tileSize.y);
+	tilemapTexture.create((unsigned int)(mapSize.x*tileSize.y), (unsigned int)(mapSize.y*tileSize.y));
+	lightTexture.create((unsigned int)(mapSize.x*tileSize.y), (unsigned int)(mapSize.y*tileSize.y));
 }
 
 void Level::DrawMap()
@@ -370,7 +370,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 		//List of entities to also check for collisions
 		foundObj = false;
-		sf::IntRect rect((int)globTile.x*tileSize.x, (int)globTile.y*tileSize.y,
+		sf::IntRect rect((int)(globTile.x*tileSize.x), (int)(globTile.y*tileSize.y),
 			(int)tileSize.x, (int)tileSize.y);
 		for(unsigned int i = 0; i < activatables.size() && !foundObj; i++) {
 			foundObj = activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect);
@@ -577,7 +577,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 
 			//Iterate through all the possible colliding objects and check if
 			// they are on this tile
-			sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y,tileSize.x, tileSize.y);
+			sf::IntRect rect(globTile.x*(int)tileSize.x, globTile.y*(int)tileSize.y,
+				(int)tileSize.x, (int)tileSize.y);
 			for(unsigned int i = 0; i < activatables.size(); i++) {
 				if(activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect)) {
 					//Check the distance to the rectangle

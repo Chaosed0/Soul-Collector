@@ -18,7 +18,7 @@ Game::Game()
 
 	hud.AddObject("assets/img/hud_heart.png");
 	hud.AddObject("assets/img/hud_lighter.png");
-	hud.AddObject("assets/img/hud_soul_beast010.png");
+	hud.AddObject("assets/img/hud_soul_beast000.png");
 	hud.AddObject("assets/img/hud_soul_beast000.png");
 }
 
@@ -89,12 +89,12 @@ void Game::Event()
 	// Why is "event" a keyword in Visual Studio? We may never know...
 	sf::Event anEvent;
 	while(window.pollEvent(anEvent)) {
-		//This one needs to go before the menu receives the input, so that 
+		//This event needs to go before the menu receives the input, so that 
 		// the window can still close if the menu's open
 		if(anEvent.type == sf::Event::Closed) {
 			Exit();
 		}
-		//If the menu system isn't visible, then it can't receive events
+		//Pass the menu events and don't pass the game events if the menu is visible
 		else if(menus.IsVisible()) {
 			menus.HandleEvent(anEvent);
 			//If the menu just turned invisible after handling an event, restart the
@@ -105,7 +105,6 @@ void Game::Event()
 			}
 		}
 		//Otherwise, the game is visible, and it should receive events
-		// Note: May change later!
 		else {
 			switch(anEvent.type) {
 			case sf::Event::KeyPressed :
