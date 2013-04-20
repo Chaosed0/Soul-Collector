@@ -128,6 +128,11 @@ public:
 	 */
 	int GetRemainingSouls();
 
+	/**
+	 * Resets the player, clearing all souls, keys etc. he has.
+	 */
+	void Reset();
+
 //Private attributes; visible only within this class
 private:
 	/** Flags set to true when the player should move in the corresponding direction */
@@ -173,6 +178,8 @@ private:
 	static const float humanityIncrease;
 	/** Amount of humanity the player loses by attacking. */
 	static const float humanityDecrease;
+	/** Amount of health the player gains by picking up a soul. */
+	static const int healthIncrease;
 	/** Number of souls the player needs to win. */
 	static const int maxSouls;
 };

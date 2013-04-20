@@ -39,9 +39,22 @@ public:
 
 	/**
 	 * Gets the current Level.
-	 * \return The current Level.
+	 * \param level The current level (return param).
+	 * \return True if there is a current level, false otherwise.
 	 */
 	Level& GetCurrentLevel();
+
+	/**
+	 * Gets the player.
+	 * \return The player.
+	 */
+	Player& GetPlayer();
+
+	/**
+	 * Checks if a level has been loaded.
+	 * \return True if a level has been loaded, false otherwise.
+	 */
+	bool HasLoadedLevel();
 
 	/**
 	 * Updates the current map.
@@ -50,6 +63,15 @@ public:
 	 * \param timePassed The amount of time past since the last time Update() was called.
 	 */
 	bool Update(const sf::Time& timePassed);
+
+	/**
+	 * Resets all maps.
+	 *
+	 * Equivalent to destroying the LevelManager and remaking it.
+	 * \param mapName The name of the map, on disk, to load.
+	 * \param spawnName The name of the spawn within the map to start the player at.
+	 */
+	void Reset();
 private:
 	/** List of levels */
 	std::map<std::string, Level*> levels;

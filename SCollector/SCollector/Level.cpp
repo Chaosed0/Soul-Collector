@@ -108,7 +108,18 @@ void Level::UnloadMap()
 	//Don't delete the collision tileset/layer, just set them to null
 	tsetCollision = NULL;
 	lyrCollision = NULL;
-	//Clear active stairs
+}
+
+Level::~Level()
+{
+	//Destroy all pointer vectors
+	for(unsigned int i = 0; i < activatables.size(); i++)
+		delete(activatables[i]);
+	activatables.clear();
+	for(unsigned int i = 0; i < enemies.size(); i++)
+		delete(enemies[i]);
+	//Delete the Tmx::Map
+	delete map;
 }
 
 void Level::InitTextures()

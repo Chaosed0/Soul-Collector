@@ -177,7 +177,7 @@
         <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\swoosh.ogg" />
       </Component>
       <Component Directory="sounddir" Guid="{0F9C4D95-2569-4F67-AB3F-C9A865883B8D}">
-        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\test.ogg" />
+        <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\init.ogg" />
       </Component>
       <Component Directory="sounddir" Guid="{E231C85B-2B21-463F-970B-4F3BE5B45620}">
         <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\sound\thwack.ogg" />

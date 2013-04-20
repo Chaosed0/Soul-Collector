@@ -56,12 +56,25 @@ public:
 	 */
 	template <class Class>
 	void connectExitFunc(void (Class::*function)(), Class* object);
+
+	/**
+	 * Sets the active menu to either the win or the lose menu.
+	 * \param win If true, sets the menu to the win menu; otherwise, sets the menu
+	 *		to the lose menu.
+	 */
+	void WinLose(bool win);
 private:
+	/**
+	 * Sets the active menu to a certain menu.
+	 *
+	 * \param window The menu to set the current menu to.
+	 */
 	void SetActiveMenu(sfg::Window::Ptr& window);
 
 	// --- Button callbacks ---
 	void gotoSettings();
 	void gotoHelp();
+	void gotoMain();
 	void playGame();
 
 	/** Flag set to true when the active menu is visible */
@@ -104,6 +117,18 @@ private:
 	sfg::Label::Ptr moveLabel;
 	sfg::Label::Ptr actLabel;
 
+	// --- Game over menu
+	sfg::Box::Ptr gameOverLayout;
+	sfg::Label::Ptr gameOverLabel;
+	sfg::Button::Ptr gameOverBackButton;
+	sfg::Button::Ptr gameOverExitButton;
+
+	// --- Win menu
+	sfg::Box::Ptr winLayout;
+	sfg::Label::Ptr winLabel;
+	sfg::Button::Ptr winBackButton;
+	sfg::Button::Ptr winExitButton;
+
 	sfg::SFGUI gui;
 	sfg::Desktop desktop;
 };
@@ -113,6 +138,8 @@ template <class Class>
 void MenuManager::connectExitFunc(void (Class::*function)(), Class* object)
 {
 	exitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(function, object);
+	gameOverExitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(function, object);
+	winExitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(function, object);
 }
 
 #endif

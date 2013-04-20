@@ -59,6 +59,19 @@ private:
 
 	/** HUD object */
 	HUD hud;
+
+	/** Fade out timer for win/loss. */
+	sf::Time fadeoutTimer;
+	/** Fade out rectangle covering the entire view */
+	sf::RectangleShape fadeoutRect;
+	/** Flag to pause the game while fading out */
+	bool paused;
+
+	/** How much time we should fade out for. */
+	const static sf::Time fadeoutTime;
+	/** The first level to load */
+	const static std::string firstLevel;
+	const static std::string firstSpawn;
 };
 
 #endif

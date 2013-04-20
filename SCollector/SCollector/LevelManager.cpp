@@ -48,6 +48,26 @@ bool LevelManager::Update(const sf::Time& timePassed)
 	}
 	return true;
 }
+void LevelManager::Reset()
+{
+	player.Reset();
+	for(std::map<std::string, Level*>::iterator p = levels.begin();
+			p != levels.end(); p++) {
+		delete p->second;
+	}
+	levels.clear();
+	curLevelName = "";
+}
+
+Player& LevelManager::GetPlayer()
+{
+	return player;
+}
+
+bool LevelManager::HasLoadedLevel()
+{
+	return (curLevelName.compare("") != 0);
+}
 
 Level& LevelManager::GetCurrentLevel()
 {

@@ -15,7 +15,8 @@ const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
 const float Player::humanityDecrease = 0.5f;
 const float Player::humanityIncrease = 20.0f;
-const int Player::maxSouls = 6;
+const int Player::healthIncrease = 50.0f;
+const int Player::maxSouls = 1;
 
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
@@ -46,6 +47,20 @@ Player::Player(const sf::Vector2f& pos)
 	ambientLight.Toggle();
 }
 
+void Player::Reset()
+{
+	//When the player starts, he isn't moving anywhere
+	moveLeft = moveRight = moveUp = moveDown = false;
+
+	isSprinting = false;
+
+	sprintTimer = maxSprintTime;
+	lighterTimer = maxLighterTime;
+	humanityTimer = maxHumanityTime;
+	health = maxHealth;
+	souls = 0;
+}
+
 void Player::AddLight(Level& level)
 {
 	level.AddLight(lighter);
@@ -66,6 +81,8 @@ void Player::Attack(Movable& movable)
 	if(movable.IsAlive()) {
 		Movable::Attack(movable);
 		soundManager.PlaySound("hit");
+		humanityTimer += std::max(sf::Time::Zero,
+			humanityTimer - sf::microseconds((sf::Int64)(maxHumanityTime.asMicroseconds()/humanityDecrease)));
 	}
 }
 
@@ -115,8 +132,9 @@ bool Player::HasKey(const std::string& doorName)
 void Player::AddSoul()
 {
 	souls++;
-	//Whenever the player gets a soul, his humanity should increase
+	//Whenever the player gets a soul, his stats should increase
 	humanityTimer += sf::microseconds((sf::Int64)(maxHumanityTime.asMicroseconds()/humanityIncrease));
+	health = std::min(maxHealth, health+healthIncrease);
 }
 int Player::GetRemainingSouls()
 {

@@ -1,11 +1,14 @@
 
 #include "Movable.h"
 
+const int Movable::maxHealth = 100;
+const int Movable::defaultAttackPower = 25;
+
 Movable::Movable(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox)
 	: Entity(imgLoc, collisionBox, animBox, true)
 {
-	attackPower = 25;
-	health = 100;
+	attackPower = defaultAttackPower;
+	health = maxHealth;
 }
 
 void Movable::Attack(Movable& movable)

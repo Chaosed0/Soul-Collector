@@ -42,6 +42,11 @@ protected:
 	int attackPower;
 	/** Health of the entity*/
 	int health;
+
+	/** Maximum health of the entity */
+	static const int maxHealth;
+	/** Default attack power of the entity */
+	static const int defaultAttackPower;
 private:
 };
 

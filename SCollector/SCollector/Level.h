@@ -51,6 +51,9 @@ public:
 	 */
 	Level(Player& player, const std::string& mapName, const std::string& spawnName = "any");
 
+	/** Destructor. */
+	~Level();
+
 	/**
 	 * Loads a map into the level object.
 	 * \param mapName The name of the map in BASEMAPDIR to parse.

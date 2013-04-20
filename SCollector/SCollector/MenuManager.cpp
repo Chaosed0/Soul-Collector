@@ -138,14 +138,50 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 		sfg::Table::FILL | sfg::Table::EXPAND,
 		sf::Vector2f(10.f,10.f));
 
+	// --- Game over menu ---
+	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
+
+	gameOverLabel = sfg::Label::Create("Game Over");
+	gameOverBackButton = sfg::Button::Create("Try again");
+	gameOverBackButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
+	gameOverExitButton = sfg::Button::Create("Quit");
+
+	gameOverLayout = sfg::Box::Create(sfg::Box::VERTICAL, 20.0f);
+	gameOverLayout->Pack(gameOverLabel, false, false);
+	gameOverLayout->Pack(gameOverBackButton, false, false);
+	gameOverLayout->Pack(gameOverExitButton, false, false);
+
+	menus[1]->Add(gameOverLayout);
+
+	// --- Win menu ---
+	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
+
+	winLabel = sfg::Label::Create("YOU WIN");
+	winBackButton = sfg::Button::Create("Main Menu");
+	winBackButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
+	winExitButton = sfg::Button::Create("Quit");
+
+	winLayout = sfg::Box::Create(sfg::Box::VERTICAL, 20.0f);
+	winLayout->Pack(winLabel, false, false);
+	winLayout->Pack(winBackButton, false, false);
+	winLayout->Pack(winExitButton, false, false);
+
+	menus[2]->Add(winLayout);
+
+	//Set menu default properties
 	for(unsigned int i = 0; i < menus.size(); i++)
 		menus[i]->SetRequisition(sf::Vector2f((float)winWidth, (float)winHeight));
 
-	for(unsigned int i = 0; i < menus.size(); i++)
+	for(unsigned int i = 0; i < menus.size(); i++) {
 		desktop.Add(menus[i]);
+		menus[i]->Show(false);
+	}
 
+	//Set the current menu to the main menu
+	menus[0]->Show(true);
 	curWindow = menus[0];
 
+	//The menu is visible by default
 	visible = true;
 }
 
@@ -166,8 +202,7 @@ void MenuManager::HandleEvent(sf::Event& anEvent)
 
 void MenuManager::Display(sf::RenderTarget& target)
 {
-	if(visible)
-	{
+	if(visible) {
 		desktop.Update(1.0f);
 		gui.Display(target);
 	}
@@ -210,7 +245,21 @@ void MenuManager::gotoHelp()
 	printf("Go to Help\n");
 }
 
+void MenuManager::gotoMain()
+{
+	SetActiveMenu(menus[0]);
+}
+
 void MenuManager::playGame()
 {
 	SetVisible(false);
+}
+
+void MenuManager::WinLose(bool win)
+{
+	if(win) {
+		SetActiveMenu(menus[2]);
+	} else {
+		SetActiveMenu(menus[1]);
+	}
 }
