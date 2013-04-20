@@ -141,7 +141,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	// --- Game over menu ---
 	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
 
-	gameOverLabel = sfg::Label::Create("Game Over");
+	gameOverLabel = sfg::Label::Create("GAME OVER");
 	gameOverBackButton = sfg::Button::Create("Try again");
 	gameOverBackButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
 	gameOverExitButton = sfg::Button::Create("Quit");

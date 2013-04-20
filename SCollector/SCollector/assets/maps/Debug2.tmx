@@ -51,7 +51,7 @@
     <property name="NextSpawn" value="FromDebug2_2"/>
    </properties>
   </object>
-  <object name="Init" type="Spawn" gid="52" x="352" y="416" width="32" height="32"/>
+  <object name="Init" type="Spawn" gid="52" x="544" y="128" width="32" height="32"/>
   <object name="Door1" type="Door" gid="57" x="352" y="128" width="32" height="32">
    <properties>
     <property name="Description" value="a yellow key"/>
