@@ -81,6 +81,9 @@
     <ClCompile Include="Soul.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SlowDemon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Level.h">
@@ -144,6 +147,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Soul.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SlowDemon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

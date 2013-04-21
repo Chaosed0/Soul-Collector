@@ -1,5 +1,5 @@
 /**
- * \brief An enemy that attacks the player.
+ * \brief An enemy that charges the player.
  * \author Ed Lu
  * \Date March 2 2013
  */

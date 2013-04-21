@@ -99,8 +99,7 @@ void Level::UnloadMap()
 	// they'll get deleted there instead
 	lights.clear();
 	//Remove all attack cones
-	playerAttacks.clear();
-	enemyAttacks.clear();
+	attackCones.clear();
 	//Clear the collision map
 	collisionMap.clear();
 	texTilesets.clear();
@@ -656,13 +655,9 @@ void Level::AddLight(LightSource& light)
 	lights.push_back(&light);
 }
 
-void Level::AddAttack(const AttackCone& attack, bool enemy)
+void Level::AddAttack(const AttackCone& attack)
 {
-	if(enemy) {
-		enemyAttacks.push_back(attack);
-	} else {
-		playerAttacks.push_back(attack);
-	}
+	attackCones.push_back(attack);
 }
 
 sf::Vector2i Level::GetSize() const
@@ -701,8 +696,8 @@ void Level::Update(const sf::Time& timePassed)
 	}
 
 	//Iterate through all the player's attacks
-	std::list<AttackCone>::iterator p = playerAttacks.begin();
-	while(p != playerAttacks.end()) {
+	std::list<AttackCone>::iterator p = attackCones.begin();
+	while(p != attackCones.end()) {
 		//Grab p's current value into a temporary value and then increment p
 		//We do this so that we delete the temp value, not p itself
 		std::list<AttackCone>::iterator temp = p++;
@@ -710,35 +705,19 @@ void Level::Update(const sf::Time& timePassed)
 		temp->Update(*this, timePassed);
 		if(temp->IsExpired()) {
 			//If it's now expired, destroy it
-			playerAttacks.erase(temp);
-		} else {
+			attackCones.erase(temp);
+		} else if(&temp->GetOwner() == &player) {
 			//Otherwise, check for collisions with enemies
 			for(unsigned int i = 0; i < enemies.size(); i++) {
-				if(!temp->IsMovableHit(player) && enemies[i]->IsColliding(*temp)) {
-					player.Attack(*enemies[i]);
-					temp->MovableHit(player);
+				if(!temp->IsMovableHit(*enemies[i]) && enemies[i]->IsColliding(*temp)) {
+					temp->GetOwner().Attack(*enemies[i]);
+					temp->MovableHit(*enemies[i]);
 				}
 			}
-		}
-	}
-
-	//Iterate through all the monsters' attacks
-	p = enemyAttacks.begin();
-	while(p != enemyAttacks.end()) {
-		//Grab p's current value into a temporary value and then increment p
-		//We do this so that we delete the temp value, not p itself
-		std::list<AttackCone>::iterator temp = p++;
-		//Update the attack box
-		temp->Update(*this, timePassed);
-		if(temp->IsExpired()) {
-			//If it's now expired, destroy it
-			enemyAttacks.erase(temp);
 		} else {
-			//Otherwise, check for collisions with enemies
-			for(unsigned int i = 0; i < enemies.size(); i++) {
-				if(player.IsColliding(*temp)) {
-					enemies[i]->Attack(player);
-				}
+			if(!temp->IsMovableHit(player) && player.IsColliding(*temp)) {
+				temp->GetOwner().Attack(player);
+				temp->MovableHit(player);
 			}
 		}
 	}
@@ -781,7 +760,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 		target.draw(*enemies[i], state);
 	}
 	//Uncomment to draw attack cones
-	for(std::list<AttackCone>::const_iterator p = playerAttacks.begin(); p != playerAttacks.end(); p++) {
+	for(std::list<AttackCone>::const_iterator p = attackCones.begin(); p != attackCones.end(); p++) {
 		sf::ConvexShape triangle = p->GetTriangle();
 		triangle.setPosition(player.GetPos());
 		target.draw(triangle, state);

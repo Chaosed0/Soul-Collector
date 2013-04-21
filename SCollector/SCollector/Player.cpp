@@ -73,7 +73,7 @@ AttackCone Player::GetAttackCone()
 
 	return AttackCone(attackConeLife, GetPos(), attackConeLength,
 		sprite.getRotation()*TO_RAD - attackConeSweep/2.0f,
-		sprite.getRotation()*TO_RAD + attackConeSweep/2.0f);
+		sprite.getRotation()*TO_RAD + attackConeSweep/2.0f, *this);
 }
 
 void Player::Attack(Movable& movable)

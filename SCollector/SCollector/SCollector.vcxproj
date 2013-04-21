@@ -28,6 +28,7 @@
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SlowDemon.cpp" />
     <ClCompile Include="Soul.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stairs.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SlowDemon.h" />
     <ClInclude Include="Soul.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stairs.h" />

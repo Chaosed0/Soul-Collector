@@ -5,7 +5,7 @@
 #include "MenuManager.h"
 
 const sf::Time Game::fadeoutTime = sf::seconds(3.0f);
-const std::string Game::firstLevel = "Debug2.tmx";
+const std::string Game::firstLevel = "Debug1.tmx";
 const std::string Game::firstSpawn = "Init";
 
 Game::Game()
@@ -152,7 +152,7 @@ void Game::Event()
 					break;
 				case sf::Keyboard::Space :
 					levelManager.GetCurrentLevel().AddAttack(
-						levelManager.GetCurrentLevel().GetPlayer().GetAttackCone(), false);
+						levelManager.GetCurrentLevel().GetPlayer().GetAttackCone());
 					break;
 				case sf::Keyboard::LShift :
 				case sf::Keyboard::RShift :

@@ -9,6 +9,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <set>
+
 #include "Utility.h"
 
 class Level;
@@ -23,7 +25,7 @@ public:
 	 * \param box The size of this attack box.
 	 */
 	AttackCone(const sf::Time& time, const sf::Vector2f& origin,
-		float length, float angleBegin, float angleEnd);
+		float length, float angleBegin, float angleEnd, Movable& owner);
 
 	/**
 	 * Update function, to be called once every loop.
@@ -56,6 +58,12 @@ public:
 	bool IsMovableHit(const Movable& movable) const;
 
 	/**
+	 * Gets the Movable that created the cone.
+	 * \return A const reference to the owner.
+	 */
+	Movable& GetOwner() const;
+
+	/**
 	 * Gets a triangle approximating the cone.
 	 *
 	 * For debug purposes only, so we just stick the definition in the header.
@@ -77,6 +85,9 @@ public:
 		return triangle;
 	}
 private:
+	/** Owner of the attack cone (needed so it doesn't get hit) */
+	Movable& owner;
+
 	/** Point of the cone */
 	sf::Vector2f origin;
 	/** Length of the cone */
@@ -94,7 +105,7 @@ private:
 	bool isExpired;
 
 	/** Vector of entities already hit by the attack (so they can't be hit multiple times) */
-	std::vector<const Movable*> movablesHit;
+	std::set<const Movable*> movablesHit;
 };
 
 #endif

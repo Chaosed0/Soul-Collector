@@ -4,7 +4,8 @@
 #include "Movable.h"
 
 AttackCone::AttackCone(const sf::Time& time, const sf::Vector2f& origin,
-					 float length, float angleBegin, float angleEnd)
+					 float length, float angleBegin, float angleEnd, Movable& owner)
+					 : owner(owner)
 {
 	this->origin = origin;
 	this->length = length;
@@ -52,20 +53,19 @@ bool AttackCone::Contains(const sf::Vector2f point) const
 
 void AttackCone::MovableHit(const Movable& movable)
 {
-	movablesHit.push_back(&movable);
+	movablesHit.insert(&movable);
 }
 
 bool AttackCone::IsMovableHit(const Movable& movable) const
 {
-	for(unsigned int i = 0; i < movablesHit.size(); i++) {
-		if(movablesHit[i] == &movable) {
-			return true;
-		}
-	}
-	return false;
+	return movablesHit.find(&movable) != movablesHit.end();
 }
 
 bool AttackCone::IsExpired() const
 {
 	return isExpired;
+}
+Movable& AttackCone::GetOwner() const
+{
+	return owner;
 }

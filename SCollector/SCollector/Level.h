@@ -159,7 +159,7 @@ public:
 	 * \param enemy Flag set to true if this is an attack made by an enemy;
 	 *  otherwise, it is assumed to be the player's attack.
 	 */
-	void AddAttack(const AttackCone& attack, bool enemy);
+	void AddAttack(const AttackCone& attack);
 
 	/**
 	 * Checks whether we are transitioning levels because the player activated
@@ -314,9 +314,7 @@ private:
 	/** List(s) of entities in the level */
 	std::vector<Activatable*> activatables;
 	std::vector<Movable*> enemies;
-	/** This one's a list because things will be added and removed often and unpredictably */
-	std::list<AttackCone> playerAttacks;
-	std::list<AttackCone> enemyAttacks;
+	std::list<AttackCone> attackCones;
 
 	/** A list of lights in the level */
 	std::vector<LightSource*> lights;
