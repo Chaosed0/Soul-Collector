@@ -18,14 +18,13 @@ public:
 	SlowDemon(sf::Vector2f pos);
 
 	virtual void Update(Level& level, const sf::Time& timePassed);
-
-	/**
-	 * Simply checks if the demon is currently charging (otherwise it can't
-	 *  deal damage) and calls Movable::Attack if so
-	 * \param movable The movable the demon is attacking.
-	 */
-	void Attack(Movable& movable);
 private:
+	/**
+	 * Gets the attack cone this monster produces.
+	 * \return The attack cone.
+	 */
+	AttackCone GetAttackCone();
+
 	enum {
 		IDLE,
 		MOVING,
@@ -42,7 +41,11 @@ private:
 	/** How much time the monster needs to attack */
 	static const sf::Time attackTime;
 	/** Speed, in pixels per second */
-	static const float moveSpeed;
+	static const float defaultMoveSpeed;
+	/** Radius of the monster's attack cone */
+	static const float attackRadius;
+	/** Sweep of the monster's attack cone */
+	static const float attackSweep;
 };
 
 #endif

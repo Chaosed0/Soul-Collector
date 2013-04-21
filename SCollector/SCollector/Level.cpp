@@ -17,6 +17,7 @@
 #include "LightSource.h"
 #include "HUD.h"
 #include "Soul.h"
+#include "SlowDemon.h"
 
 Level::Level(Player& player)
 	: player(player)
@@ -282,6 +283,9 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 			} else if(type.compare("Demon") == 0) {
 				enemies.push_back(new Demon(objectPos));
 				enemies.back()->SetRot(object->GetRot());
+			} else if(type.compare("SlowDemon") == 0) {
+				enemies.push_back(new SlowDemon(objectPos));
+				enemies.back()->SetRot(object->GetRot());
 			} else if(type.compare("Stairs") == 0) {
 				std::string nextLevel = object->GetProperties().GetLiteralProperty("NextLevel");
 				std::string nextSpawn = object->GetProperties().GetLiteralProperty("NextSpawn");
@@ -354,6 +358,9 @@ bool Level::GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel)
 
 bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {
+	bool extendX = false, extendY = false;
+
+
 	bool foundObj = false;
 	angle = shiftAngle(angle);
 	//printf("%g\n", angle);
@@ -404,7 +411,11 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 					foundX = GetColliding(locTile, pixel);
 				}
 				for(unsigned int i = 0; i < activatables.size(); i++) {
+					bool oldFoundX = foundX;
 					foundX = foundX || activatables[i]->IsCollidable() && activatables[i]->Contains(nearestX);
+					//HACK: Doors are kind of hard to see, we're just going to extend the ray a bit
+					if(!oldFoundX && foundX)
+						extendX = true;
 				}
 
 				if(!foundX) {
@@ -477,7 +488,10 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 					foundY = GetColliding(locTile, pixel);
 				}
 				for(unsigned int i = 0; i < activatables.size(); i++) {
+					bool oldFoundY = foundY;
 					foundY = foundY || activatables[i]->IsCollidable() && activatables[i]->Contains(nearestY);
+					if(!oldFoundY && foundY)
+						extendY = true;
 				}
 
 				if(!foundY) {
@@ -510,6 +524,19 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 		}
 	}
 
+	if(extendX) {
+		sf::Vector2f relDist = nearestX-pos;
+		float mag = magnitude(relDist);
+		relDist = relDist * (mag+8.0f)/mag;
+		nearestX = pos+relDist;
+	}
+	if(extendY) {
+		sf::Vector2f relDist = nearestY-pos;
+		float mag = magnitude(relDist);
+		relDist = relDist * (mag+8.0f)/mag;
+		nearestY = pos+relDist;
+	}
+
 	float dist = std::min(distX, distY);
 
 	if(distX < distY) {
@@ -517,7 +544,6 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	} else {
 		nearest = nearestY;
 	}
-
 	//printf("%g, %g, returned %g\n", distX, distY, dist);
 	return foundX || foundY;
 }
@@ -689,10 +715,10 @@ void Level::Update(const sf::Time& timePassed)
 
 	for(unsigned int i = 0; i < enemies.size(); i++) {
 		enemies[i]->Update(*this, timePassed);
-		if(player.IsColliding(*enemies[i]) || enemies[i]->IsColliding(player)) {
+		/*if(player.IsColliding(*enemies[i])) {
 			enemies[i]->Attack(player);
 			//printf("Player colliding with enemy %d\n", i);
-		}
+		}*/
 	}
 
 	//Iterate through all the player's attacks
@@ -762,7 +788,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	//Uncomment to draw attack cones
 	for(std::list<AttackCone>::const_iterator p = attackCones.begin(); p != attackCones.end(); p++) {
 		sf::ConvexShape triangle = p->GetTriangle();
-		triangle.setPosition(player.GetPos());
+		triangle.setPosition(p->GetOwner().GetPos());
 		target.draw(triangle, state);
 	}
 
