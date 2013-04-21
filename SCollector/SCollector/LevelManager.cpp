@@ -19,11 +19,18 @@ bool LevelManager::LoadMap(const std::string& mapName, const std::string& spawnN
 	bool loadMapResult = true;
 	std::pair<std::map<std::string, Level*>::iterator, bool> insertPair;
 	insertPair = levels.insert(std::pair<std::string, Level*>(mapName, (Level*)NULL));
-	//If we did actually insert a level, we need to initialize it
 	if(insertPair.second) {
-		insertPair.first->second = new Level(player, mapName, spawnName);
-	//If the level was found, simply change the player's location
+		//If we did actually insert a level, we need to initialize it
+		insertPair.first->second = new Level(player);
+		if(insertPair.first->second->LoadMap(mapName, spawnName) == false) {
+			//If initialization fails, undo everything we just did and return false
+			delete insertPair.first->second;
+			levels.erase(insertPair.first);
+			fprintf(stderr, "WARNING: Could not load map %s\n", mapName.c_str());
+			return false;
+		}
 	} else {
+		//If the level was found, simply change the player's location
 		insertPair.first->second->SpawnPlayer(spawnName);
 	}
 	//Now, set the current level to the one we just loaded
