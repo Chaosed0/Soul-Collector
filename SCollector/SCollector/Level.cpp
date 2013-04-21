@@ -354,6 +354,9 @@ bool Level::GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel)
 
 bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {
+	bool extendX = false, extendY = false;
+
+
 	bool foundObj = false;
 	angle = shiftAngle(angle);
 	//printf("%g\n", angle);
@@ -404,7 +407,11 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 					foundX = GetColliding(locTile, pixel);
 				}
 				for(unsigned int i = 0; i < activatables.size(); i++) {
+					bool oldFoundX = foundX;
 					foundX = foundX || activatables[i]->IsCollidable() && activatables[i]->Contains(nearestX);
+					//HACK: Doors are kind of hard to see, we're just going to extend the ray a bit
+					if(!oldFoundX && foundX)
+						extendX = true;
 				}
 
 				if(!foundX) {
@@ -477,7 +484,10 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 					foundY = GetColliding(locTile, pixel);
 				}
 				for(unsigned int i = 0; i < activatables.size(); i++) {
+					bool oldFoundY = foundY;
 					foundY = foundY || activatables[i]->IsCollidable() && activatables[i]->Contains(nearestY);
+					if(!oldFoundY && foundY)
+						extendY = true;
 				}
 
 				if(!foundY) {
@@ -510,6 +520,19 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 		}
 	}
 
+	if(extendX) {
+		sf::Vector2f relDist = nearestX-pos;
+		float mag = magnitude(relDist);
+		relDist = relDist * (mag+8.0f)/mag;
+		nearestX = pos+relDist;
+	}
+	if(extendY) {
+		sf::Vector2f relDist = nearestY-pos;
+		float mag = magnitude(relDist);
+		relDist = relDist * (mag+8.0f)/mag;
+		nearestY = pos+relDist;
+	}
+
 	float dist = std::min(distX, distY);
 
 	if(distX < distY) {
@@ -517,7 +540,6 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	} else {
 		nearest = nearestY;
 	}
-
 	//printf("%g, %g, returned %g\n", distX, distY, dist);
 	return foundX || foundY;
 }
