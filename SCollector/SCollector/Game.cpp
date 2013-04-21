@@ -6,6 +6,7 @@
 
 const sf::Time Game::fadeoutTime = sf::seconds(3.0f);
 const sf::Time Game::introTime = sf::seconds(3.0f);
+const sf::Time Game::shakeTime = sf::seconds(9.0f);
 const std::string Game::firstLevel = "Debug1.tmx";
 const std::string Game::firstSpawn = "Init";
 
@@ -20,6 +21,7 @@ Game::Game()
 	//Flag set to false when the game ends
 	isRunning = false;
 	paused = true;
+	shakeDone = false;
 
 	window.setView(view);
 
@@ -30,10 +32,16 @@ Game::Game()
 	
 	soundManager.AddSound("assets/sound/init.ogg", "init", false);
 	soundManager.AddSound("assets/sound/intro.ogg", "intro", false);
+	soundManager.AddSound("assets/sound/instruct.ogg", "instruct", false);
+	soundManager.AddSound("assets/sound/Land.ogg", "land", false);
+	soundManager.AddSound("assets/sound/Shake.ogg", "shake", true);
+	soundManager.AddSound("assets/sound/Win.ogg", "win", false);
+	soundManager.AddSound("assets/sound/Lose.ogg", "lose", false);
 
 	fadeoutRect.setFillColor(sf::Color(0,0,0,0));
 	fadeoutRect.setPosition(0,0);
 	fadeoutTimer = sf::Time::Zero;
+	shakeTimer = sf::Time::Zero;
 }
 
 int Game::Run()
@@ -138,6 +146,9 @@ void Game::Event()
 		//If no level was loaded before and we are now in the game, load a level
 		if(!paused && !levelManager.HasLoadedLevel()) {
 			levelManager.LoadMap(firstLevel, firstSpawn);
+			soundManager.PlaySound("shake");
+			soundManager.PlaySound("land");
+			soundManager.PlaySound("instruct");
 		}
 
 		//If the game is not paused, allow it to receive events
@@ -224,6 +235,7 @@ void Game::Update()
 	//printf("Update length: %lld milliseconds\n", updateTimer.getElapsedTime());
 	sf::Time updateTime = updateTimer.getElapsedTime();
 	updateTimer.restart();
+	shakeTimer += updateTime;
 
 	//Check win/lose conditions
 	if(levelManager.HasLoadedLevel()) {
@@ -240,7 +252,13 @@ void Game::Update()
 					255*fadeoutTimer.asMicroseconds()/fadeoutTime.asMicroseconds()));
 			}
 			if(fadeoutTimer >= fadeoutTime) {
+				if(win) {
+					soundManager.PlaySound("win");
+				} else {
+					soundManager.PlaySound("lose");
+				}
 				fadeoutTimer = sf::Time::Zero;
+				shakeTimer = sf::Time::Zero;
 				levelManager.Reset();
 				menus.WinLose(win);
 				menus.SetVisible(true);
@@ -281,6 +299,18 @@ void Game::Update()
 			view.setCenter(sf::Vector2f(viewPos.x, viewSize.y/2));
 		else if(playerPos.y + viewSize.y/2 > levelSize.x)
 			view.setCenter(sf::Vector2f(viewPos.x, levelSize.y - viewSize.y/2));
+
+		if(!shakeDone) {
+			float shakeProp = 1 - (float)shakeTimer.asMicroseconds()/(float)shakeTime.asMicroseconds();
+			view.setCenter(sf::Vector2f(view.getCenter().x + getRandom()*8*shakeProp,
+				view.getCenter().y + getRandom()*8*shakeProp));
+			soundManager.SetSoundVolume("shake", 1+99*shakeProp);
+			//printf("%g, %g\n", shakeTimer.asSeconds(), shakeTime.asSeconds());
+			if(shakeProp <= 0.0f) {
+				soundManager.StopSound("shake");
+				shakeDone = true;
+			}
+		}
 
 		window.setView(view);
 	}

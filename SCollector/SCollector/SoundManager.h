@@ -44,6 +44,13 @@ public:
 	bool StopSound(const std::string& soundName);
 
 	/**
+	 * Sets a sound's volume.
+	 * \param soundName The name of the sound.
+	 * \param volume Volume of the sound, out of 100.
+	 */
+	void SetSoundVolume(const std::string& soundName, float volume);
+
+	/**
 	 * Stops playing the last sound played.
 	 */
 	void StopLastSound();

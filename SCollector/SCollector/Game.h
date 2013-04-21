@@ -69,10 +69,17 @@ private:
 	/** Flag to pause the game while fading out */
 	bool paused;
 
+	/** Timer for the first play trigger */
+	sf::Time shakeTimer;
+	/** Flag for the shake timer */
+	bool shakeDone;
+
 	/** How much time we should fade out for. */
 	const static sf::Time fadeoutTime;
 	/** How much time the intro should be displayed. */
 	const static sf::Time introTime;
+	/** How much time to shake the screen initially. */
+	const static sf::Time shakeTime;
 	/** The first level to load */
 	const static std::string firstLevel;
 	const static std::string firstSpawn;

@@ -44,11 +44,22 @@ bool SoundManager::PlaySound(const std::string& soundName)
 
 bool SoundManager::StopSound(const std::string& soundName)
 {
-	if(soundNames.find(soundName) != soundNames.end()) {
-		sounds[soundNames[soundName]].stop();
+	std::map<std::string, int>::iterator soundNameIter = soundNames.find(soundName);
+	if(soundNameIter != soundNames.end()) {
+		sounds[soundNameIter->second].stop();
+		lastSoundPlayed = soundNameIter->second;
 		return true;
 	}
 	return false;
+}
+
+void SoundManager::SetSoundVolume(const std::string& soundName, float volume)
+{
+	std::map<std::string, int>::iterator soundNameIter = soundNames.find(soundName);
+	if(soundNameIter != soundNames.end()) {
+		sounds[soundNameIter->second].setVolume(volume);
+		lastSoundPlayed = soundNameIter->second;
+	}
 }
 
 void SoundManager::StopLastSound()
