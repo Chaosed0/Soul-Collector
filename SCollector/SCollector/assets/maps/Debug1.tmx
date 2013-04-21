@@ -109,18 +109,5 @@
    </properties>
   </object>
   <object type="Torch" gid="55" x="576" y="128" width="32" height="32"/>
-<<<<<<< HEAD
-=======
-  <object type="Potion" gid="59" x="608" y="544" width="32" height="32">
-   <properties>
-    <property name="Recovery" value="50"/>
-   </properties>
-  </object>
-  <object type="Fuel" gid="60" x="512" y="864" width="32" height="32">
-   <properties>
-    <property name="Recovery" value="50"/>
-   </properties>
-  </object>
->>>>>>> 57dbe97237986f32dce2391c685cd3a20931409a
  </objectgroup>
 </map>

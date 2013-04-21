@@ -101,5 +101,10 @@
   <object type="Demon" gid="1073741878" x="32" y="288" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="192" y="320" width="32" height="32" rotation="-90"/>
   <object type="Torch" gid="55" x="96" y="512" width="32" height="32"/>
+  <object type="Fuel" gid="60" x="160" y="192" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="40"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
