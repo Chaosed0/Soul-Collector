@@ -21,7 +21,7 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1tEKgDAIBVDd/3909DAIiYtjXn25A+lh1nEWa8vM1lAwxvtcB3Nya90YHe4Ot77vKlOTXLly+W7cb5guc4/JuDvPQS7TtZB70/PMmSD6Jz1nnDeyLqoH3fNd81/vmS663rjZd9yxXlSb3HqXMabdqv/MqTsRD6X2Aaw=
+   eJztld0OgCAIhcFX6v3frXXh1kiPGH8XdTZWE9yHRNiIqBXZTMi30rWXge+r3CbWVjlpudIQl8XaW243pnlfHcJv5WpzuuflcV4Nt78zPeuSwR35s7he/azlZsoyQz24yF/B7ZLzJpKLZkwGt8cxiI3kkoi11FzTz5K/U/OIf0XLRfmgPaO5ncVFTwtX+40zzoty+7n+3AhVc73umV1uhZ0kKAIv
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
@@ -72,11 +72,34 @@
     <property name="NextSpawn" value="FromDebug3_2"/>
    </properties>
   </object>
-  <object gid="52" x="800" y="96"/>
+  <object name="FromDebug4_1" type="Stairs" gid="52" x="800" y="96" width="32" height="32"/>
   <object type="Potion" gid="59" x="832" y="640" width="32" height="32">
    <properties>
     <property name="Recovery" value="40"/>
    </properties>
   </object>
+  <object name="Door5" type="Door" gid="57" x="224" y="480" width="32" height="32" rotation="270.944">
+   <properties>
+    <property name="Description" value="a green key"/>
+   </properties>
+  </object>
+  <object gid="58" x="64" y="480" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="109" y="536" width="32" height="32" rotation="-308.811"/>
+  <object type="Demon" gid="54" x="183" y="561" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="109" y="459" width="32" height="32" rotation="-261.38"/>
+  <object type="Potion" gid="59" x="64" y="544" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="50"/>
+   </properties>
+  </object>
+  <object name="whitekey" type="Key" gid="53" x="32" y="512" width="32" height="32">
+   <properties>
+    <property name="Description" value="a white key"/>
+    <property name="Door" value="Door5"/>
+   </properties>
+  </object>
+  <object type="Demon" gid="1073741878" x="32" y="288" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="192" y="320" width="32" height="32" rotation="-90"/>
+  <object type="Torch" gid="55" x="96" y="512" width="32" height="32"/>
  </objectgroup>
 </map>
