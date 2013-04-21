@@ -129,6 +129,12 @@ public:
 	int GetRemainingSouls();
 
 	/**
+	 * Adds to the player's health.
+	 * \param recovery The amount to add.
+	 */
+	void AddHealth(int recovery);
+
+	/**
 	 * Resets the player, clearing all souls, keys etc. he has.
 	 */
 	void Reset();

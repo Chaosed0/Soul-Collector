@@ -149,6 +149,11 @@ void Player::UpdateHud(HUD& hud)
 	hud.changeFill((int)(100*humanityTimer.asMicroseconds()/maxHumanityTime.asMicroseconds()), HUD::humanity);
 }
 
+void Player::AddHealth(int recovery)
+{
+	health = std::max(maxHealth, health+recovery);
+}
+
 void Player::Update(Level& level, const sf::Time& timePassed)
 {
 	timer += timePassed;
