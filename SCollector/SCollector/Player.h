@@ -135,6 +135,12 @@ public:
 
 //Private attributes; visible only within this class
 private:
+
+	enum {
+		CANMOVE,
+		ATTACKING
+	} state;
+
 	/** Flags set to true when the player should move in the corresponding direction */
 	bool moveLeft, moveRight, moveUp, moveDown;
 
@@ -157,6 +163,9 @@ private:
 
 	/** Names of doors the player can open. */
 	std::set<std::string> doorNameSet;
+
+	/** Timer for states */
+	sf::Time timer;
 
 	/** Time-to-live for any attack the player initiates. */
 	static const sf::Time attackConeLife;

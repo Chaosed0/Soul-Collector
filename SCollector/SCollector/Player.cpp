@@ -5,11 +5,11 @@
 #include "AttackCone.h"
 #include "HUD.h"
 
-const sf::Time Player::attackConeLife = sf::seconds(1.0f);
+const sf::Time Player::attackConeLife = sf::seconds(0.2f);
 const sf::Time Player::maxSprintTime = sf::seconds(3.0f);
 const sf::Time Player::maxLighterTime = sf::seconds(150.0f);
 const sf::Time Player::maxHumanityTime = sf::seconds(300.0f);
-const float Player::attackConeLength = 100.0f;
+const float Player::attackConeLength = 80.0f;
 const float Player::attackConeSweep = 2*PI/8;
 const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
@@ -26,6 +26,8 @@ Player::Player(const sf::Vector2f& pos)
 	//When the player starts, he isn't moving anywhere
 	moveLeft = moveRight = moveUp = moveDown = false;
 	SetPos(pos);
+
+	state = CANMOVE;
 
 	isSprinting = false;
 
@@ -70,6 +72,9 @@ void Player::AddLight(Level& level)
 AttackCone Player::GetAttackCone()
 {
 	soundManager.PlaySound("swing");
+
+	state = ATTACKING;
+	timer = sf::Time::Zero;
 
 	return AttackCone(attackConeLife, GetPos(), attackConeLength,
 		sprite.getRotation()*TO_RAD - attackConeSweep/2.0f,
@@ -151,8 +156,9 @@ void Player::UpdateHud(HUD& hud)
 
 void Player::Update(Level& level, const sf::Time& timePassed)
 {
+	timer += timePassed;
 	bool moving = moveLeft || moveRight || moveUp || moveDown;
-	if(moving) {
+	if(state == CANMOVE && moving) {
 		PlayAnim("walk", timePassed);
 
 		//Get the sides of the player's collision rectangle
@@ -238,7 +244,14 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 		else if(moveDown && !moveUp) sprite.setRotation(90);
 		else if(moveLeft && !moveRight) sprite.setRotation(180);
 		else if(moveUp && !moveDown) sprite.setRotation(270);
+	} else if(state == ATTACKING) {
+		//TODO: Make this the attack animation instead
+		PlayAnim("idle", timePassed);
+		if(timer >= attackConeLife) {
+			state = CANMOVE;
+		}
 	} else {
+		//Something's probably wrong
 		PlayAnim("idle", timePassed);
 	}
 
