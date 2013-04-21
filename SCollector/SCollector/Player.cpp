@@ -16,7 +16,7 @@ const float Player::sprintSpeed = 210.0f;
 const float Player::humanityDecrease = 0.5f;
 const float Player::humanityIncrease = 20.0f;
 const int Player::healthIncrease = 50.0f;
-const int Player::maxSouls = 1;
+const int Player::maxSouls = 2;
 
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))

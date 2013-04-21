@@ -34,7 +34,7 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Background" width="30" height="30" visible="0">
+ <layer name="Background" width="30" height="30">
   <data encoding="base64" compression="zlib">
    eJztwwEJAAAMBKGD7995QabgqqmqqvruAU/eCo0=
   </data>
