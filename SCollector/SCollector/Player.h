@@ -70,7 +70,7 @@ public:
 	 * Gets the player's AttackCone.
 	 * \return An AttackCone representing the area the player would hit.
 	 */
-	AttackCone Player::GetAttackCone();
+	void Player::StartAttack();
 
 	/**
 	 * Makes the player hit another Movable with his attack.
@@ -135,6 +135,13 @@ public:
 
 //Private attributes; visible only within this class
 private:
+
+	enum {
+		CANMOVE,
+		STARTATTACK,
+		ATTACKING
+	} state;
+
 	/** Flags set to true when the player should move in the corresponding direction */
 	bool moveLeft, moveRight, moveUp, moveDown;
 
@@ -157,6 +164,9 @@ private:
 
 	/** Names of doors the player can open. */
 	std::set<std::string> doorNameSet;
+
+	/** Timer for states */
+	sf::Time timer;
 
 	/** Time-to-live for any attack the player initiates. */
 	static const sf::Time attackConeLife;
