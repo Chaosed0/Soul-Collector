@@ -96,12 +96,12 @@
   </object>
   <object name="FromDebug2_4" type="Spawn" gid="52" x="800" y="96" width="32" height="32"/>
   <object name="FromDebug2_3" type="Spawn" gid="52" x="864" y="128" width="32" height="32"/>
-  <object name="Door3" type="Door" gid="57" x="704" y="128" width="32" height="32">
+  <object name="Door3" type="Door" gid="57" x="704" y="128" width="32" height="32" rotation="-90">
    <properties>
-    <property name="Description" value="a blue key"/>
+    <property name="Description" value="a red key"/>
    </properties>
   </object>
-  <object gid="54" x="608" y="64" width="32" height="32"/>
+  <object gid="1073741878" x="608" y="64" width="32" height="32"/>
   <object name="bluekey" type="Key" gid="53" x="416" y="64" width="32" height="32">
    <properties>
     <property name="Description" value="a blue key"/>
@@ -109,10 +109,5 @@
    </properties>
   </object>
   <object type="Torch" gid="55" x="576" y="128" width="32" height="32"/>
-  <object type="Potion" gid="59" x="608" y="544" width="32" height="32">
-   <properties>
-    <property name="Recovery" value="50"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>

@@ -151,7 +151,7 @@ void Player::UpdateHud(HUD& hud)
 
 void Player::AddHealth(int recovery)
 {
-	health = std::max(maxHealth, health+recovery);
+	health = std::min(maxHealth, health+recovery);
 }
 
 void Player::Update(Level& level, const sf::Time& timePassed)
