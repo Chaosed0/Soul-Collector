@@ -69,16 +69,11 @@ void Player::AddLight(Level& level)
 	level.AddLight(ambientLight);
 }
 
-AttackCone Player::GetAttackCone()
+void Player::StartAttack()
 {
-	soundManager.PlaySound("swing");
-
-	state = ATTACKING;
-	timer = sf::Time::Zero;
-
-	return AttackCone(attackConeLife, GetPos(), attackConeLength,
-		sprite.getRotation()*TO_RAD - attackConeSweep/2.0f,
-		sprite.getRotation()*TO_RAD + attackConeSweep/2.0f, *this);
+	if(state != ATTACKING && state != STARTATTACK) {
+		state = STARTATTACK;
+	}
 }
 
 void Player::Attack(Movable& movable)
@@ -250,6 +245,17 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 		if(timer >= attackConeLife) {
 			state = CANMOVE;
 		}
+	} else if(state == STARTATTACK) {
+		soundManager.PlaySound("swing");
+
+		state = ATTACKING;
+		timer = sf::Time::Zero;
+
+		level.AddAttack(AttackCone(attackConeLife, GetPos(), attackConeLength,
+			sprite.getRotation()*TO_RAD - attackConeSweep/2.0f,
+			sprite.getRotation()*TO_RAD + attackConeSweep/2.0f, *this));
+
+		state = ATTACKING;
 	} else {
 		//Something's probably wrong
 		PlayAnim("idle", timePassed);

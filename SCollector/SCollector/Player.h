@@ -70,7 +70,7 @@ public:
 	 * Gets the player's AttackCone.
 	 * \return An AttackCone representing the area the player would hit.
 	 */
-	AttackCone Player::GetAttackCone();
+	void Player::StartAttack();
 
 	/**
 	 * Makes the player hit another Movable with his attack.
@@ -138,6 +138,7 @@ private:
 
 	enum {
 		CANMOVE,
+		STARTATTACK,
 		ATTACKING
 	} state;
 
