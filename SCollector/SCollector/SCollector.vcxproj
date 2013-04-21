@@ -14,6 +14,7 @@
     <ClCompile Include="Activatable.cpp" />
     <ClCompile Include="AnimManager.cpp" />
     <ClCompile Include="AttackCone.cpp" />
+    <ClCompile Include="FuelCanister.cpp" />
     <ClCompile Include="HealthPot.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="Demon.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="FuelCanister.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HealthPot.h" />
     <ClInclude Include="HUD.h" />
