@@ -109,6 +109,9 @@ void Demon::Update(Level& level, const sf::Time& timePassed)
 		state = IDLE;
 		//printf("Demon is no longer alerted\n");
 		timer = sf::Time::Zero;
+	} else if(state == ALERT) {
+		//If the demon is simply alert, turn it to face the player
+		moveAngle = atan2f(relDist.y, relDist.x);
 	}
 	
 	if(state == MOVING || state == IDLE) {

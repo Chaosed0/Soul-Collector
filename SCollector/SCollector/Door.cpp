@@ -15,6 +15,9 @@ Door::Door(const sf::Vector2f& pos, const std::string& doorName, const std::stri
 	isCollidable = true;
 	animManager.AddAnimSet("open", 1, 1, true);
 	animManager.AddAnimSet("broken", 2, 2, true);
+
+	soundManager.AddSound("assets/sound/DoorOpen.ogg", "open", false);
+	soundManager.AddSound("assets/sound/DoorLocked.ogg", "locked", false);
 	SetPos(pos);
 }
 
@@ -34,10 +37,12 @@ void Door::Update(Level& level, const sf::Time& timePassed)
 	if(IsActive() && !IsFinished()) {
 		if(level.GetPlayer().HasKey(doorName)) {
 			level.SetHUDText("Used " + description + ".");
+			soundManager.PlaySound("open");
 			isOpened = true;
 			Finish();
 		} else {
 			level.SetHUDText("Locked; need " + description + ".");
+			soundManager.PlaySound("locked");
 			isActive = false;
 		}
 		isCollidable = !isOpened && !isBroken;

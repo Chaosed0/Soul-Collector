@@ -104,10 +104,10 @@
       <Component Directory="imgdir" Guid="{72F449E3-C3A4-4F9B-ADA2-151FCF28F94B}">
         <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\Key.png" />
       </Component>
-      <Component Directory="imgdir" Guid="{72F449E3-C3A4-4F9B-ADA2-151FCF28F94B}">
+      <Component Directory="imgdir" Guid="{72F449E4-C3A4-4F9B-ADA2-151FCF28F94B}">
         <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\HealthPot.png" />
       </Component>
-      <Component Directory="imgdir" Guid="{72F449E3-C3A4-4F9B-ADA2-151FCF28F94B}">
+      <Component Directory="imgdir" Guid="{72F449E5-C3A4-4F9B-ADA2-151FCF28F94B}">
         <File KeyPath="yes" Source="$(var.SCollector.ProjectDir)assets\img\FuelCanister.png" />
       </Component>
       <Component Directory="imgdir" Guid="{C174F8FC-6AAB-4C84-B701-D488E2A018EE}">

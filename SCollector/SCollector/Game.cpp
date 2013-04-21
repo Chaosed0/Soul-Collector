@@ -5,6 +5,7 @@
 #include "MenuManager.h"
 
 const sf::Time Game::fadeoutTime = sf::seconds(3.0f);
+const sf::Time Game::introTime = sf::seconds(3.0f);
 const std::string Game::firstLevel = "Debug1.tmx";
 const std::string Game::firstSpawn = "Init";
 
@@ -28,6 +29,7 @@ Game::Game()
 	hud.AddObject("assets/img/hud_soul_beast000.png");
 	
 	soundManager.AddSound("assets/sound/init.ogg", "init", false);
+	soundManager.AddSound("assets/sound/intro.ogg", "intro", false);
 
 	fadeoutRect.setFillColor(sf::Color(0,0,0,0));
 	fadeoutRect.setPosition(0,0);
@@ -38,9 +40,28 @@ int Game::Run()
 {
 	isRunning = true;
 	Init();
+	Intro();
 	Loop();
 
 	return 0;
+}
+
+void Game::Intro()
+{
+	/** Logo for the intro. */
+	sf::Sprite introLogo;
+	/** Texture for the logo. */
+	sf::Texture introLogoTexture;
+	/** Timer for the intro. */
+	sf::Clock introTimer;
+
+	introLogoTexture.loadFromFile("assets/img/logo.png");
+	introLogo.setTexture(introLogoTexture);
+	window.draw(introLogo);
+	window.display();
+	soundManager.PlaySound("intro");
+	while(introTimer.getElapsedTime() <= introTime) { }
+	window.clear();
 }
 
 void Game::Init()
@@ -52,8 +73,6 @@ void Game::Init()
 
 	//Connect the exit button of the menus to the exit function here
 	menus.connectExitFunc(&Game::Exit, this);
-
-	soundManager.PlaySound("init");
 }
 
 void Game::Loop()
@@ -67,6 +86,7 @@ void Game::Loop()
 	sf::Time frameTime = sf::microseconds(sf::seconds(1).asMicroseconds()/ticksPerSec);
 
 	updateTimer.restart();
+	soundManager.PlaySound("init");
 
 	// --- MAIN GAME LOOP ---
 	while(isRunning)
@@ -274,7 +294,6 @@ void Game::Render()
 	// previous frame
 	window.clear();
 
-	//Render the level to the screen
 	if(levelManager.HasLoadedLevel()) {
 		window.draw(levelManager.GetCurrentLevel());
 	}
@@ -286,7 +305,6 @@ void Game::Render()
 	window.setView(view);
 
 	menus.Display(window);
-
 	//Update the window after the drawing
 	window.display();
 }

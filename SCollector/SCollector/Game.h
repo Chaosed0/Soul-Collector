@@ -32,6 +32,8 @@ private:
 	void Update();
 	/** Renders the game objects to the screen */
 	void Render();
+	/** Renders the intro to the screen. */
+	void Intro();
 
 	/** Exits the game */
 	void Exit();
@@ -69,6 +71,8 @@ private:
 
 	/** How much time we should fade out for. */
 	const static sf::Time fadeoutTime;
+	/** How much time the intro should be displayed. */
+	const static sf::Time introTime;
 	/** The first level to load */
 	const static std::string firstLevel;
 	const static std::string firstSpawn;
