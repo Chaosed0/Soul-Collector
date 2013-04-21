@@ -135,6 +135,12 @@ public:
 	void AddHealth(int recovery);
 
 	/**
+	 * Adds to the player's fuel level.
+	 * \param recovery The amount to add.
+	 */
+	void AddFuel(int fuel);
+
+	/**
 	 * Resets the player, clearing all souls, keys etc. he has.
 	 */
 	void Reset();

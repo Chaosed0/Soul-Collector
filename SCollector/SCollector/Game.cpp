@@ -105,11 +105,11 @@ void Game::Event()
 		}
 		//Pass the menu events and don't pass the game events if the menu is visible
 		else if(menus.IsVisible()) {
-			paused = true;
 			menus.HandleEvent(anEvent);
 			//If the menu just turned invisible after handling an event, restart the
 			// update timer so that entities don't think they were simulating while
 			// the menu was up
+			updateTimer.restart();
 			if(!menus.IsVisible()) {
 				paused = false;
 			}
@@ -159,6 +159,7 @@ void Game::Event()
 					break;
 				case sf::Keyboard::Escape :
 					menus.SetVisible(true);
+					paused = true;
 					break;
 				default:
 					break;

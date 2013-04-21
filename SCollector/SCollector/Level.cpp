@@ -19,6 +19,7 @@
 #include "Soul.h"
 #include "SlowDemon.h"
 #include "HealthPot.h"
+#include "FuelCanister.h"
 
 Level::Level(Player& player)
 	: player(player)
@@ -307,6 +308,10 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 			} else if(type.compare("Potion") == 0) {
 				int recovery = object->GetProperties().GetNumericProperty("Recovery");
 				activatables.push_back(new HealthPot(objectPos, recovery));
+				activatables.back()->SetRot(object->GetRot());
+			} else if(type.compare("Fuel") == 0) {
+				int recovery = object->GetProperties().GetNumericProperty("Recovery");
+				activatables.push_back(new FuelCanister(objectPos, recovery));
 				activatables.back()->SetRot(object->GetRot());
 			}
 			//We don't know what type of object this is, issue an error
