@@ -151,8 +151,7 @@ void Game::Event()
 					levelManager.GetCurrentLevel().DoActivate();
 					break;
 				case sf::Keyboard::Space :
-					levelManager.GetCurrentLevel().AddAttack(
-						levelManager.GetCurrentLevel().GetPlayer().GetAttackCone());
+					levelManager.GetPlayer().StartAttack();
 					break;
 				case sf::Keyboard::LShift :
 				case sf::Keyboard::RShift :
