@@ -152,15 +152,12 @@ void Player::UpdateHud(HUD& hud)
 void Player::AddHealth(int recovery)
 {
 	health = std::min(maxHealth, health+recovery);
-<<<<<<< HEAD
-=======
 }
 
 void Player::AddFuel(int fuel)
 {
 	sf::Time newtime = sf::microseconds(lighterTimer.asMicroseconds()+fuel/100.0f*maxLighterTime.asMicroseconds());
 	lighterTimer = std::min(maxLighterTime, newtime);
->>>>>>> 57dbe97237986f32dce2391c685cd3a20931409a
 }
 
 void Player::Update(Level& level, const sf::Time& timePassed)
