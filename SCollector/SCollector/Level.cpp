@@ -17,6 +17,7 @@
 #include "LightSource.h"
 #include "HUD.h"
 #include "Soul.h"
+#include "SlowDemon.h"
 
 Level::Level(Player& player)
 	: player(player)
@@ -281,6 +282,9 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 				activatables.back()->SetRot(object->GetRot());
 			} else if(type.compare("Demon") == 0) {
 				enemies.push_back(new Demon(objectPos));
+				enemies.back()->SetRot(object->GetRot());
+			} else if(type.compare("SlowDemon") == 0) {
+				enemies.push_back(new SlowDemon(objectPos));
 				enemies.back()->SetRot(object->GetRot());
 			} else if(type.compare("Stairs") == 0) {
 				std::string nextLevel = object->GetProperties().GetLiteralProperty("NextLevel");
@@ -711,10 +715,10 @@ void Level::Update(const sf::Time& timePassed)
 
 	for(unsigned int i = 0; i < enemies.size(); i++) {
 		enemies[i]->Update(*this, timePassed);
-		if(player.IsColliding(*enemies[i]) || enemies[i]->IsColliding(player)) {
+		/*if(player.IsColliding(*enemies[i])) {
 			enemies[i]->Attack(player);
 			//printf("Player colliding with enemy %d\n", i);
-		}
+		}*/
 	}
 
 	//Iterate through all the player's attacks
@@ -784,7 +788,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	//Uncomment to draw attack cones
 	for(std::list<AttackCone>::const_iterator p = attackCones.begin(); p != attackCones.end(); p++) {
 		sf::ConvexShape triangle = p->GetTriangle();
-		triangle.setPosition(player.GetPos());
+		triangle.setPosition(p->GetOwner().GetPos());
 		target.draw(triangle, state);
 	}
 

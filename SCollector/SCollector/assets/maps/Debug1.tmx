@@ -41,11 +41,11 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJxjYmBgYBrFdMXkgFF7SccsZOCB8i85gJpuJcUv1LYXG3vUXtrEL73tRTd3uNtLDbMoTVeEwKi9o/YSay8pYNTeoRe/o/YOT3vJxQCnXQTL
+   eJzt1MEKACAIA1CR/v+bu0sHt8ygJgxCkJcQuZm50hqm5OIZRG7ty1TlXZFddveN7uost971Rf+0m+m/5Hb+G8hbinNy5WZcdE4u5/72ruTm3c5MywcC6w==
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
-  <object name="Init" type="Spawn" gid="52" x="640" y="448" width="32" height="32"/>
+  <object name="Init" type="Spawn" gid="52" x="128" y="352" width="32" height="32"/>
   <object name="akey" type="Key" gid="53" x="736" y="736" width="32" height="32">
    <properties>
     <property name="Description" value="a yellow key"/>
@@ -81,5 +81,11 @@
    </properties>
   </object>
   <object type="Soul" gid="58" x="608" y="320" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="256" y="448" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="173" y="403" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="247" y="374" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="281" y="346" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="137" y="487" width="32" height="32"/>
+  <object type="Demon" gid="54" x="448" y="928" width="32" height="32"/>
  </objectgroup>
 </map>

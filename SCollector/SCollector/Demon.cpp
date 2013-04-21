@@ -29,13 +29,11 @@ Demon::Demon(sf::Vector2f pos)
 
 void Demon::Attack(Movable& movable)
 {
-	if(state == CHARGING) {
-		Movable::Attack(movable);
-		state = RECOVERING;
-		timer = sf::Time::Zero;
-		soundManager.StopSound("charge");
-		soundManager.PlaySound("hit");
-	}
+	Movable::Attack(movable);
+	state = RECOVERING;
+	timer = sf::Time::Zero;
+	soundManager.StopSound("charge");
+	soundManager.PlaySound("hit");
 }
 
 void Demon::Update(Level& level, const sf::Time& timePassed)
@@ -185,13 +183,13 @@ void Demon::Update(Level& level, const sf::Time& timePassed)
 		}
 
 		sprite.move(movement);
-		sprite.setRotation(TO_DEG*atan2f(movement.y, movement.x));
+		sprite.setRotation(TO_DEG*moveAngle);
 	} else if(state == IDLE) {
 		PlayAnim("idle", timePassed);
 	} else if(state == ALERT) {
 		PlayAnim("alert", timePassed);
 		//Rotate the sprite to face the player
-		sprite.setRotation(TO_DEG*atan2f(relDist.y, relDist.x));
+		sprite.setRotation(TO_DEG*moveAngle);
 	} else {
 		// ???
 		PlayAnim("idle", timePassed);
@@ -205,6 +203,12 @@ void Demon::Update(Level& level, const sf::Time& timePassed)
 		soundManager.StopSound("charge");
 		state = RECOVERING;
 		timer = sf::Time::Zero;
+	}
+
+	//After updating everything, if the monster is currently charging and hits
+	// the player then deal damage
+	if(state == CHARGING && IsColliding(level.GetPlayer())) {
+		Attack(level.GetPlayer());
 	}
 
 	// Decide on a new direction of movement randomly
