@@ -1,7 +1,7 @@
 /**
- * \brief In-game representation of a key.
- * \author Ed Lu
- * \date February 25 2013
+ * \brief A key to a door.
+ * \author Mustafa Alareed and Mujing Wang
+ * \date April 19 2013
  */
 
 #ifndef __KEY_H
