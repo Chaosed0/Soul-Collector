@@ -4,7 +4,7 @@
 #include "Player.h"
 
 const sf::Time SlowDemon::attackTime = sf::seconds(1.0f);
-const float SlowDemon::defaultMoveSpeed = 40.0f;
+const float SlowDemon::defaultMoveSpeed = 50.0f;
 const float SlowDemon::attackRadius = 40.0f;
 const float SlowDemon::attackSweep = 45.0f;
 

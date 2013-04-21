@@ -16,7 +16,7 @@ const float Player::sprintSpeed = 210.0f;
 const float Player::humanityDecrease = 0.5f;
 const float Player::humanityIncrease = 20.0f;
 const int Player::healthIncrease = 50.0f;
-const int Player::maxSouls = 1;
+const int Player::maxSouls = 3;
 
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
@@ -152,12 +152,15 @@ void Player::UpdateHud(HUD& hud)
 void Player::AddHealth(int recovery)
 {
 	health = std::min(maxHealth, health+recovery);
+<<<<<<< HEAD
+=======
 }
 
 void Player::AddFuel(int fuel)
 {
 	sf::Time newtime = sf::microseconds(lighterTimer.asMicroseconds()+fuel/100.0f*maxLighterTime.asMicroseconds());
 	lighterTimer = std::min(maxLighterTime, newtime);
+>>>>>>> 57dbe97237986f32dce2391c685cd3a20931409a
 }
 
 void Player::Update(Level& level, const sf::Time& timePassed)

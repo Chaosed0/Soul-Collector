@@ -5,8 +5,8 @@
 #include "MenuManager.h"
 
 const sf::Time Game::fadeoutTime = sf::seconds(3.0f);
-const std::string Game::firstLevel = "Debug1.tmx";
-const std::string Game::firstSpawn = "Init";
+const std::string Game::firstLevel = "Debug4.tmx";
+const std::string Game::firstSpawn = "FromDebug3_2";
 
 Game::Game()
 	: winWidth(800), winHeight(600)
