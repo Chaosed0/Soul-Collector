@@ -227,6 +227,8 @@ void Game::Update()
 			}
 			paused = true;
 		}
+	} else {
+		fadeoutRect.setFillColor(sf::Color(0,0,0,0));
 	}
 
 	if(!paused) {
