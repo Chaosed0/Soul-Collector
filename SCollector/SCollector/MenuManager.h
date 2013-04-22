@@ -95,7 +95,8 @@ private:
 	sfg::Container::Ptr selection;
 
 	// --- No Selection
-	sfg::Box::Ptr noSelection;
+	sfg::Box::Ptr emptyBox;
+	sfg::Table::Ptr noSelection;
 
 	// --- Settings
 	sfg::Box::Ptr settingsMenu;
