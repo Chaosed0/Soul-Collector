@@ -45,7 +45,7 @@ public:
 	/**
 	 * The values associated with the HudObjects
 	 */
-	static const enum {
+	enum {
 		health = 0,
 		fuel,
 		humanity,
@@ -54,6 +54,9 @@ public:
 private:
 	//Vector of HudObject pointers to point to the HudObjects in the HUD
 	std::vector<HudObject *> objects;
+
+	//The position in vector form 
+	sf::Vector2f pos;
 
 	//The font used for the textObject
 	sf::Font font;
@@ -66,8 +69,6 @@ private:
 	float curXPos;
 	//Value to keep track of previous humanity changes
 	float prevHumanityChange;
-	//The position in vector form 
-	sf::Vector2f pos;
 
 	//The amount of time text should be displayed on the screen by the textObject
 	static const sf::Time textDisplayTime;

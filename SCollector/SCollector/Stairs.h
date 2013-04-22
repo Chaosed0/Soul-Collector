@@ -16,7 +16,7 @@ public:
 	 * Default constructor.
 	 * \param pos The position of the stairs within the level.
 	 */
-	Stairs::Stairs(const sf::Vector2f& pos, const std::string& nextLevel, const std::string& nextSpawn);
+	Stairs(const sf::Vector2f& pos, const std::string& nextLevel, const std::string& nextSpawn);
 
 	/**
 	 * Update function.

@@ -54,28 +54,28 @@ bool Entity::IsColliding(const sf::IntRect& box) const
 
 	//Left side of the other box in this one
 	bool leftCollide =
-		box.left >= thisCollisionBox.left &&
-		box.left < thisCollisionBox.left + thisCollisionBox.width || 
-		thisCollisionBox.left >= box.left &&
-		thisCollisionBox.left < box.left + box.width;
+		(box.left >= thisCollisionBox.left &&
+		box.left < thisCollisionBox.left + thisCollisionBox.width) || 
+		(thisCollisionBox.left >= box.left &&
+		thisCollisionBox.left < box.left + box.width);
 	//Right side of other box in this one
 	bool rightCollide = 
-		box.left + box.width > thisCollisionBox.left &&
-		box.left + box.width < thisCollisionBox.left + thisCollisionBox.width ||
-		thisCollisionBox.left + thisCollisionBox.width > box.left &&
-		thisCollisionBox.left + thisCollisionBox.width < box.left + box.width;
+		(box.left + box.width > thisCollisionBox.left &&
+		box.left + box.width < thisCollisionBox.left + thisCollisionBox.width) ||
+		(thisCollisionBox.left + thisCollisionBox.width > box.left &&
+		thisCollisionBox.left + thisCollisionBox.width < box.left + box.width);
 	//Top side of the other box in this one
 	bool topCollide = 
-		box.top >= thisCollisionBox.top &&
-		box.top < thisCollisionBox.top + thisCollisionBox.height ||
-		thisCollisionBox.top >= box.top &&
-		thisCollisionBox.top < box.top + box.height;
+		(box.top >= thisCollisionBox.top &&
+		box.top < thisCollisionBox.top + thisCollisionBox.height) ||
+		(thisCollisionBox.top >= box.top &&
+		thisCollisionBox.top < box.top + box.height);
 	//Bottom side of the other box in this one
 	bool botCollide = 
-		box.top + box.height > thisCollisionBox.top &&
-		box.top + box.height < thisCollisionBox.top + thisCollisionBox.height ||
-		thisCollisionBox.top + thisCollisionBox.height > box.top &&
-		thisCollisionBox.top + thisCollisionBox.height < box.top + box.height;
+		(box.top + box.height > thisCollisionBox.top &&
+		box.top + box.height < thisCollisionBox.top + thisCollisionBox.height) ||
+		(thisCollisionBox.top + thisCollisionBox.height > box.top &&
+		thisCollisionBox.top + thisCollisionBox.height < box.top + box.height);
 
 	//printf("%d, %d, %d, %d\n", leftCollide, rightCollide, topCollide, botCollide);
 	//printf("%d, %d, %d, %d\n", entity.collisionBox.left, entity.collisionBox.width, collisionBox.left, collisionBox.width);
@@ -121,7 +121,7 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates state) const
 	if(visible)
 		target.draw(sprite, state);
 
-#if DRAW_COLBOXES 1 
+#if DRAW_COLBOXES == 1 
 	sf::IntRect thisCollisionBox = collisionBox;
 	thisCollisionBox.left += (int)GetPos().x - sprite.getOrigin().x;
 	thisCollisionBox.top += (int)GetPos().y - sprite.getOrigin().y;

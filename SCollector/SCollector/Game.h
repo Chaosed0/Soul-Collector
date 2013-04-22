@@ -8,6 +8,7 @@
 #define __GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 #include "MenuManager.h"
 #include "LevelManager.h"

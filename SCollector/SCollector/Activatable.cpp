@@ -26,7 +26,7 @@ void Activatable::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	Entity::draw(target, state);
 
-#if DRAW_ACTCOLBOXES 1 
+#if DRAW_ACTCOLBOXES == 1 
 	sf::IntRect box = activateBox;
 	box.left += (int)GetPos().x - sprite.getOrigin().x;
 	box.top += (int)GetPos().y - sprite.getOrigin().y;

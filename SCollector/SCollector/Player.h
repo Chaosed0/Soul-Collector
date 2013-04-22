@@ -70,7 +70,7 @@ public:
 	 * Gets the player's AttackCone.
 	 * \return An AttackCone representing the area the player would hit.
 	 */
-	void Player::StartAttack();
+	void StartAttack();
 
 	/**
 	 * Makes the player hit another Movable with his attack.

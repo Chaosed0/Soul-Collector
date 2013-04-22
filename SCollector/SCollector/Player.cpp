@@ -221,7 +221,7 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 			if(!found)
 				nearest = -INT_MAX;
 			//printf("Nearest Left: %d\n", nearest);
-			movement.x += std::max(-moveSpeed, (float)nearest), 0;
+			movement.x += std::max(-moveSpeed, (float)nearest);
 		}
 		if(moveRight) {
 			foundTopLeft = level.GetCollide(topRight, true, true, nearestTopLeft);

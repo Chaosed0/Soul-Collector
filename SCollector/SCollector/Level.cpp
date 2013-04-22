@@ -1,8 +1,7 @@
-/**
- * \author Chaosed0
- * \date 1/13/2013
- * \brief Implementation of level object
- */
+
+#ifdef LINUX
+#include <float.h>
+#endif
 
 #include "Level.h"
 #include "Entity.h"
@@ -422,7 +421,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 				}
 				for(unsigned int i = 0; i < activatables.size(); i++) {
 					bool oldFoundX = foundX;
-					foundX = foundX || activatables[i]->IsCollidable() && activatables[i]->Contains(nearestX);
+					foundX = foundX || (activatables[i]->IsCollidable() && activatables[i]->Contains(nearestX));
 					//HACK: Doors are kind of hard to see, we're just going to extend the ray a bit
 					if(!oldFoundX && foundX)
 						extendX = true;
@@ -430,15 +429,15 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 				if(!foundX) {
 					//If this pixel is not colliding, then keep searching
-					(negXDir?nearestX.x--:nearestX.x++);
-					(negYDir?nearestX.y-=abs(tanDir):nearestX.y+=abs(tanDir));
+					if(negXDir) nearestX.x--; else nearestX.x++;
+					if(negYDir) nearestX.y-=abs(tanDir); else nearestX.y+=abs(tanDir);
 					pixel.x = (int)(nearestX.x-globTile.x*tileSize.x);
 					pixel.y = (int)(nearestX.y-globTile.y*tileSize.y);
 				} else {
 					//Otherwise, note down where we found this and break
 					//Back out one pixel; the previous pixel was the last non-colliding one
-					(negXDir?nearestX.x++:nearestX.x--);
-					(negYDir?nearestX.y+=abs(tanDir):nearestX.y-=abs(tanDir));
+					if(negXDir) nearestX.x++; else nearestX.x--;
+					if(negYDir) nearestX.y+=abs(tanDir); else nearestX.y-=abs(tanDir);
 					sf::Vector2f relDist = pos - nearestX;
 					distX = magnitude(relDist);
 				}
@@ -499,21 +498,23 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 				}
 				for(unsigned int i = 0; i < activatables.size(); i++) {
 					bool oldFoundY = foundY;
-					foundY = foundY || activatables[i]->IsCollidable() && activatables[i]->Contains(nearestY);
+					foundY = foundY || (activatables[i]->IsCollidable() && activatables[i]->Contains(nearestY));
 					if(!oldFoundY && foundY)
 						extendY = true;
 				}
 
 				if(!foundY) {
 					//If this pixel is not colliding, then keep searching
-					(negYDir?nearestY.y--:nearestY.y++);
-					(negXDir?nearestY.x-=1/abs(tanDir):nearestY.x+=1/abs(tanDir));
+					float quot = 1/std::fabs(tanDir);
+					if(negYDir) nearestY.y--; else nearestY.y++;
+					if(negXDir) nearestY.x-=quot; else nearestY.x+=quot;
 					pixel.x = (int)(nearestY.x-globTile.x*tileSize.x);
 					pixel.y = (int)(nearestY.y-globTile.y*tileSize.y);
 				} else {
+					float quot = 1/std::fabs(tanDir);
 					//Otherwise, note down where we found this and break
-					(negYDir?nearestY.y++:nearestY.y--);
-					(negXDir?nearestY.x+=1/abs(tanDir):nearestY.x-=1/abs(tanDir));
+					if(negYDir) nearestY.y++; else nearestY.y--;
+					if(negXDir) nearestY.x+=quot; else nearestY.x-=quot;
 					sf::Vector2f relDist = pos - nearestY;
 					distY = magnitude(relDist);
 				}

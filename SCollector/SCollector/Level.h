@@ -16,7 +16,7 @@
 #include <vector>
 #include <list>
 
-#include "Tmx.h"
+#include <Tmx.h>
 
 #include "Utility.h"
 #include "AttackCone.h"
@@ -140,7 +140,7 @@ public:
 	 * \param nearest The coordinates of the nearest colliding pixel.
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
-	bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
+	bool GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
 
 	/**
 	 * Attempts to activate an object, if the player is colliding with one.

@@ -1,12 +1,12 @@
 
 SRCDIR = ./SCollector/SCollector
-BUILDDIR = ./build
-BINDIR = ./bin/
+BUILDDIR = ../SCollector/build
+BINDIR = ../SCollector/bin/
 
 CC = g++
-CCFLAGS = -Wall -Wextra -D LINUX
-lib = -L../SFGUI/lib -L../TmxParser -lsfml-graphics -lsfml-window -lsfml-system -lsfgui -ltmxparser -ltinyxml
-includes = -I../SFGUI/include -I../TmxParser/TmxParser
+CCFLAGS = -Wall -Wextra -g -D LINUX -std=c++11
+lib = -L/usr/local/lib -L/usr/lib -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -lsfgui -ltmxparser -ltinyxml
+includes = -I/usr/local/include -I/usr/include/TmxParser
 
 SCOLLECTOR = $(BINDIR)SCollector
 
@@ -15,6 +15,7 @@ OBJS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o,$(SRCS))
 
 $(SCOLLECTOR): $(OBJS)
 	$(CC) -g -o $@ $^ $(lib)
+	cp SCollector/SCollector/assets/* $(BINDIR) -r
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CC) -g $(includes) $(CCFLAGS) -c $< -o $@

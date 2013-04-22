@@ -19,7 +19,7 @@ void FuelCanister::Update(Level& level, const sf::Time& timePassed)
 		visible = false;
 		level.GetPlayer().AddFuel(recovery);
 		char message[50];
-		sprintf_s(message, 50, "Recovered %d lighter fuel.", recovery);
+		snprintf(message, 50, "Recovered %d lighter fuel.", recovery);
 		level.SetHUDText(message);
 		soundManager.PlaySound("pickup");
 		Finish();

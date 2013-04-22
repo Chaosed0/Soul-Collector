@@ -19,7 +19,7 @@ void Soul::Update(Level& level, const sf::Time& timePassed)
 		level.GetPlayer().AddSoul();
 		int soulsRemain = level.GetPlayer().GetRemainingSouls();
 		char msg[60];
-		sprintf_s(msg, 60, "Got a piece of your soul! %d remain...", soulsRemain);
+		snprintf(msg, 60, "Got a piece of your soul! %d remain...", soulsRemain);
 		level.SetHUDText(msg);
 		soundManager.PlaySound("pickup");
 		Finish();
