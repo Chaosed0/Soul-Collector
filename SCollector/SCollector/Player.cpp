@@ -15,7 +15,7 @@ const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
 const float Player::humanityDecrease = 0.5f;
 const float Player::humanityIncrease = 20.0f;
-const int Player::healthIncrease = 50.0f;
+const int Player::healthIncrease = 50;
 const int Player::maxSouls = 3;
 
 Player::Player(const sf::Vector2f& pos)
@@ -156,7 +156,8 @@ void Player::AddHealth(int recovery)
 
 void Player::AddFuel(int fuel)
 {
-	sf::Time newtime = sf::microseconds(lighterTimer.asMicroseconds()+fuel/100.0f*maxLighterTime.asMicroseconds());
+	sf::Time newtime = sf::microseconds((sf::Int64)
+		lighterTimer.asMicroseconds()+fuel/100.0f*maxLighterTime.asMicroseconds());
 	lighterTimer = std::min(maxLighterTime, newtime);
 }
 

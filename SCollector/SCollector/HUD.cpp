@@ -1,4 +1,5 @@
 #include "HUD.h"
+#include "Utility.h"
 
 const sf::Time HUD::textDisplayTime = sf::seconds(3);
 const int HUD::textPadding = 5;

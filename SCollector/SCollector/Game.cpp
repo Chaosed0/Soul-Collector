@@ -246,10 +246,10 @@ void Game::Update()
 			fadeoutTimer += updateTime;
 			if(win) {
 				fadeoutRect.setFillColor(sf::Color(255,255,255,
-					255*fadeoutTimer.asMicroseconds()/fadeoutTime.asMicroseconds()));
+					(sf::Uint8)(255*fadeoutTimer.asMicroseconds()/(float)fadeoutTime.asMicroseconds())));
 			} else {
 				fadeoutRect.setFillColor(sf::Color(0,0,0,
-					255*fadeoutTimer.asMicroseconds()/fadeoutTime.asMicroseconds()));
+					(sf::Uint8)(255*fadeoutTimer.asMicroseconds()/(float)fadeoutTime.asMicroseconds())));
 			}
 			if(fadeoutTimer >= fadeoutTime) {
 				if(win) {

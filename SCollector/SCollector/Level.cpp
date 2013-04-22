@@ -475,7 +475,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 		//List of entities to also check for collisions
 		foundObj = false;
-		sf::IntRect rect((int)globTile.x*tileSize.x, (int)globTile.y*tileSize.y,
+		sf::IntRect rect((int)(globTile.x*tileSize.x), (int)(globTile.y*tileSize.y),
 			(int)tileSize.x, (int)tileSize.y);
 		for(unsigned int i = 0; i < activatables.size() && !foundObj; i++) {
 			foundObj = activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect);

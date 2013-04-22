@@ -11,9 +11,17 @@
 
 #include <random>
 
+//The constant PI, in radians
 #define PI 3.14159f
+//Conversion factor from radians to degrees
 #define TO_DEG 57.2958279f
+//Conversion factor from degrees to radians
 #define TO_RAD 0.0174532778f
+
+//snprintf is c99, but Visual Studio doesn't support it
+#ifdef _MSC_VER
+#define snprintf sprintf_s
+#endif
 
 /** Gets the magnitude of vec */
 float magnitude(const sf::Vector2f& vec);
