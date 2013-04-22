@@ -19,7 +19,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 
 	mainLayout = sfg::Table::Create();
 	mainLayout->Attach(mainLabel, 
-		sf::Rect<sf::Uint32>(0,0,5,5), 
+		sf::Rect<sf::Uint32>(0,0,4,4), 
 		sfg::Table::FILL | sfg::Table::EXPAND, 
 		sfg::Table::FILL | sfg::Table::EXPAND, 
 		sf::Vector2f(10.f,10.f));
@@ -44,7 +44,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 		sfg::Table::FILL | sfg::Table::EXPAND, 
 		sf::Vector2f(10.f,10.f));
 	mainLayout->Attach(selection,
-		sf::Rect<sf::Uint32>(1,5,4,4),
+		sf::Rect<sf::Uint32>(1,5,5,5), 
 		sfg::Table::FILL | sfg::Table::EXPAND,
 		sfg::Table::FILL | sfg::Table::EXPAND,
 		sf::Vector2f(10.f,10.f));
@@ -73,7 +73,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	actLabel = sfg::Label::Create("Action/Attack");
 
 	helpMenu->Attach(helpLabel,
-		sf::Rect<sf::Uint32>(0,0,5,1),
+		sf::Rect<sf::Uint32>(0,0,10,1),
 		sfg::Table::FILL | sfg::Table::EXPAND,
 		sfg::Table::FILL | sfg::Table::EXPAND,
 		sf::Vector2f(10.f,10.f));

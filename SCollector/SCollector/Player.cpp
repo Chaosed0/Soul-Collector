@@ -157,7 +157,7 @@ void Player::AddHealth(int recovery)
 void Player::AddFuel(int fuel)
 {
 	sf::Time newtime = sf::microseconds((sf::Int64)
-		lighterTimer.asMicroseconds()+fuel/100.0f*maxLighterTime.asMicroseconds());
+		(lighterTimer.asMicroseconds()+fuel/100.0f*maxLighterTime.asMicroseconds()));
 	lighterTimer = std::min(maxLighterTime, newtime);
 }
 

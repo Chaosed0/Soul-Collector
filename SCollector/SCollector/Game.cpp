@@ -48,7 +48,9 @@ int Game::Run()
 {
 	isRunning = true;
 	Init();
+#ifndef HAVE_CONSOLE
 	Intro();
+#endif
 	Loop();
 
 	return 0;
