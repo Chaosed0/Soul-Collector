@@ -21,18 +21,11 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1EEKACAIBEDt/4+ObiJd0nCTVpBOyxCoQ0QGqKuLLl26WHflNJjPuvale8/d3fXIve8yzy/894e58lnU3YjmM666rnKtfVpd9pcu3Q4uoieP7AE3
+   eJzFVtEOAyEIE///o5d7MDFdacuWZU2MN0BKRXe311r7T+OG8zuwfCxmg//MBQPrYL9x7up2eZjue67G3vGjjcHZS+Rn9rSWW09yPrq+7sbGdB2+avwqf6qbjZtX7ac6V11dWMPt684vy6vyM3tSs/Op+6XWTzQl90Uh5U376Na4c4eoxs7qn2LSY6VjYl8k7lsdqOkB3sOUV2lgtkQH628X1+lJ7qviTeLS/ZnysrwPCtacWb0Hu/9X9uzikjrdOXa8+Ixg3yMMqmZXS5cH97nT2eVADre/mAOhvhcYr+uV8rF9wF4UrJ1A9eBgyuu0JDGf6HXnyek8/pQ31eR0Jry13vWithvufTyBqv3X4wUYdQPM
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
   <object name="FromDebug3_2" type="Spawn" gid="52" x="480" y="480" width="32" height="32"/>
-  <object type="Key" gid="53" x="160" y="64" width="32" height="32">
-   <properties>
-    <property name="doorname" value="door1"/>
-   </properties>
-  </object>
-  <object type="Demon" gid="54" x="96" y="64" width="32" height="32"/>
-  <object type="Torch" gid="55" x="32" y="64" width="32" height="32"/>
   <object name="StairsToDebug3_2" type="Stairs" gid="56" x="480" y="512" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug3.tmx"/>
@@ -43,5 +36,65 @@
   <object type="SlowDemon" gid="54" x="480" y="352" width="32" height="32" rotation="-180"/>
   <object type="SlowDemon" gid="54" x="608" y="480" width="32" height="32" rotation="-90"/>
   <object type="SlowDemon" gid="54" x="480" y="608" width="32" height="32"/>
+  <object type="Demon" gid="54" x="288" y="864" width="32" height="32" rotation="-90"/>
+  <object type="Demon" gid="54" x="512" y="800" width="32" height="32" rotation="90"/>
+  <object type="Potion" gid="59" x="480" y="800" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="50"/>
+   </properties>
+  </object>
+  <object type="Soul" gid="58" x="736" y="128" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="672" y="288" width="32" height="32" rotation="450"/>
+  <object type="SlowDemon" gid="54" x="736" y="288" width="32" height="32" rotation="-88.2956"/>
+  <object type="Demon" gid="54" x="608" y="352" width="32" height="32" rotation="90"/>
+  <object type="Fuel" gid="60" x="736" y="64" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="50"/>
+   </properties>
+  </object>
+  <object type="Demon" gid="54" x="800" y="192" width="32" height="32" rotation="180"/>
+  <object type="Torch" gid="55" x="832" y="96" width="32" height="32"/>
+  <object name="greenKey" type="Key" gid="53" x="800" y="832" width="32" height="32">
+   <properties>
+    <property name="Description" value="a green key"/>
+    <property name="Door" value="Door5"/>
+   </properties>
+  </object>
+  <object type="Demon" gid="54" x="896" y="928" width="32" height="32" rotation="300"/>
+  <object type="Demon" gid="54" x="736" y="768" width="32" height="32" rotation="492.734"/>
+  <object type="SlowDemon" gid="54" x="768" y="882" width="32" height="32" rotation="450"/>
+  <object name="Door6" type="Door" gid="57" x="32" y="512">
+   <properties>
+    <property name="Description" value="a white key"/>
+   </properties>
+  </object>
+  <object name="StairsToDebug5_1" type="Stairs" gid="56" x="32" y="480" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="Debug5.tmx"/>
+    <property name="NextSpawn" value="FromDebug4_2"/>
+   </properties>
+  </object>
+  <object type="SlowDemon" gid="54" x="512" y="64" width="32" height="32" rotation="450"/>
+  <object type="SlowDemon" gid="54" x="576" y="64" width="32" height="32" rotation="630"/>
+  <object type="Torch" gid="55" x="704" y="256" width="32" height="32"/>
+  <object type="Potion" gid="59" x="96" y="96" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="30"/>
+   </properties>
+  </object>
+  <object type="Fuel" gid="60" x="352" y="128" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="50"/>
+   </properties>
+  </object>
+  <object type="SlowDemon" gid="54" x="416" y="224" width="32" height="32" rotation="630"/>
+  <object type="Demon" gid="54" x="288" y="352" width="32" height="32" rotation="360"/>
+  <object type="SlowDemon" gid="54" x="32" y="864" width="32" height="32" rotation="-321.996"/>
+  <object type="Demon" gid="54" x="128" y="928" width="32" height="32" rotation="360"/>
+  <object type="Torch" gid="55" x="832" y="864" width="32" height="32"/>
+  <object type="Torch" gid="55" x="256" y="608" width="32" height="32"/>
+  <object type="Demon" gid="54" x="352" y="608" width="32" height="32" rotation="270"/>
+  <object type="SlowDemon" gid="54" x="608" y="672" width="32" height="32" rotation="-361.081"/>
+  <object type="SlowDemon" gid="54" x="96" y="640" width="32" height="32" rotation="180"/>
  </objectgroup>
 </map>

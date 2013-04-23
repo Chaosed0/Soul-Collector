@@ -83,7 +83,7 @@
     <property name="Description" value="a green key"/>
    </properties>
   </object>
-  <object gid="58" x="64" y="480" width="32" height="32"/>
+  <object type="Soul" gid="58" x="64" y="480" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="109" y="536" width="32" height="32" rotation="-308.811"/>
   <object type="Demon" gid="54" x="183" y="561" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="109" y="459" width="32" height="32" rotation="-261.38"/>
