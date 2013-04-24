@@ -12,7 +12,7 @@ const std::string Game::firstSpawn = "Init";
 
 Game::Game()
 	: winWidth(800), winHeight(600)
-	, window(sf::VideoMode(winWidth, winHeight), "Test")
+	, window(sf::VideoMode(winWidth, winHeight), "Soul Collector")
 	, menus(winWidth, winHeight)
 	, view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
 	, hud(sf::Vector2f(0, (float)winHeight))
@@ -147,7 +147,9 @@ void Game::Event()
 		
 		//If no level was loaded before and we are now in the game, load a level
 		if(!paused && !levelManager.HasLoadedLevel()) {
+			ToggleLoading();
 			levelManager.LoadMap(firstLevel, firstSpawn);
+			ToggleLoading();
 			soundManager.PlaySound("shake");
 			soundManager.PlaySound("land");
 			soundManager.PlaySound("instruct");
@@ -277,8 +279,15 @@ void Game::Update()
 		sf::Vector2f viewSize = view.getSize();
 		sf::Vector2f viewPos = view.getCenter();
 
-		//Update the level
-		levelManager.Update(updateTime);
+		//If the level's about to transition, put up a loading screen
+		if(levelManager.IsTransitioning()) {
+			ToggleLoading();
+			levelManager.Update(updateTime);
+			ToggleLoading();
+		} else {
+			//Update the level
+			levelManager.Update(updateTime);
+		}
 
 		//Update the HUD with values from the level
 		levelManager.GetCurrentLevel().UpdateHUD(hud);
@@ -344,4 +353,14 @@ void Game::Render()
 void Game::Exit()
 {
 	isRunning = false;
+}
+
+void Game::ToggleLoading()
+{
+	menus.ToggleLoading();
+	menus.SetVisible(!menus.IsVisible());
+	//Render should really not have to be called here, but there's no good
+	// way around it except for deferring loading yet another frame or
+	// going to multithreaded (which is a good way, but too late for that)
+	Render();
 }

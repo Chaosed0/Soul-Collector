@@ -63,6 +63,11 @@ public:
 	 *		to the lose menu.
 	 */
 	void WinLose(bool win);
+
+	/**
+	 * Toggles display of a loading screen.
+	 */
+	void ToggleLoading();
 private:
 	/**
 	 * Sets the active menu to a certain menu.
@@ -92,10 +97,10 @@ private:
 	sfg::Button::Ptr settingsButton;
 	sfg::Button::Ptr helpButton;
 	sfg::Button::Ptr exitButton;
-	sfg::Container::Ptr selection;
+	sfg::Container::Ptr menuPtr;
 
 	// --- No Selection
-	sfg::Box::Ptr emptyBox;
+	//sfg::Box::Ptr emptyBox;
 	sfg::Table::Ptr noSelection;
 
 	// --- Settings
@@ -105,18 +110,17 @@ private:
 	// --- Help
 	sfg::Table::Ptr helpMenu;
 	sfg::Label::Ptr helpLabel;
-	sfg::Label::Ptr goalLabel;
 	sfg::Label::Ptr controlsLabel;
-	sfg::Label::Ptr timeLabel;
-	sfg::Label::Ptr goalBody;
-	sfg::Label::Ptr timeBody;
+	sfg::Label::Ptr textBody;
 	sfg::Button::Ptr upKey;
 	sfg::Button::Ptr downKey;
 	sfg::Button::Ptr leftKey;
 	sfg::Button::Ptr rightKey;
+	sfg::Button::Ptr attackKey;
+	sfg::Button::Ptr lightKey;
 	sfg::Button::Ptr actKey;
+	sfg::Button::Ptr runKey;
 	sfg::Label::Ptr moveLabel;
-	sfg::Label::Ptr actLabel;
 
 	// --- Game over menu
 	sfg::Box::Ptr gameOverLayout;
@@ -132,6 +136,9 @@ private:
 
 	sfg::SFGUI gui;
 	sfg::Desktop desktop;
+
+	bool loading;
+	sfg::Window::Ptr beforeLoading;
 };
 
 //Note: Templates must be defined in the same file they are defined

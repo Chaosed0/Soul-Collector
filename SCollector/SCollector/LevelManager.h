@@ -72,7 +72,15 @@ public:
 	 * \param spawnName The name of the spawn within the map to start the player at.
 	 */
 	void Reset();
+
+	/**
+	 * Checks if the level is about to transition.
+	 * \return True if the level is going to transition.
+	 */
+	bool IsTransitioning();
 private:
+	/** Flag set to true when a level needs loading */
+	bool isTransitioning;
 	/** List of levels */
 	std::map<std::string, Level*> levels;
 	/** Name of the current map. */

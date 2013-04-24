@@ -49,9 +49,14 @@ bool LevelManager::Update(const sf::Time& timePassed)
 	std::string spawnName;
 	bool transition;
 	transition = GetCurrentLevel().CheckLevelTransition(levelName, spawnName);
-	//If we need to change levels, do so
-	if(transition) {
+	//Defer level transitioning one frame so that the Game has time to put up
+	// a loading screen
+	if(isTransitioning) {
 		LoadMap(levelName, spawnName);
+		isTransitioning = false;
+	}
+	if(transition) {
+		isTransitioning = true;
 	}
 	return true;
 }
@@ -79,4 +84,9 @@ bool LevelManager::HasLoadedLevel()
 Level& LevelManager::GetCurrentLevel()
 {
 	return *levels.find(curLevelName)->second;
+}
+
+bool LevelManager::IsTransitioning()
+{
+	return isTransitioning;
 }

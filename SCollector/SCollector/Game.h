@@ -39,6 +39,9 @@ private:
 	/** Exits the game */
 	void Exit();
 
+	/** Toggles the loading screen */
+	void ToggleLoading();
+
 	/** Width and height of the window */
 	const int winWidth, winHeight;
 	/** The window itself */

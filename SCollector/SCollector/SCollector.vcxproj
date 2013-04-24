@@ -17,7 +17,6 @@
     <ClCompile Include="FuelCanister.cpp" />
     <ClCompile Include="HealthPot.cpp" />
     <ClCompile Include="LevelManager.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Demon.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -27,6 +26,9 @@
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LightSource.cpp" />
+    <ClCompile Include="Main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -34,6 +36,9 @@
     <ClCompile Include="Soul.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stairs.cpp" />
+    <ClCompile Include="testmain.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
