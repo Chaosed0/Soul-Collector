@@ -39,6 +39,11 @@
    eJztwwEJAAAMBKGD7995QabgqqmqqvruAU/eCo0=
   </data>
  </layer>
+ <layer name="ObjectOverlay" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzsEJACAMALEupg9x/5kcooWqJP+Di/jX6B5I2Ml+llwAvG91DwDAxQ5R2QEC
+  </data>
+ </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
    eJxjYmBgYCIB8wAxFx7MjUM9ujipmBOIGfFgDizqGbCIE+sPGNYDYhEkrAXEfEj2CqGpF4baiyyO7HeYu0gFHGhhQKweatjLDsSsJGA2KtlLaXphIQOjxycxmBrxSw5ADiNS4wiE+ZDMUmRApHFdKC1LhL3kxg0M8ONgj9pLXXvVGBDxSU97kcFIsBc5HykzoNYd6FiKivYS8iOt/DtqL33slRgge0kBo/aSb6/4ANk70vLRSLAXuS0oykBaux0AuwkLtA==
@@ -87,7 +92,6 @@
     <property name="NextSpawn" value="FromDebug1_3"/>
    </properties>
   </object>
-  <object gid="3" x="800" y="64"/>
   <object name="StairsToDebug2_4" type="Stairs" gid="56" x="800" y="64" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug2.tmx"/>

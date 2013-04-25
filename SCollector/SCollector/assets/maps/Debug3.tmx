@@ -19,6 +19,11 @@
    eJztwwEJAAAMBKGD7995QabgqqmqqvruAU/eCo0=
   </data>
  </layer>
+ <layer name="ObjectOverlay" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7A5w78rHOwjPK2CJgAAADTzHTiyQzgAQA==
+  </data>
+ </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
    eJzlltsKwjAMhjPBszDwtOHhwgmbN6Lo+7+bLUtZLGu62cMuDPwETefXNLHZCgAWBh2ZmE3cs0uhOZgtZWI2k88mhtjsj7kZ+ovQFnXzwNWlc/OWfbrkW0K99zP+3gmafA6E+8b4C9e6cjmT+e5xDwVyfeVr46p8FS+H5lxc6tuHq1uMfFVf0fpXEbgxjfZVm4qAXC7fnImF5CrT75uQXMlQd+Yd/J67jav+R6n2OSaXehV34XL9XEFzh0kroV+v09lGRedCX+ty5qY13DlnxCeaD8k11bat1r9wTfW9QvPOQeejL66tvk+hsdAO/SMSV64ZEXFz0yd3Dd/v3Bv8vsvdbVoz5BwckutrzvThTqHu05iaCH0AZQAOdA==
