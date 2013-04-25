@@ -10,7 +10,7 @@ HudObject::HudObject(const std::string& image, const sf::Vector2f& pos)
 	sprite.setTexture(texture);
 	sprite.setOrigin(0,sprite.getTextureRect().height/2.0f);
 	sprite.setPosition(pos.x + sprite.getOrigin().x, pos.y - sprite.getOrigin().y);
-	rect.setFillColor(sf::Color::Red);
+	rect.setFillColor(sf::Color::White);
 	
 	rect.setSize(sf::Vector2f((float)sprite.getTextureRect().width,(float)sprite.getTextureRect().height));
 	rect.setPosition(pos.x,pos.y-rect.getSize().y);

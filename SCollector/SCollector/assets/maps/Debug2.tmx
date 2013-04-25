@@ -26,7 +26,7 @@
  </layer>
  <layer name="Collision" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBi8gAkPprW9pIhT015q+xefmaRiUu2lBiDHXlL8Q2v/ooszkShOrr2E5HHZT6m9o/4lTZxcewnJj/qXOvYOZ/8SwqxYML3r4qEOAPHgAQg=
+   eJxjYBi8QBGIRbBgJRrby0+iOLWAARCzYsH6FJiJKwyRsSEQc2HBegzkhzm1wopUc4wYsPtRlwF7GkIPH5g6DSq5UwIHH5c4qf4lpF6SSHFq2YturiQB8VH/kmcvLvtxiY/6lzx7B9q/4kSKk2qvGgP+OkGZSHF1Eu0daQAANKcKsA==
   </data>
  </layer>
  <layer name="Misc" width="30" height="20" visible="0">
