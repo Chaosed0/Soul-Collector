@@ -269,10 +269,13 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 			else if(type.compare("Key") == 0) {
 				std::string door = object->GetProperties().GetLiteralProperty("Door");
 				std::string description = object->GetProperties().GetLiteralProperty("Description");
+				int r = object->GetProperties().GetNumericProperty("Red");
+				int b = object->GetProperties().GetNumericProperty("Blue");
+				int g = object->GetProperties().GetNumericProperty("Green");
 				if(door.empty()) {
 					fprintf(stderr, "WARNING: Key has no associated door! Ignored...");
 				} else {
-					activatables.push_back(new Key(objectPos, door, description));
+					activatables.push_back(new Key(objectPos, door, description, sf::Color(r,g,b,255)));
 					activatables.back()->SetRot(object->GetRot());
 				}
 			}

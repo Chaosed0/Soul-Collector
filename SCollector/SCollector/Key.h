@@ -17,7 +17,8 @@ public:
 	 * Default constructor.
 	 * \param pos The position of the key within the level.
 	 */
-	Key(const sf::Vector2f& pos, std::string doorName, const std::string& description);
+	Key(const sf::Vector2f& pos, std::string doorName, const std::string& description,
+		const sf::Color& color);
 
 	/**
 	 * Update function.

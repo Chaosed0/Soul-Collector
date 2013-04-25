@@ -4,7 +4,8 @@
 #include "Level.h"
 #include "Player.h"
 
-Key::Key(const sf::Vector2f& pos, std::string doorName, const std::string& description)
+Key::Key(const sf::Vector2f& pos, std::string doorName, const std::string& description,
+		 		const sf::Color& color)
 	: Activatable("assets/img/Key.png", sf::IntRect(0,0,32,32),
 		sf::IntRect(0,0,32,32), sf::IntRect(-8,-8,48,48))
 {
@@ -12,6 +13,7 @@ Key::Key(const sf::Vector2f& pos, std::string doorName, const std::string& descr
 	this->doorName = doorName;
 	this->description = description;
 	soundManager.AddSound("assets/sound/pickup.ogg", "pickup", false);
+	sprite.setColor(color);
 }
 
 void Key::Update(Level& level, const sf::Time& timePassed)
