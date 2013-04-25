@@ -36,9 +36,6 @@
     <ClCompile Include="Soul.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stairs.cpp" />
-    <ClCompile Include="testmain.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>

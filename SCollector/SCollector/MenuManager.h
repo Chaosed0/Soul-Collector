@@ -79,6 +79,7 @@ private:
 	// --- Button callbacks ---
 	void gotoHelp();
 	void gotoMain();
+	void gotoSettings();
 	void playGame();
 
 	/** Flag set to true when the active menu is visible */
@@ -127,6 +128,11 @@ private:
 	sfg::Label::Ptr winLabel;
 	sfg::Button::Ptr winBackButton;
 	sfg::Button::Ptr winExitButton;
+
+	// -- Settings menu
+	sfg::Box::Ptr settingsMenu;
+	sfg::Button::Ptr settingsButton;
+	sfg::Label::Ptr settingsLabel;
 
 	sfg::SFGUI gui;
 	sfg::Desktop desktop;

@@ -13,11 +13,8 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	playButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::playGame, this);
 	helpButton = sfg::Button::Create("Help");
 	helpButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoHelp, this);
-<<<<<<< HEAD
-=======
 	settingsButton = sfg::Button::Create("Credits");
 	settingsButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoSettings, this);
->>>>>>> f8c0b5e... Added loading screens between levels
 	exitButton = sfg::Button::Create("Exit");
 	noSelection = sfg::Table::Create();
 	noSelection->Attach(sfg::Box::Create(), sf::Rect<sf::Uint32>(1,1,1,1));
@@ -27,21 +24,14 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	mainLayout->Attach(mainLabel, sf::Rect<sf::Uint32>(1,1,10,5));
 	mainLayout->Attach(playButton, sf::Rect<sf::Uint32>(1,6,3,1)); 
 	mainLayout->Attach(helpButton, sf::Rect<sf::Uint32>(1,7,3,1));
-<<<<<<< HEAD
-	mainLayout->Attach(exitButton, sf::Rect<sf::Uint32>(1,8,3,1));
-=======
 	mainLayout->Attach(settingsButton, sf::Rect<sf::Uint32>(1,8,3,1));
 	mainLayout->Attach(exitButton, sf::Rect<sf::Uint32>(1,9,3,1));
->>>>>>> f8c0b5e... Added loading screens between levels
 	mainLayout->Attach(menuPtr, sf::Rect<sf::Uint32>(6,6,5,4), 0, 0);
 	/*sfg::Label::Ptr alabel= sfg::Label::Create("watatatat");
 	mainLayout->Attach(alabel, sf::Rect<sf::Uint32>(6,6,5,4),
 		sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL | sfg::Table::EXPAND);*/
 
 	menus[0]->Add(mainLayout);
-<<<<<<< HEAD
-=======
-
 	settingsMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
 	settingsLabel = sfg::Label::Create(
 		"The UN\n\n\n\
@@ -52,7 +42,6 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 		Mujing Wang - Programmer\n\
 		Sha Huang - Programmer\n");
 	settingsMenu->Pack(settingsLabel, false, false);
->>>>>>> f8c0b5e... Added loading screens between levels
 	
 	helpMenu = sfg::Table::Create();
 	helpLabel = sfg::Label::Create("Help");
@@ -178,8 +167,6 @@ void MenuManager::SetActiveMenu(sfg::Window::Ptr& window)
 	curWindow->Show(true);
 }
 
-<<<<<<< HEAD
-=======
 void MenuManager::gotoSettings()
 {
 	mainLayout->Remove(menuPtr);
@@ -189,7 +176,6 @@ void MenuManager::gotoSettings()
 	printf("Go to Settings\n");
 }
 
->>>>>>> f8c0b5e... Added loading screens between levels
 void MenuManager::gotoHelp()
 {
 	mainLayout->Remove(menuPtr);
