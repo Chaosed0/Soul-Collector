@@ -77,7 +77,6 @@ private:
 	void SetActiveMenu(sfg::Window::Ptr& window);
 
 	// --- Button callbacks ---
-	void gotoSettings();
 	void gotoHelp();
 	void gotoMain();
 	void playGame();
@@ -94,7 +93,6 @@ private:
 	sfg::Table::Ptr mainLayout;
 	sfg::Label::Ptr mainLabel;
 	sfg::Button::Ptr playButton;
-	sfg::Button::Ptr settingsButton;
 	sfg::Button::Ptr helpButton;
 	sfg::Button::Ptr exitButton;
 	sfg::Container::Ptr menuPtr;
@@ -102,10 +100,6 @@ private:
 	// --- No Selection
 	//sfg::Box::Ptr emptyBox;
 	sfg::Table::Ptr noSelection;
-
-	// --- Settings
-	sfg::Box::Ptr settingsMenu;
-	sfg::Label::Ptr settingsLabel;
 
 	// --- Help
 	sfg::Table::Ptr helpMenu;
