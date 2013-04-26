@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="30" height="30" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="Description" value="level 5"/>
+ </properties>
  <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
   <image source="../tileset/tileset.png" width="160" height="320"/>
  </tileset>
@@ -18,7 +21,7 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJztltEKwCAIRbX//+jRm8Smrql3SILUQ92jdYkGEQ1QZoSmm8nVomO/qy4XcqV+d18dP/fnIvws+XKUNfyZu3tOEVyrjjvtmRxQt3dNlJ/ZXpLCtc65krvOvfe342fpkaeavFpvQ+sdzc34T3q52v6Id7KKi+pX83Ym92uguYi8AOi2AaQ=
+   eJzFlEsSwCAIQ9H7H7p7xoTw0WbGRf3wKAa3me2fBtNpPToT7bnJjWKq3KhemTpW/1eRP7cK3Kwn/DkUJ6sXvlJjLpu9X5XL5hlX9ajPlc2r3ElluKzu2bdP9bPnVXsHzZ1y8uuTflO5KEa17xVuNw90v6fejjjV+832EeIsizXRv1m/d7hR/6Jv1KMql+nkEZRTJFYj5tfI6x0u2q9yWe63uUhqndV8ulx0Hnn1JRd5u8PN1jkr9d2dluL1W+MDX54Cow==
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
@@ -26,11 +29,11 @@
   <object name="blackKey" type="Key" gid="53" x="160" y="64" width="32" height="32">
    <properties>
     <property name="Description" value="a black key"/>
-    <property name="doorname" value="door1"/>
+    <property name="Door" value="Door7"/>
    </properties>
   </object>
-  <object type="Demon" gid="54" x="96" y="64" width="32" height="32"/>
-  <object type="Torch" gid="55" x="32" y="64" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="96" y="64" width="32" height="32"/>
+  <object type="Torch" gid="55" x="128" y="160" width="32" height="32"/>
   <object name="StairsToDebug4_2" type="Stairs" gid="56" x="800" y="832" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug4.tmx"/>
@@ -39,5 +42,63 @@
   </object>
   <object type="Demon" gid="54" x="608" y="800" width="32" height="32" rotation="165"/>
   <object type="SlowDemon" gid="54" x="745" y="910" width="32" height="32"/>
+  <object type="Soul" gid="58" x="384" y="576" width="32" height="32"/>
+  <object type="Demon" gid="54" x="383" y="554" width="32" height="32" rotation="165"/>
+  <object type="SlowDemon" gid="54" x="288" y="576" width="32" height="32" rotation="165"/>
+  <object type="SlowDemon" gid="54" x="384" y="704" width="32" height="32" rotation="180"/>
+  <object type="Potion" gid="59" x="480" y="704" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="40"/>
+   </properties>
+  </object>
+  <object type="Torch" gid="55" x="480" y="800" width="32" height="32"/>
+  <object type="Demon" gid="54" x="201" y="753" width="32" height="32" rotation="462.45"/>
+  <object type="SlowDemon" gid="54" x="864" y="352" width="32" height="32" rotation="270"/>
+  <object type="SlowDemon" gid="54" x="736" y="352" width="32" height="32" rotation="450"/>
+  <object type="Torch" gid="55" x="704" y="448" width="32" height="32"/>
+  <object type="Fuel" gid="60" x="864" y="256" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="40"/>
+   </properties>
+  </object>
+  <object type="Demon" gid="54" x="865" y="594" width="32" height="32" rotation="235.396"/>
+  <object type="Demon" gid="54" x="652" y="520" width="32" height="32" rotation="360"/>
+  <object type="Demon" gid="54" x="98" y="152" width="32" height="32" rotation="165"/>
+  <object type="Demon" gid="54" x="329" y="239" width="32" height="32" rotation="165"/>
+  <object type="SlowDemon" gid="54" x="32" y="576" width="32" height="32" rotation="180"/>
+  <object type="SlowDemon" gid="54" x="64" y="288" width="32" height="32" rotation="270"/>
+  <object name="Door6" type="Door" gid="57" x="288" y="128" width="32" height="32">
+   <properties>
+    <property name="Description" value="an orange key"/>
+   </properties>
+  </object>
+  <object name="orangeKey" type="Key" gid="53" x="192" y="768">
+   <properties>
+    <property name="Description" value="an orange key"/>
+    <property name="Door" value="Door6"/>
+    <property name="Green" value="165"/>
+    <property name="Red" value="255"/>
+   </properties>
+  </object>
+  <object type="Demon" gid="54" x="200" y="858" width="32" height="32" rotation="270"/>
+  <object type="SlowDemon" gid="54" x="704" y="96" width="32" height="32" rotation="450"/>
+  <object type="SlowDemon" gid="54" x="872" y="93" width="32" height="32" rotation="225"/>
+  <object type="Potion" gid="59" x="480" y="64" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="30"/>
+   </properties>
+  </object>
+  <object type="Fuel" gid="60" x="256" y="480" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="40"/>
+   </properties>
+  </object>
+  <object type="SlowDemon" gid="54" x="160" y="512" width="32" height="32" rotation="360"/>
+  <object type="Soul" gid="58" x="352" y="64" width="32" height="32"/>
+  <object type="Fuel" gid="60" x="320" y="64" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="70"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

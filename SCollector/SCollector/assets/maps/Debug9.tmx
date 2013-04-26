@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="30" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="Description" value="tower level 4"/>
+ </properties>
+ <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
+  <image source="../tileset/tileset.png" width="160" height="320"/>
+ </tileset>
+ <tileset firstgid="51" name="Object" tilewidth="32" tileheight="32">
+  <image source="../tileset/ObjectTiles.png" width="160" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="spawn"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKGD7995QabgqqmqqvruAU/eCo0=
+  </data>
+ </layer>
+ <layer name="Collision" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1cEKACAIA1Dt/z+6S97SgrSBbLDTDg+EaIjIAPV36NKlS5cu3QxXVxH/oLnqdLdZMlwvp63K1WDr6KLuXO1ao7flbS+ul653jnaEG6XjnW9cRCeN6AFh
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 1" width="30" height="30">
+  <object type="Stairs" gid="56" x="288" y="64" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="nextlevel"/>
+    <property name="NextSpawn" value="nextspawn"/>
+   </properties>
+  </object>
+  <object name="StairsToDebug8_2" type="Stairs" gid="66" x="832" y="576" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="Debug8.tmx"/>
+    <property name="NextSpawn" value="FromDebug9_1"/>
+   </properties>
+  </object>
+  <object name="FromDebug8_2" type="Spawn" gid="52" x="832" y="544" width="32" height="32"/>
+  <object name="StairsToDebug10_1" type="Stairs" gid="61" x="576" y="864" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="Debug10.tmx"/>
+    <property name="NextSpawn" value="FromDebug9_2"/>
+   </properties>
+  </object>
+  <object name="FromDebug10_1" type="Spawn" gid="52" x="576" y="896" width="32" height="32"/>
+  <object name="purpleKey" type="Key" gid="53" x="832" y="864" width="32" height="32">
+   <properties>
+    <property name="Blue" value="128"/>
+    <property name="Description" value="a purple key"/>
+    <property name="Door" value="Door8"/>
+    <property name="Red" value="128"/>
+   </properties>
+  </object>
+  <object type="SlowDemon" gid="54" x="797" y="675" width="32" height="32" rotation="34.8753"/>
+  <object type="SlowDemon" gid="54" x="884" y="662" width="32" height="32" rotation="-45.8851"/>
+  <object type="Demon" gid="54" x="576" y="640" width="32" height="32" rotation="441.222"/>
+  <object type="Torch" gid="55" x="576" y="608" width="32" height="32"/>
+  <object type="Demon" gid="54" x="704" y="832" width="32" height="32" rotation="179.832"/>
+ </objectgroup>
+</map>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="30" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="Description" value="tower level 2"/>
+ </properties>
+ <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
+  <image source="../tileset/tileset.png" width="160" height="320"/>
+ </tileset>
+ <tileset firstgid="51" name="Object" tilewidth="32" tileheight="32">
+  <image source="../tileset/ObjectTiles.png" width="160" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="spawn"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKGD7995QabgqqmqqvruAU/eCo0=
+  </data>
+ </layer>
+ <layer name="Collision" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1UEKACAIBED1/4/ukpfICtKMWkE6bDAUSUJEktSnCy5cuHDhwvVwuXbGP6guG93LtDxcq2ZZlMuD7EU3656j3dV56e3fca2SZm2z11x9z7+c9+Y5yugCpigBbA==
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 1" width="30" height="30">
+  <object type="Stairs" gid="56" x="288" y="64" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="nextlevel"/>
+    <property name="NextSpawn" value="nextspawn"/>
+   </properties>
+  </object>
+  <object name="StairsToDebug6_2" type="Stairs" gid="66" x="576" y="608" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="Debug6.tmx"/>
+    <property name="NextSpawn" value="FromDebug7_1"/>
+   </properties>
+  </object>
+  <object name="FromDebug6_2" type="Spawn" gid="52" x="576" y="576" width="32" height="32"/>
+  <object name="StairsToDebug8_1" type="Stairs" gid="61" x="832" y="832" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="Debug8.tmx"/>
+    <property name="NextSpawn" value="FromDebug7_2"/>
+   </properties>
+  </object>
+  <object name="FromDebug8_1" type="Spawn" gid="52" x="832" y="864" width="32" height="32"/>
+  <object name="Door8" type="Door" gid="57" x="704" y="832" width="32" height="32" rotation="270">
+   <properties>
+    <property name="Description" value="a purple key"/>
+   </properties>
+  </object>
+  <object type="Soul" gid="58" x="576" y="832" width="32" height="32"/>
+  <object type="Torch" gid="55" x="832" y="640" width="32" height="32"/>
+  <object type="Fuel" gid="60" x="640" y="768" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="75"/>
+   </properties>
+  </object>
+  <object type="Demon" gid="54" x="800" y="608" width="32" height="32"/>
+ </objectgroup>
+</map>

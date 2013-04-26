@@ -59,7 +59,7 @@
     <property name="Red" value="255"/>
    </properties>
   </object>
-  <object type="Demon" gid="54" x="672" y="608" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="672" y="608" width="32" height="32"/>
   <object type="Torch" gid="55" x="608" y="832" width="32" height="32"/>
   <object name="StairsToDebug2_1" type="Stairs" gid="56" x="704" y="480" width="32" height="32">
    <properties>
@@ -110,7 +110,7 @@
     <property name="Description" value="a red key"/>
    </properties>
   </object>
-  <object gid="1073741878" x="608" y="64" width="32" height="32"/>
+  <object type="Demon" gid="1073741878" x="608" y="64" width="32" height="32"/>
   <object name="bluekey" type="Key" gid="53" x="416" y="64" width="32" height="32">
    <properties>
     <property name="Blue" value="255"/>
@@ -119,5 +119,11 @@
    </properties>
   </object>
   <object type="Torch" gid="55" x="576" y="128" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="160" y="256" width="32" height="32" rotation="-270"/>
+  <object type="Fuel" gid="60" x="640" y="319" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="50"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

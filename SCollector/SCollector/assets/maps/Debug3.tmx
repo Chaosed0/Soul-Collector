@@ -26,7 +26,7 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzlltsKwjAMhjPBszDwtOHhwgmbN6Lo+7+bLUtZLGu62cMuDPwETefXNLHZCgAWBh2ZmE3cs0uhOZgtZWI2k88mhtjsj7kZ+ovQFnXzwNWlc/OWfbrkW0K99zP+3gmafA6E+8b4C9e6cjmT+e5xDwVyfeVr46p8FS+H5lxc6tuHq1uMfFVf0fpXEbgxjfZVm4qAXC7fnImF5CrT75uQXMlQd+Yd/J67jav+R6n2OSaXehV34XL9XEFzh0kroV+v09lGRedCX+ty5qY13DlnxCeaD8k11bat1r9wTfW9QvPOQeejL66tvk+hsdAO/SMSV64ZEXFz0yd3Dd/v3Bv8vsvdbVoz5BwckutrzvThTqHu05iaCH0AZQAOdA==
+   eJzlltsKwjAMhjPBszDwtOHhwgmbN6Lo+7+bHSYshjXbtO0uDPyEmW5f09SmCwCYWbRXYk3S3p0bTcFusRIjGyjvRpbY5I+5CfqT0Rp1ccCVkty0Zp4xfpcE4lmKx3Oc+xG/d2D57Bj3ifEHjiWuDyvz3eIcMuTKfH1xKV/ipVCtS5v6uuBKC5Ev7Ste/yIAN6TxfVWnzCNXyzdVYj65ZPK88cktGXRmXsHtujdx6X8Ui+eQXO4p/gtX288FVGdYaTl02+u8t3HxvtDV2qy5bYy2zgnzkfA+ubba1tX6G66tvmeo7hy8P7riNtX3bjQ02qC/BeKWY/hdRuubLrlL+Lxzr/D3Nme3bUyffbBPrqs+04U7hvc+DamR0QveBw6U
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
@@ -64,7 +64,7 @@
   <object type="Demon" gid="54" x="439" y="306" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="517" y="224" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="631" y="267" width="32" height="32"/>
-  <object type="Demon" gid="54" x="762" y="507" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="762" y="507" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="424" y="433" width="32" height="32"/>
   <object type="Torch" gid="55" x="576" y="448" width="32" height="32"/>
   <object name="Door4" type="Door" gid="57" x="800" y="192" width="32" height="32">
@@ -90,12 +90,12 @@
    </properties>
   </object>
   <object type="Soul" gid="58" x="64" y="480" width="32" height="32"/>
-  <object type="SlowDemon" gid="54" x="109" y="536" width="32" height="32" rotation="-308.811"/>
+  <object type="SlowDemon" gid="54" x="113" y="545" width="32" height="32" rotation="-308.811"/>
   <object type="Demon" gid="54" x="183" y="561" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="109" y="459" width="32" height="32" rotation="-261.38"/>
   <object type="Potion" gid="59" x="64" y="544" width="32" height="32">
    <properties>
-    <property name="Recovery" value="75"/>
+    <property name="Recovery" value="100"/>
    </properties>
   </object>
   <object name="whitekey" type="Key" gid="53" x="32" y="512" width="32" height="32">
@@ -115,5 +115,35 @@
     <property name="Recovery" value="40"/>
    </properties>
   </object>
+  <object type="Fuel" gid="60" x="32" y="576" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="100"/>
+   </properties>
+  </object>
+  <object name="Door7" type="Door" gid="57" x="352" y="192" width="32" height="32">
+   <properties>
+    <property name="Description" value="a black key"/>
+   </properties>
+  </object>
+  <object name="StairsToDebug6_1" type="Stairs" gid="61" x="608" y="64" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="Debug6.tmx"/>
+    <property name="NextSpawn" value="FromDebug3_3"/>
+   </properties>
+  </object>
+  <object name="FromDebug6_1" type="Spawn" gid="52" x="608" y="96" width="32" height="32"/>
+  <object name="StairsToDebug6_2" type="Stairs" gid="61" x="416" y="64" width="32" height="32">
+   <properties>
+    <property name="NextLevel" value="Debug6.tmx"/>
+    <property name="NextSpawn" value="FromDebug3_4"/>
+   </properties>
+  </object>
+  <object name="FromDebug6_2" type="Spawn" gid="52" x="416" y="96" width="32" height="32"/>
+  <object type="Potion" gid="59" x="288" y="64" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="75"/>
+   </properties>
+  </object>
+  <object type="Torch" gid="55" x="320" y="128" width="32" height="32"/>
  </objectgroup>
 </map>

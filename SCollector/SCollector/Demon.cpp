@@ -7,7 +7,8 @@ const sf::Time Demon::alertTime = sf::milliseconds(1000);
 const sf::Time Demon::chargeTime = sf::milliseconds(5000);
 const sf::Time Demon::stunTime = sf::milliseconds(500);
 const float Demon::wanderSpeed = 60.0f;
-const float Demon::chargeSpeed = 360.0f;
+const float Demon::chargeSpeed = 340.0f;
+const int demonAttackPower = 15;
 
 Demon::Demon(sf::Vector2f pos)
 	: Movable("assets/img/zombie_topdown.png", sf::IntRect(20, 20, 27, 23), sf::IntRect(0, 0, 64, 64))
@@ -25,6 +26,8 @@ Demon::Demon(sf::Vector2f pos)
 	soundManager.AddSound("assets/sound/charge.ogg", "charge", true);
 	soundManager.AddSound("assets/sound/alert.ogg", "alert", false);
 	soundManager.AddSound("assets/sound/thwack.ogg", "hit", false);
+
+	attackPower = demonAttackPower;
 }
 
 void Demon::Attack(Movable& movable)
