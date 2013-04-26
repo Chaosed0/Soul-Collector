@@ -79,11 +79,11 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 		sfg::Table::FILL, sfg::Table::FILL);
 	helpMenu->Attach(actKey, sf::Rect<sf::Uint32>(4,9,1,1),
 		sfg::Table::FILL, sfg::Table::FILL);
-	helpMenu->Attach(lightKey, sf::Rect<sf::Uint32>(6,10,2,1),
+	helpMenu->Attach(lightKey, sf::Rect<sf::Uint32>(5,10,2,1),
 		sfg::Table::FILL, sfg::Table::FILL);
 	helpMenu->Attach(runKey, sf::Rect<sf::Uint32>(1,12,2,1),
 		sfg::Table::FILL, sfg::Table::FILL);
-	helpMenu->Attach(attackKey, sf::Rect<sf::Uint32>(4,12,2,1),
+	helpMenu->Attach(attackKey, sf::Rect<sf::Uint32>(4,13,4,1),
 		sfg::Table::FILL, sfg::Table::FILL);
 
 	// --- Game over menu ---
