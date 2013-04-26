@@ -33,7 +33,6 @@
    </properties>
   </object>
   <object type="SlowDemon" gid="54" x="352" y="480" width="32" height="32" rotation="-270"/>
-  <object type="SlowDemon" gid="54" x="480" y="352" width="32" height="32" rotation="-180"/>
   <object type="SlowDemon" gid="54" x="608" y="480" width="32" height="32" rotation="-90"/>
   <object type="SlowDemon" gid="54" x="480" y="608" width="32" height="32"/>
   <object type="Demon" gid="54" x="288" y="864" width="32" height="32" rotation="-90"/>
@@ -58,6 +57,7 @@
    <properties>
     <property name="Description" value="a green key"/>
     <property name="Door" value="Door5"/>
+    <property name="Green" value="128"/>
    </properties>
   </object>
   <object type="Demon" gid="54" x="896" y="928" width="32" height="32" rotation="300"/>
@@ -96,5 +96,6 @@
   <object type="Demon" gid="54" x="352" y="608" width="32" height="32" rotation="270"/>
   <object type="SlowDemon" gid="54" x="608" y="672" width="32" height="32" rotation="-361.081"/>
   <object type="SlowDemon" gid="54" x="96" y="640" width="32" height="32" rotation="180"/>
+  <object name="FromDebug5_1" type="Spawn" gid="52" x="32" y="512" width="32" height="32"/>
  </objectgroup>
 </map>

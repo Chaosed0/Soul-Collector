@@ -30,6 +30,7 @@
    <properties>
     <property name="Description" value="a red key"/>
     <property name="Door" value="Door3"/>
+    <property name="Red" value="255"/>
    </properties>
   </object>
   <object type="Demon" gid="54" x="96" y="64" width="32" height="32"/>
@@ -89,13 +90,16 @@
   <object type="SlowDemon" gid="54" x="109" y="459" width="32" height="32" rotation="-261.38"/>
   <object type="Potion" gid="59" x="64" y="544" width="32" height="32">
    <properties>
-    <property name="Recovery" value="50"/>
+    <property name="Recovery" value="75"/>
    </properties>
   </object>
   <object name="whitekey" type="Key" gid="53" x="32" y="512" width="32" height="32">
    <properties>
+    <property name="Blue" value="255"/>
     <property name="Description" value="a white key"/>
     <property name="Door" value="Door5"/>
+    <property name="Green" value="255"/>
+    <property name="Red" value="255"/>
    </properties>
   </object>
   <object type="Demon" gid="1073741878" x="32" y="288" width="32" height="32"/>

@@ -50,6 +50,8 @@
    <properties>
     <property name="Description" value="a yellow key"/>
     <property name="Door" value="Door1"/>
+    <property name="Green" value="255"/>
+    <property name="Red" value="255"/>
    </properties>
   </object>
   <object type="Demon" gid="54" x="672" y="608" width="32" height="32"/>
@@ -70,14 +72,17 @@
   </object>
   <object name="Door2" type="Door" gid="57" x="640" y="416" width="32" height="32">
    <properties>
-    <property name="Description" value="a golden key"/>
+    <property name="Description" value="an iron key"/>
    </properties>
   </object>
   <object type="Torch" gid="55" x="640" y="480" width="32" height="32"/>
-  <object name="goldkey" type="Key" gid="53" x="128" y="192">
+  <object name="ironKey" type="Key" gid="53" x="160" y="160">
    <properties>
-    <property name="Description" value="a golden key"/>
+    <property name="Blue" value="128"/>
+    <property name="Description" value="an iron key"/>
     <property name="Door" value="Door2"/>
+    <property name="Green" value="128"/>
+    <property name="Red" value="128"/>
    </properties>
   </object>
   <object type="Soul" gid="58" x="608" y="320" width="32" height="32"/>
@@ -104,6 +109,7 @@
   <object gid="1073741878" x="608" y="64" width="32" height="32"/>
   <object name="bluekey" type="Key" gid="53" x="416" y="64" width="32" height="32">
    <properties>
+    <property name="Blue" value="255"/>
     <property name="Description" value="a blue key"/>
     <property name="Door" value="Door4"/>
    </properties>
