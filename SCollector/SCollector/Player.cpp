@@ -16,7 +16,7 @@ const float Player::sprintSpeed = 210.0f;
 const float Player::humanityDecrease = 0.5f;
 const float Player::humanityIncrease = 20.0f;
 const int Player::healthIncrease = 50;
-const int Player::maxSouls = 6;
+const int Player::maxSouls = 7;
 
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
@@ -133,7 +133,7 @@ void Player::AddSoul()
 {
 	souls++;
 	//Whenever the player gets a soul, his stats should increase
-	humanityTimer += sf::microseconds((sf::Int64)(maxHumanityTime.asMicroseconds()/humanityIncrease));
+	AddHumanity(humanityIncrease);
 	AddHealth(healthIncrease);
 }
 int Player::GetRemainingSouls()

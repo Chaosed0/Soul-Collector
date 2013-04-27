@@ -266,6 +266,11 @@ void Game::Update()
 	if(cheatCounter == 10) {
 		s3.setBuffer(landBuf);
 		s3.play();
+		levelManager.GetPlayer().AddSoul();
+		levelManager.GetPlayer().AddSoul();
+		levelManager.GetPlayer().AddSoul();
+		levelManager.GetPlayer().AddSoul();
+		hud.changeText("God mode enabled");
 		cheatCounter++;
 	} else if(cheatCounter == 11) {
 		levelManager.GetPlayer().AddFuel(100);

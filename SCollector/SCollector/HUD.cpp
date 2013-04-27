@@ -30,8 +30,8 @@ void HUD::changeFill(int final, int which)
 	//If we're changing the humanity, we may also want to change the picture
 	if(which == humanity && abs(prevHumanityChange - final) > humanityIncrement) {
 		int imgIndex = (90-final)/10;
-		char imgLoc[33];
-		snprintf(imgLoc, 33, "assets/img/hud_soul_beast0%d0.png", imgIndex);
+		char imgLoc[35];
+		snprintf(imgLoc, 35, "assets/img/hud_soul_beast0%d0.png", imgIndex);
 		objects[which]->SetImage(imgLoc);
 	}
 }
