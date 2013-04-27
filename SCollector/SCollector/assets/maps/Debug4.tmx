@@ -5,6 +5,11 @@
  </properties>
  <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
   <image source="../tileset/tileset.png" width="160" height="320"/>
+  <tile id="3">
+   <properties>
+    <property name="Clear" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="51" name="Object" tilewidth="32" tileheight="32">
   <image source="../tileset/ObjectTiles.png" width="160" height="320"/>
@@ -21,7 +26,12 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzFVtEOAyEIE///o5d7MDFdacuWZU2MN0BKRXe311r7T+OG8zuwfCxmg//MBQPrYL9x7up2eZjue67G3vGjjcHZS+Rn9rSWW09yPrq+7sbGdB2+avwqf6qbjZtX7ac6V11dWMPt684vy6vyM3tSs/Op+6XWTzQl90Uh5U376Na4c4eoxs7qn2LSY6VjYl8k7lsdqOkB3sOUV2lgtkQH628X1+lJ7qviTeLS/ZnysrwPCtacWb0Hu/9X9uzikjrdOXa8+Ixg3yMMqmZXS5cH97nT2eVADre/mAOhvhcYr+uV8rF9wF4UrJ1A9eBgyuu0JDGf6HXnyek8/pQ31eR0Jry13vWithvufTyBqv3X4wUYdQPM
+   eJytVn9LAzEMLeLU6XTgph44/9gJTieC+P0/nA3cc7m3vLanBsJd27TJa/NrkVK6dHyV+cTxgtZr/FgZQ8c8jemNZFZpGi0rY6MLp/ehIGe0zbzO3Isx78f6a0XvyyC3o31rmse5HY3V9zPzO9no9TIp3Ooev4R99m4rmjO994P80zC3SeP7YdzPNIacsmcZzLXg7cS6Oh92Mu6tm/N4jT/SATfbD7+pvXsLbsbr18zP9plvKueWzo/mrzOfZT4Pzga223TsEyzD8WL2el/h+zCsyElzWosw1eJF3QPvh17Lg8AEH0IsR++o4jba4+ME++wOozzZSq04I/L+zPkOX8Szt/80HezvhvEmjfGx3+N86FVv+xscnkr1wetV72Y4evfP9itc7Pel+I30RrYruWi+ljfYLs4hCo/Cpe6P9aKeqDyfaL41jn2cRXUwisfoXXduPcrPHMe+7kf1qPVdFSlZxJmPvUivxxmdBf9FnOJdGWd/vPWHIr3+33qU2cBcO1iWCf4S5Uzur6Jcyn0l13fuP1T99lTqNxRNrT8telVPEcWtqj8l31B6p9RfRS1y3F9xLJbitlZnS/2get+/1qIaoeeYEd8Fc//J1td9AwioIZM=
+  </data>
+ </layer>
+ <layer name="ObjectOverlay" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzjERAAAEAEDFLPqHksEZGP4TfAQA/JDXgaG6DgDAUgOXYQCA
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
@@ -52,7 +62,7 @@
    </properties>
   </object>
   <object type="Demon" gid="54" x="800" y="192" width="32" height="32" rotation="180"/>
-  <object type="Torch" gid="55" x="832" y="96" width="32" height="32"/>
+  <object type="Torch" gid="55" x="832" y="96" width="32" height="32" rotation="-180"/>
   <object name="greenKey" type="Key" gid="53" x="800" y="832" width="32" height="32">
    <properties>
     <property name="Description" value="a green key"/>
@@ -63,7 +73,7 @@
   <object type="Demon" gid="54" x="896" y="928" width="32" height="32" rotation="300"/>
   <object type="Demon" gid="54" x="736" y="768" width="32" height="32" rotation="492.734"/>
   <object type="SlowDemon" gid="54" x="768" y="882" width="32" height="32" rotation="450"/>
-  <object name="Door6" type="Door" gid="57" x="32" y="512">
+  <object name="Door6" type="Door" gid="57" x="32" y="512" width="32" height="32">
    <properties>
     <property name="Description" value="a white key"/>
    </properties>
@@ -97,5 +107,16 @@
   <object type="SlowDemon" gid="54" x="608" y="672" width="32" height="32" rotation="-361.081"/>
   <object type="SlowDemon" gid="54" x="96" y="640" width="32" height="32" rotation="180"/>
   <object name="FromDebug5_1" type="Spawn" gid="52" x="32" y="512" width="32" height="32"/>
+  <object type="Fuel" gid="60" x="544" y="352">
+   <properties>
+    <property name="Recovery" value="15"/>
+   </properties>
+  </object>
+  <object type="Fuel" gid="60" x="832" y="640">
+   <properties>
+    <property name="Recovery" value="10"/>
+   </properties>
+  </object>
+  <object gid="59" x="832" y="160"/>
  </objectgroup>
 </map>

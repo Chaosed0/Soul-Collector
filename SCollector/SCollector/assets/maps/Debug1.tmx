@@ -39,14 +39,14 @@
    eJztwwEJAAAMBKGD7995QabgqqmqqvruAU/eCo0=
   </data>
  </layer>
- <layer name="ObjectOverlay" width="30" height="30">
-  <data encoding="base64" compression="zlib">
-   eJztzsEJACAMALEupg9x/5kcooWqJP+Di/jX6B5I2Ml+llwAvG91DwDAxQ5R2QEC
-  </data>
- </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJxjYmBgYCIB8wAxFx7MjUM9ujipmBOIGfFgDizqGbCIE+sPGNYDYhEkrAXEfEj2CqGpF4baiyyO7HeYu0gFHGhhQKweatjLDsSsJGA2KtlLaXphIQOjxycxmBrxSw5ADiNS4wiE+ZDMUmRApHFdKC1LhL3kxg0M8ONgj9pLXXvVGBDxSU97kcFIsBc5HykzoNYd6FiKivYS8iOt/DtqL33slRgge0kBo/aSb6/4ANk70vLRSLAXuS0oykBaux0AuwkLtA==
+   eJxjYmBgYCIB8wAxFx7MjUM9ujipmJMBP+DAoR5dnFh/wLAeEIsgYS0g5kOyVwhNvTAWcWS/E/IHPv+RqhfZ75TYyw7ErCRgNirZS2l6YSEDo8cnMZga8UsOQA4jUuMIhJHTsTiZ9lKal/lHoL2gdCYJ5eMLd1r6F5//R+0l314jBtT6QhmNj4ylaOhffGC45KORZK/EANlLChi1l3x7R+vfUXupZS9yW1CUgbR2OwBdxwsb
+  </data>
+ </layer>
+ <layer name="ObjectOverlay" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzsEJACAMALEupg9x/5kcooVKSf4HFzHX6h5IuMl+l1wAzHC6BwDgUw9Q0QEC
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
@@ -61,13 +61,13 @@
   </object>
   <object type="SlowDemon" gid="54" x="672" y="608" width="32" height="32"/>
   <object type="Torch" gid="55" x="608" y="832" width="32" height="32"/>
-  <object name="StairsToDebug2_1" type="Stairs" gid="56" x="704" y="480" width="32" height="32">
+  <object name="StairsToDebug2_1" type="Stairs" gid="56" x="736" y="480" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug2.tmx"/>
     <property name="NextSpawn" value="FromDebug1_1"/>
    </properties>
   </object>
-  <object name="FromDebug2_1" type="Spawn" gid="52" x="704" y="448" width="32" height="32"/>
+  <object name="FromDebug2_1" type="Spawn" gid="52" x="736" y="448" width="32" height="32"/>
   <object name="FromDebug2_2" type="Spawn" gid="52" x="384" y="160" width="32" height="32"/>
   <object name="StairsToDebug2_2" type="Stairs" gid="56" x="384" y="128" width="32" height="32">
    <properties>
@@ -75,12 +75,12 @@
     <property name="NextSpawn" value="FromDebug1_2"/>
    </properties>
   </object>
-  <object name="Door2" type="Door" gid="57" x="640" y="416" width="32" height="32">
+  <object name="Door2" type="Door" gid="57" x="672" y="384" width="32" height="32" rotation="-180">
    <properties>
     <property name="Description" value="an iron key"/>
    </properties>
   </object>
-  <object type="Torch" gid="55" x="640" y="480" width="32" height="32"/>
+  <object type="Torch" gid="55" x="608" y="288" width="32" height="32" rotation="-450"/>
   <object name="ironKey" type="Key" gid="53" x="160" y="160">
    <properties>
     <property name="Blue" value="128"/>
@@ -90,7 +90,7 @@
     <property name="Red" value="128"/>
    </properties>
   </object>
-  <object type="Soul" gid="58" x="608" y="320" width="32" height="32"/>
+  <object type="Soul" gid="58" x="608" y="480" width="32" height="32"/>
   <object name="StairsToDebug2_3" type="Stairs" gid="56" x="896" y="128" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug2.tmx"/>
@@ -120,7 +120,7 @@
   </object>
   <object type="Torch" gid="55" x="576" y="128" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="160" y="256" width="32" height="32" rotation="-270"/>
-  <object type="Fuel" gid="60" x="640" y="319" width="32" height="32">
+  <object type="Fuel" gid="60" x="672" y="480" width="32" height="32">
    <properties>
     <property name="Recovery" value="50"/>
    </properties>

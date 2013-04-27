@@ -42,14 +42,15 @@ private:
 	/** Toggles the loading screen */
 	void ToggleLoading();
 
+	/** Does some mysterious stuff. */
+	void AddCheatCounter(int a, int b);
+
 	/** Width and height of the window */
 	const int winWidth, winHeight;
 	/** The window itself */
 	sf::RenderWindow window;
 	/** The menu manger */
 	MenuManager menus;
-	/** Sound manager for playing sounds at, for example, game over */
-	SoundManager soundManager;
 
 	/** Flag set to true when the game is running */
 	bool isRunning;
@@ -77,6 +78,23 @@ private:
 	sf::Time shakeTimer;
 	/** Flag for the shake timer */
 	bool shakeDone;
+
+	int cheatCounter;
+
+	/**
+	 * Sounds
+	 * we can't use a SoundManager because some must be overlayed on top of each other
+	 */
+	sf::Sound s1;
+	sf::Sound s2;
+	sf::Sound s3;
+	sf::SoundBuffer initBuf;
+	sf::SoundBuffer introBuf;
+	sf::SoundBuffer instructBuf;
+	sf::SoundBuffer landBuf;
+	sf::SoundBuffer shakeBuf;
+	sf::SoundBuffer winBuf;
+	sf::SoundBuffer loseBuf;
 
 	/** How much time we should fade out for. */
 	const static sf::Time fadeoutTime;

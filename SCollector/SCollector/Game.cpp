@@ -30,18 +30,20 @@ Game::Game()
 	hud.AddObject("assets/img/hud_soul_beast000.png");
 	hud.AddObject("assets/img/hud_soul_beast000.png");
 	
-	soundManager.AddSound("assets/sound/init.ogg", "init", false);
-	soundManager.AddSound("assets/sound/intro.ogg", "intro", false);
-	soundManager.AddSound("assets/sound/instruct.ogg", "instruct", false);
-	soundManager.AddSound("assets/sound/Land.ogg", "land", false);
-	soundManager.AddSound("assets/sound/Shake.ogg", "shake", true);
-	soundManager.AddSound("assets/sound/Win.ogg", "win", false);
-	soundManager.AddSound("assets/sound/Lose.ogg", "lose", false);
+	initBuf.loadFromFile("assets/sound/init.ogg");
+	introBuf.loadFromFile("assets/sound/intro.ogg");
+	instructBuf.loadFromFile("assets/sound/instruct.ogg");
+	landBuf.loadFromFile("assets/sound/Land.ogg");
+	shakeBuf.loadFromFile("assets/sound/Shake.ogg");
+	winBuf.loadFromFile("assets/sound/Win.ogg");
+	loseBuf.loadFromFile("assets/sound/Lose.ogg");
 
 	fadeoutRect.setFillColor(sf::Color(0,0,0,0));
 	fadeoutRect.setPosition(0,0);
 	fadeoutTimer = sf::Time::Zero;
 	shakeTimer = sf::Time::Zero;
+
+	cheatCounter = 0;
 }
 
 int Game::Run()
@@ -69,7 +71,8 @@ void Game::Intro()
 	introLogo.setTexture(introLogoTexture);
 	window.draw(introLogo);
 	window.display();
-	soundManager.PlaySound("intro");
+	s1.setBuffer(introBuf);
+	s1.play();
 	while(introTimer.getElapsedTime() <= introTime) { }
 	window.clear();
 }
@@ -96,7 +99,8 @@ void Game::Loop()
 	sf::Time frameTime = sf::microseconds(sf::seconds(1).asMicroseconds()/ticksPerSec);
 
 	updateTimer.restart();
-	soundManager.PlaySound("init");
+	s1.setBuffer(initBuf);
+	s1.play();
 
 	// --- MAIN GAME LOOP ---
 	while(isRunning)
@@ -150,9 +154,12 @@ void Game::Event()
 			ToggleLoading();
 			levelManager.LoadMap(firstLevel, firstSpawn);
 			ToggleLoading();
-			soundManager.PlaySound("shake");
-			soundManager.PlaySound("land");
-			soundManager.PlaySound("instruct");
+			s1.setBuffer(shakeBuf);
+			s2.setBuffer(instructBuf);
+			s3.setBuffer(landBuf);
+			s1.play();
+			s2.play();
+			s3.play();
 		}
 
 		//If the game is not paused, allow it to receive events
@@ -175,6 +182,7 @@ void Game::Event()
 					break;
 				case sf::Keyboard::A :
 					levelManager.GetPlayer().MoveLeft(true);
+					AddCheatCounter(9, -1);
 					break;
 				case sf::Keyboard::D :
 					levelManager.GetPlayer().MoveRight(true);
@@ -196,6 +204,20 @@ void Game::Event()
 					menus.SetVisible(true);
 					paused = true;
 					break;
+				case sf::Keyboard::Up :
+					AddCheatCounter(0, 1);
+					break;
+				case sf::Keyboard::Down :
+					AddCheatCounter(2, 3);
+					break;
+				case sf::Keyboard::Left :
+					AddCheatCounter(4, 6);
+					break;
+				case sf::Keyboard::Right :
+					AddCheatCounter(5, 7);
+					break;
+				case sf::Keyboard::B :
+					AddCheatCounter(8, -1);
 				default:
 					break;
 				}
@@ -241,6 +263,17 @@ void Game::Update()
 	updateTimer.restart();
 	shakeTimer += updateTime;
 
+	if(cheatCounter == 10) {
+		s3.setBuffer(landBuf);
+		s3.play();
+		cheatCounter++;
+	} else if(cheatCounter == 11) {
+		levelManager.GetPlayer().AddFuel(100);
+		levelManager.GetPlayer().AddHealth(100);
+		levelManager.GetPlayer().AddHumanity(100);
+		levelManager.GetPlayer().AddEnergy(100);
+	}
+
 	//Check win/lose conditions
 	if(levelManager.HasLoadedLevel()) {
 		bool win = levelManager.GetCurrentLevel().GetPlayer().GetRemainingSouls() == 0;
@@ -257,9 +290,11 @@ void Game::Update()
 			}
 			if(fadeoutTimer >= fadeoutTime) {
 				if(win) {
-					soundManager.PlaySound("win");
+					s1.setBuffer(winBuf);
+					s1.play();
 				} else {
-					soundManager.PlaySound("lose");
+					s1.setBuffer(loseBuf);
+					s1.play();
 				}
 				fadeoutTimer = sf::Time::Zero;
 				shakeTimer = sf::Time::Zero;
@@ -315,10 +350,10 @@ void Game::Update()
 			float shakeProp = 1 - (float)shakeTimer.asMicroseconds()/(float)shakeTime.asMicroseconds();
 			view.setCenter(sf::Vector2f(view.getCenter().x + getRandom()*8*shakeProp,
 				view.getCenter().y + getRandom()*8*shakeProp));
-			soundManager.SetSoundVolume("shake", 1+99*shakeProp);
+			s1.setVolume(1+99*shakeProp);
 			//printf("%g, %g\n", shakeTimer.asSeconds(), shakeTime.asSeconds());
 			if(shakeProp <= 0.0f) {
-				soundManager.StopSound("shake");
+				s1.stop();
 				shakeDone = true;
 			}
 		}
@@ -363,4 +398,14 @@ void Game::ToggleLoading()
 	// way around it except for deferring loading yet another frame or
 	// going to multithreaded (which is a good way, but too late for that)
 	Render();
+}
+
+void Game::AddCheatCounter(int a, int b)
+{
+	if(cheatCounter == a || cheatCounter == b && !(cheatCounter == 10 || cheatCounter == 11)) {
+		cheatCounter++;
+	} else if(!(cheatCounter == 10 || cheatCounter == 11)) {
+		cheatCounter = 0;
+	}
+	printf("%d\n", cheatCounter);
 }

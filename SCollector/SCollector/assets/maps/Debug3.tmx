@@ -5,6 +5,11 @@
  </properties>
  <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
   <image source="../tileset/tileset.png" width="160" height="320"/>
+  <tile id="3">
+   <properties>
+    <property name="Clear" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="51" name="Object" tilewidth="32" tileheight="32">
   <image source="../tileset/ObjectTiles.png" width="160" height="320"/>
@@ -21,12 +26,12 @@
  </layer>
  <layer name="ObjectOverlay" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7A5w78rHOwjPK2CJgAAADTzHTiyQzgAQA==
+   eJztzrEJAEAIwEAXE/ff6md4UES4K1Ml4o5s6gAAAD9qe2DIA8UTAPc=
   </data>
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzlltsKwjAMhjPBszDwtOHhwgmbN6Lo+7+bHSYshjXbtO0uDPyEmW5f09SmCwCYWbRXYk3S3p0bTcFusRIjGyjvRpbY5I+5CfqT0Rp1ccCVkty0Zp4xfpcE4lmKx3Oc+xG/d2D57Bj3ifEHjiWuDyvz3eIcMuTKfH1xKV/ipVCtS5v6uuBKC5Ev7Ste/yIAN6TxfVWnzCNXyzdVYj65ZPK88cktGXRmXsHtujdx6X8Ui+eQXO4p/gtX288FVGdYaTl02+u8t3HxvtDV2qy5bYy2zgnzkfA+ubba1tX6G66tvmeo7hy8P7riNtX3bjQ02qC/BeKWY/hdRuubLrlL+Lxzr/D3Nme3bUyffbBPrqs+04U7hvc+DamR0QveBw6U
+   eJzlltsKwjAMhot4VhA8bdN5oYLzRhR9/3czxQRiWdNO2+Ih8FPWZvvWJGs2VkoNLVoLay4f6d4RaKDsNhHWXD7Svf0/5mY4bkFz1DEBN6/xv7J32OBcAWqjStDeWC/xukKfwpjXWjHujbHoGT5xfsX0fpf4DrsaVkwu7ZcYFG8dF5/8huJyS7Ffvk/Kf5WAm9J4Xeka5t8Hr7UYXGm/ubAWkxvLXFw6M08qbNx9+4I5fjOX6rlO9P1SfR3Ymk/MeW/j4n2hqb3Tm6U4Z44xFteW2ya5lri2/FI/p54UmuvK7wXUAS1wPCfiap8Wk9Q3Q3Kn6vmfe4bzPme3zedTz+df5PbUo05Tqgu6A1A1D6s=
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
@@ -38,7 +43,7 @@
     <property name="Red" value="255"/>
    </properties>
   </object>
-  <object type="Demon" gid="54" x="96" y="64" width="32" height="32"/>
+  <object type="Demon" gid="54" x="96" y="160" width="32" height="32"/>
   <object type="Torch" gid="55" x="32" y="64" width="32" height="32"/>
   <object name="StairsToDebug2_5" type="Stairs" gid="56" x="192" y="928" width="32" height="32">
    <properties>
@@ -79,7 +84,7 @@
    </properties>
   </object>
   <object name="FromDebug4_1" type="Spawn" gid="52" x="800" y="96" width="32" height="32"/>
-  <object type="Potion" gid="59" x="832" y="640" width="32" height="32">
+  <object type="Potion" gid="59" x="896" y="640" width="32" height="32">
    <properties>
     <property name="Recovery" value="40"/>
    </properties>
@@ -102,7 +107,7 @@
    <properties>
     <property name="Blue" value="255"/>
     <property name="Description" value="a white key"/>
-    <property name="Door" value="Door5"/>
+    <property name="Door" value="Door6"/>
     <property name="Green" value="255"/>
     <property name="Red" value="255"/>
    </properties>
@@ -145,5 +150,10 @@
    </properties>
   </object>
   <object type="Torch" gid="55" x="320" y="128" width="32" height="32"/>
+  <object type="Potion" gid="59" x="896" y="576" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="25"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

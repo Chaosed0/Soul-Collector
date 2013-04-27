@@ -141,6 +141,18 @@ public:
 	void AddFuel(int fuel);
 
 	/**
+	 * Adds to the player's humanity level.
+	 * \param recovery The amount to add.
+	 */
+	void AddHumanity(int humanity);
+
+	/**
+	 * Adds to the player's energy level.
+	 * \param recovery The amount to add.
+	 */
+	void AddEnergy(int energy);
+
+	/**
 	 * Resets the player, clearing all souls, keys etc. he has.
 	 */
 	void Reset();

@@ -6,12 +6,14 @@ LevelManager::LevelManager()
 	: player(sf::Vector2f(0, 0))
 {
 	curLevelName = "";
+	isTransitioning = false;
 }
 
 LevelManager::LevelManager(const std::string& mapName, const std::string& spawnName)
 	: player(sf::Vector2f(0, 0))
 {
 	LoadMap(mapName, spawnName);
+	isTransitioning = false;
 }
 
 bool LevelManager::LoadMap(const std::string& mapName, const std::string& spawnName)
@@ -54,6 +56,7 @@ bool LevelManager::Update(const sf::Time& timePassed)
 	if(isTransitioning) {
 		LoadMap(levelName, spawnName);
 		isTransitioning = false;
+		transition = false;
 	}
 	if(transition) {
 		isTransitioning = true;

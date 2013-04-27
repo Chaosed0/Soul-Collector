@@ -5,6 +5,11 @@
  </properties>
  <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
   <image source="../tileset/tileset.png" width="160" height="320"/>
+  <tile id="3">
+   <properties>
+    <property name="Clear" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="51" name="Object" tilewidth="32" tileheight="32">
   <image source="../tileset/ObjectTiles.png" width="160" height="320"/>
@@ -21,7 +26,12 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzVlFEOxCAIRKH3P/T+rAkhzCAUt10SUqvIQ0AvEbke0q7Y/frVNe//0b4uV436GCLeBNf6r/Knz5vlt8JFNqf7KuPq5teP/50rknOjfb4vprjW1o8z/0xsrGzs482ExYNyitYnej7yj+ZRzjvyJm6lx3w+o1pYUWAz+V5F77qdV6DR2hJ/p1CNGBdJtmbXFYw7XP/2RFzWhye51hbVo8rdzfPOe36Cu3xFZ2bc3fuC7Jd/dM8Rl52JrfmY7J7TXBTDnfp2+nkiz0xYbTWwqXC7/Zz5mOqrX+sHk4cC/Q==
+   eJzlVscOwjAMjRBlD4m9ygEObCr4/4/DFo2IrDjDoQfEk56szFe7dpKeUqojZBfYs/SvPW1c11ZynIBjS//C024l6tL9loHtVN1YPY1U3bmwHapL12vg+gtwArx57BlYAOsRukOHbpvM4aw59591N8BdpO5Ifep34bHmXOovrUefrhSpcZ5H2j4wAzaAM2Cu3vmNsZ5YePB8T6hFP2slU86NX9TFOOt45saeZsy5PH+W43tiH+p9990t/TH3IJdXrjx3jZn5vGQs+n0U7M3VJNV1QeKvC6ir6wjB+VyFblX+cncn1f32/w3NKxe4PXQd2bhVfG2ugE3goOzXPtJztYo6wvcvfYvSO0yiG1pHOgY5mYN3SCHQdYH7v2ZOrZg539KleayB74SrQDe0jlyoIq8wnzMPp5H9vjF8b7wAcRYVGQ==
+  </data>
+ </layer>
+ <layer name="ObjectOverlay" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztziEBAAAIwDCKYegfigqgQGzy6hEAADt5PQC8VcPGDw1KVgDC
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">

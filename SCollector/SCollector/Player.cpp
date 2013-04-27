@@ -7,8 +7,8 @@
 
 const sf::Time Player::attackConeLife = sf::seconds(0.2f);
 const sf::Time Player::maxSprintTime = sf::seconds(3.0f);
-const sf::Time Player::maxLighterTime = sf::seconds(150.0f);
-const sf::Time Player::maxHumanityTime = sf::seconds(300.0f);
+const sf::Time Player::maxLighterTime = sf::seconds(300.0f);
+const sf::Time Player::maxHumanityTime = sf::seconds(600.0f);
 const float Player::attackConeLength = 80.0f;
 const float Player::attackConeSweep = 2*PI/8;
 const float Player::regSpeed = 120.0f;
@@ -154,11 +154,25 @@ void Player::AddHealth(int recovery)
 	health = std::min(maxHealth, health+recovery);
 }
 
+void Player::AddEnergy(int recovery)
+{
+	sf::Time newtime = sf::microseconds((sf::Int64)
+		(sprintTimer.asMicroseconds()+recovery/100.0f*maxSprintTime.asMicroseconds()));
+	sprintTimer = std::min(maxSprintTime, newtime);
+}
+
 void Player::AddFuel(int fuel)
 {
 	sf::Time newtime = sf::microseconds((sf::Int64)
 		(lighterTimer.asMicroseconds()+fuel/100.0f*maxLighterTime.asMicroseconds()));
 	lighterTimer = std::min(maxLighterTime, newtime);
+}
+
+void Player::AddHumanity(int humanity)
+{
+	sf::Time newtime = sf::microseconds((sf::Int64)
+		(humanityTimer.asMicroseconds()+humanity/100.0f*maxHumanityTime.asMicroseconds()));
+	humanityTimer = std::min(maxHumanityTime, newtime);
 }
 
 void Player::Update(Level& level, const sf::Time& timePassed)

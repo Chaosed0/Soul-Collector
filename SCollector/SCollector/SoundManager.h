@@ -55,11 +55,13 @@ public:
 	 */
 	void StopLastSound();
 private:
-	/** Map of sound names to sound identifiers. */
+	/** Map of sound names to sound identifiers.
+	 * This is a large amount of overhead for each entity; consider changing */
 	std::map<std::string, int> soundNames;
-	/** Vector of sounds associated with the sound buffers. */
-	std::vector<sf::Sound> sounds;
+	/** The single sound associated with this manager. */
+	sf::Sound sound;
 	/** Vector of flags indicating whether the sounds should loop or not. */
+	std::vector<std::string> soundLocs;
 	std::vector<bool> soundLoop;
 
 	/** The last sound identifier used in the map. */

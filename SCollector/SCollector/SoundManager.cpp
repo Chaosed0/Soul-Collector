@@ -23,8 +23,8 @@ bool SoundManager::AddSound(const std::string& soundLoc, const std::string& soun
 		lastSoundAdded++;
 		//Add the sound to the library of sounds
 		soundNames[soundName] = lastSoundAdded;
-		sounds.push_back(sf::Sound(soundBuffers[soundLoc]));
-		sounds.back().setLoop(loop);
+		soundLocs.push_back(soundLoc);
+		soundLoop.push_back(loop);
 		return true;
 	}
 	//If the sound was already registered, return false
@@ -35,8 +35,10 @@ bool SoundManager::PlaySound(const std::string& soundName)
 {
 	std::map<std::string, int>::iterator soundNameIter = soundNames.find(soundName);
 	if(soundNameIter != soundNames.end()) {
-		sounds[soundNameIter->second].play();
-		lastSoundPlayed = soundNameIter->second;
+		sound.stop();
+		sound.setLoop(soundLoop[soundNameIter->second]);
+		sound.setBuffer(soundBuffers[soundLocs[soundNameIter->second]]);
+		sound.play();
 		return true;
 	}
 	return false;
@@ -44,29 +46,15 @@ bool SoundManager::PlaySound(const std::string& soundName)
 
 bool SoundManager::StopSound(const std::string& soundName)
 {
-	std::map<std::string, int>::iterator soundNameIter = soundNames.find(soundName);
-	if(soundNameIter != soundNames.end()) {
-		sounds[soundNameIter->second].stop();
-		lastSoundPlayed = soundNameIter->second;
-		return true;
-	}
-	return false;
+	sound.stop();
+	return true;
 }
 
 void SoundManager::SetSoundVolume(const std::string& soundName, float volume)
 {
-	std::map<std::string, int>::iterator soundNameIter = soundNames.find(soundName);
-	if(soundNameIter != soundNames.end()) {
-		sounds[soundNameIter->second].setVolume(volume);
-		lastSoundPlayed = soundNameIter->second;
-	}
 }
 
 void SoundManager::StopLastSound()
 {
-	//Make sure we actually played a last sound
-	if(lastSoundPlayed >= 0) {
-		sounds[lastSoundPlayed].stop();
-	}
-	lastSoundPlayed = -1;
+	sound.stop();
 }

@@ -5,6 +5,11 @@
  </properties>
  <tileset firstgid="1" name="Collision" tilewidth="32" tileheight="32">
   <image source="../tileset/tileset.png" width="160" height="320"/>
+  <tile id="3">
+   <properties>
+    <property name="Clear" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="51" name="Object" tilewidth="32" tileheight="32">
   <image source="../tileset/ObjectTiles.png" width="160" height="320"/>
@@ -21,7 +26,12 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzFlEsSwCAIQ9H7H7p7xoTw0WbGRf3wKAa3me2fBtNpPToT7bnJjWKq3KhemTpW/1eRP7cK3Kwn/DkUJ6sXvlJjLpu9X5XL5hlX9ajPlc2r3ElluKzu2bdP9bPnVXsHzZ1y8uuTflO5KEa17xVuNw90v6fejjjV+832EeIsizXRv1m/d7hR/6Jv1KMql+nkEZRTJFYj5tfI6x0u2q9yWe63uUhqndV8ulx0Hnn1JRd5u8PN1jkr9d2dluL1W+MDX54Cow==
+   eJy9lm1rAjEMx4NsIsoURFBBX5wvzhNUdN//w63FBrOseehdb4E/HL22vyZp0zYAsFF0c7aV9DkFrUC33H9rTLSdMedYXGtOL3cf9JHUwjtmx/T/AH9jWYNbato4D5f65vEF7RvkeHi40nqH9KnNbeDt0/kfud65KJeuVdqjOV8OQvvWyR16JnNze7h8/3Gj8dDqH1rL2r6CPpOmIPvLOdo+oX5IbbOgCRHnYr46B4dbriZ7ubw/GvffUzs8XJ5fax1WHcN1Yn7WQfOkBdj+YtxL8+vdzzXyO4SLhnHEuPM6QPON8e3Dtc6vlm/8pjn31merXj2Clum7YfOW1jqJG2OKbwtc/zPoKnBqca37xsPV6mrXk8vrUunbT/KX7o8T66+tZyhXGh/3VrxPlkqfMbgXeNW5O/x+G+TOjPfdTvtJbwhtrhLr+76qwc3dK2MrxvAHyegblg==
+  </data>
+ </layer>
+ <layer name="ObjectOverlay" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzjEBAAAIwKBls38oW+gDCSgAAICa7wDnFo74AEM=
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
@@ -72,7 +82,7 @@
     <property name="Description" value="an orange key"/>
    </properties>
   </object>
-  <object name="orangeKey" type="Key" gid="53" x="192" y="768">
+  <object name="orangeKey" type="Key" gid="53" x="0" y="960">
    <properties>
     <property name="Description" value="an orange key"/>
     <property name="Door" value="Door6"/>
@@ -98,6 +108,11 @@
   <object type="Fuel" gid="60" x="320" y="64" width="32" height="32">
    <properties>
     <property name="Recovery" value="70"/>
+   </properties>
+  </object>
+  <object type="Potion" gid="59" x="192" y="768">
+   <properties>
+    <property name="Recovery" value="40"/>
    </properties>
   </object>
  </objectgroup>
