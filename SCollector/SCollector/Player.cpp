@@ -61,6 +61,7 @@ void Player::Reset()
 	humanityTimer = maxHumanityTime;
 	health = maxHealth;
 	souls = 0;
+	doorNameSet.clear();
 }
 
 void Player::AddLight(Level& level)

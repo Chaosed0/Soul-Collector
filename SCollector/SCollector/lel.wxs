@@ -5,7 +5,7 @@
   <WARNING>Manual changes to this file may cause incorrect behavior.</WARNING>
   <ParaffinFileVersion>2</ParaffinFileVersion>
   <GroupName>AssetComponents</GroupName>
-  <Directory>./assets\</Directory>
+  <Directory>assets\</Directory>
   <DirAlias></DirAlias>
   <Win64></Win64>
   <Norecurse>false</Norecurse>
@@ -18,221 +18,261 @@
 </CommandLineOptions>-->
   <Fragment>
     <ComponentGroup Id="AssetComponents">
-      <ComponentRef Id="comp_AFF1576BA46E4B8EA5667970782E60E3" />
-      <ComponentRef Id="comp_08066E8A45D844898696C6D5F8D6F240" />
-      <ComponentRef Id="comp_866F39BC464A4673B289C4A58E90AC32" />
-      <ComponentRef Id="comp_5B805ABDAF874433B821ED5AD0921235" />
-      <ComponentRef Id="comp_0989A0FE05734395A6BAFC5072043DA2" />
-      <ComponentRef Id="comp_985F453450594FC4A5931C655C64893D" />
-      <ComponentRef Id="comp_FEC227945A94455A9B4169FDA2CD4ACC" />
-      <ComponentRef Id="comp_173221DDF6044A71B8037CD71F9C720F" />
-      <ComponentRef Id="comp_0030B5744F0D4CC7A80B97C27FABF15C" />
-      <ComponentRef Id="comp_AF39BF43348344E59D9A4F86C54FC15A" />
-      <ComponentRef Id="comp_D759FE11D96C4C6F83A11874D22B3293" />
-      <ComponentRef Id="comp_04DB81CC22C74889B3C272F9B7075DAB" />
-      <ComponentRef Id="comp_5BF0788323914A72A0B612F698C48A33" />
-      <ComponentRef Id="comp_BFCC0B17D35D4E1C92CC0323988E2C5E" />
-      <ComponentRef Id="comp_8E49791DA90E4A8EAC682962EA167011" />
-      <ComponentRef Id="comp_F3429A29F35F4A3B8EE33A53A1D00590" />
-      <ComponentRef Id="comp_5067A7E882114FC2B17B9602C3B3B403" />
-      <ComponentRef Id="comp_163CE42429DB4438BC60D50595089812" />
-      <ComponentRef Id="comp_BB6837ED82A549CF9B009611B031C168" />
-      <ComponentRef Id="comp_8F053D97D2854077BB972DDBBC7F4F5F" />
-      <ComponentRef Id="comp_45F9DB9D38264826B118874F4A7F1452" />
-      <ComponentRef Id="comp_8CE05C02EC6441A1B9FE5F6CA1FBA5DF" />
-      <ComponentRef Id="comp_E339A249075C4D76B278EE92AC73C274" />
-      <ComponentRef Id="comp_642C024540BA4570A59BBCEC77D51A87" />
-      <ComponentRef Id="comp_45BD7484359A4F2A8EA9B5143D81DC07" />
-      <ComponentRef Id="comp_A99654EC1A834E9083CC55FAAFCC9E32" />
-      <ComponentRef Id="comp_A27CAB386D7348D590DD22F1733901B1" />
-      <ComponentRef Id="comp_CC4D9D1569F749DD949FBE8F537B6F51" />
-      <ComponentRef Id="comp_3DD4ED8FFC0B4B98894BFB42F10BB16D" />
-      <ComponentRef Id="comp_060424DBA61248F6B66C6DD852C9577F" />
-      <ComponentRef Id="comp_91AB7A16CDE240F0A21A7BF8052BBA0F" />
-      <ComponentRef Id="comp_B3BED6D54F954DB58A24D18A06ED220D" />
-      <ComponentRef Id="comp_318FDEF2119F4C9F90CC5F7C9E352842" />
-      <ComponentRef Id="comp_189B78C8F6464EF995710CCB056C71BC" />
-      <ComponentRef Id="comp_468B7CD3292B461AA313EE2BCD6A36F5" />
-      <ComponentRef Id="comp_EA820E2F47BD48869D8AF07633F17717" />
-      <ComponentRef Id="comp_2C2DC176908441CA87903B806552B6CE" />
-      <ComponentRef Id="comp_7B74CFEAACD6463DA44566A611C1F5B1" />
-      <ComponentRef Id="comp_129B2CD584294E96BCB6F22E80F7AD0A" />
-      <ComponentRef Id="comp_B7DF06EA6D4D4F809465DAEF67224A8C" />
-      <ComponentRef Id="comp_2FEB51145BF944E89C66617C53AFBE9C" />
-      <ComponentRef Id="comp_FDA832FB18344DE8B3525B10FD45471B" />
-      <ComponentRef Id="comp_E696E94A519349738E02B36E1D9472CB" />
-      <ComponentRef Id="comp_83210DC627754A709A75DE238735D663" />
-      <ComponentRef Id="comp_3AB1CC29D7434CFAADB476A3AD050C6B" />
-      <ComponentRef Id="comp_534737FC70E34CA68D3DB57039180A39" />
-      <ComponentRef Id="comp_2330145C0A494206A94958CB8A6D0C4B" />
-      <ComponentRef Id="comp_30E45D98F5624641B65C8AEFC1BB06CC" />
-      <ComponentRef Id="comp_8D4AE5529CF5401986CD40AB821D2B46" />
-      <ComponentRef Id="comp_069C88692C704B58ACF460D84B33AE8F" />
-      <ComponentRef Id="comp_D46CFC2ADB5E459C870EAE4DF83E24CF" />
+      <ComponentRef Id="comp_A70DF4407B314EDCA10F61EA614224BC" />
+      <ComponentRef Id="comp_B4F839707AC7434FB89F0BA190AE159E" />
+      <ComponentRef Id="comp_343ED2B3624B486A8DE4F16CE1902700" />
+      <ComponentRef Id="comp_76503AB6C131400293303C4239365336" />
+      <ComponentRef Id="comp_029D6D1D2D6341B2BEEDD1C45EE1E134" />
+      <ComponentRef Id="comp_AFC26A7EA64E42A8B32C16F1FDB6A943" />
+      <ComponentRef Id="comp_25D3977378E5489383647BB2C5C363AA" />
+      <ComponentRef Id="comp_4555F214EDB7493E8F018F5FE83CC0C8" />
+      <ComponentRef Id="comp_6A3C871DEEAD4DF48D7E09DE14202613" />
+      <ComponentRef Id="comp_F121C11FDF334DD5B7A424431457FD0A" />
+      <ComponentRef Id="comp_32EF444EECAE480F8C29B1E79FE0887C" />
+      <ComponentRef Id="comp_C9667820FFFC4915BBEE87D51410E597" />
+      <ComponentRef Id="comp_EE4E5D09190C4E91BB8138456CDACC27" />
+      <ComponentRef Id="comp_E7A2A3A34E38457DA881C1BA8F8502FE" />
+      <ComponentRef Id="comp_46F3D54D3B3748A2BFAA21B862CE55C6" />
+      <ComponentRef Id="comp_27980197A7384AB09C4FC4D5C66B8D25" />
+      <ComponentRef Id="comp_380C0B1C3A5D4E948352485F4D177478" />
+      <ComponentRef Id="comp_243792DE65C44780A2E112CDF8A52850" />
+      <ComponentRef Id="comp_BBBD783B4059416C8121F08F834E44EB" />
+      <ComponentRef Id="comp_8939F115E6414AA390B97F7A4000BC69" />
+      <ComponentRef Id="comp_B84FA37F7ECE4462BE7007CCE354928C" />
+      <ComponentRef Id="comp_3923B76846C5403D9FA464E0BE83CA45" />
+      <ComponentRef Id="comp_F32690F60ACA4F86BE3BD0C36BA18C77" />
+      <ComponentRef Id="comp_9B27D29036AE490EA7424928DB76B362" />
+      <ComponentRef Id="comp_EE3227C67A2F4187AF95C750684D019A" />
+      <ComponentRef Id="comp_D0A4CCB80F544CECAB886572E17F1060" />
+      <ComponentRef Id="comp_34BE61127DF2433BBCA972DAC74E7C5E" />
+      <ComponentRef Id="comp_6A0D46E23A614C2C880321D886DAC8D7" />
+      <ComponentRef Id="comp_B524683031654257BB283062924759AF" />
+      <ComponentRef Id="comp_497886F23C8C403D82567A6FEB0FA247" />
+      <ComponentRef Id="comp_7D3A4D9EF0384918B6AA986E4AC15C92" />
+      <ComponentRef Id="comp_07A98498486847589DEC065660594AD6" />
+      <ComponentRef Id="comp_31B6F5FD5B9E44B084F2CF14BC40DB0D" />
+      <ComponentRef Id="comp_0F66C7DB2D0A44B5A9C6734E2DE488C2" />
+      <ComponentRef Id="comp_43F72FB26719414298F08EF2AA8CE7DB" />
+      <ComponentRef Id="comp_7A7748F2362844C8835C6404375FF678" />
+      <ComponentRef Id="comp_0476C64DE953404C85F70299ED8D2092" />
+      <ComponentRef Id="comp_4C5B9097BF6E45A89EDA0BAC5212CB87" />
+      <ComponentRef Id="comp_208A4461733B44D684329B5A3BD9A232" />
+      <ComponentRef Id="comp_573F0815A3F147759825CFD18339E25B" />
+      <ComponentRef Id="comp_82223BAA8D724736971F8D2DF5DB8450" />
+      <ComponentRef Id="comp_0869670D82E34F3DB8984A80BE02B495" />
+      <ComponentRef Id="comp_07FFDDA5CA51487FA1FBCD721ED8F82E" />
+      <ComponentRef Id="comp_C1E9E6C209B24D8BA97BB7E679CBF23D" />
+      <ComponentRef Id="comp_995B03F0701F4F969C6786DC0CC51B8F" />
+      <ComponentRef Id="comp_A08E7EA7EABA4D578788F02A15035C34" />
+      <ComponentRef Id="comp_940A2CBA47EA4A9088E3806C3DA97DD7" />
+      <ComponentRef Id="comp_9A276FA54251476D995541D5C6140062" />
+      <ComponentRef Id="comp_ED79DC25447D41AABF8992E9A3C07210" />
+      <ComponentRef Id="comp_8780BA33009F472A89F8943A53E35C84" />
+      <ComponentRef Id="comp_78B3585E403C410D861A51B77D2BFEA4" />
+      <ComponentRef Id="comp_4922A6020F3740E6AFAA0B605612859A" />
+      <ComponentRef Id="comp_378CAEF517344BDF8E0DCEB7C0C7A729" />
+      <ComponentRef Id="comp_F7A7DD0FA2E1435CACD8DEBE32235D87" />
+      <ComponentRef Id="comp_A978AF8278FA4851B5C4E5F06C19926A" />
+      <ComponentRef Id="comp_94663A29775C47478977FB6438C0051E" />
+      <ComponentRef Id="comp_812AC49805CD4BA5B52EADFE3E49EA82" />
+      <ComponentRef Id="comp_12600E37AEBB45A88FAE2645E7A50B59" />
+      <ComponentRef Id="comp_1D9ABC172B6F47ADA7AD816333BC2BB9" />
+      <ComponentRef Id="comp_30B9DBE388A049F2B6C1462AAB69F9A6" />
+      <ComponentRef Id="comp_3A0E1635019A40CB987C0EA803F84C6F" />
     </ComponentGroup>
     <DirectoryRef Id="INSTALLDIR">
-      <Directory Id="dir_DDE7CAA1D5DE41C2B1CFE4447303408B" Name="assets">
-        <Directory Id="dir_4F6B4CEA789E4766B331D6147EC0FC20" Name="font">
-          <Component Id="comp_AFF1576BA46E4B8EA5667970782E60E3" Guid="0B1937DD-6AAB-4C1D-BB2D-63FB816E468A">
-            <File Id="file_D405177045974104B883E0206F1BD72D" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\font\LiberationMono-Regular.ttf" />
+      <Directory Id="dir_1F384CEE385847BBB26261B59F7CC4FB" Name="assets">
+        <Directory Id="dir_C1F0E12107E946138E8C97351C577145" Name="font">
+          <Component Id="comp_A70DF4407B314EDCA10F61EA614224BC" Guid="E0D6EFFA-1048-4F8C-BDB8-39B2A9FDCDCA">
+            <File Id="file_7C0D56EEB46D4FDB98C98B9B53404557" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\font\LiberationMono-Regular.ttf" />
           </Component>
-          <Component Id="comp_08066E8A45D844898696C6D5F8D6F240" Guid="8FA147CE-8D48-48FE-A3A8-C4FD7D7452A5">
-            <File Id="file_EB815753282542CBA3EB00BBADA888F0" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\font\License.txt" />
+          <Component Id="comp_B4F839707AC7434FB89F0BA190AE159E" Guid="1903B8B5-61F9-4BE9-BB80-FA5C50DFDBD6">
+            <File Id="file_4A55DDEA7D0C4C8A9F2F905B1C8D5320" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\font\License.txt" />
           </Component>
-          <Component Id="comp_866F39BC464A4673B289C4A58E90AC32" Guid="44D7776D-C063-4A99-A802-A7DC877FBBEE">
-            <File Id="file_BDB1FFC2D9824B499CBC2923FAC4B4D3" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\font\monkey.ttf" />
-          </Component>
-        </Directory>
-        <Directory Id="dir_9444E8C783C94E80A8181F44BE15413B" Name="img">
-          <Component Id="comp_5B805ABDAF874433B821ED5AD0921235" Guid="57B49416-59C2-4F81-914E-1916FBE3F3E5">
-            <File Id="file_CF8A0F6839A24EB6AEAC692E0A3AF2C7" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Door.png" />
-          </Component>
-          <Component Id="comp_0989A0FE05734395A6BAFC5072043DA2" Guid="A517F4BB-B345-425B-B064-9660DA9BF323">
-            <File Id="file_F8963DC08C834FEBA4F51090EB9C53D7" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\FuelCanister.png" />
-          </Component>
-          <Component Id="comp_985F453450594FC4A5931C655C64893D" Guid="1E976EDB-A6DC-4698-A5D8-85ECAB1C2088">
-            <File Id="file_F57D09ABAC934F0489403A244607C58C" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\HealthPot.png" />
-          </Component>
-          <Component Id="comp_FEC227945A94455A9B4169FDA2CD4ACC" Guid="80CEB3F0-DADC-4A8F-A5C9-D54A84295543">
-            <File Id="file_4A5122E874804F1EAE53D3F140CB2616" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_heart.png" />
-          </Component>
-          <Component Id="comp_173221DDF6044A71B8037CD71F9C720F" Guid="0A18E3D4-381F-4FCA-A17F-1540B51B9CAD">
-            <File Id="file_73EE01E91EBC49FCBB6CCBF19FA60530" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_lighter.png" />
-          </Component>
-          <Component Id="comp_0030B5744F0D4CC7A80B97C27FABF15C" Guid="BBAAACA6-13EB-421B-B989-618B851D9924">
-            <File Id="file_D294DD46DBA44175B2BAA2E23305E912" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast000.png" />
-          </Component>
-          <Component Id="comp_AF39BF43348344E59D9A4F86C54FC15A" Guid="752B35FA-4B18-4148-9C0B-E3CDC4F64755">
-            <File Id="file_844D4996B0294C129CC3076FC6CAF255" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast010.png" />
-          </Component>
-          <Component Id="comp_D759FE11D96C4C6F83A11874D22B3293" Guid="A58A2159-55AC-487D-AC6A-237D5913560C">
-            <File Id="file_423A7C1F63894D699D051C046B60D0FD" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast020.png" />
-          </Component>
-          <Component Id="comp_04DB81CC22C74889B3C272F9B7075DAB" Guid="CC570CAA-93FA-4076-BB9B-18A5B9AE6B71">
-            <File Id="file_58C9A2F231064968A5C860419064BFE0" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast030.png" />
-          </Component>
-          <Component Id="comp_5BF0788323914A72A0B612F698C48A33" Guid="8B05E0B6-AADF-4AAE-A38D-94CC92DF1B81">
-            <File Id="file_067213C3BBFB4330ABEB583469A5A9A6" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast040.png" />
-          </Component>
-          <Component Id="comp_BFCC0B17D35D4E1C92CC0323988E2C5E" Guid="97C499B8-32C0-44C1-9CE0-EAF8323262D5">
-            <File Id="file_4A67D82DC9F148C09F77DD65FBB41B63" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast050.png" />
-          </Component>
-          <Component Id="comp_8E49791DA90E4A8EAC682962EA167011" Guid="F12DF40E-F5EC-44A2-BFDC-FFCEC820C650">
-            <File Id="file_BA3B62A7645143BD8359FDC9F7491FAF" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast060.png" />
-          </Component>
-          <Component Id="comp_F3429A29F35F4A3B8EE33A53A1D00590" Guid="2A12F061-3FDD-4FF5-8F12-A39B7522E7E8">
-            <File Id="file_7A3A1A07CB4F4581B4A1F4BC12513132" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast070.png" />
-          </Component>
-          <Component Id="comp_5067A7E882114FC2B17B9602C3B3B403" Guid="6F809F43-D684-4C52-A8DF-CF4CF5965149">
-            <File Id="file_BF3043E92CEF410B973446B8343A34B6" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast080.png" />
-          </Component>
-          <Component Id="comp_163CE42429DB4438BC60D50595089812" Guid="36D9D343-BD86-407E-BA01-C6E992770C7B">
-            <File Id="file_8A70DC51BEC14FD489DCE2044055E0A1" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast090.png" />
-          </Component>
-          <Component Id="comp_BB6837ED82A549CF9B009611B031C168" Guid="20A6084D-3211-4CAD-A27D-3E943143338C">
-            <File Id="file_A53DA434A806423A87FCEDE2E4A2EBBF" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Key.png" />
-          </Component>
-          <Component Id="comp_8F053D97D2854077BB972DDBBC7F4F5F" Guid="38D19854-FA68-4778-9CEF-74E25B577CF0">
-            <File Id="file_6DCBBC8CB61F476D93F560F89896347A" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\LightAura.png" />
-          </Component>
-          <Component Id="comp_45F9DB9D38264826B118874F4A7F1452" Guid="F3194FC1-5230-49BE-A843-0FD1A877DE1C">
-            <File Id="file_961163FA9F3F4162A1E367F22DF4940E" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\logo.png" />
-          </Component>
-          <Component Id="comp_8CE05C02EC6441A1B9FE5F6CA1FBA5DF" Guid="C65C3A01-E9C7-48E4-96A5-320F9758F90F">
-            <File Id="file_4D0961F3A7C748419129B2CDD111E43B" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Soul.png" />
-          </Component>
-          <Component Id="comp_E339A249075C4D76B278EE92AC73C274" Guid="F64C8269-9B93-40AE-9177-F7DD11AD6762">
-            <File Id="file_23B78C349A7E4CB487B999773336CFF7" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Stairs.png" />
-          </Component>
-          <Component Id="comp_642C024540BA4570A59BBCEC77D51A87" Guid="FD1F95C8-B821-47A2-8594-D378FADEB5FD">
-            <File Id="file_42212D2E44DC4698A42E0B5B3C63C6B1" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\testsheet.png" />
-          </Component>
-          <Component Id="comp_45BD7484359A4F2A8EA9B5143D81DC07" Guid="7A1301B2-E666-4D21-9FC3-3DB5059DC6BA">
-            <File Id="file_FD65EC1D83E8435AA3318595355D3C50" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Torch.png" />
-          </Component>
-          <Component Id="comp_A99654EC1A834E9083CC55FAAFCC9E32" Guid="D348D97C-A95D-48D6-B698-B74FAE97AD8F">
-            <File Id="file_49505BA84CC643BBB75CB9BCB5C38B17" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\zombie_topdown.png" />
+          <Component Id="comp_343ED2B3624B486A8DE4F16CE1902700" Guid="B05D14A5-2331-4EC1-87A4-190605CD7F53">
+            <File Id="file_ACAA009F65A140B3A84D99A4E676AC44" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\font\monkey.ttf" />
           </Component>
         </Directory>
-        <Directory Id="dir_E84269578B2047519E02DE2D2698E7F3" Name="maps">
-          <Component Id="comp_A27CAB386D7348D590DD22F1733901B1" Guid="4FB7CD34-9DF4-41B1-8EC6-7BB6C508C877">
-            <File Id="file_B0E944ACC19E423899E165577BE662F2" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug1.tmx" />
+        <Directory Id="dir_11F68034FD5E4C2BBF3138786D4FEEFD" Name="img">
+          <Component Id="comp_76503AB6C131400293303C4239365336" Guid="0202528A-0C1E-4388-854E-0F9E063FC6DF">
+            <File Id="file_C39265EBBBC246EBB6321D5D865B705A" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Door.png" />
           </Component>
-          <Component Id="comp_CC4D9D1569F749DD949FBE8F537B6F51" Guid="9F2AA536-3B1C-47C9-B75F-BC5D58F68E8C">
-            <File Id="file_423F7352195D49C0B52434EE185FD347" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug2.tmx" />
+          <Component Id="comp_029D6D1D2D6341B2BEEDD1C45EE1E134" Guid="6389DDAC-2AAB-4B82-AD23-B0A0AB80A266">
+            <File Id="file_14C8DC65A4A74F6BB2935170108BC857" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\FuelCanister.png" />
           </Component>
-          <Component Id="comp_3DD4ED8FFC0B4B98894BFB42F10BB16D" Guid="8F26122A-C27E-4CAC-9F99-998479E951F4">
-            <File Id="file_D6E85B152A4A4EB18821280D91794C14" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug3.tmx" />
+          <Component Id="comp_AFC26A7EA64E42A8B32C16F1FDB6A943" Guid="F04B68AC-49DF-4BCE-AB2E-D918C568E75D">
+            <File Id="file_A242012790734995812492B2E5DC7A3C" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\HealthPot.png" />
           </Component>
-          <Component Id="comp_060424DBA61248F6B66C6DD852C9577F" Guid="4963E21E-18DA-4E79-B1FA-A39E66B48704">
-            <File Id="file_24F614AC17FB42F19D8E853BFE2F65F7" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug4.tmx" />
+          <Component Id="comp_25D3977378E5489383647BB2C5C363AA" Guid="D45D0DA2-EFF5-4AB5-9AC8-F461F31B852E">
+            <File Id="file_A6201F1C9CF843979A4059B37F2144D2" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_heart.png" />
           </Component>
-          <Component Id="comp_91AB7A16CDE240F0A21A7BF8052BBA0F" Guid="AE4DA911-389E-45F4-9CC9-6C38D61C5DA1">
-            <File Id="file_E342DBFF28034F65AF9B3D24E7DEDF01" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\template.tmx" />
+          <Component Id="comp_4555F214EDB7493E8F018F5FE83CC0C8" Guid="1FB35554-DD53-4EF3-BBF9-98526E3B6872">
+            <File Id="file_F3B89E7C7F664B4F9C9D27F94DBF8397" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_lighter.png" />
+          </Component>
+          <Component Id="comp_6A3C871DEEAD4DF48D7E09DE14202613" Guid="C8142EE0-414C-4444-828B-BFA9D5AAFE66">
+            <File Id="file_A5CE3222ADDA4AE2B7B128B9547BFA3F" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast000.png" />
+          </Component>
+          <Component Id="comp_F121C11FDF334DD5B7A424431457FD0A" Guid="7101803B-309E-4306-A16D-31885EB9B287">
+            <File Id="file_8141B3F4130A423F9BBBD48FD98DA83B" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast010.png" />
+          </Component>
+          <Component Id="comp_32EF444EECAE480F8C29B1E79FE0887C" Guid="E556C210-3F83-41B8-9E55-C34419E41AAD">
+            <File Id="file_59F64C452A8345F0B8B75F1F732C94A8" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast020.png" />
+          </Component>
+          <Component Id="comp_C9667820FFFC4915BBEE87D51410E597" Guid="11EBDD76-7937-4D7C-BA68-0163E2C90B3F">
+            <File Id="file_A90D6977724545A6821EE449CDDCE8A3" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast030.png" />
+          </Component>
+          <Component Id="comp_EE4E5D09190C4E91BB8138456CDACC27" Guid="7F49B2FB-2625-4863-8B28-45D84EDFA09A">
+            <File Id="file_3E9B9B6007264C44B143DB5ACFD0D94C" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast040.png" />
+          </Component>
+          <Component Id="comp_E7A2A3A34E38457DA881C1BA8F8502FE" Guid="88FA2059-D3E0-42AC-BB13-47BC25590D19">
+            <File Id="file_C9FC75B6C8104992852C2369C8345406" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast050.png" />
+          </Component>
+          <Component Id="comp_46F3D54D3B3748A2BFAA21B862CE55C6" Guid="7E57BB52-FCAB-4C47-A230-6E92C7792677">
+            <File Id="file_5D86709AA9224C3C8206701611C58F51" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast060.png" />
+          </Component>
+          <Component Id="comp_27980197A7384AB09C4FC4D5C66B8D25" Guid="6A3BE623-743A-42A2-924B-73D994459377">
+            <File Id="file_D36DAF98573A42FA96C65F8014D449EF" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast070.png" />
+          </Component>
+          <Component Id="comp_380C0B1C3A5D4E948352485F4D177478" Guid="E8BE1BE5-4224-489E-8859-35D230A86A7B">
+            <File Id="file_22363E6F6CAA44219FDCFDFD5C6C6ECA" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast080.png" />
+          </Component>
+          <Component Id="comp_243792DE65C44780A2E112CDF8A52850" Guid="B89333CC-8582-4B92-B911-2AD7E18A3CB9">
+            <File Id="file_11C5726CFEB34D6797E4A6E11A67AE7A" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\hud_soul_beast090.png" />
+          </Component>
+          <Component Id="comp_BBBD783B4059416C8121F08F834E44EB" Guid="5A18F69D-15B2-494B-862C-29F279E037E4">
+            <File Id="file_AA90490FB4274E80B37EF08DBAF2232E" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Key.png" />
+          </Component>
+          <Component Id="comp_8939F115E6414AA390B97F7A4000BC69" Guid="F019B7FE-C403-434D-B584-7AB8F86E720F">
+            <File Id="file_8BE454A30166486BAE70EFFE029CD417" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\LightAura.png" />
+          </Component>
+          <Component Id="comp_B84FA37F7ECE4462BE7007CCE354928C" Guid="C72BC9AE-ACC9-48A9-B907-BD9D93FF909C">
+            <File Id="file_AD798E1B857342AAB5E118BF74B9371E" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\logo.png" />
+          </Component>
+          <Component Id="comp_3923B76846C5403D9FA464E0BE83CA45" Guid="D0846C6F-0D4F-49EE-BD30-A59AD1130CE4">
+            <File Id="file_AA88872B746E4129BB6EB415FEB07C89" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\logo2.pdn" />
+          </Component>
+          <Component Id="comp_F32690F60ACA4F86BE3BD0C36BA18C77" Guid="FFBB98E9-6CF6-4774-AA73-2D0528F27FDA">
+            <File Id="file_629A238A110C41DFAB21DCC3BFEC8E05" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Soul.png" />
+          </Component>
+          <Component Id="comp_9B27D29036AE490EA7424928DB76B362" Guid="29B93590-69F9-448E-97FB-14739119690E">
+            <File Id="file_A3C39311828E4DBC9289E73CEC19B29A" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Stairs.png" />
+          </Component>
+          <Component Id="comp_EE3227C67A2F4187AF95C750684D019A" Guid="C26BC2A2-05B4-406C-AC67-717E45E17D67">
+            <File Id="file_3A5535A3486B4CE1BDFF7CE344ECDF1C" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\StairsDown.png" />
+          </Component>
+          <Component Id="comp_D0A4CCB80F544CECAB886572E17F1060" Guid="2E1F1EC0-DC83-4050-8151-92C7E2864F16">
+            <File Id="file_FB1909C2A7C942EFB566F9C7C3F0149D" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\StairsUp.png" />
+          </Component>
+          <Component Id="comp_34BE61127DF2433BBCA972DAC74E7C5E" Guid="7ADFDB2B-E75F-4465-8A6B-BB609196673A">
+            <File Id="file_D7F1B3CA53FE4C09BFBFB29C98CCE5B4" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\testsheet.png" />
+          </Component>
+          <Component Id="comp_6A0D46E23A614C2C880321D886DAC8D7" Guid="81F4136A-CF79-401B-AF65-D8FF63C00371">
+            <File Id="file_E92BE0AEF4C748F3A8E3745D60A8BC92" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\Torch.png" />
+          </Component>
+          <Component Id="comp_B524683031654257BB283062924759AF" Guid="5642AC2B-2DB4-41EA-9575-ED1249DE3245">
+            <File Id="file_1237A17B725240F1B5765E44217F8802" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\img\zombie_topdown.png" />
           </Component>
         </Directory>
-        <Directory Id="dir_AE93F5EA7CD34343BC136207870A4570" Name="sound">
-          <Component Id="comp_B3BED6D54F954DB58A24D18A06ED220D" Guid="A382F2E6-0804-469D-AE08-61C254CA7E53">
-            <File Id="file_C62E31B1C8E54EAA9BA12A9BFA68177C" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\alert.ogg" />
+        <Directory Id="dir_9A296E1732C94F4485983F6DE088896A" Name="maps">
+          <Component Id="comp_497886F23C8C403D82567A6FEB0FA247" Guid="4EF72F17-E844-49FC-BDAD-AE5F72DB8478">
+            <File Id="file_9E121194FEE940A59D118E48E7A80081" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug1.tmx" />
           </Component>
-          <Component Id="comp_318FDEF2119F4C9F90CC5F7C9E352842" Guid="23A59D47-32BB-43BF-AD69-CE2DA84D9B8C">
-            <File Id="file_A1FFB0FCA90243918985E13027B41737" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\AmbientCreep1.wav" />
+          <Component Id="comp_7D3A4D9EF0384918B6AA986E4AC15C92" Guid="8AE1BC15-0FC5-4457-BE75-BA2711C94423">
+            <File Id="file_68588AC47142412FBABA2F4E7AF4C0F4" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug10.tmx" />
           </Component>
-          <Component Id="comp_189B78C8F6464EF995710CCB056C71BC" Guid="1BF463AA-A77C-485B-9CFD-1D507EA00EAF">
-            <File Id="file_9FF45075FE374582AF306886380AD740" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\AmbientCreep2.wav" />
+          <Component Id="comp_07A98498486847589DEC065660594AD6" Guid="1C87C003-B736-4886-98CB-ADEB24DF4338">
+            <File Id="file_C4440C6BE74D4028A31F90D18467DB1E" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug2.tmx" />
           </Component>
-          <Component Id="comp_468B7CD3292B461AA313EE2BCD6A36F5" Guid="8C8B9915-7C72-4082-ABB6-59A447C33F00">
-            <File Id="file_A74D54D8BDF54929915BEC13B05A2959" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\AmbientCreep3.wav" />
+          <Component Id="comp_31B6F5FD5B9E44B084F2CF14BC40DB0D" Guid="45FAD648-7C93-4B13-BDA5-90095A6D2437">
+            <File Id="file_3A170078876F40D3800D1D9E9B3281E9" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug3.tmx" />
           </Component>
-          <Component Id="comp_EA820E2F47BD48869D8AF07633F17717" Guid="F77F6776-6173-428C-AC32-9C0F20138AD7">
-            <File Id="file_3ECBFB856166442387C02F8E749E8F16" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\charge.ogg" />
+          <Component Id="comp_0F66C7DB2D0A44B5A9C6734E2DE488C2" Guid="96900E59-6BCB-4345-A5B9-647AEF88F710">
+            <File Id="file_D7AAFD0F93494CFCB004764E3C0FAA4D" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug4.tmx" />
           </Component>
-          <Component Id="comp_2C2DC176908441CA87903B806552B6CE" Guid="75FF9D4E-559B-48C8-876D-2AE64DFDF675">
-            <File Id="file_70F417F5A3B84DA8B980E8E52A4505D6" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\DoorLocked.ogg" />
+          <Component Id="comp_43F72FB26719414298F08EF2AA8CE7DB" Guid="DF8C5C23-4F5C-475D-82B5-1A61E144AA23">
+            <File Id="file_97AF829E96E84BF2B35D51FD624E250A" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug5.tmx" />
           </Component>
-          <Component Id="comp_7B74CFEAACD6463DA44566A611C1F5B1" Guid="F5968198-C31F-4507-A2FD-CFA130529509">
-            <File Id="file_B465FBC8F0B5425587E5A744CBDC7EC8" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\DoorOpen.ogg" />
+          <Component Id="comp_7A7748F2362844C8835C6404375FF678" Guid="E2E67082-4E7F-4A84-B99E-21824F1B548D">
+            <File Id="file_4BC89559558F40E9934B6D4F597450D7" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug6.tmx" />
           </Component>
-          <Component Id="comp_129B2CD584294E96BCB6F22E80F7AD0A" Guid="166333D3-A2C4-46B9-864D-4416FB123D7B">
-            <File Id="file_6579B5841E77424994C204A7E53BEF2D" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\init.ogg" />
+          <Component Id="comp_0476C64DE953404C85F70299ED8D2092" Guid="AB6AFE7D-A787-4CBE-B12A-50F27AE7BA40">
+            <File Id="file_0AEBD33412314F91B1B5D490F3E4A42B" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug7.tmx" />
           </Component>
-          <Component Id="comp_B7DF06EA6D4D4F809465DAEF67224A8C" Guid="D7398C26-A130-4B1B-BB46-A02B10C8793F">
-            <File Id="file_E900A9A11B554B7D96856A2D9EE91593" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\instruct.ogg" />
+          <Component Id="comp_4C5B9097BF6E45A89EDA0BAC5212CB87" Guid="AF56D24F-1B8C-4FBC-AC9B-3B86018370E9">
+            <File Id="file_9CC970F181A345E5B651880D82939221" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug8.tmx" />
           </Component>
-          <Component Id="comp_2FEB51145BF944E89C66617C53AFBE9C" Guid="58C665C6-8E1D-46D1-84CC-7BA1DBB2837F">
-            <File Id="file_8CD8AF26120342FB8D8A1B569EAFA265" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\intro.ogg" />
+          <Component Id="comp_208A4461733B44D684329B5A3BD9A232" Guid="8AAB7797-F3CA-481B-9278-EE4108CDBD81">
+            <File Id="file_815171BCD7524D09A28AB37E3890207D" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\Debug9.tmx" />
           </Component>
-          <Component Id="comp_FDA832FB18344DE8B3525B10FD45471B" Guid="96BCB4BC-8031-43C4-BF08-C728096D4900">
-            <File Id="file_A2FD60BFFBDC4A1A818D25C897484EEC" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\Land.ogg" />
+          <Component Id="comp_573F0815A3F147759825CFD18339E25B" Guid="C73989D6-C1F0-4BC0-9B4B-7B8F559E8EAC">
+            <File Id="file_3F18015FFB764C4C86F3485CCA7126A7" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\template.tmx" />
           </Component>
-          <Component Id="comp_E696E94A519349738E02B36E1D9472CB" Guid="D21436B4-4431-4A8A-9EC1-5CE41609FF82">
-            <File Id="file_DCFD6F48722840EF92B3DBF9B8E0191F" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\Lose.ogg" />
-          </Component>
-          <Component Id="comp_83210DC627754A709A75DE238735D663" Guid="CF322305-2F27-4ACD-90DA-9AD3D7D139A7">
-            <File Id="file_AF279318EE464EB79DF66FC4B407F0DE" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\ow.ogg" />
-          </Component>
-          <Component Id="comp_3AB1CC29D7434CFAADB476A3AD050C6B" Guid="78B99614-EFF0-4B6F-8B26-89641638895B">
-            <File Id="file_9EADA0ADE2D7478DA34F239AF56DC62F" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\pickup.ogg" />
-          </Component>
-          <Component Id="comp_534737FC70E34CA68D3DB57039180A39" Guid="D91B50AF-68E9-4D5C-AA58-5DA82DC54264">
-            <File Id="file_BC6ED6B078EE4C5DA442B49D20C565CB" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\Shake.ogg" />
-          </Component>
-          <Component Id="comp_2330145C0A494206A94958CB8A6D0C4B" Guid="F42EBB98-2843-43FD-96B4-F90EF12B84C5">
-            <File Id="file_F6A96654A65B4F4EA27314D5146C6710" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\swoosh.ogg" />
-          </Component>
-          <Component Id="comp_30E45D98F5624641B65C8AEFC1BB06CC" Guid="1AEE82AD-028C-4DCC-BA58-6AE55F2BF4B1">
-            <File Id="file_1EBD4769686C4437A76423631257B307" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\thwack.ogg" />
-          </Component>
-          <Component Id="comp_8D4AE5529CF5401986CD40AB821D2B46" Guid="BCC9037F-AE17-497D-95E7-B408C29444D5">
-            <File Id="file_4417842667DC4B41835203F8741BEB2F" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\Win.ogg" />
+          <Component Id="comp_82223BAA8D724736971F8D2DF5DB8450" Guid="CB088340-DB7E-419D-8CFA-D02559CDA7D8">
+            <File Id="file_16C906F90CD74BDCBFDDDF7ACA87E951" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\maps\towerTemplate.tmx" />
           </Component>
         </Directory>
-        <Directory Id="dir_3F476703E17F4E8F9F2B6C6BA217C90B" Name="tileset">
-          <Component Id="comp_069C88692C704B58ACF460D84B33AE8F" Guid="009156F6-4149-422E-9836-1AC2B41211B0">
-            <File Id="file_F3481AA3FC7F4412B96D787305D7CD40" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\tileset\ObjectTiles.png" />
+        <Directory Id="dir_5E9D25FA14624AD0B1A334B477B88FC2" Name="sound">
+          <Component Id="comp_0869670D82E34F3DB8984A80BE02B495" Guid="884BC7C5-8790-472F-B05F-AEFD364DBA2A">
+            <File Id="file_CD4D3892405240AEAE1E09148BEFF854" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\alert.ogg" />
           </Component>
-          <Component Id="comp_D46CFC2ADB5E459C870EAE4DF83E24CF" Guid="9FFB250C-322B-4E62-A8EB-2F2CFCBCA176">
-            <File Id="file_85661FDF4040448585BD6A901A611B78" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\tileset\tileset.png" />
+          <Component Id="comp_07FFDDA5CA51487FA1FBCD721ED8F82E" Guid="A3FB115B-7BBD-4DA6-BE4F-7305184CE42B">
+            <File Id="file_B00B8FFF95444EE5BFEA94B38BC39310" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\AmbientCreep1.wav" />
+          </Component>
+          <Component Id="comp_C1E9E6C209B24D8BA97BB7E679CBF23D" Guid="295570CD-0BFB-463E-9A34-720528734B35">
+            <File Id="file_42257C4EFE0545EEA895D4900080EE3B" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\AmbientCreep2.wav" />
+          </Component>
+          <Component Id="comp_995B03F0701F4F969C6786DC0CC51B8F" Guid="6830CA78-A7FD-467C-8AF4-5CC0EF3D8A7B">
+            <File Id="file_4F665E3ADB4B4896A800840CFCFEB1F9" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\AmbientCreep3.wav" />
+          </Component>
+          <Component Id="comp_A08E7EA7EABA4D578788F02A15035C34" Guid="74730F20-E173-48FF-A5AA-C726C80C50A4">
+            <File Id="file_E113B9EDD27D4BB798DC547EAE8053FF" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\charge.ogg" />
+          </Component>
+          <Component Id="comp_940A2CBA47EA4A9088E3806C3DA97DD7" Guid="AD6FB907-9329-4E03-842C-2571CCF17A22">
+            <File Id="file_E15D33708A31448F82E7492BA9C19937" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\DoorLocked.ogg" />
+          </Component>
+          <Component Id="comp_9A276FA54251476D995541D5C6140062" Guid="4721DD07-19A9-433A-B393-66346FA2C0E4">
+            <File Id="file_2973E90CE1304E589DCED8EA02EC313C" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\DoorOpen.ogg" />
+          </Component>
+          <Component Id="comp_ED79DC25447D41AABF8992E9A3C07210" Guid="6CBC4333-FC76-4290-A920-C0CD6DA0CBE7">
+            <File Id="file_0816E2F98BA048F4986785770AE2BFEE" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\init.ogg" />
+          </Component>
+          <Component Id="comp_8780BA33009F472A89F8943A53E35C84" Guid="3BF8B54A-F759-49B1-AB72-42A18E204D69">
+            <File Id="file_A3F1D526D7FB4B10A229512FDE56E3C0" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\instruct.ogg" />
+          </Component>
+          <Component Id="comp_78B3585E403C410D861A51B77D2BFEA4" Guid="5FFAC2C6-D77D-443F-BF9D-67B5CE920D03">
+            <File Id="file_D9F9006E5BB1452787390B4279F190B8" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\intro.ogg" />
+          </Component>
+          <Component Id="comp_4922A6020F3740E6AFAA0B605612859A" Guid="19D61825-B3D3-4639-BC0E-AAA7D14EC5B4">
+            <File Id="file_1010A0BFE0AD4D06BD4C6FF16338937E" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\Land.ogg" />
+          </Component>
+          <Component Id="comp_378CAEF517344BDF8E0DCEB7C0C7A729" Guid="0A9E10C6-5D77-4527-AB73-73ED680B0A1F">
+            <File Id="file_C051F2F55C0D4ED2944E9B42DEE90D2D" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\Lose.ogg" />
+          </Component>
+          <Component Id="comp_F7A7DD0FA2E1435CACD8DEBE32235D87" Guid="982924B5-E19C-430C-8C7C-2E22FE8E8FB5">
+            <File Id="file_FC27F8E84C184E0F896840D1ABEA4BE9" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\ow.ogg" />
+          </Component>
+          <Component Id="comp_A978AF8278FA4851B5C4E5F06C19926A" Guid="A573DF48-A2E8-4F6A-9204-5D2E1DFB1000">
+            <File Id="file_CA2130F172044B548AE6D75FFE739610" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\pickup.ogg" />
+          </Component>
+          <Component Id="comp_94663A29775C47478977FB6438C0051E" Guid="22ACDEFB-FE31-48CC-8571-228B2966983E">
+            <File Id="file_67F1BAFC51874A49B126A5116C9BFC92" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\Shake.ogg" />
+          </Component>
+          <Component Id="comp_812AC49805CD4BA5B52EADFE3E49EA82" Guid="D56012F5-6AFF-4FDA-93DF-C85B529C13C8">
+            <File Id="file_2E11F87316F54DF0B95EF1EE4773C6C6" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\swoosh.ogg" />
+          </Component>
+          <Component Id="comp_12600E37AEBB45A88FAE2645E7A50B59" Guid="50DA97EA-8FE6-4356-93DB-8DBD290387B6">
+            <File Id="file_040BC23BA4C248AFB59424F200CD173F" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\thwack.ogg" />
+          </Component>
+          <Component Id="comp_1D9ABC172B6F47ADA7AD816333BC2BB9" Guid="2582F93C-1C9C-4BAC-BE2A-B668732742C0">
+            <File Id="file_05182626FF8042E39171CE3C82C1CD94" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\sound\Win.ogg" />
+          </Component>
+        </Directory>
+        <Directory Id="dir_E1DF316725254A89A217FCD524A785CC" Name="tileset">
+          <Component Id="comp_30B9DBE388A049F2B6C1462AAB69F9A6" Guid="AEF4C843-FFF7-4DE4-8571-5B79AB9ACB31">
+            <File Id="file_2E6231C361394BECA928C4FA54AE06BD" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\tileset\ObjectTiles.png" />
+          </Component>
+          <Component Id="comp_3A0E1635019A40CB987C0EA803F84C6F" Guid="FB965566-5E3B-4745-8B2A-855F9EBBFF92">
+            <File Id="file_43D2E1252D214ABFA97BE77AB5BD6E6F" KeyPath="yes" Source="C:\Users\Chaosed0\Documents\cmpsc483w-un\SCollector\SCollector\assets\tileset\tileset.png" />
           </Component>
         </Directory>
       </Directory>
