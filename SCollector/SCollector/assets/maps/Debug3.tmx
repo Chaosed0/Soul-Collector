@@ -31,7 +31,7 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzlltsKwjAMhot4VhA8bdN5oYLzRhR9/3czxQRiWdNO2+Ih8FPWZvvWJGs2VkoNLVoLay4f6d4RaKDsNhHWXD7Svf0/5mY4bkFz1DEBN6/xv7J32OBcAWqjStDeWC/xukKfwpjXWjHujbHoGT5xfsX0fpf4DrsaVkwu7ZcYFG8dF5/8huJyS7Ffvk/Kf5WAm9J4Xeka5t8Hr7UYXGm/ubAWkxvLXFw6M08qbNx9+4I5fjOX6rlO9P1SfR3Ymk/MeW/j4n2hqb3Tm6U4Z44xFteW2ya5lri2/FI/p54UmuvK7wXUAS1wPCfiap8Wk9Q3Q3Kn6vmfe4bzPme3zedTz+df5PbUo05Tqgu6A1A1D6s=
+   eJzlltsKwjAMhot4Pg10uk3nhfNiKoqi7/9utphgKD0x2yoa+Alr0309LM3GjLGhRmtDny3GNHbENWB6Swx9thjT2P4fczPwW64UtI/AzRXxNzKHDbQVXG1QybWT+kt4riGmkNqFVoR7Jyx8h8s+NzGx3iXMoVKwQnJxvcjA/Rb74nK+vrjUYqyXrhPPv47AjWnIxZxIJVX6oV64OssNfSG5oczGxTvzDP7I1QFNHd4/IfFUXQs3kbyYZwvksk80XtanuHhPqoT5i9/XjL3+GU4O3ANr9r9hsndqs+m7yiw+FFc+W51vytWdL9ZzrEm+ubbzvbJnzi3AXyJx5Vww1U2fXJo7QnNod7m7dTHfej//IrfH1DUjpEQ9egDy2Q+2
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="30" height="30">
@@ -69,7 +69,7 @@
   <object type="Demon" gid="54" x="439" y="306" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="517" y="224" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="631" y="267" width="32" height="32"/>
-  <object type="SlowDemon" gid="54" x="762" y="507" width="32" height="32"/>
+  <object type="SlowDemon" gid="54" x="704" y="416" width="32" height="32"/>
   <object type="SlowDemon" gid="54" x="424" y="433" width="32" height="32"/>
   <object type="Torch" gid="55" x="576" y="448" width="32" height="32"/>
   <object name="Door4" type="Door" gid="57" x="800" y="192" width="32" height="32">
@@ -89,15 +89,15 @@
     <property name="Recovery" value="40"/>
    </properties>
   </object>
-  <object name="Door5" type="Door" gid="57" x="224" y="480" width="32" height="32" rotation="270.944">
+  <object name="Door5" type="Door" gid="57" x="224" y="480" width="32" height="32" rotation="270.94">
    <properties>
     <property name="Description" value="a green key"/>
    </properties>
   </object>
   <object type="Soul" gid="58" x="64" y="480" width="32" height="32"/>
-  <object type="SlowDemon" gid="54" x="113" y="545" width="32" height="32" rotation="-308.811"/>
+  <object type="SlowDemon" gid="54" x="160" y="512" width="32" height="32" rotation="-308.81"/>
   <object type="Demon" gid="54" x="183" y="561" width="32" height="32"/>
-  <object type="SlowDemon" gid="54" x="109" y="459" width="32" height="32" rotation="-261.38"/>
+  <object type="SlowDemon" gid="54" x="160" y="448" width="32" height="32" rotation="-261.38"/>
   <object type="Potion" gid="59" x="64" y="544" width="32" height="32">
    <properties>
     <property name="Recovery" value="100"/>
@@ -150,7 +150,7 @@
    </properties>
   </object>
   <object type="Torch" gid="55" x="320" y="128" width="32" height="32"/>
-  <object type="Potion" gid="59" x="896" y="576" width="32" height="32">
+  <object type="Potion" gid="59" x="896" y="480" width="32" height="32">
    <properties>
     <property name="Recovery" value="25"/>
    </properties>

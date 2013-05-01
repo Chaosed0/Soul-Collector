@@ -5,7 +5,7 @@
 
 const sf::Time SlowDemon::attackTime = sf::seconds(1.0f);
 const float SlowDemon::defaultMoveSpeed = 50.0f;
-const float SlowDemon::attackRadius = 40.0f;
+const float SlowDemon::attackRadius = 25.0f;
 const float SlowDemon::attackSweep = 45.0f;
 
 SlowDemon::SlowDemon(sf::Vector2f pos)
@@ -180,6 +180,8 @@ void SlowDemon::Update(Level& level, const sf::Time& timePassed)
 		PlayAnim("alert", timePassed);
 		//Rotate the sprite to face the player
 		sprite.setRotation(TO_DEG*moveAngle);
+	} else if(state == ATTACKING) {
+		PlayAnim("attack", timePassed);
 	} else {
 		// ???
 		PlayAnim("idle", timePassed);

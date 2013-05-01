@@ -157,6 +157,11 @@ public:
 	 */
 	void Reset();
 
+	/**
+	 * Checks if the player is alive/not a monster.
+	 */
+	virtual bool IsAlive();
+
 //Private attributes; visible only within this class
 private:
 
@@ -216,6 +221,8 @@ private:
 	static const int healthIncrease;
 	/** Number of souls the player needs to win. */
 	static const int maxSouls;
+	/** Base attack power of the player. */
+	static const int baseAttack;
 };
 
 #endif

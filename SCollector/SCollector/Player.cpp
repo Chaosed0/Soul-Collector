@@ -9,17 +9,18 @@ const sf::Time Player::attackConeLife = sf::seconds(0.2f);
 const sf::Time Player::maxSprintTime = sf::seconds(3.0f);
 const sf::Time Player::maxLighterTime = sf::seconds(300.0f);
 const sf::Time Player::maxHumanityTime = sf::seconds(600.0f);
-const float Player::attackConeLength = 80.0f;
+const float Player::attackConeLength = 50.0f;
 const float Player::attackConeSweep = 2*PI/8;
 const float Player::regSpeed = 120.0f;
 const float Player::sprintSpeed = 210.0f;
-const float Player::humanityDecrease = 0.5f;
-const float Player::humanityIncrease = 20.0f;
+const float Player::humanityDecrease = 0.2f;
+const float Player::humanityIncrease = 80.0f;
 const int Player::healthIncrease = 50;
 const int Player::maxSouls = 7;
+const int Player::baseAttack = 20;
 
 Player::Player(const sf::Vector2f& pos)
-	: Movable("assets/img/testsheet.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
+	: Movable("assets/img/Player.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
 	, lighter(128, 200, sf::Color(0, 0, 0, 50), pos)
 	, ambientLight(128, 700, sf::Color(0, 0, 0, 210), pos)
 {
@@ -38,7 +39,8 @@ Player::Player(const sf::Vector2f& pos)
 
 	//Initialize animations (maybe offload some of this data to a text file
 	// or something?)
-	animManager.AddAnimSet("walk", 1, 0, true);
+	animManager.AddAnimSet("walk", 1, 16, true);
+	animManager.AddAnimSet("attack", 17, 23, false);
 
 	//Initialize sounds
 	soundManager.AddSound("assets/sound/swoosh.ogg", "swing", false);
@@ -85,6 +87,11 @@ void Player::Attack(Movable& movable)
 		humanityTimer += std::max(sf::Time::Zero,
 			humanityTimer - sf::microseconds((sf::Int64)(maxHumanityTime.asMicroseconds()/humanityDecrease)));
 	}
+}
+
+bool Player::IsAlive()
+{
+	return Movable::IsAlive() || humanityTimer != sf::Time::Zero;
 }
 
 void Player::RemoveHealth(int amount)
@@ -180,6 +187,9 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 {
 	timer += timePassed;
 	bool moving = moveLeft || moveRight || moveUp || moveDown;
+
+	attackPower = baseAttack + (100-baseAttack)*(1-humanityTimer.asMicroseconds()/(float)maxHumanityTime.asMicroseconds());
+
 	if(state == CANMOVE && moving) {
 		PlayAnim("walk", timePassed);
 
@@ -267,8 +277,7 @@ void Player::Update(Level& level, const sf::Time& timePassed)
 		else if(moveLeft && !moveRight) sprite.setRotation(180);
 		else if(moveUp && !moveDown) sprite.setRotation(270);
 	} else if(state == ATTACKING) {
-		//TODO: Make this the attack animation instead
-		PlayAnim("idle", timePassed);
+		PlayAnim("attack", timePassed);
 		if(timer >= attackConeLife) {
 			state = CANMOVE;
 		}

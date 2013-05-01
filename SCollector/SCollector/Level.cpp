@@ -800,11 +800,11 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates state) const
 		target.draw(*enemies[i], state);
 	}
 	//Uncomment to draw attack cones
-	for(std::list<AttackCone>::const_iterator p = attackCones.begin(); p != attackCones.end(); p++) {
+	/*for(std::list<AttackCone>::const_iterator p = attackCones.begin(); p != attackCones.end(); p++) {
 		sf::ConvexShape triangle = p->GetTriangle();
 		triangle.setPosition(p->GetOwner().GetPos());
 		target.draw(triangle, state);
-	}
+	}*/
 
 	//Draw the player
 	target.draw(player, state);

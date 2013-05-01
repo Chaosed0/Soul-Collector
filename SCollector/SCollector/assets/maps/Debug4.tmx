@@ -26,7 +26,7 @@
  </layer>
  <layer name="Collision" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJytVn9LAzEMLeLU6XTgph44/9gJTieC+P0/nA3cc7m3vLanBsJd27TJa/NrkVK6dHyV+cTxgtZr/FgZQ8c8jemNZFZpGi0rY6MLp/ehIGe0zbzO3Isx78f6a0XvyyC3o31rmse5HY3V9zPzO9no9TIp3Ooev4R99m4rmjO994P80zC3SeP7YdzPNIacsmcZzLXg7cS6Oh92Mu6tm/N4jT/SATfbD7+pvXsLbsbr18zP9plvKueWzo/mrzOfZT4Pzga223TsEyzD8WL2el/h+zCsyElzWosw1eJF3QPvh17Lg8AEH0IsR++o4jba4+ME++wOozzZSq04I/L+zPkOX8Szt/80HezvhvEmjfGx3+N86FVv+xscnkr1wetV72Y4evfP9itc7Pel+I30RrYruWi+ljfYLs4hCo/Cpe6P9aKeqDyfaL41jn2cRXUwisfoXXduPcrPHMe+7kf1qPVdFSlZxJmPvUivxxmdBf9FnOJdGWd/vPWHIr3+33qU2cBcO1iWCf4S5Uzur6Jcyn0l13fuP1T99lTqNxRNrT8telVPEcWtqj8l31B6p9RfRS1y3F9xLJbitlZnS/2get+/1qIaoeeYEd8Fc//J1td9AwioIZM=
+   eJytVmtLAzEQDGLVarVgqx54fmgFHxVB/P8/zizc0L3pTpKrXVjukmyyO8m+Fimla8c3mc8cL2i9xs+VMXTM05g+SWaVptGyMja6cnqfCnJGm8zrzFsx5v1Y/6jofRvk3mnfmuZxbkdj9f3J/EU2er1MCre6x19hn73biuZM7+Mg/zLM9Wl8P4z7lcaQU/Ysg7kWvJ1YV+fDTsa9cXMer/F32uNm++E3tXdvwc14/Zr52S7zXeXc0vnR/G3mi8yXwdnAdp8OfYJlOF7MXu8rfB+GFTlpTmsRplq8qHvg/dBreRCY4EOI5egdVdxGe3ycYJ/dYZQnW6kVZ0Tenznf4Yt49vafp7393TDu0xgf+z3Oh171tsfg8FSqDy16DcfW/bP9Chf7vdKr/CWyXcmV7C/lDSXnfZXxKFwlHF4vx39rXqr5RU1v6X1Lccy4OI4jHKf0ZyWPOPN17Ri9eA/EKd6VcW4Ptzbptf5k5phrRxJjEPqPKGdGceTzaNRXcn3n/kPVb0+lfkPR1PrTolf1FFHcqvrDci16p9RfRS1y3F9xb9AHa611ttQPqvf9by2qEXqOGfFDMHdKtr7uD1INIJI=
   </data>
  </layer>
  <layer name="ObjectOverlay" width="30" height="30">
@@ -70,9 +70,9 @@
     <property name="Green" value="128"/>
    </properties>
   </object>
-  <object type="Demon" gid="54" x="896" y="928" width="32" height="32" rotation="300"/>
+  <object type="Demon" gid="54" x="852" y="875" width="32" height="32" rotation="300"/>
   <object type="Demon" gid="54" x="736" y="768" width="32" height="32" rotation="492.734"/>
-  <object type="SlowDemon" gid="54" x="768" y="882" width="32" height="32" rotation="450"/>
+  <object type="SlowDemon" gid="54" x="753" y="882" width="32" height="32" rotation="450"/>
   <object name="Door6" type="Door" gid="57" x="32" y="512" width="32" height="32">
    <properties>
     <property name="Description" value="a white key"/>
@@ -101,22 +101,28 @@
   <object type="Demon" gid="54" x="288" y="352" width="32" height="32" rotation="360"/>
   <object type="SlowDemon" gid="54" x="32" y="864" width="32" height="32" rotation="-321.996"/>
   <object type="Demon" gid="54" x="128" y="928" width="32" height="32" rotation="360"/>
-  <object type="Torch" gid="55" x="832" y="864" width="32" height="32"/>
-  <object type="Torch" gid="55" x="256" y="608" width="32" height="32"/>
+  <object type="Torch" gid="55" x="864" y="768" width="32" height="32"/>
+  <object type="Torch" gid="55" x="256" y="608" width="32" height="32" rotation="-180"/>
   <object type="Demon" gid="54" x="352" y="608" width="32" height="32" rotation="270"/>
   <object type="SlowDemon" gid="54" x="608" y="672" width="32" height="32" rotation="-361.081"/>
   <object type="SlowDemon" gid="54" x="96" y="640" width="32" height="32" rotation="180"/>
   <object name="FromDebug5_1" type="Spawn" gid="52" x="32" y="512" width="32" height="32"/>
-  <object type="Fuel" gid="60" x="544" y="352">
+  <object type="Fuel" gid="60" x="544" y="352" width="32" height="32">
    <properties>
     <property name="Recovery" value="15"/>
    </properties>
   </object>
-  <object type="Fuel" gid="60" x="832" y="640">
+  <object type="Fuel" gid="60" x="800" y="608" width="32" height="32">
    <properties>
     <property name="Recovery" value="10"/>
    </properties>
   </object>
-  <object gid="59" x="832" y="160"/>
+  <object type="Potion" gid="59" x="832" y="160" width="32" height="32">
+   <properties>
+    <property name="Recovery" value="10"/>
+   </properties>
+  </object>
+  <object type="Demon" gid="54" x="818" y="775" width="32" height="32" rotation="535.688"/>
+  <object type="SlowDemon" gid="54" x="480" y="352" width="32" height="32" rotation="-180"/>
  </objectgroup>
 </map>
