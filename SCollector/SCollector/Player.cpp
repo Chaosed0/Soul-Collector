@@ -91,7 +91,7 @@ void Player::Attack(Movable& movable)
 
 bool Player::IsAlive()
 {
-	return Movable::IsAlive() || humanityTimer != sf::Time::Zero;
+	return Movable::IsAlive() && humanityTimer != sf::Time::Zero;
 }
 
 void Player::RemoveHealth(int amount)
