@@ -39,7 +39,7 @@
   <object name="blackKey" type="Key" gid="53" x="160" y="64" width="32" height="32">
    <properties>
     <property name="Description" value="a black key"/>
-    <property name="Door" value="Door7"/>
+    <property name="Door" value="Door8"/>
    </properties>
   </object>
   <object type="SlowDemon" gid="54" x="96" y="64" width="32" height="32"/>
@@ -77,15 +77,15 @@
   <object type="Demon" gid="54" x="329" y="239" width="32" height="32" rotation="165"/>
   <object type="SlowDemon" gid="54" x="32" y="576" width="32" height="32" rotation="180"/>
   <object type="SlowDemon" gid="54" x="64" y="288" width="32" height="32" rotation="270"/>
-  <object name="Door6" type="Door" gid="57" x="288" y="128" width="32" height="32">
+  <object name="Door7" type="Door" gid="57" x="288" y="128" width="32" height="32">
    <properties>
     <property name="Description" value="an orange key"/>
    </properties>
   </object>
-  <object name="orangeKey" type="Key" gid="53" x="0" y="960">
+  <object name="orangeKey" type="Key" gid="53" x="640" y="576">
    <properties>
     <property name="Description" value="an orange key"/>
-    <property name="Door" value="Door6"/>
+    <property name="Door" value="Door7"/>
     <property name="Green" value="165"/>
     <property name="Red" value="255"/>
    </properties>

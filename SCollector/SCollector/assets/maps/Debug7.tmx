@@ -55,7 +55,7 @@
    </properties>
   </object>
   <object name="FromDebug8_1" type="Spawn" gid="52" x="832" y="864" width="32" height="32"/>
-  <object name="Door8" type="Door" gid="57" x="704" y="832" width="32" height="32" rotation="270">
+  <object name="Door9" type="Door" gid="57" x="704" y="832" width="32" height="32" rotation="270">
    <properties>
     <property name="Description" value="a purple key"/>
    </properties>

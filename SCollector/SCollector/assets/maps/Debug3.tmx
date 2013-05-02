@@ -125,7 +125,7 @@
     <property name="Recovery" value="100"/>
    </properties>
   </object>
-  <object name="Door7" type="Door" gid="57" x="352" y="192" width="32" height="32">
+  <object name="Door8" type="Door" gid="57" x="352" y="192" width="32" height="32">
    <properties>
     <property name="Description" value="a black key"/>
    </properties>

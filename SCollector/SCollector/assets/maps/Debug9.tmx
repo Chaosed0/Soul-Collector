@@ -59,7 +59,7 @@
    <properties>
     <property name="Blue" value="128"/>
     <property name="Description" value="a purple key"/>
-    <property name="Door" value="Door8"/>
+    <property name="Door" value="Door9"/>
     <property name="Red" value="128"/>
    </properties>
   </object>

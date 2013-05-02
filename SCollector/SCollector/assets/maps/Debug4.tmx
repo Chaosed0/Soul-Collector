@@ -106,7 +106,7 @@
   <object type="Demon" gid="54" x="352" y="608" width="32" height="32" rotation="270"/>
   <object type="SlowDemon" gid="54" x="608" y="672" width="32" height="32" rotation="-361.081"/>
   <object type="SlowDemon" gid="54" x="96" y="640" width="32" height="32" rotation="180"/>
-  <object name="FromDebug5_1" type="Spawn" gid="52" x="32" y="512" width="32" height="32"/>
+  <object name="FromDebug5_1" type="Spawn" gid="52" x="34" y="569" width="32" height="32"/>
   <object type="Fuel" gid="60" x="544" y="352" width="32" height="32">
    <properties>
     <property name="Recovery" value="15"/>
