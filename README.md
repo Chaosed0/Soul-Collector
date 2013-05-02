@@ -6,11 +6,11 @@ The game is a top-down adventure game located in purgatory. You have been smited
 
 This game was completed in a semester using C++, <a href="http://www.sfml-dev.org/">SFML</a> and <a href="http://www.mapeditor.org/">Tiled</a> by a team named "The UN", composed of 6 members:
 
-Edward Lu - Project Lead
-David Tracey - Graphics & Design
-Chris Lawyer - Programming & Level Design
-Mujing Wang - Programming
-Mustafa Alareed - Programming
+Edward Lu - Project Lead<br\>
+David Tracey - Graphics & Design<br\>
+Chris Lawyer - Programming & Level Design<br\>
+Mujing Wang - Programming<br\>
+Mustafa Alareed - Programming<br\>
 Sha Huang - Programming
 
 For more information, look at the project specification document, located at "spec/Soul Collector.docx".
