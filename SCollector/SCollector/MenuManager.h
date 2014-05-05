@@ -33,7 +33,7 @@ public:
 	 *
 	 * \param The target to render to.
 	 */
-	void Display(sf::RenderTarget& target);
+	void Display(sf::RenderWindow& target);
 
 	/**
 	 * Returns the visible flag of the menus.
@@ -145,9 +145,9 @@ private:
 template <class Class>
 void MenuManager::connectExitFunc(void (Class::*function)(), Class* object)
 {
-	exitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(function, object);
-	gameOverExitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(function, object);
-	winExitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(function, object);
+	exitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(std::bind(function, object));
+	gameOverExitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(std::bind(function, object));
+	winExitButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(std::bind(function, object));
 }
 
 #endif

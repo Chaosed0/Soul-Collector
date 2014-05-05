@@ -7,14 +7,14 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 
 	menus.push_back(sfg::Window::Create(sfg::Window::BACKGROUND));
 
-	mainMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	mainMenu = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 10.0f);
 	mainLabel = sfg::Label::Create("Soul Collector");
 	playButton = sfg::Button::Create("Start");
-	playButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::playGame, this);
+	playButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(std::bind(&MenuManager::playGame, this));
 	helpButton = sfg::Button::Create("Help");
-	helpButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoHelp, this);
+	helpButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(std::bind(&MenuManager::gotoHelp, this));
 	settingsButton = sfg::Button::Create("Credits");
-	settingsButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoSettings, this);
+	settingsButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(std::bind(&MenuManager::gotoSettings, this));
 	exitButton = sfg::Button::Create("Exit");
 	noSelection = sfg::Table::Create();
 	noSelection->Attach(sfg::Box::Create(), sf::Rect<sf::Uint32>(1,1,1,1));
@@ -32,7 +32,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 		sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL | sfg::Table::EXPAND);*/
 
 	menus[0]->Add(mainLayout);
-	settingsMenu = sfg::Box::Create(sfg::Box::VERTICAL, 10.0f);
+	settingsMenu = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 10.0f);
 	settingsLabel = sfg::Label::Create(
 		"The UN\n\n\n\
 		Ed Lu - Project Lead\n\
@@ -91,10 +91,10 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 
 	gameOverLabel = sfg::Label::Create("GAME OVER");
 	gameOverBackButton = sfg::Button::Create("Try again");
-	gameOverBackButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
+	gameOverBackButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(std::bind(&MenuManager::gotoMain, this));
 	gameOverExitButton = sfg::Button::Create("Quit");
 
-	gameOverLayout = sfg::Box::Create(sfg::Box::VERTICAL, 20.0f);
+	gameOverLayout = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 20.0f);
 	gameOverLayout->Pack(gameOverLabel, false, false);
 	gameOverLayout->Pack(gameOverBackButton, false, false);
 	gameOverLayout->Pack(gameOverExitButton, false, false);
@@ -106,10 +106,10 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 
 	winLabel = sfg::Label::Create("YOU WIN");
 	winBackButton = sfg::Button::Create("Main Menu");
-	winBackButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(&MenuManager::gotoMain, this);
+	winBackButton->GetSignal(sfg::Button::OnMouseLeftRelease).Connect(std::bind(&MenuManager::gotoMain, this));
 	winExitButton = sfg::Button::Create("Quit");
 
-	winLayout = sfg::Box::Create(sfg::Box::VERTICAL, 20.0f);
+	winLayout = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 20.0f);
 	winLayout->Pack(winLabel, false, false);
 	winLayout->Pack(winBackButton, false, false);
 	winLayout->Pack(winExitButton, false, false);
@@ -152,7 +152,7 @@ void MenuManager::HandleEvent(sf::Event& anEvent)
 	desktop.HandleEvent(anEvent);
 }
 
-void MenuManager::Display(sf::RenderTarget& target)
+void MenuManager::Display(sf::RenderWindow& target)
 {
 	if(visible) {
 		desktop.Update(1.0f);

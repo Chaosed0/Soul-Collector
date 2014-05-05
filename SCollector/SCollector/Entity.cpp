@@ -25,8 +25,11 @@ Entity::Entity(std::string imgLoc, sf::IntRect collisionBox, sf::IntRect animBox
 sf::Texture& Entity::GetTexture(const std::string& imgLoc)
 {
 	if(textures.find(imgLoc) == textures.end()) {
-		textures[imgLoc] = sf::Texture();
-		textures[imgLoc].loadFromFile(imgLoc);
+		sf::Texture texture;
+		if(!texture.loadFromFile(imgLoc)) {
+			fprintf(stderr, "ERROR: Could not load texture from file %s!\n", imgLoc.c_str());
+		}
+		textures[imgLoc] = std::move(texture);
 	}
 	return textures[imgLoc];
 }

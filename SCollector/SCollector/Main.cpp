@@ -16,6 +16,8 @@
 #include "Utility.h"
 #include "SFML/System.hpp"
 
+#define HAVE_CONSOLE
+
 int main(int argc, char* argv[])
 {
 	//If we're not in debug mode, that means we don't have a console open;
