@@ -49,7 +49,7 @@
    eJztzsEJACAMALEupg9x/5kcooVKSf4HFzHX6h5IuMl+l1wAzHC6BwDgUw9Q0QEC
   </data>
  </layer>
- <objectgroup name="Object Layer 1" width="30" height="30">
+ <objectgroup name="Object Layer 1">
   <object name="Init" type="Spawn" gid="52" x="528" y="928" width="32" height="32"/>
   <object name="yellowkey" type="Key" gid="53" x="736" y="736" width="32" height="32">
    <properties>
@@ -75,12 +75,12 @@
     <property name="NextSpawn" value="FromDebug1_2"/>
    </properties>
   </object>
-  <object name="Door2" type="Door" gid="57" x="672" y="384" width="32" height="32" rotation="-180">
+  <object name="Door2" type="Door" gid="57" x="704" y="352" width="32" height="32" rotation="-180">
    <properties>
     <property name="Description" value="an iron key"/>
    </properties>
   </object>
-  <object type="Torch" gid="55" x="608" y="288" width="32" height="32" rotation="-450"/>
+  <object type="Torch" gid="55" x="640" y="288" width="32" height="32" rotation="-450"/>
   <object name="ironKey" type="Key" gid="53" x="160" y="160">
    <properties>
     <property name="Blue" value="128"/>
@@ -119,7 +119,7 @@
    </properties>
   </object>
   <object type="Torch" gid="55" x="576" y="128" width="32" height="32"/>
-  <object type="SlowDemon" gid="54" x="160" y="256" width="32" height="32" rotation="-270"/>
+  <object type="SlowDemon" gid="54" x="160" y="224" width="32" height="32" rotation="-270"/>
   <object type="Fuel" gid="60" x="672" y="480" width="32" height="32">
    <properties>
     <property name="Recovery" value="50"/>

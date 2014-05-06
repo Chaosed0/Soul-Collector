@@ -34,7 +34,7 @@
    eJzlltsKwjAMhot4Pg10uk3nhfNiKoqi7/9utphgKD0x2yoa+Alr0309LM3GjLGhRmtDny3GNHbENWB6Swx9thjT2P4fczPwW64UtI/AzRXxNzKHDbQVXG1QybWT+kt4riGmkNqFVoR7Jyx8h8s+NzGx3iXMoVKwQnJxvcjA/Rb74nK+vrjUYqyXrhPPv47AjWnIxZxIJVX6oV64OssNfSG5oczGxTvzDP7I1QFNHd4/IfFUXQs3kbyYZwvksk80XtanuHhPqoT5i9/XjL3+GU4O3ANr9r9hsndqs+m7yiw+FFc+W51vytWdL9ZzrEm+ubbzvbJnzi3AXyJx5Vww1U2fXJo7QnNod7m7dTHfej//IrfH1DUjpEQ9egDy2Q+2
   </data>
  </layer>
- <objectgroup name="Object Layer 1" width="30" height="30">
+ <objectgroup name="Object Layer 1">
   <object name="FromDebug2_5" type="Spawn" gid="52" x="192" y="896" width="32" height="32"/>
   <object name="redkey" type="Key" gid="53" x="160" y="64" width="32" height="32">
    <properties>
@@ -89,7 +89,7 @@
     <property name="Recovery" value="40"/>
    </properties>
   </object>
-  <object name="Door5" type="Door" gid="57" x="224" y="480" width="32" height="32" rotation="270.94">
+  <object name="Door5" type="Door" gid="57" x="256" y="480" width="32" height="32" rotation="270.94">
    <properties>
     <property name="Description" value="a green key"/>
    </properties>

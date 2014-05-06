@@ -39,7 +39,7 @@
    eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
   </data>
  </layer>
- <objectgroup name="Object Layer 1" width="30" height="20">
+ <objectgroup name="Object Layer 1">
   <object type="SlowDemon" gid="54" x="160" y="385" width="32" height="32"/>
   <object type="Torch" gid="55" x="256" y="449" width="32" height="32"/>
   <object name="StairsToDebug1_1" type="Stairs" gid="56" x="352" y="545" width="32" height="32">
@@ -49,7 +49,7 @@
    </properties>
   </object>
   <object name="FromDebug1_1" type="Spawn" gid="52" x="352" y="513" width="32" height="32"/>
-  <object name="FromDebug1_2" type="Spawn" gid="52" x="64" y="193" width="32" height="32"/>
+  <object name="FromDebug1_2" type="Spawn" gid="52" x="64" y="192" width="32" height="32"/>
   <object name="StairsToDebug1_2" type="Stairs" gid="56" x="32" y="193" width="32" height="32">
    <properties>
     <property name="NextLevel" value="Debug1.tmx"/>
