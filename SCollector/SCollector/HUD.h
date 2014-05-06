@@ -14,8 +14,17 @@
 class HUD
 {
 public:
-	//Constructor
+	/**
+	 * Constructor.
+	 * \param pos The position of the BOTTOM-LEFT of the HUD.
+	 */
 	HUD(const sf::Vector2f& pos);
+
+	/**
+	 * Updates the HUD's position.
+	 * \param pos The position of the BOTTOM-LEFT of the HUD.
+	 **/
+	void Reposition(const sf::Vector2f &pos);
 
 	/**
 	 * Adds a HUDObject to the HUD.

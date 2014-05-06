@@ -16,6 +16,15 @@ HUD::HUD(const sf::Vector2f& pos) :
 	textObject.setCharacterSize(20);
 }
 
+void HUD::Reposition(const sf::Vector2f &pos) {
+	sf::Vector2f movement(pos - this->pos);
+	this->pos = pos;
+	for(std::size_t i = 0; i < objects.size(); i++) {
+		objects[i]->move(movement);
+	}
+	textObject.setPosition(0,pos.y-textPadding-objects[0]->getHeight()-textObject.getCharacterSize());
+}
+
 void HUD::AddObject(const std::string& imgLoc)
 {
 	HudObject *object = new HudObject(imgLoc, sf::Vector2f(curXPos, pos.y));

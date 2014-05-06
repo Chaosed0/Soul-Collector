@@ -30,9 +30,11 @@ public:
 	/**
 	 * Constructor
 	 * \param image The image to be used as the sprite for the object
-	 * \param pos The x position at which the object is to be placed
-	 */
+	 * \param pos The x position at which the object is to be placed */
 	HudObject(const std::string& image, const sf::Vector2f& pos);
+
+	//Moves the object
+	void move(sf::Vector2f &movement);
 
 	//Gets the width of the object
 	float getWidth();

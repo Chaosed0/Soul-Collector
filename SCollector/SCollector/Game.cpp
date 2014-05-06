@@ -13,7 +13,7 @@ const std::string Game::firstSpawn = "Init";
 Game::Game()
 	: winWidth(800), winHeight(600)
 	, window(sf::VideoMode(winWidth, winHeight), "Soul Collector")
-	, menus(winWidth, winHeight)
+	, menus(window.getSize())
 	, view(sf::FloatRect(0.0f, 0.0f, (float)winWidth, (float)winHeight))
 	, hud(sf::Vector2f(0, (float)winHeight))
 	, fadeoutRect(sf::Vector2f((float)winWidth, (float)winHeight))
@@ -161,11 +161,15 @@ void Game::Event()
 			s2.play();
 			s3.play();
 		}
-
-		//If the game is not paused, allow it to receive events
-		if(!paused) {
-			switch(anEvent.type) {
-			case sf::Event::KeyPressed :
+		switch(anEvent.type) {
+		case sf::Event::Resized :
+			menus.Resize(sf::Vector2f(anEvent.size.width, anEvent.size.height));
+			hud.Reposition(sf::Vector2f(0, window.getSize().y));
+			//Everything else is taken care of elsewhere
+			break;
+		case sf::Event::KeyPressed :
+			//If the game is not paused, allow it to receive events
+			if(!paused) {
 				switch(anEvent.key.code) {
 				//Note: The reason I don't move the player shape within these case statements is twofold:
 				// 1.) Separation of getting input and actually performing the action is VERY important
@@ -221,8 +225,11 @@ void Game::Event()
 				default:
 					break;
 				}
-				break;
-			case sf::Event::KeyReleased :
+			}
+			break;
+		case sf::Event::KeyReleased :
+			//If the game is not paused, allow it to receive events
+			if(!paused) {
 				switch(anEvent.key.code) {
 				case sf::Keyboard::W :
 					levelManager.GetPlayer().MoveUp(false);
@@ -244,9 +251,9 @@ void Game::Event()
 					break;
 				}
 				break;
-			default :
-				break;
 			}
+		default :
+			break;
 		}
 	}
 }

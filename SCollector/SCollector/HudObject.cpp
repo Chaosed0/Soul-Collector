@@ -31,6 +31,11 @@ void HudObject::SetImage(const std::string& image)
 	texture.loadFromFile(image);
 }
 
+void HudObject::move(sf::Vector2f &movement) {
+	rect.move(movement);
+	sprite.move(movement);
+}
+
 void HudObject::changeFill(int final)
 {
 	int delta = final - value;

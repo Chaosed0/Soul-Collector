@@ -15,12 +15,16 @@ public:
 	/**
 	 * Init constructor.
 	 *
-	 * The menu manager needs the window width and height so it can know
-	 *  what size to make its menus (windows).
-	 * \param winWidth The width of the window.
-	 * \param winHeight The height of the window.
+	 * \param size The width and height of the menu.
 	 */
-	MenuManager(int winWidth, int winHeight);
+	MenuManager(const sf::Vector2f &size);
+	MenuManager(const sf::Vector2u &size);
+
+	/**
+	 * Resizes all the menus this MenuManager manages.
+	 * \param size Thew new width and height of the menus.
+	 */
+	void Resize(const sf::Vector2f &size);
 
 	/**
 	 * Passes events to SFGUI.

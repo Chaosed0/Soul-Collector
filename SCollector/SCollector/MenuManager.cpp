@@ -1,7 +1,11 @@
 
 #include "MenuManager.h"
 
-MenuManager::MenuManager(int winWidth, int winHeight)
+MenuManager::MenuManager(const sf::Vector2u &size) :
+	MenuManager(sf::Vector2f(size.x, size.y))
+{ }
+
+MenuManager::MenuManager(const sf::Vector2f &size)
 {
 	loading = false;
 
@@ -121,8 +125,7 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 	menus[3]->Add(sfg::Label::Create("Loading..."));
 
 	//Set menu default properties
-	for(unsigned int i = 0; i < menus.size(); i++)
-		menus[i]->SetRequisition(sf::Vector2f((float)winWidth, (float)winHeight));
+	Resize(size);
 
 	for(unsigned int i = 0; i < menus.size(); i++) {
 		desktop.Add(menus[i]);
@@ -135,6 +138,11 @@ MenuManager::MenuManager(int winWidth, int winHeight)
 
 	//The menu is visible by default
 	visible = true;
+}
+
+void MenuManager::Resize(const sf::Vector2f &size) {
+	for(unsigned int i = 0; i < menus.size(); i++)
+		menus[i]->SetRequisition(size);
 }
 
 bool MenuManager::IsVisible()
