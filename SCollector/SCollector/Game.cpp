@@ -414,7 +414,7 @@ void Game::ToggleLoading()
 
 void Game::AddCheatCounter(int a, int b)
 {
-	if(cheatCounter == a || cheatCounter == b && !(cheatCounter == 10 || cheatCounter == 11)) {
+	if((cheatCounter == a || cheatCounter == b) && !(cheatCounter == 10 || cheatCounter == 11)) {
 		cheatCounter++;
 	} else if(!(cheatCounter == 10 || cheatCounter == 11)) {
 		cheatCounter = 0;

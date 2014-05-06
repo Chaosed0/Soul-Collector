@@ -251,8 +251,8 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 			//Grab objects from the group
 			const Tmx::Object *object = objectGroup->GetObject(j);
 			const std::string &type = object->GetType();
-			sf::Vector2f objectPos(object->GetX() + object->GetWidth()/2.0f,
-						object->GetY() - object->GetHeight()/2.0f);
+			sf::Vector2f objectPos((float)object->GetX() + object->GetWidth()/2.0f,
+						(float)object->GetY() - object->GetHeight()/2.0f);
 
 			//Check the objects against our known object types...
 			//Is the object a (the) spawn?
@@ -550,8 +550,6 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 		relDist = relDist * (mag+8.0f)/mag;
 		nearestY = pos+relDist;
 	}
-
-	float dist = std::min(distX, distY);
 
 	if(distX < distY) {
 		nearest = nearestX;
