@@ -21,10 +21,9 @@ class LightSource : public sf::Drawable
 public:
 	/**
 	 * Init constructor.
-	 * \param rays The number of rays to cast when forming the overlay.
 	 * \param radius The absolute cutoff distance for the light.
 	 */
-	LightSource(int rays, int radius, const sf::Color& color, const sf::Vector2f& pos);
+	LightSource(int radius, const sf::Color& color, const sf::Vector2f& pos);
 
 	/**
 	 * Sets the center position of the light. Also marks it for update.
@@ -64,6 +63,9 @@ public:
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 
+	/** Shared init function between constructors */
+	void init(int radius, const sf::Color &color, const sf::Vector2f &pos);
+
 	/** The color/intensity overlay circle. */
 	sf::CircleShape circleOverlay;
 	/** The sprite that loads circleTexture, which is drawn to the screen */
@@ -79,8 +81,6 @@ private:
 	/** The sprite associated with compositeOverlay */
 	sf::Sprite compositeOverlaySprite;
 
-	/** Number of rays to use when updating the overlay. */
-	int rays;
 	/** Cutoff distance for the overlay. */
 	int radius;
 

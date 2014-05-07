@@ -61,6 +61,73 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 	//Spawn the player
 	SpawnPlayer(spawnName);
 
+	//Get the corners of the map
+	for(int x = 0; x < mapSize.x-1; x++) {
+		for(int y = 0; y < mapSize.y-1; y++) {
+			bool upLeft = lyrCollision->GetTileId(x, y) != 0;
+			bool upRight = lyrCollision->GetTileId(x+1, y) != 0;
+			bool downLeft = lyrCollision->GetTileId(x, y+1) != 0;
+			bool downRight = lyrCollision->GetTileId(x+1, y+1) != 0;
+			int numSurroundingTiles = upLeft + upRight + downLeft + downRight;
+			sf::Vector2f pos((x+1) * tileSize.x, (y+1) * tileSize.y);
+			switch(numSurroundingTiles) {
+				case 1:
+					{
+						Corner corner;
+						corner.pos = pos;
+						if(upLeft) {
+							corner.type = Corner::OUTER_UP_LEFT;
+						} else if(upRight) {
+							corner.type = Corner::OUTER_UP_RIGHT;
+						} else if(downLeft) {
+							corner.type = Corner::OUTER_DOWN_LEFT;
+						} else if(downRight) {
+							corner.type = Corner::OUTER_DOWN_RIGHT;
+						}
+						corners.push_back(corner);
+					}
+					break;
+				case 2:
+					{
+						Corner corner1;
+						corner1.pos = pos;
+						Corner corner2;
+						corner2.pos = pos;
+						if(upLeft && downRight) {
+							corner1.type = Corner::INNER_UP_RIGHT;
+							corner2.type = Corner::INNER_DOWN_LEFT;
+							corners.push_back(corner1);
+							corners.push_back(corner2);
+						} else if(upRight && downLeft) {
+							corner1.type = Corner::INNER_UP_LEFT;
+							corner2.type = Corner::INNER_DOWN_RIGHT;
+							corners.push_back(corner1);
+							corners.push_back(corner2);
+						}
+					}
+					break;
+				case 3:
+					{
+						Corner corner;
+						corner.pos = pos;
+						if(upRight && downLeft && downRight) {
+							corner.type = Corner::INNER_UP_LEFT;
+						} else if(upLeft && downLeft && downRight) {
+							corner.type = Corner::INNER_UP_RIGHT;
+						} else if(upLeft && upRight && downRight) {
+							corner.type = Corner::INNER_DOWN_LEFT;
+						} else if(upLeft && upRight && downLeft) {
+							corner.type = Corner::INNER_DOWN_RIGHT;
+						}
+						corners.push_back(corner);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
 	//The level is now active and can be used.
 	isActive = true;
 	
@@ -662,6 +729,10 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	}
 
 	return foundCol;
+}
+
+const std::vector<Level::Corner> &Level::GetCorners() const {
+	return corners;
 }
 
 void Level::DoActivate()

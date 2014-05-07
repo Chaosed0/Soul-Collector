@@ -21,8 +21,8 @@ const int Player::baseAttack = 20;
 
 Player::Player(const sf::Vector2f& pos)
 	: Movable("assets/img/Player.png", sf::IntRect(8, 12, 27, 23), sf::IntRect(0, 0, 50, 50))
-	, lighter(128, 200, sf::Color(0, 0, 0, 50), pos)
-	, ambientLight(128, 700, sf::Color(0, 0, 0, 210), pos)
+	, lighter(200, sf::Color(0, 0, 0, 50), pos)
+	, ambientLight(700, sf::Color(0, 0, 0, 210), pos)
 {
 	//When the player starts, he isn't moving anywhere
 	moveLeft = moveRight = moveUp = moveDown = false;

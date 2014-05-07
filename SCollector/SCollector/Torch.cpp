@@ -7,7 +7,7 @@
 Torch::Torch(const sf::Vector2f& pos)
 	: Activatable("assets/img/Torch.png", sf::IntRect(0,0,32,32), 
 		sf::IntRect(0,0,32,32), sf::IntRect(-16,-16,64,64))
-	, light(128, 128, sf::Color(0,0,0,10), pos)
+	, light(128, sf::Color(0,0,0,10), pos)
 {
 	SetPos(pos);
 	light.SetPos(pos);

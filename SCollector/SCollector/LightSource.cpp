@@ -4,11 +4,9 @@
 
 sf::Texture LightSource::circleTexture;
 
-LightSource::LightSource(int rays, int radius, const sf::Color& color, const sf::Vector2f& pos)
-	: circleOverlay((float)radius, 32)
+LightSource::LightSource(int radius, const sf::Color &color, const sf::Vector2f &pos) :
+	circleOverlay((float)radius, 32)
 {
-	//Initialize attributes
-	this->rays = rays;
 	this->radius = radius;
 	this->lightPos = pos;
 	needsUpdate = true;
@@ -67,27 +65,42 @@ void LightSource::Update(const Level& level)
 {
 	//Recompute the visibility texture if we need to
 	if(needsUpdate) {
+
+		const std::vector<Level::Corner> &corners = level.GetCorners();
+		std::list<float> angles;
+		std::list<unsigned> indices;
 		//If the light's position has changed, we need to update the position of the light
 		compositeOverlaySprite.setPosition(lightPos);
 
 		//First, clear the visibility texture entirely with black
 		triangleOverlay.clear();
 
+		//Get things in polar coords and sort by angle
+		for(unsigned i = 0; i < corners.size(); i++) {
+			sf::Vector2f rel = corners[i].pos - lightPos;
+			float angle = atan2(rel.y, rel.x);
+			auto iter = angles.begin();
+			while(iter != angles.end() && *iter < angle) {
+				++iter;
+			}
+			angles.insert(iter, angle);
+		}
+
 		//Initialize the beginning parameters
 		//Basically, what we do here is shoot out lines defined by angles
 		// (rather than slopes) crossing through the point defined by the light's
 		// position
-		float angle1 = 0;
-		float angle2 = 2*PI/(float)rays;
+		auto angle1 = angles.begin();
+		auto angle2 = std::next(angle1);
 		sf::Vector2f point1, point2;
 		bool found1, found2;
 
 		//Get the first two points at the angles
-		found1 = level.GetCollide(lightPos, angle1, point1);
-		found2 = level.GetCollide(lightPos, angle2, point2);
+		found1 = level.GetCollide(lightPos, *angle1, point1);
+		found2 = level.GetCollide(lightPos, *angle2, point2);
 
 		//Loop through the number of rays we want to shoot out
-		for(int i = 0; i <= rays; i++) {
+		for(unsigned i = 1; i <= angles.size(); i++) {
 			//Get the relative position of the points we intersected at
 			sf::Vector2f relPoint1 = point1 - lightPos;
 			sf::Vector2f relPoint2 = point2 - lightPos;
@@ -114,8 +127,10 @@ void LightSource::Update(const Level& level)
 			found1 = found2;
 			point1 = point2;
 			angle1 = angle2;
-			angle2 = 2.0f*PI/(float)rays * (i+1);
-			found2 = level.GetCollide(lightPos, angle2, point2);
+			if(++angle2 == angles.end()) {
+				angle2 = angles.begin();
+			}
+			found2 = level.GetCollide(lightPos, *angle2, point2);
 		}
 
 		//Draw our changes to the texture

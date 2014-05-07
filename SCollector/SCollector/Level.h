@@ -34,6 +34,8 @@ class HUD;
 class Level : public sf::Drawable
 {
 public:
+	struct Corner;
+
 	/**
 	 * Init constructor
 	 *
@@ -143,6 +145,11 @@ public:
 	bool GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
 
 	/**
+	 * Gets a vector of all the corners in the level, for use in light raycasting.
+	 **/
+	const std::vector<Corner> &GetCorners() const;
+
+	/**
 	 * Attempts to activate an object, if the player is colliding with one.
 	 */
 	void DoActivate();
@@ -190,6 +197,21 @@ public:
 	 * \param hud The HUD.
 	 */
 	void UpdateHUD(HUD& hud);
+
+	struct Corner {
+		enum CornerType {
+			INNER_UP_LEFT,
+			OUTER_UP_LEFT,
+			INNER_UP_RIGHT,
+			OUTER_UP_RIGHT,
+			INNER_DOWN_LEFT,
+			OUTER_DOWN_LEFT,
+			INNER_DOWN_RIGHT,
+			OUTER_DOWN_RIGHT
+		};
+		sf::Vector2f pos;
+		CornerType type;
+	};
 private:
 	/**
 	 * Parses a .tmx format map.
@@ -318,6 +340,8 @@ private:
 
 	/** A list of lights in the level */
 	std::vector<LightSource*> lights;
+	/** List of corners in the level */
+	std::vector<Corner> corners;
 
 	/** Whether or not this level is still active; if false, the level should transition */
 	bool isActive;
