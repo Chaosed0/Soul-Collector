@@ -50,7 +50,7 @@ int Game::Run()
 {
 	isRunning = true;
 	Init();
-#ifndef HAVE_CONSOLE
+#ifdef HAVE_CONSOLE
 	Intro();
 #endif
 	Loop();

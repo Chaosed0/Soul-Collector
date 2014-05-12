@@ -143,6 +143,7 @@ public:
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
 	bool GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
+	bool GetCollide(const sf::Vector2f &p1, const sf::Vector2f &p2, sf::Vector2f& cur) const;
 
 	/**
 	 * Gets a vector of all the corners in the level, for use in light raycasting.
@@ -199,18 +200,17 @@ public:
 	void UpdateHUD(HUD& hud);
 
 	struct Corner {
-		enum CornerType {
-			INNER_UP_LEFT,
-			OUTER_UP_LEFT,
-			INNER_UP_RIGHT,
-			OUTER_UP_RIGHT,
-			INNER_DOWN_LEFT,
-			OUTER_DOWN_LEFT,
-			INNER_DOWN_RIGHT,
-			OUTER_DOWN_RIGHT
-		};
 		sf::Vector2f pos;
-		CornerType type;
+		int quadrant;
+		bool inner;
+
+		enum FacingType {
+			FACING_AWAY,
+			FACING_CORNER,
+			FACING_TANGENT_FIRST,
+			FACING_TANGENT_SECOND
+		};
+		FacingType getFacingType(const sf::Vector2f& pos) const;
 	};
 private:
 	/**
@@ -292,6 +292,9 @@ private:
 
 	/** Draws the level */
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
+
+	/** Returns true if light passes through this tile */
+	bool isLightPassable(sf::Vector2i globTile);
 
 	/** Map of pixels for a collision tilemap */
 	std::vector< std::vector<bool> > collisionMap;

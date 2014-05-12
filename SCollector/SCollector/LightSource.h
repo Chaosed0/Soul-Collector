@@ -60,6 +60,8 @@ public:
 	 * \return True if the light is on, false otherwise.
 	 */
 	bool GetIsOn();
+
+	void debugDraw(sf::RenderTarget& target, sf::RenderStates state) const;
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
 
@@ -81,6 +83,11 @@ private:
 	/** The sprite associated with compositeOverlay */
 	sf::Sprite compositeOverlaySprite;
 
+	std::vector<sf::CircleShape> circles;
+	std::vector<sf::Text> texts;
+	static sf::Font font;
+	static bool fontLoaded;
+
 	/** Cutoff distance for the overlay. */
 	int radius;
 
@@ -95,6 +102,7 @@ private:
 
 	/** Static texture for the circle shared by all light sources */
 	static sf::Texture circleTexture;
+
 };
 
 #endif

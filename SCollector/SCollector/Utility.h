@@ -35,5 +35,13 @@ float getRandom();
 float getRandom(float begin, float end);
 /** Checks whether the string is a valid property from GetLiteralProperty() */
 bool IsValidProperty(const std::string& prop);
+/** Treating p1 as the origin, returns the quadrant p2 is in. */
+int getQuadrant(const sf::Vector2f &p1, const sf::Vector2f &p2);
+
+/** Returns the sign (-1, 0, 1) of a number. */
+template <typename T>
+int sign(T val) {
+	return (T(0) < val) - (val < T(0));
+}
 
 #endif

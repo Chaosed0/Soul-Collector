@@ -43,6 +43,12 @@ Level::Level(Player& player, const std::string& mapName, const std::string& spaw
 	LoadMap(mapName, spawnName);
 }
 
+bool Level::isLightPassable(sf::Vector2i globTile) {
+	int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+	const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
+	return tileId <= 0 || (tile != NULL ? tile->GetProperties().HasProperty("Clear") : false);
+}
+
 bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 {
 	if(Parse(mapName) == NULL) {
@@ -64,25 +70,31 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 	//Get the corners of the map
 	for(int x = 0; x < mapSize.x-1; x++) {
 		for(int y = 0; y < mapSize.y-1; y++) {
-			bool upLeft = lyrCollision->GetTileId(x, y) != 0;
-			bool upRight = lyrCollision->GetTileId(x+1, y) != 0;
-			bool downLeft = lyrCollision->GetTileId(x, y+1) != 0;
-			bool downRight = lyrCollision->GetTileId(x+1, y+1) != 0;
+			bool upLeft = !isLightPassable(sf::Vector2i(x, y));
+			bool upRight = !isLightPassable(sf::Vector2i(x+1, y));
+			bool downLeft = !isLightPassable(sf::Vector2i(x, y+1));
+			bool downRight = !isLightPassable(sf::Vector2i(x+1, y+1));
 			int numSurroundingTiles = upLeft + upRight + downLeft + downRight;
 			sf::Vector2f pos((x+1) * tileSize.x, (y+1) * tileSize.y);
 			switch(numSurroundingTiles) {
 				case 1:
 					{
+						printf("%d %d %d\n", numSurroundingTiles, x, y);
 						Corner corner;
 						corner.pos = pos;
-						if(upLeft) {
-							corner.type = Corner::OUTER_UP_LEFT;
-						} else if(upRight) {
-							corner.type = Corner::OUTER_UP_RIGHT;
+						corner.inner = false;
+						if(upRight) {
+							corner.quadrant = 4;
+							corner.pos.y--;
+						} else if(upLeft) {
+							corner.quadrant = 3;
+							corner.pos.x--;
+							corner.pos.y--;
 						} else if(downLeft) {
-							corner.type = Corner::OUTER_DOWN_LEFT;
+							corner.quadrant = 2;
+							corner.pos.x--;
 						} else if(downRight) {
-							corner.type = Corner::OUTER_DOWN_RIGHT;
+							corner.quadrant = 1;
 						}
 						corners.push_back(corner);
 					}
@@ -90,17 +102,25 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 				case 2:
 					{
 						Corner corner1;
-						corner1.pos = pos;
 						Corner corner2;
+						corner1.pos = pos;
 						corner2.pos = pos;
+						corner1.inner = true;
+						corner2.inner = true;
 						if(upLeft && downRight) {
-							corner1.type = Corner::INNER_UP_RIGHT;
-							corner2.type = Corner::INNER_DOWN_LEFT;
+							printf("%d %d %d\n", numSurroundingTiles, x, y);
+							corner1.quadrant = 4;
+							corner2.quadrant = 2;
+							corner1.pos.x--;
+							corner2.pos.y--;
 							corners.push_back(corner1);
 							corners.push_back(corner2);
 						} else if(upRight && downLeft) {
-							corner1.type = Corner::INNER_UP_LEFT;
-							corner2.type = Corner::INNER_DOWN_RIGHT;
+							printf("%d %d %d\n", numSurroundingTiles, x, y);
+							corner1.quadrant = 3;
+							corner2.quadrant = 1;
+							corner2.pos.x--;
+							corner2.pos.y--;
 							corners.push_back(corner1);
 							corners.push_back(corner2);
 						}
@@ -108,16 +128,22 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 					break;
 				case 3:
 					{
+						printf("%d %d %d\n", numSurroundingTiles, x, y);
 						Corner corner;
 						corner.pos = pos;
-						if(upRight && downLeft && downRight) {
-							corner.type = Corner::INNER_UP_LEFT;
-						} else if(upLeft && downLeft && downRight) {
-							corner.type = Corner::INNER_UP_RIGHT;
+						corner.inner = true;
+						if(upLeft && downLeft && downRight) {
+							corner.quadrant = 4;
+							corner.pos.x--;
+						} else if(upRight && downLeft && downRight) {
+							corner.quadrant = 3;
 						} else if(upLeft && upRight && downRight) {
-							corner.type = Corner::INNER_DOWN_LEFT;
+							corner.quadrant = 2;
+							corner.pos.y--;
 						} else if(upLeft && upRight && downLeft) {
-							corner.type = Corner::INNER_DOWN_RIGHT;
+							corner.quadrant = 1;
+							corner.pos.x--;
+							corner.pos.y--;
 						}
 						corners.push_back(corner);
 					}
@@ -435,6 +461,208 @@ bool Level::GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel)
 	return collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
 }
 
+/*bool Level::GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) const
+{
+	bool steep = std::abs(p2.y - p1.y) > std::abs(p2.x - p1.x);
+
+	if(steep) {
+		std::swap(p1.x, p1.y);
+		std::swap(p2.x, p2.y);
+	}
+	if(p1.x > p2.x) {
+		std::swap(p1.x, p2.x);
+		std::swap(p1.y, p2.y);
+	}
+
+	int deltax = p2.x - p1.x;
+	int deltay = std::abs(p2.y - p1.y);
+	int error = deltax / 2;
+	int ystep;
+	int y = p1.y;
+	bool collided = false;
+
+	if(p1.y < p2.y) {
+		ystep = 1;
+	} else {
+		ystep = -1;
+	}
+
+	sf::Vector2f prevPoint;
+	sf::Vector2i globTile(0,0);
+	int x = p1.x;
+	int dir = sign(p2.x - p1.x);
+	while(!collided && globTile.x >= 0 && globTile.x < mapSize.x &&
+			globTile.y >= 0 && globTile.y < mapSize.y) {
+		x += dir;
+		prevPoint = point;
+		point.x = (steep ? y : x);
+		point.y = (steep ? x : y);
+
+		globTile = GetGlobalTile(point);
+		sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
+		sf::Vector2i pixel((int)(point.x-globTile.x*tileSize.x),
+			(int)(point.y-globTile.y*tileSize.y));
+		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+		const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
+		bool tileColliding = false;
+		bool foundObj = false;
+
+		//List of entities to also check for collisions
+		sf::IntRect rect((int)(globTile.x*tileSize.x), (int)(globTile.y*tileSize.y),
+			(int)tileSize.x, (int)tileSize.y);
+		for(unsigned i = 0; i < activatables.size() && !foundObj; i++) {
+			foundObj = activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect);
+		}
+
+		tileColliding = tileId > 0 && (tile != NULL?!tile->GetProperties().HasProperty("Clear"):true);
+
+		//If the tile is identified as colliding with light or we have an entity
+		// to look for
+		if(tileColliding || foundObj) {
+			//If the pixel of the tile is colliding, then we have found a colliding tile
+			if(tileColliding) {
+				collided = GetColliding(locTile, pixel);
+			}
+			for(unsigned i = 0; i < activatables.size() && !collided; i++) {
+				collided = collided ||
+					(activatables[i]->IsCollidable() && activatables[i]->Contains(point));
+			}
+
+			if(collided) {
+				//Otherwise, note down where we found this and break
+				//Back out; the previous point was the last non-colliding one
+				point = prevPoint;
+			}
+		}
+
+		error = error - deltay;
+		if(error < 0) {
+			y = y + ystep;
+			error = error + deltax;
+		}
+	}
+	return collided;
+}*/
+
+bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::Vector2f& cur) const
+{
+	if(p_dir.x == 0 && p_dir.y == 0) {
+		fprintf(stderr, "WARNING: GetCollide was passed a direction of (0,0)");
+		return false;
+	}
+
+	bool collided = false;
+
+	sf::Vector2i globTile = GetGlobalTile(pos);
+	sf::Vector2i dir(sign(p_dir.x), sign(p_dir.y));
+	float slope = INT_MAX;
+	if(p_dir.x != 0) {
+		slope = p_dir.y/p_dir.x;
+	}
+	cur = pos;
+
+	while(!collided && globTile.x >= 0 && globTile.x < mapSize.x &&
+			globTile.y >= 0 && globTile.y < mapSize.y) {
+		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+		const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
+		bool tileColliding = false;
+		bool foundObj = false;
+
+		//List of entities to also check for collisions
+		sf::IntRect rect((int)(globTile.x*tileSize.x), (int)(globTile.y*tileSize.y),
+			(int)tileSize.x, (int)tileSize.y);
+		for(unsigned i = 0; i < activatables.size() && !foundObj; i++) {
+			foundObj = activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect);
+		}
+
+		tileColliding = tileId > 0 && (tile != NULL?!tile->GetProperties().HasProperty("Clear"):true);
+
+		//If the tile is identified as colliding with light or we have an entity
+		// to look for
+		if(tileColliding || foundObj) {
+			sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
+			sf::Vector2i pixel((int)(cur.x-globTile.x*tileSize.x),
+				(int)(cur.y-globTile.y*tileSize.y));
+			//Check the pixels of the tile along this line
+			while(pixel.x >= 0 && pixel.x < tileSize.x &&
+					pixel.y >= 0 && pixel.y < tileSize.y &&
+					!collided) {
+
+				//If the pixel of the tile is colliding, then we have found a colliding tile
+				if(tileColliding) {
+					collided = GetColliding(locTile, pixel);
+				}
+				for(unsigned i = 0; i < activatables.size() && !collided; i++) {
+					collided = collided ||
+						(activatables[i]->IsCollidable() && activatables[i]->Contains(cur));
+				}
+
+				if(!collided) {
+					//If this pixel is not colliding, then keep searching
+					if(slope <= 1) {
+						cur.x += dir.x;
+						cur.y += dir.y * slope;
+					} else {
+						cur.y += dir.y;
+						cur.x += dir.x / slope;
+					}
+					pixel.x = (int)(cur.x-globTile.x*tileSize.x);
+					pixel.y = (int)(cur.y-globTile.y*tileSize.y);
+				} else {
+					//Otherwise, note down where we found this and break
+					//Back out one pixel; the previous pixel was the last non-colliding one
+					if(slope <= 1) {
+						cur.x -= dir.x;
+						cur.y -= dir.y * slope;
+					} else {
+						cur.y -= dir.y;
+						cur.x -= dir.x / slope;
+					}
+				}
+			}
+		}
+
+		//Find the next collision with a tile border, x or y
+		if(!collided) {
+			/*sf::Vector2i next(globTile.x + std::max(dir.x, 0), globTile.y + std::max(dir.y, 0));
+			sf::Vector2f timeToCol(std::abs(next.x*tileSize.x - cur.x),
+					std::abs((next.y*tileSize.y - cur.y) / slope));*/
+			sf::Vector2f timeToCol;
+			if(dir.x >= 0) {
+				timeToCol.x = std::abs((globTile.x+1)*tileSize.x - cur.x);
+			} else {
+				timeToCol.x = std::abs(globTile.x*tileSize.x - 1 - cur.x);
+			}
+
+			if(dir.y >= 0) {
+				timeToCol.y = std::abs(((globTile.y+1)*tileSize.y - cur.y) / slope);
+			} else {
+				timeToCol.y = std::abs((globTile.y*tileSize.y - 1 - cur.y) / slope);
+			}
+
+			if(p_dir.x != 0 && timeToCol.x <= timeToCol.y) {
+				cur.x = (globTile.x + dir.x) * tileSize.x;
+				if(dir.x < 0) {
+					//If going backwards, we hit the right side of the tile, not the left
+					cur.x += tileSize.x - 1;
+				}
+				cur.y = (cur.x - pos.x) * slope + pos.y;
+				globTile = GetGlobalTile(cur);
+			} else if(p_dir.y != 0 && timeToCol.y < timeToCol.x) {
+				cur.y = (globTile.y + dir.y) * tileSize.y;
+				if(dir.x < 0) {
+					//If going backwards, we hit the bottom side of the tile, not the top
+					cur.y += tileSize.y - 1;
+				}
+				cur.x = (cur.y - pos.y) / slope + pos.x;
+				globTile = GetGlobalTile(cur);
+			} 
+		}
+	}
+
+	return collided;
+}
+
 bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {
 	bool extendX = false, extendY = false;
@@ -461,8 +689,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	while(nearestX.x >= 0 && nearestX.x < map->GetWidth()*map->GetTileWidth() &&
 			nearestX.y >= 0 && nearestX.y < map->GetHeight()*map->GetTileHeight() &&
 			!foundX) {
-		int globTileId = lyrCollision->GetTileId(globTile.x, globTile.y);
-		const Tmx::Tile* tile = tsetCollision->GetTile(globTileId);
+		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+		const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
 
 		//List of entities to also check for collisions
 		foundObj = false;
@@ -474,7 +702,6 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 		//If the tile is identified as colliding with light or we have an entity
 		// to look for
-		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
 		if((tileId > 0 && (tile != NULL?!tile->GetProperties().HasProperty("Clear"):true))
 				|| foundObj) {
 			sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
@@ -540,8 +767,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	while(nearestY.y >= 0 && nearestY.y < map->GetHeight()*map->GetTileHeight() &&
 			nearestY.x >= 0 && nearestY.x < map->GetWidth()*map->GetTileHeight() &&
 			!foundY) {
-		int globTileId = lyrCollision->GetTileId(globTile.x, globTile.y);
-		const Tmx::Tile* tile = tsetCollision->GetTile(globTileId);
+		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
+		const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
 
 		//List of entities to also check for collisions
 		foundObj = false;
@@ -551,7 +778,6 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 			foundObj = activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect);
 		}
 
-		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
 		if((tileId > 0 && (tile != NULL?!tile->GetProperties().HasProperty("Clear"):true))
 				|| foundObj) {
 			sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
@@ -735,6 +961,37 @@ const std::vector<Level::Corner> &Level::GetCorners() const {
 	return corners;
 }
 
+Level::Corner::FacingType Level::Corner::getFacingType(const sf::Vector2f &pos) const {
+	//Subtract one so we can use modulus correctly
+	int quadrant = getQuadrant(this->pos, pos)-1;
+	int thisQuad = this->quadrant-1;
+	FacingType ret;
+
+	if(!inner) {
+	   	if(thisQuad == quadrant) {
+			ret = FACING_AWAY;
+		} else if((thisQuad + 2)%4 == quadrant) {
+			ret = FACING_CORNER;
+		} else if((thisQuad + 3)%4 == quadrant) {
+			ret = FACING_TANGENT_SECOND;
+		} else if((thisQuad + 1)%4 == quadrant) {
+			ret = FACING_TANGENT_FIRST;
+		} else {
+			// Suppress warning
+			ret = FACING_AWAY;
+		}
+	} else {
+
+		if(thisQuad == quadrant) {
+			ret = FACING_CORNER;
+		} else {
+			ret = FACING_AWAY;
+		}
+	}
+
+	return ret;
+}
+
 void Level::DoActivate()
 {
 	for(unsigned int i = 0; i < activatables.size(); i++) {
@@ -838,6 +1095,7 @@ void Level::Update(const sf::Time& timePassed)
 	lightTexture.clear(sf::Color());
 	for(unsigned int i = 0; i < lights.size(); i++) {
 		lightTexture.draw(*lights[i], sf::BlendMultiply);
+		lights[i]->debugDraw(lightTexture, sf::BlendMode());
 	}
 	lightTexture.display();
 }
