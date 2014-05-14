@@ -203,6 +203,7 @@ public:
 		sf::Vector2f pos;
 		int quadrant;
 		bool inner;
+		float data;
 
 		enum FacingType {
 			FACING_AWAY,

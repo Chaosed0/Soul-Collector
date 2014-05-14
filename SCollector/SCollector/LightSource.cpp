@@ -80,7 +80,7 @@ void LightSource::Update(const Level& level)
 		const std::vector<Level::Corner> &corners = level.GetCorners();
 		std::list<float> angles;
 		std::list<sf::Vector2f> positions;
-		std::list<Level::Corner::FacingType> types;
+		std::list<Level::Corner> cornersList;
 		//If the light's position has changed, we need to update the position of the light
 		compositeOverlaySprite.setPosition(lightPos);
 
@@ -108,7 +108,8 @@ void LightSource::Update(const Level& level)
 
 			float cornerMag = magnitude(cornerRel);
 			float collideMag = magnitude(point - lightPos);
-			/*if(facing == Level::Corner::FACING_CORNER) {
+			corner.data = 0;
+			if(facing == Level::Corner::FACING_CORNER) {
 				//Just check if the place we found is pretty close
 				// to the actual position of the corner
 				if(collideMag + 8.0f >= cornerMag) {
@@ -116,58 +117,58 @@ void LightSource::Update(const Level& level)
 				}
 			} else if(facing == Level::Corner::FACING_TANGENT_FIRST ||
 					facing == Level::Corner::FACING_TANGENT_SECOND) {
+				corner.data = magnitude(point - corner.pos);
 				//In this case, we're going to plan that it might
 				// have extended past the corner
-				if(collideMag + 8.0f >= cornerMag) {
+				if(collideMag > cornerMag) {
 					//Probably an extend
 					extendPoint = point;
 					insert = true;
-				} else if(magnitude(point - corner.pos) < 8.0) {
+				} else if(magnitude(point - corner.pos) < 16.0) {
 					//Probably hit the corner, we got to keep going
-					point += sf::Vector2f(8.0f * cos(angle), 8.0f * sin(angle));
-					bool foundExtend = level.GetCollide(point, angle, extendPoint);
+					point += sf::Vector2f(sign(cornerRel.x), sign(cornerRel.y));
+					bool foundExtend = level.GetCollide(point, cornerRel, extendPoint);
 					insert = true;
 				}
-			}*/
+			}
 			
 			auto iter = angles.begin();
 			auto positionIter = positions.begin();
-			auto typeIter = types.begin();
+			auto cornersIter = cornersList.begin();
 			while(iter != angles.end() && *iter < angle) {
 				++iter;
 				++positionIter;
-				++typeIter;
+				++cornersIter;
 			}
 
-			insert = true;
 			if(insert) {
 				if(facing == Level::Corner::FACING_TANGENT_FIRST) {
 					angles.insert(iter, angle);
 					positions.insert(positionIter, extendPoint);
-					types.insert(typeIter, facing);
+					cornersList.insert(cornersIter, corner);
 				}
 				if(facing == Level::Corner::FACING_TANGENT_FIRST ||
 						facing == Level::Corner::FACING_TANGENT_SECOND) {
 					angles.insert(iter, angle);
 					positions.insert(positionIter, corner.pos);
-					types.insert(typeIter, facing);
+					cornersList.insert(cornersIter, corner);
 				} else {
 					angles.insert(iter, angle);
 					positions.insert(positionIter, point);
-					types.insert(typeIter, facing);
+					cornersList.insert(cornersIter, corner);
 				}
 				if(facing == Level::Corner::FACING_TANGENT_SECOND) {
 					angles.insert(iter, angle);
 					positions.insert(positionIter, extendPoint);
-					types.insert(typeIter, facing);
+					cornersList.insert(cornersIter, corner);
 				}
 			}
 		}
 
 		auto point1 = positions.begin();
 	    auto point2 = std::next(point1);
-		auto type1 = types.begin();
-	    auto type2 = std::next(type1);
+		auto corner1 = cornersList.begin();
+	    auto corner2 = std::next(corner1);
 
 		const float debugRad = 2.0;
 
@@ -204,15 +205,17 @@ void LightSource::Update(const Level& level)
 			circles.push_back(shape);
 
 			std::stringstream sstream;
-			if(*type1 == Level::Corner::FACING_AWAY) {
+			Level::Corner::FacingType facing = corner1->getFacingType(lightPos);
+			if(facing == Level::Corner::FACING_AWAY) {
 				sstream << "AWAY";
-			} else if(*type1 == Level::Corner::FACING_CORNER) {
+			} else if(facing == Level::Corner::FACING_CORNER) {
 				sstream << "CORNER";
-			} else if(*type1 == Level::Corner::FACING_TANGENT_FIRST) {
+			} else if(facing == Level::Corner::FACING_TANGENT_FIRST) {
 				sstream << "T_FIRST";
-			} else if(*type1 == Level::Corner::FACING_TANGENT_SECOND) {
+			} else if(facing == Level::Corner::FACING_TANGENT_SECOND) {
 				sstream << "T_SECOND";
 			}
+			sstream << " " << magnitude(corner1->pos - *point1) << " " << corner1->data;
 
 			sf::Text text(sstream.str(), font, 10);
 			text.setPosition(*point1);
@@ -228,15 +231,17 @@ void LightSource::Update(const Level& level)
 			circles.push_back(shape);
 
 			std::stringstream sstream;
-			if(*type2 == Level::Corner::FACING_AWAY) {
+			Level::Corner::FacingType facing = corner2->getFacingType(lightPos);
+			if(facing == Level::Corner::FACING_AWAY) {
 				sstream << "AWAY";
-			} else if(*type2 == Level::Corner::FACING_CORNER) {
+			} else if(facing == Level::Corner::FACING_CORNER) {
 				sstream << "CORNER";
-			} else if(*type2 == Level::Corner::FACING_TANGENT_FIRST) {
+			} else if(facing == Level::Corner::FACING_TANGENT_FIRST) {
 				sstream << "T_FIRST";
-			} else if(*type2 == Level::Corner::FACING_TANGENT_SECOND) {
+			} else if(facing == Level::Corner::FACING_TANGENT_SECOND) {
 				sstream << "T_SECOND";
 			}
+			sstream << " " << magnitude(corner2->pos - *point2) << " " << corner2->data;
 
 			sf::Text text(sstream.str(), font, 10);
 			text.setPosition(*point2);
@@ -267,10 +272,10 @@ void LightSource::Update(const Level& level)
 
 			//Get the next point, preserving the current one for the next triangle
 			point1 = point2;
-			type1 = type2++;
+			corner1 = corner2++;
 			if(++point2 == positions.end()) {
 				point2 = positions.begin();
-				type2 = types.begin();
+				corner2 = cornersList.begin();
 			}
 		}
 

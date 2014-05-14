@@ -555,9 +555,13 @@ bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::V
 
 	sf::Vector2i globTile = GetGlobalTile(pos);
 	sf::Vector2i dir(sign(p_dir.x), sign(p_dir.y));
-	float slope = INT_MAX;
+	float yperx = INT_MAX; //AKA slope, m
+	float xpery = INT_MAX;
 	if(p_dir.x != 0) {
-		slope = p_dir.y/p_dir.x;
+		yperx = p_dir.y/p_dir.x;
+	}
+	if(p_dir.y != 0) {
+		xpery = p_dir.x/p_dir.y;
 	}
 	cur = pos;
 
@@ -581,8 +585,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::V
 		// to look for
 		if(tileColliding || foundObj) {
 			sf::Vector2i locTile(GetLocalTile(lyrCollision, globTile));
-			sf::Vector2i pixel((int)(cur.x-globTile.x*tileSize.x),
-				(int)(cur.y-globTile.y*tileSize.y));
+			sf::Vector2i pixel(std::round(cur.x-globTile.x*tileSize.x),
+				std::round(cur.y-globTile.y*tileSize.y));
 			//Check the pixels of the tile along this line
 			while(pixel.x >= 0 && pixel.x < tileSize.x &&
 					pixel.y >= 0 && pixel.y < tileSize.y &&
@@ -599,24 +603,24 @@ bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::V
 
 				if(!collided) {
 					//If this pixel is not colliding, then keep searching
-					if(slope <= 1) {
+					if(std::abs(yperx) < std::abs(xpery)) {
 						cur.x += dir.x;
-						cur.y += dir.y * slope;
+						cur.y += yperx;
 					} else {
 						cur.y += dir.y;
-						cur.x += dir.x / slope;
+						cur.x += xpery;
 					}
 					pixel.x = (int)(cur.x-globTile.x*tileSize.x);
 					pixel.y = (int)(cur.y-globTile.y*tileSize.y);
 				} else {
 					//Otherwise, note down where we found this and break
 					//Back out one pixel; the previous pixel was the last non-colliding one
-					if(slope <= 1) {
+					if(std::abs(yperx) < std::abs(xpery)) {
 						cur.x -= dir.x;
-						cur.y -= dir.y * slope;
+						cur.y -= yperx;
 					} else {
 						cur.y -= dir.y;
-						cur.x -= dir.x / slope;
+						cur.x -= xpery;
 					}
 				}
 			}
@@ -626,7 +630,7 @@ bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::V
 		if(!collided) {
 			/*sf::Vector2i next(globTile.x + std::max(dir.x, 0), globTile.y + std::max(dir.y, 0));
 			sf::Vector2f timeToCol(std::abs(next.x*tileSize.x - cur.x),
-					std::abs((next.y*tileSize.y - cur.y) / slope));*/
+					std::abs((next.y*tileSize.y - cur.y) * xpery));*/
 			sf::Vector2f timeToCol;
 			if(dir.x >= 0) {
 				timeToCol.x = std::abs((globTile.x+1)*tileSize.x - cur.x);
@@ -635,9 +639,9 @@ bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::V
 			}
 
 			if(dir.y >= 0) {
-				timeToCol.y = std::abs(((globTile.y+1)*tileSize.y - cur.y) / slope);
+				timeToCol.y = std::abs(((globTile.y+1)*tileSize.y - cur.y) * xpery);
 			} else {
-				timeToCol.y = std::abs((globTile.y*tileSize.y - 1 - cur.y) / slope);
+				timeToCol.y = std::abs((globTile.y*tileSize.y - 1 - cur.y) * xpery);
 			}
 
 			if(p_dir.x != 0 && timeToCol.x <= timeToCol.y) {
@@ -646,15 +650,15 @@ bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::V
 					//If going backwards, we hit the right side of the tile, not the left
 					cur.x += tileSize.x - 1;
 				}
-				cur.y = (cur.x - pos.x) * slope + pos.y;
+				cur.y = (cur.x - pos.x) * yperx + pos.y;
 				globTile = GetGlobalTile(cur);
 			} else if(p_dir.y != 0 && timeToCol.y < timeToCol.x) {
 				cur.y = (globTile.y + dir.y) * tileSize.y;
-				if(dir.x < 0) {
+				if(dir.y < 0) {
 					//If going backwards, we hit the bottom side of the tile, not the top
 					cur.y += tileSize.y - 1;
 				}
-				cur.x = (cur.y - pos.y) / slope + pos.x;
+				cur.x = (cur.y - pos.y) * xpery + pos.x;
 				globTile = GetGlobalTile(cur);
 			} 
 		}
