@@ -12,11 +12,12 @@
 #include <climits>
 #include <cstdio>
 #include <cmath>
+#include <cfloat>
 
 #include <vector>
 #include <list>
 
-#include <Tmx.h>
+#include <TmxParser/Tmx.h>
 
 #include "Utility.h"
 #include "AttackCone.h"
