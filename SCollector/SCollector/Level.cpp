@@ -23,8 +23,8 @@
 Level::Level(Player& player)
 	: player(player)
 {
-	mapSize = sf::Vector2f(0, 0);
-	tileSize = sf::Vector2f(0, 0);
+	mapSize = sf::Vector2u(0, 0);
+	tileSize = sf::Vector2u(0, 0);
 	lyrCollision = NULL;
 	tsetCollision = NULL;
 	isActive = false;
@@ -34,8 +34,8 @@ Level::Level(Player& player)
 Level::Level(Player& player, const std::string& mapName, const std::string& spawnName)
 	: player(player)
 {
-	mapSize = sf::Vector2f(0, 0);
-	tileSize = sf::Vector2f(0, 0);
+	mapSize = sf::Vector2u(0, 0);
+	tileSize = sf::Vector2u(0, 0);
 	lyrCollision = NULL;
 	tsetCollision = NULL;
 	isActive = false;
@@ -68,8 +68,8 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 	SpawnPlayer(spawnName);
 
 	//Get the corners of the map
-	for(int x = 0; x < mapSize.x-1; x++) {
-		for(int y = 0; y < mapSize.y-1; y++) {
+	for(unsigned x = 0; x < mapSize.x-1; x++) {
+		for(unsigned y = 0; y < mapSize.y-1; y++) {
 			bool upLeft = !isLightPassable(sf::Vector2i(x, y));
 			bool upRight = !isLightPassable(sf::Vector2i(x+1, y));
 			bool downLeft = !isLightPassable(sf::Vector2i(x, y+1));
@@ -218,8 +218,8 @@ Level::~Level()
 
 void Level::InitTextures()
 {
-	tilemapTexture.create((unsigned int)(mapSize.x*tileSize.y), (unsigned int)(mapSize.y*tileSize.y));
-	lightTexture.create((unsigned int)(mapSize.x*tileSize.y), (unsigned int)(mapSize.y*tileSize.y));
+	tilemapTexture.create(mapSize.x*tileSize.y, mapSize.y*tileSize.y);
+	lightTexture.create(mapSize.x*tileSize.y, mapSize.y*tileSize.y);
 }
 
 void Level::DrawMap()
@@ -276,8 +276,8 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 	map->ParseFile(BASEMAPDIR + mapName);
 
 	//Initialize some properties
-	mapSize = sf::Vector2f((float)map->GetWidth(), (float)map->GetHeight());
-	tileSize = sf::Vector2f((float)map->GetTileWidth(), (float)map->GetTileHeight());
+	mapSize = sf::Vector2u(map->GetWidth(), map->GetHeight());
+	tileSize = sf::Vector2u(map->GetTileWidth(), map->GetTileHeight());
 	
 	if(map->HasError()) {
 		fprintf(stderr, "WARNING: Could not parse level %s: %s\n",
@@ -448,12 +448,12 @@ sf::Vector2i Level::GetLocalTile(const Tmx::Layer* layer, const sf::Vector2i& gl
 
 sf::Vector2i Level::GetGlobalTile(const sf::Vector2f& pos) const
 {
-	return sf::Vector2i((int)pos.x / map->GetTileWidth(), (int)pos.y / map->GetTileHeight());
+	return sf::Vector2i(std::lround(pos.x) / tileSize.x, std::lround(pos.y) / tileSize.y);
 }
 
 sf::Vector2i Level::GetPixel(const sf::Vector2f& pos) const
 {
-	return sf::Vector2i((int)pos.x % map->GetTileWidth(), (int)pos.y % map->GetTileHeight());
+	return sf::Vector2i(std::lround(pos.x) % map->GetTileWidth(), std::lround(pos.y) % map->GetTileHeight());
 }
 
 bool Level::GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel) const
@@ -565,16 +565,16 @@ bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::V
 	}
 	cur = pos;
 
-	while(!collided && globTile.x >= 0 && globTile.x < mapSize.x &&
-			globTile.y >= 0 && globTile.y < mapSize.y) {
+	while(!collided && globTile.x >= 0 && globTile.x < (int)mapSize.x &&
+			globTile.y >= 0 && globTile.y < (int)mapSize.y) {
 		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
 		const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
 		bool tileColliding = false;
 		bool foundObj = false;
 
 		//List of entities to also check for collisions
-		sf::IntRect rect((int)(globTile.x*tileSize.x), (int)(globTile.y*tileSize.y),
-			(int)tileSize.x, (int)tileSize.y);
+		sf::IntRect rect(globTile.x*tileSize.x, globTile.y*tileSize.y,
+			tileSize.x, tileSize.y);
 		for(unsigned i = 0; i < activatables.size() && !foundObj; i++) {
 			foundObj = activatables[i]->IsCollidable() && activatables[i]->IsColliding(rect);
 		}
@@ -588,8 +588,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, const sf::Vector2f &p_dir, sf::V
 			sf::Vector2i pixel(std::round(cur.x-globTile.x*tileSize.x),
 				std::round(cur.y-globTile.y*tileSize.y));
 			//Check the pixels of the tile along this line
-			while(pixel.x >= 0 && pixel.x < tileSize.x &&
-					pixel.y >= 0 && pixel.y < tileSize.y &&
+			while(pixel.x >= 0 && pixel.x < (int)tileSize.x &&
+					pixel.y >= 0 && pixel.y < (int)tileSize.y &&
 					!collided) {
 
 				//If the pixel of the tile is colliding, then we have found a colliding tile
@@ -690,8 +690,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 	//printf("X DIRECTION\n\n");
 
 	//Do the x side first; while we're within map bounds...
-	while(nearestX.x >= 0 && nearestX.x < map->GetWidth()*map->GetTileWidth() &&
-			nearestX.y >= 0 && nearestX.y < map->GetHeight()*map->GetTileHeight() &&
+	while(nearestX.x >= 0 && nearestX.x < (int)mapSize.x &&
+			nearestX.y >= 0 && nearestX.y < (int)mapSize.y &&
 			!foundX) {
 		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
 		const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
@@ -712,8 +712,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 			sf::Vector2i pixel((int)(nearestX.x-globTile.x*tileSize.x),
 				(int)(nearestX.y-globTile.y*tileSize.y));
 			//Check the pixels of the tile along this line
-			while(pixel.x >= 0 && pixel.x < tileSize.x &&
-					pixel.y >= 0 && pixel.y < tileSize.y &&
+			while(pixel.x >= 0 && pixel.x < (int)tileSize.x &&
+					pixel.y >= 0 && pixel.y < (int)tileSize.y &&
 					!foundX) {
 
 				//If the pixel of the tile is colliding, then we have found a colliding tile
@@ -768,8 +768,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 
 	//printf("Y DIRECTION\n\n");
 
-	while(nearestY.y >= 0 && nearestY.y < map->GetHeight()*map->GetTileHeight() &&
-			nearestY.x >= 0 && nearestY.x < map->GetWidth()*map->GetTileHeight() &&
+	while(nearestY.y >= 0 && nearestY.y < (int)mapSize.x &&
+			nearestY.x >= 0 && nearestY.x < (int)mapSize.y &&
 			!foundY) {
 		int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
 		const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
@@ -788,8 +788,8 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 			sf::Vector2i pixel((int)(nearestY.x-globTile.x*tileSize.x),
 				(int)(nearestY.y-globTile.y*tileSize.y));
 			//Check the pixels of the tile along this line
-			while(pixel.x >= 0 && pixel.x < tileSize.x &&
-					pixel.y >= 0 && pixel.y < tileSize.y &&
+			while(pixel.x >= 0 && pixel.x < (int)tileSize.x &&
+					pixel.y >= 0 && pixel.y < (int)tileSize.y &&
 					!foundY) {
 
 				//Check if this tile is colliding with the ray, if we even have a tile to check

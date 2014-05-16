@@ -306,9 +306,9 @@ private:
 	std::vector<sf::Sprite> sprTilesets;
 
 	/** Size of a single tile, in pixels. */
-	sf::Vector2f tileSize;
+	sf::Vector2u tileSize;
 	/** Size of the entire map, in tiles. */
-	sf::Vector2f mapSize;
+	sf::Vector2u mapSize;
 
 	/** Tmx-parser representation of the map; remove this later */
 	Tmx::Map* map;
