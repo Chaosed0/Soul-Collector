@@ -77,186 +77,82 @@ void LightSource::Update(const Level& level)
 		circles.clear();
 		texts.clear();
 
-		const std::vector<Level::Corner> &corners = level.GetCorners();
+		const std::vector<Level::LightPoint> &unsortedPoints = level.IntersectWalls(lightPos);
 		std::list<float> angles;
-		std::list<sf::Vector2f> positions;
-		std::list<Level::Corner> cornersList;
+		std::list<Level::LightPoint> points;
+
+		//Sort the points by angle ascending; we assume that the fillTo and fillFrom
+		// properties have the same relative angle from lightPos
+		for(std::size_t i = 0; i < unsortedPoints.size(); i++) {
+			Level::LightPoint point = unsortedPoints[i];
+			sf::Vector2f relVec = point.fillTo - lightPos;
+			float mag = magnitude(relVec);
+			float angle = atan2f(relVec.y, relVec.x);
+
+			auto angleIter = angles.begin();
+			auto pointIter = points.begin();
+			while(angleIter != angles.end() && *angleIter < angle) {
+				++angleIter;
+				++pointIter;
+			}
+			angles.insert(angleIter, angle);
+			points.insert(pointIter, point);
+			
+			sf::CircleShape shape(2.0f);
+			shape.setOrigin(1.0f, 1.0f);
+			shape.setPosition(point.fillFrom);
+			shape.setFillColor(sf::Color::White);
+			circles.push_back(shape);
+
+			std::stringstream sstream;
+			sstream << (point.fillFrom.x - lightPos.x) << "\n" << (point.fillFrom.y - lightPos.y);
+
+			sf::Text text(sstream.str(), font, 10);
+			text.setPosition(point.fillFrom);
+			text.setColor(sf::Color::White);
+			texts.push_back(text);
+
+			if(point.fillFrom != point.fillTo) {
+				sf::CircleShape shape(2.0f);
+				shape.setOrigin(1.0f, 1.0f);
+				shape.setPosition(point.fillTo);
+				shape.setFillColor(sf::Color::White);
+				circles.push_back(shape);
+
+				std::stringstream sstream;
+				sstream << (point.fillTo.x - lightPos.x) << "\n" << (point.fillTo.y - lightPos.y);
+
+				sf::Text text(sstream.str(), font, 10);
+				text.setPosition(point.fillTo);
+				text.setColor(sf::Color::White);
+				texts.push_back(text);
+			}
+		}
+
 		//If the light's position has changed, we need to update the position of the light
 		compositeOverlaySprite.setPosition(lightPos);
 
 		//First, clear the visibility texture entirely with black
 		triangleOverlay.clear();
 
-		//Get things in polar coords and sort by angle
-		for(unsigned i = 0; i < corners.size(); i++) {
-			sf::Vector2f extendPoint;
-			Level::Corner corner = corners[i];
-			Level::Corner::FacingType facing = corner.getFacingType(lightPos);
-			bool insert = false;
-			//Just cull any walls that are facing away
-			if(facing == Level::Corner::FACING_AWAY) {
-				continue;
-			}
-
-			//Get the angle of the corner from this light
-			sf::Vector2f cornerRel = corner.pos - lightPos;
-			float angle = atan2(cornerRel.y, cornerRel.x);
-
-			//Figure out if the corner is visible
-			sf::Vector2f point;
-			bool found = level.GetCollide(lightPos, cornerRel, point);
-
-			float cornerMag = magnitude(cornerRel);
-			float collideMag = magnitude(point - lightPos);
-			corner.data = 0;
-			if(facing == Level::Corner::FACING_CORNER) {
-				//Just check if the place we found is pretty close
-				// to the actual position of the corner
-				if(collideMag + 8.0f >= cornerMag) {
-					insert = true;
-				}
-			} else if(facing == Level::Corner::FACING_TANGENT_FIRST ||
-					facing == Level::Corner::FACING_TANGENT_SECOND) {
-				corner.data = magnitude(point - corner.pos);
-				//In this case, we're going to plan that it might
-				// have extended past the corner
-				if(collideMag > cornerMag) {
-					//Probably an extend
-					extendPoint = point;
-					insert = true;
-				} else if(magnitude(point - corner.pos) < 16.0) {
-					//Probably hit the corner, we got to keep going
-					point += sf::Vector2f(sign(cornerRel.x), sign(cornerRel.y));
-					bool foundExtend = level.GetCollide(point, cornerRel, extendPoint);
-					insert = true;
-				}
-			}
-			
-			auto iter = angles.begin();
-			auto positionIter = positions.begin();
-			auto cornersIter = cornersList.begin();
-			while(iter != angles.end() && *iter < angle) {
-				++iter;
-				++positionIter;
-				++cornersIter;
-			}
-
-			if(insert) {
-				if(facing == Level::Corner::FACING_TANGENT_FIRST) {
-					angles.insert(iter, angle);
-					positions.insert(positionIter, extendPoint);
-					cornersList.insert(cornersIter, corner);
-				}
-				if(facing == Level::Corner::FACING_TANGENT_FIRST ||
-						facing == Level::Corner::FACING_TANGENT_SECOND) {
-					angles.insert(iter, angle);
-					positions.insert(positionIter, corner.pos);
-					cornersList.insert(cornersIter, corner);
-				} else {
-					angles.insert(iter, angle);
-					positions.insert(positionIter, point);
-					cornersList.insert(cornersIter, corner);
-				}
-				if(facing == Level::Corner::FACING_TANGENT_SECOND) {
-					angles.insert(iter, angle);
-					positions.insert(positionIter, extendPoint);
-					cornersList.insert(cornersIter, corner);
-				}
-			}
-		}
-
-		auto point1 = positions.begin();
+		auto point1 = points.begin();
 	    auto point2 = std::next(point1);
-		auto corner1 = cornersList.begin();
-	    auto corner2 = std::next(corner1);
 
 		const float debugRad = 2.0;
 
-		/*for(int i = 0; i < corners.size(); i++) {
-			sf::CircleShape shape(debugRad);
-			shape.setOrigin(debugRad/2.0f, debugRad/2.0f);
-			shape.setPosition(corners[i].pos);
-			shape.setFillColor(sf::Color::White);
-			circles.push_back(shape);
-
-			std::stringstream sstream;
-			Level::Corner::FacingType facing = corners[i].getFacingType(lightPos);
-			if(facing == Level::Corner::FACING_AWAY) {
-				sstream << "AWAY";
-			} else if(facing == Level::Corner::FACING_CORNER) {
-				sstream << "CORNER";
-			} else if(facing == Level::Corner::FACING_TANGENT_FIRST) {
-				sstream << "T_FIRST";
-			} else if(facing == Level::Corner::FACING_TANGENT_SECOND) {
-				sstream << "T_SECOND";
-			}
-			
-			sstream << corners[i].quadrant << " " << getQuadrant(corners[i].pos, lightPos) << " " << corners[i].inner;
-
-			sf::Text text(sstream.str(), font, 10);
-			text.setPosition(corners[i].pos);
-			text.setColor(sf::Color::White);
-			texts.push_back(text);
-		}*/
-			sf::CircleShape shape(debugRad);
-			shape.setOrigin(debugRad/2.0f, debugRad/2.0f);
-			shape.setPosition(*point1);
-			shape.setFillColor(sf::Color::White);
-			circles.push_back(shape);
-
-			std::stringstream sstream;
-			Level::Corner::FacingType facing = corner1->getFacingType(lightPos);
-			if(facing == Level::Corner::FACING_AWAY) {
-				sstream << "AWAY";
-			} else if(facing == Level::Corner::FACING_CORNER) {
-				sstream << "CORNER";
-			} else if(facing == Level::Corner::FACING_TANGENT_FIRST) {
-				sstream << "T_FIRST";
-			} else if(facing == Level::Corner::FACING_TANGENT_SECOND) {
-				sstream << "T_SECOND";
-			}
-			sstream << " " << magnitude(corner1->pos - *point1) << " " << corner1->data;
-
-			sf::Text text(sstream.str(), font, 10);
-			text.setPosition(*point1);
-			text.setColor(sf::Color::White);
-			texts.push_back(text);
-
 		//Loop through the number of rays we want to shoot out
-		for(unsigned i = 1; i <= positions.size(); i++) {
-			sf::CircleShape shape(debugRad);
-			shape.setOrigin(debugRad/2.0f, debugRad/2.0f);
-			shape.setPosition(*point2);
-			shape.setFillColor(sf::Color::White);
-			circles.push_back(shape);
-
-			std::stringstream sstream;
-			Level::Corner::FacingType facing = corner2->getFacingType(lightPos);
-			if(facing == Level::Corner::FACING_AWAY) {
-				sstream << "AWAY";
-			} else if(facing == Level::Corner::FACING_CORNER) {
-				sstream << "CORNER";
-			} else if(facing == Level::Corner::FACING_TANGENT_FIRST) {
-				sstream << "T_FIRST";
-			} else if(facing == Level::Corner::FACING_TANGENT_SECOND) {
-				sstream << "T_SECOND";
-			}
-			sstream << " " << magnitude(corner2->pos - *point2) << " " << corner2->data;
-
-			sf::Text text(sstream.str(), font, 10);
-			text.setPosition(*point2);
-			text.setColor(sf::Color::White);
-			texts.push_back(text);
-
+		for(unsigned i = 1; i <= points.size(); i++) {
+			sf::Vector2f p1 = point1->fillFrom;
+			sf::Vector2f p2 = point2->fillTo;
 			//Get the relative position of the points we intersected at
-			sf::Vector2f relPoint1 = *point1 - lightPos;
-			sf::Vector2f relPoint2 = *point2 - lightPos;
+			sf::Vector2f relPoint1 = p1 - lightPos;
+			sf::Vector2f relPoint2 = p2 - lightPos;
 			float mag1 = magnitude(relPoint1);
 			float mag2 = magnitude(relPoint2);
 
 			//Allow the points to penetrate the walls a little bit
-			/*relPoint1 = relPoint1 * (mag1+8.0f)/mag1;
-			relPoint2 = relPoint2 * (mag2+8.0f)/mag2;*/
+			relPoint1 = relPoint1 * (mag1+8.0f)/mag1;
+			relPoint2 = relPoint2 * (mag2+8.0f)/mag2;
 			
 			//Create a triangle using the light's position and the two points
 			sf::ConvexShape triangle;
@@ -272,10 +168,8 @@ void LightSource::Update(const Level& level)
 
 			//Get the next point, preserving the current one for the next triangle
 			point1 = point2;
-			corner1 = corner2++;
-			if(++point2 == positions.end()) {
-				point2 = positions.begin();
-				corner2 = cornersList.begin();
+			if(++point2 == points.end()) {
+				point2 = points.begin();
 			}
 		}
 

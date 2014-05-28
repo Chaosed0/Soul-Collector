@@ -25,6 +25,8 @@
 
 /** Gets the magnitude of vec */
 float magnitude(const sf::Vector2f& vec);
+/** Normalizes the vector */
+sf::Vector2f normalize(const sf::Vector2f &vec);
 /** Shifts the angle to between 0 and 2*PI */
 float shiftAngle(float angle);
 /** Initializes the random seed engine that getRandom() uses. */
@@ -37,6 +39,10 @@ float getRandom(float begin, float end);
 bool IsValidProperty(const std::string& prop);
 /** Treating p1 as the origin, returns the quadrant p2 is in. */
 int getQuadrant(const sf::Vector2f &p1, const sf::Vector2f &p2);
+/** Get "position" of the quadrant */
+sf::Vector2f getQuadrantVec(int quadrant, float magnitude);
+/** Returns the intersection point of two lines defined by two points each */
+sf::Vector2f lineIntersect(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3, sf::Vector2f p4);
 
 /** Returns the sign (-1, 0, 1) of a number. */
 template <typename T>

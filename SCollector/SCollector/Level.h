@@ -35,8 +35,6 @@ class HUD;
 class Level : public sf::Drawable
 {
 public:
-	struct Corner;
-
 	/**
 	 * Init constructor
 	 *
@@ -144,12 +142,6 @@ public:
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
 	bool GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
-	bool GetCollide(const sf::Vector2f &p1, const sf::Vector2f &p2, sf::Vector2f& cur) const;
-
-	/**
-	 * Gets a vector of all the corners in the level, for use in light raycasting.
-	 **/
-	const std::vector<Corner> &GetCorners() const;
 
 	/**
 	 * Attempts to activate an object, if the player is colliding with one.
@@ -201,20 +193,40 @@ public:
 	void UpdateHUD(HUD& hud);
 
 	struct Corner {
-		sf::Vector2f pos;
+		sf::Vector2i pos;
 		int quadrant;
 		bool inner;
-		float data;
-
+		bool processed;
 		enum FacingType {
 			FACING_AWAY,
 			FACING_CORNER,
 			FACING_TANGENT_FIRST,
 			FACING_TANGENT_SECOND
 		};
-		FacingType getFacingType(const sf::Vector2f& pos) const;
+		FacingType getFacingType(const sf::Vector2u &tileSize, const sf::Vector2f &pos) const;
 	};
+	struct Edge {
+		std::size_t c1;
+		std::size_t c2;
+		sf::Vector2i normal;
+	};
+
+	struct LightPoint {
+		sf::Vector2f fillTo;
+		sf::Vector2f fillFrom;
+		Corner::FacingType facing;
+	};
+
+	bool onCorrectedEdge(Edge e, sf::Vector2f point, sf::Vector2f pos) const;
+
+	std::vector<LightPoint> IntersectWalls(const sf::Vector2f &pos) const;
 private:
+
+	std::vector<Corner> corners;
+	std::vector<Edge> edges;
+
+	void GetEdges();
+
 	/**
 	 * Parses a .tmx format map.
 	 * \param mapName The name of the map in BASEMAPDIR to parse.
@@ -345,8 +357,6 @@ private:
 
 	/** A list of lights in the level */
 	std::vector<LightSource*> lights;
-	/** List of corners in the level */
-	std::vector<Corner> corners;
 
 	/** Whether or not this level is still active; if false, the level should transition */
 	bool isActive;
