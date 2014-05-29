@@ -1,5 +1,11 @@
 <h1>Soul Collector</h1>
 
+**5/29/2014**: I, Edward Lu, have been updating this code a bit. Several parts of the code are in need of refactoring, and several parts of the game need some design work. Not sure how far I plan to go on it, but if you'd like to try it as it was at the end of CMPSC483W (software design at the Pennsylvania State University), revert to the git tag "v1.0" and give it a compile.
+
+Original text follows...
+
+======
+
 A video game made for CMPSC483W, software design, taught by Max Fomitchev at The Pennsylvania State University.
 
 The game is a top-down adventure game located in purgatory. You have been smited, the pieces of your soul scattered; you must navigate the labrynthine purgatory and gather the pieces of your soul without becoming a beast.
