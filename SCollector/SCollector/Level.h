@@ -214,7 +214,6 @@ public:
 	struct LightPoint {
 		sf::Vector2f fillTo;
 		sf::Vector2f fillFrom;
-		Corner::FacingType facing;
 	};
 
 	bool onCorrectedEdge(Edge e, sf::Vector2f point, sf::Vector2f pos) const;

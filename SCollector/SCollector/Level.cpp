@@ -299,7 +299,6 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 					point.fillTo = cornerPos;
 				}
 			}
-			point.facing = facing;
 			points.push_back(point);
 		}
 	}

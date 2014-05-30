@@ -5,8 +5,10 @@
 #include <sstream>
 
 sf::Texture LightSource::circleTexture;
+#ifdef DEBUGDRAW
 sf::Font LightSource::font;
 bool LightSource::fontLoaded = false;
+#endif
 
 LightSource::LightSource(int radius, const sf::Color &color, const sf::Vector2f &pos) :
 	circleOverlay((float)radius, 32)
@@ -38,10 +40,12 @@ LightSource::LightSource(int radius, const sf::Color &color, const sf::Vector2f 
 	//Create the light/intensity overlay
 	circleOverlay.setFillColor(color);
 
+#ifdef DEBUGDRAW
 	if(!fontLoaded) {
 		font.loadFromFile("assets/font/monkey.ttf");
 		fontLoaded = true;
 	}
+#endif
 }
 
 void LightSource::SetPos(const sf::Vector2f& pos)
@@ -74,8 +78,10 @@ void LightSource::Update(const Level& level)
 {
 	//Recompute the visibility texture only if we need to
 	if(isOn && needsUpdate) {
+#ifdef DEBUGDRAW
 		circles.clear();
 		texts.clear();
+#endif
 
 		const std::vector<Level::LightPoint> &unsortedPoints = level.IntersectWalls(lightPos);
 		std::list<float> angles;
@@ -98,6 +104,7 @@ void LightSource::Update(const Level& level)
 			angles.insert(angleIter, angle);
 			points.insert(pointIter, point);
 			
+#ifdef DEBUGDRAW
 			sf::CircleShape shape(2.0f);
 			shape.setOrigin(1.0f, 1.0f);
 			shape.setPosition(point.fillFrom);
@@ -127,6 +134,7 @@ void LightSource::Update(const Level& level)
 				text.setColor(sf::Color::White);
 				texts.push_back(text);
 			}
+#endif
 		}
 
 		//If the light's position has changed, we need to update the position of the light
@@ -203,12 +211,14 @@ void LightSource::draw(sf::RenderTarget& target, sf::RenderStates state) const
 
 void LightSource::debugDraw(sf::RenderTarget& target, sf::RenderStates state) const
 {
+#ifdef DEBUGDRAW
 	for(unsigned i = 0; i < circles.size(); i++) {
 		target.draw(circles[i], state);
 	}
 	for(unsigned i = 0; i < texts.size(); i++) {
 		target.draw(texts[i], state);
 	}
+#endif
 }
 
 bool LightSource::GetIsOn()

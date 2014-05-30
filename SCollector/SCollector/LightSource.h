@@ -7,12 +7,14 @@
 #ifndef __LIGHTOVERLAY_H
 #define __LIGHTOVERLAY_H
 
+//Turn on for some neat diagnostics
+//#define DEBUGDRAW
+
 #include <SFML/Graphics.hpp>
 
 #include <sstream>
 
 #include "Utility.h"
-
 
 class Level;
 
@@ -83,10 +85,12 @@ private:
 	/** The sprite associated with compositeOverlay */
 	sf::Sprite compositeOverlaySprite;
 
+#ifdef DEBUGDRAW
 	std::vector<sf::CircleShape> circles;
 	std::vector<sf::Text> texts;
 	static sf::Font font;
 	static bool fontLoaded;
+#endif
 
 	/** Cutoff distance for the overlay. */
 	int radius;
