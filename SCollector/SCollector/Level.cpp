@@ -625,7 +625,7 @@ bool Level::GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel)
 	return collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
 }
 
-/*bool Level::GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) const
+bool Level::GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) const
 {
 	bool steep = std::abs(p2.y - p1.y) > std::abs(p2.x - p1.x);
 
@@ -706,7 +706,7 @@ bool Level::GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel)
 		}
 	}
 	return collided;
-}*/
+}
 
 bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {

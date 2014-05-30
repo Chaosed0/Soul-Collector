@@ -57,11 +57,11 @@ void SlowDemon::Update(Level& level, const sf::Time& timePassed)
 	sf::Vector2f relDist = playerPos - GetPos();
 	float dist = magnitude(relDist);
 	sf::Vector2f nearest;
-	level.GetCollide(GetPos(), atan2(relDist.y, relDist.x), nearest);
+	level.GetCollide(GetPos(), playerPos, nearest);
 	float distFromWall = magnitude(GetPos()-nearest);
 	bool canSeePlayer = dist <= distFromWall;
-	//printf("player:(%g,%g), nearest:(%g,%g), angle: %g\n", playerPos.x, playerPos.y, nearest.x, nearest.y, atan2(relDist.y, relDist.x)*TO_DEG);
-	//printf("dist:%g, nearest:%g, cansee:%d\n", dist, distFromWall, canSeePlayer);
+	printf("player:(%g,%g), nearest:(%g,%g), angle: %g\n", playerPos.x, playerPos.y, nearest.x, nearest.y, atan2(relDist.y, relDist.x)*TO_DEG);
+	printf("dist:%g, nearest:%g, cansee:%d\n", dist, distFromWall, canSeePlayer);
 	float moveSpeed = defaultMoveSpeed*timePassed.asSeconds();
 	sf::Vector2f movement;
 

@@ -142,6 +142,7 @@ public:
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
 	bool GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
+	bool GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) const;
 
 	/**
 	 * Attempts to activate an object, if the player is colliding with one.
