@@ -46,6 +46,12 @@ Level::Level(Player& player, const std::string& mapName, const std::string& spaw
 }
 
 bool Level::isLightPassable(sf::Vector2i globTile) {
+	if(globTile.x < 0 || globTile.x >= mapSize.x ||
+			globTile.y < 0 || globTile.y >= mapSize.y) {
+		//Count out-of-bounds as a solid wall
+		return false;
+	}
+	
 	int tileId = lyrCollision->GetTileId(globTile.x, globTile.y);
 	const Tmx::Tile* tile = tsetCollision->GetTile(tileId);
 	return tileId <= 0 || (tile != NULL ? tile->GetProperties().HasProperty("Clear") : false);
@@ -81,14 +87,14 @@ void Level::GetEdges() {
 	std::unordered_set<int> cornerLocSet;
 
 	//Collect the corners of the map
-	for(unsigned x = 0; x < mapSize.x-1; x++) {
-		for(unsigned y = 0; y < mapSize.y-1; y++) {
-			bool upLeft = !isLightPassable(sf::Vector2i(x, y));
-			bool upRight = !isLightPassable(sf::Vector2i(x+1, y));
-			bool downLeft = !isLightPassable(sf::Vector2i(x, y+1));
-			bool downRight = !isLightPassable(sf::Vector2i(x+1, y+1));
+	for(unsigned x = 0; x <= mapSize.x; x++) {
+		for(unsigned y = 0; y <= mapSize.y; y++) {
+			bool upLeft = !isLightPassable(sf::Vector2i(x-1, y-1));
+			bool upRight = !isLightPassable(sf::Vector2i(x, y-1));
+			bool downLeft = !isLightPassable(sf::Vector2i(x-1, y));
+			bool downRight = !isLightPassable(sf::Vector2i(x, y));
 			int numSurroundingTiles = upLeft + upRight + downLeft + downRight;
-			sf::Vector2i pos(x+1, y+1);
+			sf::Vector2i pos(x, y);
 			switch(numSurroundingTiles) {
 				case 1:
 					{
@@ -105,7 +111,8 @@ void Level::GetEdges() {
 							corner.quadrant = 1;
 						}
 						corners.push_back(corner);
-						cornerLocSet.insert(pos.y * mapSize.x + pos.x);
+						cornerLocSet.insert(pos.y * (mapSize.x+1) + pos.x);
+						printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 					}
 					break;
 				case 2:
@@ -121,13 +128,15 @@ void Level::GetEdges() {
 							corner2.quadrant = 2;
 							corners.push_back(corner1);
 							corners.push_back(corner2);
-							cornerLocSet.insert(pos.y * mapSize.x + pos.y);
+							cornerLocSet.insert(pos.y * (mapSize.x+1) + pos.y);
+							printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 						} else if(upRight && downLeft) {
 							corner1.quadrant = 3;
 							corner2.quadrant = 1;
 							corners.push_back(corner1);
 							corners.push_back(corner2);
-							cornerLocSet.insert(pos.y * mapSize.x + pos.x);
+							cornerLocSet.insert(pos.y * (mapSize.x+1) + pos.x);
+							printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 						}
 					}
 					break;
@@ -146,7 +155,8 @@ void Level::GetEdges() {
 							corner.quadrant = 1;
 						}
 						corners.push_back(corner);
-						cornerLocSet.insert(pos.y * mapSize.x + pos.x);
+						cornerLocSet.insert(pos.y * (mapSize.x+1) + pos.x);
+						printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 					}
 					break;
 				default:
@@ -185,10 +195,10 @@ void Level::GetEdges() {
 
 			sf::Vector2i pos;
 			for(pos = curCorner.pos + dir;
-					cornerLocSet.find(pos.y * mapSize.x + pos.x) == cornerLocSet.end();
+					cornerLocSet.find(pos.y * (mapSize.x+1) + pos.x) == cornerLocSet.end();
 					pos += dir) {
-				if(pos.x < 1 || pos.x > (int)mapSize.x-1 ||
-						pos.y < 1 || pos.y > (int)mapSize.x-1) {
+				if(pos.x < 0 || pos.x > (int)mapSize.x ||
+						pos.y < 0 || pos.y > (int)mapSize.x) {
 					fprintf(stderr, "WARNING: Encountered out-of-bounds while "
 							"processing edges! Map is unbounded somewhere!\n");
 					break;
@@ -206,6 +216,11 @@ void Level::GetEdges() {
 					curCorner = corners[j];
 					current = j;
 					break;
+				}
+				if(j == corners.size() - 1) {
+					fprintf(stderr, "WARNING: Looks like an infinite loop processing "
+							"corner position (%d, %d)\n", pos.x, pos.y);
+					exit(1);
 				}
 			}
 		} while(current != i);
