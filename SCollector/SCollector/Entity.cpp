@@ -148,6 +148,19 @@ sf::Vector2f Entity::GetPos() const
 	return sprite.getPosition();
 }
 
+//See the comment for this function in the header file, for an explanation
+// of why this function is needed.
+void Entity::SetRotCorrected(float newrot) {
+	sf::Vector2f origin(sprite.getOrigin().x, -sprite.getOrigin().y);
+	float r = sqrt(origin.x * origin.x + origin.y * origin.y);
+	float theta = atan2f(origin.y, origin.x) + newrot * TO_RAD;
+	sf::Vector2f newOrigin(r * cos(theta), r * sin(theta));
+	sf::Vector2f movement(newOrigin - origin);
+
+	sprite.move(movement.x, movement.y);
+	SetRot(newrot);
+}
+
 void Entity::SetRot(float newrot)
 {
 	sprite.setRotation(newrot);

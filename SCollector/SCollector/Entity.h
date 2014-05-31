@@ -59,6 +59,16 @@ public:
 	void SetRot(float newrot);
 
 	/**
+	 * TIled maintains that the bottom-left of the object must
+	 * be its position, even when rotated. This function sets
+	 * the sprite's rotation correctly around its origin, assuming
+	 * that the current position of the object is its bottom-right
+	 * corner.
+	 * \param newrot The new rotation of the Entity, in degrees.
+	 */
+	void SetRotCorrected(float newrot);
+
+	/**
 	 * Does a collision check on this entity and another.
 	 * \param entity The entity to check collisions against.
 	 * \return True if this entity is colliding with the other, false

@@ -533,20 +533,20 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 					fprintf(stderr, "WARNING: Key has no associated door! Ignored...");
 				} else {
 					activatables.push_back(new Key(objectPos, door, description, sf::Color(r,g,b,255)));
-					activatables.back()->SetRot(object->GetRot());
+					activatables.back()->SetRotCorrected(object->GetRot());
 				}
 			}
 			else if(type.compare("Torch") == 0) {
 				activatables.push_back(new Torch(objectPos));
 				//This is a bad thing and I feel bad for doing it
 				((Torch*)activatables.back())->AddLight(*this);
-				activatables.back()->SetRot(object->GetRot());
+				activatables.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Demon") == 0) {
 				enemies.push_back(new Demon(objectPos));
-				enemies.back()->SetRot(object->GetRot());
+				enemies.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("SlowDemon") == 0) {
 				enemies.push_back(new SlowDemon(objectPos));
-				enemies.back()->SetRot(object->GetRot());
+				enemies.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Stairs") == 0) {
 				std::string nextLevel = object->GetProperties().GetLiteralProperty("NextLevel");
 				std::string nextSpawn = object->GetProperties().GetLiteralProperty("NextSpawn");
@@ -555,23 +555,23 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 						object->GetName().c_str());
 				} else {
 					activatables.push_back(new Stairs(objectPos, nextLevel, nextSpawn));
-					activatables.back()->SetRot(object->GetRot());
+					activatables.back()->SetRotCorrected(object->GetRot());
 				}
 			} else if(type.compare("Door") == 0) {
 				std::string description = object->GetProperties().GetLiteralProperty("Description");
 				activatables.push_back(new Door(objectPos, object->GetName(), description));
-				activatables.back()->SetRot(object->GetRot());
+				activatables.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Soul") == 0) {
 				activatables.push_back(new Soul(objectPos));
-				activatables.back()->SetRot(object->GetRot());
+				activatables.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Potion") == 0) {
 				int recovery = object->GetProperties().GetNumericProperty("Recovery");
 				activatables.push_back(new HealthPot(objectPos, recovery));
-				activatables.back()->SetRot(object->GetRot());
+				activatables.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Fuel") == 0) {
 				int recovery = object->GetProperties().GetNumericProperty("Recovery");
 				activatables.push_back(new FuelCanister(objectPos, recovery));
-				activatables.back()->SetRot(object->GetRot());
+				activatables.back()->SetRotCorrected(object->GetRot());
 			}
 			//We don't know what type of object this is, issue an error
 			else {

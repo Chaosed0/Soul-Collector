@@ -19,6 +19,8 @@ Door::Door(const sf::Vector2f& pos, const std::string& doorName, const std::stri
 	soundManager.AddSound("assets/sound/DoorOpen.ogg", "open", false);
 	soundManager.AddSound("assets/sound/DoorLocked.ogg", "locked", false);
 	SetPos(pos);
+
+	printf("DOOR ORIGIN: %g %g\n", sprite.getOrigin().x, sprite.getOrigin().y);
 }
 
 void Door::Break()
