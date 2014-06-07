@@ -3,7 +3,7 @@
 #include <float.h>
 #endif
 
-#include <unordered_set>
+#include <unordered_map>
 
 #include "Level.h"
 #include "Entity.h"
@@ -46,8 +46,8 @@ Level::Level(Player& player, const std::string& mapName, const std::string& spaw
 }
 
 bool Level::isLightPassable(sf::Vector2i globTile) {
-	if(globTile.x < 0 || globTile.x >= mapSize.x ||
-			globTile.y < 0 || globTile.y >= mapSize.y) {
+	if(globTile.x < 0 || globTile.x >= (int)mapSize.x ||
+			globTile.y < 0 || globTile.y >= (int)mapSize.y) {
 		//Count out-of-bounds as a solid wall
 		return false;
 	}
@@ -84,7 +84,7 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 }
 
 void Level::GetEdges() {
-	std::unordered_set<int> cornerLocSet;
+	std::unordered_map<unsigned, std::size_t> cornerLocSet;
 
 	//Collect the corners of the map
 	for(unsigned x = 0; x <= mapSize.x; x++) {
@@ -95,6 +95,7 @@ void Level::GetEdges() {
 			bool downRight = !isLightPassable(sf::Vector2i(x, y));
 			int numSurroundingTiles = upLeft + upRight + downLeft + downRight;
 			sf::Vector2i pos(x, y);
+			unsigned id = pos.y * (mapSize.x+1) + pos.x;
 			switch(numSurroundingTiles) {
 				case 1:
 					{
@@ -110,9 +111,9 @@ void Level::GetEdges() {
 						} else if(downRight) {
 							corner.quadrant = 1;
 						}
+						cornerLocSet[id] = corners.size();
 						corners.push_back(corner);
-						cornerLocSet.insert(pos.y * (mapSize.x+1) + pos.x);
-						printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
+						//printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 					}
 					break;
 				case 2:
@@ -126,17 +127,17 @@ void Level::GetEdges() {
 						if(upLeft && downRight) {
 							corner1.quadrant = 4;
 							corner2.quadrant = 2;
+							cornerLocSet[id] = corners.size();
 							corners.push_back(corner1);
 							corners.push_back(corner2);
-							cornerLocSet.insert(pos.y * (mapSize.x+1) + pos.y);
-							printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
+							//printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 						} else if(upRight && downLeft) {
 							corner1.quadrant = 3;
 							corner2.quadrant = 1;
+							cornerLocSet[id] = corners.size();
 							corners.push_back(corner1);
 							corners.push_back(corner2);
-							cornerLocSet.insert(pos.y * (mapSize.x+1) + pos.x);
-							printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
+							//printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 						}
 					}
 					break;
@@ -154,9 +155,9 @@ void Level::GetEdges() {
 						} else if(upLeft && upRight && downLeft) {
 							corner.quadrant = 1;
 						}
+						cornerLocSet[id] = corners.size();
 						corners.push_back(corner);
-						cornerLocSet.insert(pos.y * (mapSize.x+1) + pos.x);
-						printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
+						//printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 					}
 					break;
 				default:
@@ -193,35 +194,37 @@ void Level::GetEdges() {
 				normal.x = 1;
 			}
 
-			sf::Vector2i pos;
-			for(pos = curCorner.pos + dir;
-					cornerLocSet.find(pos.y * (mapSize.x+1) + pos.x) == cornerLocSet.end();
-					pos += dir) {
+			sf::Vector2i pos(curCorner.pos + dir);
+			std::unordered_map<unsigned, std::size_t>::iterator iter =
+				cornerLocSet.find(pos.y * (mapSize.x+1) + pos.x);
+			while(iter == cornerLocSet.end()) {
 				if(pos.x < 0 || pos.x > (int)mapSize.x ||
 						pos.y < 0 || pos.y > (int)mapSize.x) {
 					fprintf(stderr, "WARNING: Encountered out-of-bounds while "
 							"processing edges! Map is unbounded somewhere!\n");
 					break;
 				}
+				pos += dir;
+				iter = cornerLocSet.find(pos.y * (mapSize.x+1) + pos.x);
 			}
 
-			for(std::size_t j = 0; j < corners.size(); j++) {
-				if(pos == corners[j].pos) {
-					Edge edge;
-					edge.c1 = current;
-					edge.c2 = j;
-					edge.normal = normal;
-					edges.push_back(edge);
-					corners[j].processed = true;
-					curCorner = corners[j];
-					current = j;
-					break;
+			if(iter != cornerLocSet.end()) {
+				Edge edge;
+				std::size_t index = iter->second;
+				if(index+1 < corners.size() && corners[index].pos == corners[index+1].pos) {
+					//Corner case - two corners in the same spot
+					//We need to figure out which one we actually want
+					if(curCorner.quadrant - (int)curCorner.inner == corners[index].quadrant) {
+						++index;
+					}
 				}
-				if(j == corners.size() - 1) {
-					fprintf(stderr, "WARNING: Looks like an infinite loop processing "
-							"corner position (%d, %d)\n", pos.x, pos.y);
-					exit(1);
-				}
+				edge.c1 = current;
+				edge.c2 = index;
+				edge.normal = normal;
+				edges.push_back(edge);
+				corners[index].processed = true;
+				curCorner = corners[index];
+				current = index;
 			}
 		} while(current != i);
 	}
@@ -254,7 +257,6 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 			Corner c2 = corners[edge.c2];
 			sf::Vector2f c1pos(c1.pos.x * tileSize.x, c1.pos.y * tileSize.y);
 			sf::Vector2f c2pos(c2.pos.x * tileSize.x, c2.pos.y * tileSize.y);
-			sf::Vector2f edgeDir = c2pos - c1pos;
 
 			//If this corner is a tangent corner and it's one of
 			//the ones on this edge, skip it but note down that we
@@ -278,7 +280,22 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 			if(intersectMag < closestMag &&
 					sign(intersect.x - pos.x) == sign(dir.x) &&
 					sign(intersect.y - pos.y) == sign(dir.y) &&
-					onCorrectedEdge(edge, intersect, pos)) {
+					onLine(c1pos, c2pos, intersect, 0.01f)) {
+				closestIntersect = intersect;
+				closestMag = intersectMag;
+				found = true;
+			}
+		}
+
+		for(unsigned i = 0; i < activatables.size(); i++) {
+			if(!activatables[i]->IsCollidable()) { continue; }
+
+			sf::Vector2f intersect = activatables[i]->lineIntersect(pos, cornerPos, 0.01f);
+			float intersectMag = magnitude(pos - intersect);
+
+			if(intersectMag < closestMag &&
+					sign(intersect.x - pos.x) == sign(dir.x) &&
+					sign(intersect.y - pos.y) == sign(dir.y)) {
 				closestIntersect = intersect;
 				closestMag = intersectMag;
 				found = true;
@@ -303,25 +320,6 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 		}
 	}
 	return points;
-}
-
-bool Level::onCorrectedEdge(Edge e, sf::Vector2f point, sf::Vector2f pos) const {
-	Corner c1 = corners[e.c1];
-	Corner c2 = corners[e.c2];
-	sf::Vector2f c1pos(c1.pos.x * tileSize.x, c1.pos.y * tileSize.y);
-	sf::Vector2f c2pos(c2.pos.x * tileSize.x, c2.pos.y * tileSize.y);
-	float crossproduct = (point.y - c1pos.y) * (c2pos.x - c1pos.x) - (point.x - c1pos.x) * (c2pos.y - c1pos.y);
-	/*bool c1tangent = c1.getFacingType(tileSize, pos) == Corner::FACING_TANGENT_FIRST ||
-		c1.getFacingType(tileSize, pos) == Corner::FACING_TANGENT_SECOND;
-	bool c2tangent = c2.getFacingType(tileSize, pos) == Corner::FACING_TANGENT_FIRST ||
-		c2.getFacingType(tileSize, pos) == Corner::FACING_TANGENT_SECOND;*/
-	float correction = 0.01f;
-
-	return std::abs(crossproduct) < 0.5f &&
-		point.x >= std::min(c1pos.x, c2pos.x) - correction &&
-		point.x <= std::max(c1pos.x, c2pos.x) + correction &&
-		point.y >= std::min(c1pos.y, c2pos.y) - correction &&
-		point.y <= std::max(c1pos.y, c2pos.y) + correction;
 }
 
 void Level::SpawnPlayer(const std::string& spawnName)
@@ -655,8 +653,8 @@ bool Level::GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) co
 	sf::Vector2i globTile(0,0);
 	int x = p1.x;
 	int dir = sign(p2.x - p1.x);
-	while(!collided && globTile.x >= 0 && globTile.x < mapSize.x &&
-			globTile.y >= 0 && globTile.y < mapSize.y) {
+	while(!collided && globTile.x >= 0 && globTile.x < (int)mapSize.x &&
+			globTile.y >= 0 && globTile.y < (int)mapSize.y) {
 		x += dir;
 		prevPoint = point;
 		point.x = (steep ? y : x);

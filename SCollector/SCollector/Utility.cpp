@@ -88,3 +88,13 @@ sf::Vector2f lineIntersect(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3, sf
 			((p1.x*p2.y - p1.y*p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x*p4.y - p3.y*p4.x)) /
 			((p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x)));
 }
+
+bool onLine(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f point, float epsilon) {
+	float crossproduct = (point.y - p1.y) * (p2.x - p1.x) - (point.x - p1.x) * (p2.y - p1.y);
+
+	return std::abs(crossproduct) < 0.1f &&
+		point.x >= std::min(p1.x, p2.x) - epsilon &&
+		point.x <= std::max(p1.x, p2.x) + epsilon &&
+		point.y >= std::min(p1.y, p2.y) - epsilon &&
+		point.y <= std::max(p1.y, p2.y) + epsilon;
+}

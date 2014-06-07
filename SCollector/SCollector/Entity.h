@@ -91,6 +91,14 @@ public:
 	virtual bool IsColliding(const AttackCone& cone) const;
 
 	/**
+	 * Casts a line from p1 to p2 and returns the closest point to p1.
+	 * \param p1 One point the line goes through.
+	 * \param p2 Another point the line goes through.
+	 * \return (FLT_MAX, FLT_MAX) if no intersection, the intersection point otherwise.
+	 */
+	virtual sf::Vector2f lineIntersect(sf::Vector2f p1, sf::Vector2f p2, float epsilon) const;
+
+	/**
 	 * Checks if this entity is collidable with the player or not.
 	 * \return True if the entity should collide with the player, false otherwise.
 	 */

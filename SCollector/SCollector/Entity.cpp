@@ -114,6 +114,30 @@ bool Entity::IsColliding(const AttackCone& cone) const
 		cone.Contains(botRight);
 }
 
+sf::Vector2f Entity::lineIntersect(sf::Vector2f p1, sf::Vector2f p2, float epsilon) const {
+	sf::Vector2f box[4];
+	box[0] = sf::Vector2f(sprite.getPosition().x - sprite.getOrigin().x,
+			sprite.getPosition().y - sprite.getOrigin().y);
+	box[1] = box[0] + sf::Vector2f(collisionBox.width, 0.0f);
+	box[2] = box[0] + sf::Vector2f(0.0f, collisionBox.height);
+	box[3] = box[0] + sf::Vector2f(collisionBox.width, collisionBox.height);
+
+	sf::Vector2f closest(FLT_MAX, FLT_MAX);
+	float closestMag = FLT_MAX;
+
+	for(unsigned i = 0; i < 4; i++) {
+		unsigned j = (i+1)%4;
+		sf::Vector2f intersect = ::lineIntersect(p1, p2, box[i], box[j]);
+		float intersectMag = magnitude(p1 - intersect);
+		if(intersectMag < closestMag && onLine(box[i], box[j], intersect, epsilon)) {
+			closestMag = intersectMag;
+			closest = intersect;
+		}
+	}
+	
+	return closest;
+}
+
 bool Entity::IsCollidable()
 {
 	return isCollidable;

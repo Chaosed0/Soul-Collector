@@ -43,6 +43,8 @@ int getQuadrant(const sf::Vector2f &p1, const sf::Vector2f &p2);
 sf::Vector2f getQuadrantVec(int quadrant, float magnitude);
 /** Returns the intersection point of two lines defined by two points each */
 sf::Vector2f lineIntersect(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3, sf::Vector2f p4);
+/** Returns true if the point is (close to) on the line. */
+bool onLine(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f point, float epsilon);
 
 /** Returns the sign (-1, 0, 1) of a number. */
 template <typename T>

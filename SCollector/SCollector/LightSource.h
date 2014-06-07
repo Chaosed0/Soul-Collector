@@ -8,7 +8,7 @@
 #define __LIGHTOVERLAY_H
 
 //Turn on for some neat diagnostics
-//#define DEBUGDRAW
+#define DEBUGDRAW 0
 
 #include <SFML/Graphics.hpp>
 

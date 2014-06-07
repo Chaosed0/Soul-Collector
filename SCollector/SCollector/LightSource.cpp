@@ -5,7 +5,7 @@
 #include <sstream>
 
 sf::Texture LightSource::circleTexture;
-#ifdef DEBUGDRAW
+#if DEBUGDRAW
 sf::Font LightSource::font;
 bool LightSource::fontLoaded = false;
 #endif
@@ -40,7 +40,7 @@ LightSource::LightSource(int radius, const sf::Color &color, const sf::Vector2f 
 	//Create the light/intensity overlay
 	circleOverlay.setFillColor(color);
 
-#ifdef DEBUGDRAW
+#if DEBUGDRAW
 	if(!fontLoaded) {
 		font.loadFromFile("assets/font/monkey.ttf");
 		fontLoaded = true;
@@ -78,7 +78,7 @@ void LightSource::Update(const Level& level)
 {
 	//Recompute the visibility texture only if we need to
 	if(isOn && needsUpdate) {
-#ifdef DEBUGDRAW
+#if DEBUGDRAW
 		circles.clear();
 		texts.clear();
 #endif
@@ -104,7 +104,7 @@ void LightSource::Update(const Level& level)
 			angles.insert(angleIter, angle);
 			points.insert(pointIter, point);
 			
-#ifdef DEBUGDRAW
+#if DEBUGDRAW
 			sf::CircleShape shape(2.0f);
 			shape.setOrigin(1.0f, 1.0f);
 			shape.setPosition(point.fillFrom);
@@ -211,7 +211,7 @@ void LightSource::draw(sf::RenderTarget& target, sf::RenderStates state) const
 
 void LightSource::debugDraw(sf::RenderTarget& target, sf::RenderStates state) const
 {
-#ifdef DEBUGDRAW
+#if DEBUGDRAW
 	for(unsigned i = 0; i < circles.size(); i++) {
 		target.draw(circles[i], state);
 	}
