@@ -30,6 +30,24 @@ class HUD;
 
 #define BASEMAPDIR "assets/maps/"
 
+struct Corner {
+	sf::Vector2f pos;
+	int quadrant;
+	bool inner;
+	enum FacingType {
+		FACING_AWAY,
+		FACING_CORNER,
+		FACING_TANGENT_FIRST,
+		FACING_TANGENT_SECOND
+	};
+	FacingType getFacingType(const sf::Vector2f &pos) const;
+};
+struct Edge {
+	std::size_t c1;
+	std::size_t c2;
+	sf::Vector2i normal;
+};
+
 //Note: Level is sort of an Entity too, but it's got too many
 // differences to make it a subclass of Entity
 class Level : public sf::Drawable
@@ -193,31 +211,12 @@ public:
 	 */
 	void UpdateHUD(HUD& hud);
 
-	struct Corner {
-		sf::Vector2i pos;
-		int quadrant;
-		bool inner;
-		bool processed;
-		enum FacingType {
-			FACING_AWAY,
-			FACING_CORNER,
-			FACING_TANGENT_FIRST,
-			FACING_TANGENT_SECOND
-		};
-		FacingType getFacingType(const sf::Vector2u &tileSize, const sf::Vector2f &pos) const;
-	};
-	struct Edge {
-		std::size_t c1;
-		std::size_t c2;
-		sf::Vector2i normal;
-	};
+	bool onCorrectedEdge(Edge e, sf::Vector2f point, sf::Vector2f pos) const;
 
 	struct LightPoint {
 		sf::Vector2f fillTo;
 		sf::Vector2f fillFrom;
 	};
-
-	bool onCorrectedEdge(Edge e, sf::Vector2f point, sf::Vector2f pos) const;
 
 	std::vector<LightPoint> IntersectWalls(const sf::Vector2f &pos) const;
 private:

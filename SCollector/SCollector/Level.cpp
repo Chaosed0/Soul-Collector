@@ -85,6 +85,11 @@ bool Level::LoadMap(const std::string& mapName, const std::string& spawnName)
 
 void Level::GetEdges() {
 	std::unordered_map<unsigned, std::size_t> cornerLocSet;
+	std::vector<bool> processed;
+	std::vector<sf::Vector2i> tilePos;
+
+	corners.clear();
+	edges.clear();
 
 	//Collect the corners of the map
 	for(unsigned x = 0; x <= mapSize.x; x++) {
@@ -95,12 +100,13 @@ void Level::GetEdges() {
 			bool downRight = !isLightPassable(sf::Vector2i(x, y));
 			int numSurroundingTiles = upLeft + upRight + downLeft + downRight;
 			sf::Vector2i pos(x, y);
+			sf::Vector2f globPos(x * tileSize.x, y * tileSize.y);
 			unsigned id = pos.y * (mapSize.x+1) + pos.x;
 			switch(numSurroundingTiles) {
 				case 1:
 					{
 						Corner corner;
-						corner.pos = pos;
+						corner.pos = globPos;
 						corner.inner = false;
 						if(upRight) {
 							corner.quadrant = 4;
@@ -113,6 +119,8 @@ void Level::GetEdges() {
 						}
 						cornerLocSet[id] = corners.size();
 						corners.push_back(corner);
+						processed.push_back(false);
+						tilePos.push_back(pos);
 						//printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 					}
 					break;
@@ -120,8 +128,8 @@ void Level::GetEdges() {
 					{
 						Corner corner1;
 						Corner corner2;
-						corner1.pos = pos;
-						corner2.pos = pos;
+						corner1.pos = globPos;
+						corner2.pos = globPos;
 						corner1.inner = true;
 						corner2.inner = true;
 						if(upLeft && downRight) {
@@ -130,6 +138,10 @@ void Level::GetEdges() {
 							cornerLocSet[id] = corners.size();
 							corners.push_back(corner1);
 							corners.push_back(corner2);
+							processed.push_back(false);
+							processed.push_back(false);
+							tilePos.push_back(pos);
+							tilePos.push_back(pos);
 							//printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 						} else if(upRight && downLeft) {
 							corner1.quadrant = 3;
@@ -137,6 +149,10 @@ void Level::GetEdges() {
 							cornerLocSet[id] = corners.size();
 							corners.push_back(corner1);
 							corners.push_back(corner2);
+							processed.push_back(false);
+							processed.push_back(false);
+							tilePos.push_back(pos);
+							tilePos.push_back(pos);
 							//printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 						}
 					}
@@ -144,7 +160,7 @@ void Level::GetEdges() {
 				case 3:
 					{
 						Corner corner;
-						corner.pos = pos;
+						corner.pos = globPos;
 						corner.inner = true;
 						if(upLeft && downLeft && downRight) {
 							corner.quadrant = 4;
@@ -157,6 +173,8 @@ void Level::GetEdges() {
 						}
 						cornerLocSet[id] = corners.size();
 						corners.push_back(corner);
+						processed.push_back(false);
+						tilePos.push_back(pos);
 						//printf("%d %d %d\n", pos.x, pos.y, numSurroundingTiles);
 					}
 					break;
@@ -168,11 +186,12 @@ void Level::GetEdges() {
 
 	//Pass through the corners of the map and determine edges
 	for(std::size_t i = 0; i < corners.size(); i++) {
-		if(corners[i].processed) { continue; }
+		if(processed[i]) { continue; }
 		std::size_t current = i;
 		Corner curCorner = corners[i];
-		curCorner.processed = true;
+		processed[i] = true;
 		do {
+			printf("Processing corner %d %d\n", tilePos[current].x, tilePos[current].y);
 			//Follow the edges in a clockwise fashion
 			sf::Vector2i dir(0,0);
 			sf::Vector2i normal(0,0);
@@ -194,14 +213,16 @@ void Level::GetEdges() {
 				normal.x = 1;
 			}
 
-			sf::Vector2i pos(curCorner.pos + dir);
+			sf::Vector2i pos(tilePos[current] + dir);
 			std::unordered_map<unsigned, std::size_t>::iterator iter =
 				cornerLocSet.find(pos.y * (mapSize.x+1) + pos.x);
 			while(iter == cornerLocSet.end()) {
+				printf("  %d %d\n", pos.x, pos.y);
 				if(pos.x < 0 || pos.x > (int)mapSize.x ||
 						pos.y < 0 || pos.y > (int)mapSize.x) {
 					fprintf(stderr, "WARNING: Encountered out-of-bounds while "
 							"processing edges! Map is unbounded somewhere!\n");
+					exit(1);
 					break;
 				}
 				pos += dir;
@@ -222,7 +243,7 @@ void Level::GetEdges() {
 				edge.c2 = index;
 				edge.normal = normal;
 				edges.push_back(edge);
-				corners[index].processed = true;
+				processed[index] = true;
 				curCorner = corners[index];
 				current = index;
 			}
@@ -232,16 +253,22 @@ void Level::GetEdges() {
 
 std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) const {
 	std::vector<LightPoint> points;
-	for(std::size_t i = 0; i < corners.size(); i++) {
+	for(std::size_t i = 0; i < corners.size() + activatables.size()*4; i++) {
 		bool tangent = false;
+		Corner corner;
 
-		Corner corner = corners[i];
-		Corner::FacingType facing = corner.getFacingType(tileSize, pos);
-		sf::Vector2f cornerPos(corner.pos.x * tileSize.x, corner.pos.y * tileSize.y);
-		sf::Vector2f dir = cornerPos - pos;
+		if(i < corners.size()) {
+			corner = corners[i];
+		} else {
+			if(!activatables[(i-corners.size())/4]->IsCollidable()) { continue; }
+			corner = activatables[(i-corners.size())/4]->getCorner(i%4);
+		}
+
+		Corner::FacingType facing = corner.getFacingType(pos);
+		sf::Vector2f dir = corner.pos - pos;
 
 		LightPoint point;
-		sf::Vector2f closestIntersect(cornerPos);
+		sf::Vector2f closestIntersect(corner.pos);
 		float closestMag = FLT_MAX;
 		bool found = false;
 
@@ -255,8 +282,6 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 			Edge edge = edges[j];
 			Corner c1 = corners[edge.c1];
 			Corner c2 = corners[edge.c2];
-			sf::Vector2f c1pos(c1.pos.x * tileSize.x, c1.pos.y * tileSize.y);
-			sf::Vector2f c2pos(c2.pos.x * tileSize.x, c2.pos.y * tileSize.y);
 
 			//If this corner is a tangent corner and it's one of
 			//the ones on this edge, skip it but note down that we
@@ -271,7 +296,7 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 				continue;
 			}
 
-			sf::Vector2f intersect = lineIntersect(pos, cornerPos, c1pos, c2pos);
+			sf::Vector2f intersect = lineIntersect(pos, corner.pos, c1.pos, c2.pos);
 			float intersectMag = magnitude(pos - intersect);
 
 			//If we intersected on the segment and this is a closer
@@ -280,17 +305,17 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 			if(intersectMag < closestMag &&
 					sign(intersect.x - pos.x) == sign(dir.x) &&
 					sign(intersect.y - pos.y) == sign(dir.y) &&
-					onLine(c1pos, c2pos, intersect, 0.01f)) {
+					onLine(c1.pos, c2.pos, intersect, 0.01f)) {
 				closestIntersect = intersect;
 				closestMag = intersectMag;
 				found = true;
 			}
 		}
 
-		for(unsigned i = 0; i < activatables.size(); i++) {
-			if(!activatables[i]->IsCollidable()) { continue; }
+		for(unsigned j = 0; j < activatables.size(); j++) {
+			if(!activatables[j]->IsCollidable()) { continue; }
 
-			sf::Vector2f intersect = activatables[i]->lineIntersect(pos, cornerPos, 0.01f);
+			sf::Vector2f intersect = activatables[j]->lineIntersect(pos, corner.pos, 0.01f);
 			float intersectMag = magnitude(pos - intersect);
 
 			if(intersectMag < closestMag &&
@@ -303,17 +328,17 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 		}
 
 		float distClosestCaster = magnitude(closestIntersect - pos);
-		float distCornerCaster = magnitude(cornerPos - pos);
-		float distClosestCorner = magnitude(closestIntersect - cornerPos);
+		float distCornerCaster = magnitude(corner.pos - pos);
+		float distClosestCorner = magnitude(closestIntersect - corner.pos);
 		if(found && ((tangent && distClosestCaster - distCornerCaster > 1.0f)
 				|| distClosestCorner <= 1.0f)) {
 			point.fillTo = closestIntersect;
 			point.fillFrom = closestIntersect;
 			if(closestMag >= magnitude(dir)) { 
 				if(tangent && facing == Corner::FACING_TANGENT_FIRST) {
-					point.fillFrom = cornerPos;
+					point.fillFrom = corner.pos;
 				} else if(tangent && facing == Corner::FACING_TANGENT_SECOND) {
-					point.fillTo = cornerPos;
+					point.fillTo = corner.pos;
 				}
 			}
 			points.push_back(point);
@@ -1000,10 +1025,9 @@ bool Level::GetCollide(const sf::Vector2f& pos, const bool horiz, const bool ste
 	return foundCol;
 }
 
-Level::Corner::FacingType Level::Corner::getFacingType(const sf::Vector2u &tileSize, const sf::Vector2f &pos) const {
-	sf::Vector2f globPos(this->pos.x * tileSize.x, this->pos.y * tileSize.y);
+Corner::FacingType Corner::getFacingType(const sf::Vector2f &pos) const {
 	//Subtract one so we can use modulus correctly
-	int quadrant = getQuadrant(globPos, pos)-1;
+	int quadrant = getQuadrant(this->pos, pos)-1;
 	int thisQuad = this->quadrant-1;
 	FacingType ret;
 
@@ -1018,13 +1042,13 @@ Level::Corner::FacingType Level::Corner::getFacingType(const sf::Vector2u &tileS
 			ret = FACING_TANGENT_FIRST;
 		} else {
 			// Equal - not in a quadrant, do some additional processing
-			if((globPos.x == pos.x && (this->quadrant == 2 || this->quadrant == 4)) ||
-					(globPos.y == pos.y && (this->quadrant == 1 || this->quadrant == 3))) {
+			if((this->pos.x == pos.x && (this->quadrant == 2 || this->quadrant == 4)) ||
+					(this->pos.y == pos.y && (this->quadrant == 1 || this->quadrant == 3))) {
 				ret = FACING_TANGENT_FIRST;
 				printf("aaa\n");
 			}
-			if((globPos.x == pos.x && (this->quadrant == 1 || this->quadrant == 3)) ||
-					(globPos.y == pos.y && (this->quadrant == 2 || this->quadrant == 4))) {
+			if((this->pos.x == pos.x && (this->quadrant == 1 || this->quadrant == 3)) ||
+					(this->pos.y == pos.y && (this->quadrant == 2 || this->quadrant == 4))) {
 				ret = FACING_TANGENT_SECOND;
 				printf("bbb\n");
 			}

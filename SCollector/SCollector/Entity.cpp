@@ -138,6 +138,27 @@ sf::Vector2f Entity::lineIntersect(sf::Vector2f p1, sf::Vector2f p2, float epsil
 	return closest;
 }
 
+Corner Entity::getCorner(int quadrant) const {
+	Corner corner;
+	sf::Vector2f basepos = sf::Vector2f(sprite.getPosition().x - sprite.getOrigin().x,
+				sprite.getPosition().y - sprite.getOrigin().y);
+
+	corner.quadrant = quadrant;
+	corner.inner = false;
+
+	if(quadrant == 1) {
+		corner.pos = basepos;
+	} else if(quadrant == 2) {
+		corner.pos = basepos + sf::Vector2f(collisionBox.width, 0.0f);
+	} else if(quadrant == 3) {
+		corner.pos = basepos + sf::Vector2f(collisionBox.width, collisionBox.height);
+	} else {
+		corner.pos = basepos + sf::Vector2f(0.0f, collisionBox.height);
+	}
+
+	return corner;
+}
+
 bool Entity::IsCollidable()
 {
 	return isCollidable;

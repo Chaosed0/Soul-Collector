@@ -20,6 +20,7 @@
 
 class Level;
 class AttackCone;
+struct Corner;
 
 class Entity : public sf::Drawable
 {
@@ -97,6 +98,8 @@ public:
 	 * \return (FLT_MAX, FLT_MAX) if no intersection, the intersection point otherwise.
 	 */
 	virtual sf::Vector2f lineIntersect(sf::Vector2f p1, sf::Vector2f p2, float epsilon) const;
+
+	virtual Corner getCorner(int quadrant) const;
 
 	/**
 	 * Checks if this entity is collidable with the player or not.
