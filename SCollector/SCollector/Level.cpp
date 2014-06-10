@@ -254,7 +254,6 @@ void Level::GetEdges() {
 std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) const {
 	std::vector<LightPoint> points;
 	for(std::size_t i = 0; i < corners.size() + activatables.size()*4; i++) {
-		bool tangent = false;
 		Corner corner;
 
 		if(i < corners.size()) {
@@ -265,12 +264,11 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 		}
 
 		Corner::FacingType facing = corner.getFacingType(pos);
-		sf::Vector2f dir = corner.pos - pos;
-
-		LightPoint point;
-		sf::Vector2f closestIntersect(corner.pos);
-		float closestMag = FLT_MAX;
+		bool tangent = (facing == Corner::FACING_TANGENT_FIRST ||
+			   facing == Corner::FACING_TANGENT_SECOND);
 		bool found = false;
+		sf::Vector2f closestIntersect;
+		LightPoint point;
 
 		//The entire corner is facing away from us;
 		//we don't need to process it
@@ -278,68 +276,22 @@ std::vector<Level::LightPoint> Level::IntersectWalls(const sf::Vector2f &pos) co
 			continue;
 		}
 
-		for(std::size_t j = 0; j < edges.size(); j++) {
-			Edge edge = edges[j];
-			Corner c1 = corners[edge.c1];
-			Corner c2 = corners[edge.c2];
-
-			//If this corner is a tangent corner and it's one of
-			//the ones on this edge, skip it but note down that we
-			//found it for later
-			if(edge.c1 == i || edge.c2 == i) {
-				tangent = (facing == Corner::FACING_TANGENT_FIRST ||
-						facing == Corner::FACING_TANGENT_SECOND);
-				if(tangent) { continue; }
-			} else if((edge.normal.x != 0 && sign(dir.x) == edge.normal.x) ||
-					(edge.normal.y != 0 && sign(dir.y) == edge.normal.y)) {
-				//This edge is facing away from us; we don't need to process it
-				continue;
-			}
-
-			sf::Vector2f intersect = lineIntersect(pos, corner.pos, c1.pos, c2.pos);
-			float intersectMag = magnitude(pos - intersect);
-
-			//If we intersected on the segment and this is a closer
-			// intersection than any prior, take this as the new closest
-			// intersection
-			if(intersectMag < closestMag &&
-					sign(intersect.x - pos.x) == sign(dir.x) &&
-					sign(intersect.y - pos.y) == sign(dir.y) &&
-					onLine(c1.pos, c2.pos, intersect, 0.01f)) {
-				closestIntersect = intersect;
-				closestMag = intersectMag;
-				found = true;
-			}
-		}
-
-		for(unsigned j = 0; j < activatables.size(); j++) {
-			if(!activatables[j]->IsCollidable()) { continue; }
-
-			sf::Vector2f intersect = activatables[j]->lineIntersect(pos, corner.pos, 0.01f);
-			float intersectMag = magnitude(pos - intersect);
-
-			if(intersectMag < closestMag &&
-					sign(intersect.x - pos.x) == sign(dir.x) &&
-					sign(intersect.y - pos.y) == sign(dir.y)) {
-				closestIntersect = intersect;
-				closestMag = intersectMag;
-				found = true;
-			}
-		}
+		found = GetCollide(pos, corner.pos, closestIntersect, (tangent ? i : -1));
 
 		float distClosestCaster = magnitude(closestIntersect - pos);
 		float distCornerCaster = magnitude(corner.pos - pos);
 		float distClosestCorner = magnitude(closestIntersect - corner.pos);
-		if(found && ((tangent && distClosestCaster - distCornerCaster > 1.0f)
-				|| distClosestCorner <= 1.0f)) {
+		if(found && distClosestCorner <= 1.0f) {
 			point.fillTo = closestIntersect;
 			point.fillFrom = closestIntersect;
-			if(closestMag >= magnitude(dir)) { 
-				if(tangent && facing == Corner::FACING_TANGENT_FIRST) {
-					point.fillFrom = corner.pos;
-				} else if(tangent && facing == Corner::FACING_TANGENT_SECOND) {
-					point.fillTo = corner.pos;
-				}
+			points.push_back(point);
+		} else if(found && tangent && distClosestCaster >= distCornerCaster) { 
+			if(facing == Corner::FACING_TANGENT_FIRST) {
+				point.fillTo = closestIntersect;
+				point.fillFrom = corner.pos;
+			} else if(facing == Corner::FACING_TANGENT_SECOND) {
+				point.fillTo = corner.pos;
+				point.fillFrom = closestIntersect;
 			}
 			points.push_back(point);
 		}
@@ -648,7 +600,58 @@ bool Level::GetColliding(const sf::Vector2i& locTile, const sf::Vector2i& pixel)
 	return collisionMap[locTile.x + pixel.x][locTile.y + pixel.y];
 }
 
-bool Level::GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) const
+bool Level::GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& closestIntersect, std::size_t skipCorner) const {
+	float closestMag = FLT_MAX;
+	sf::Vector2f dir = p2 - p1;
+	for(std::size_t j = 0; j < edges.size(); j++) {
+		Edge edge = edges[j];
+		Corner c1 = corners[edge.c1];
+		Corner c2 = corners[edge.c2];
+
+		//If this corner is a tangent corner and it's one of
+		//the ones on this edge, skip it but note down that we
+		//found it for later
+		if(edge.c1 == skipCorner || edge.c2 == skipCorner) {
+			continue;
+		} else if((edge.normal.x != 0 && sign(dir.x) == edge.normal.x) ||
+				(edge.normal.y != 0 && sign(dir.y) == edge.normal.y)) {
+			//This edge is facing away from us; we don't need to process it
+			continue;
+		}
+
+		sf::Vector2f intersect = lineIntersect(p1, p2, c1.pos, c2.pos);
+		float intersectMag = magnitude(p1 - intersect);
+
+		//If we intersected on the segment and this is a closer
+		// intersection than any prior, take this as the new closest
+		// intersection
+		if(intersectMag < closestMag &&
+				sign(intersect.x - p1.x) == sign(dir.x) &&
+				sign(intersect.y - p1.y) == sign(dir.y) &&
+				onLine(c1.pos, c2.pos, intersect, 0.01f)) {
+			closestIntersect = intersect;
+			closestMag = intersectMag;
+		}
+	}
+
+	for(unsigned j = 0; j < activatables.size(); j++) {
+		if(!activatables[j]->IsCollidable()) { continue; }
+
+		sf::Vector2f intersect = activatables[j]->lineIntersect(p1, p2, 0.01f);
+		float intersectMag = magnitude(p1 - intersect);
+
+		if(intersectMag < closestMag &&
+				sign(intersect.x - p1.x) == sign(dir.x) &&
+				sign(intersect.y - p1.y) == sign(dir.y)) {
+			closestIntersect = intersect;
+			closestMag = intersectMag;
+		}
+	}
+
+	return closestMag != FLT_MAX;
+}
+
+/*bool Level::GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) const
 {
 	bool steep = std::abs(p2.y - p1.y) > std::abs(p2.x - p1.x);
 
@@ -729,7 +732,7 @@ bool Level::GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) co
 		}
 	}
 	return collided;
-}
+}*/
 
 bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const
 {

@@ -35,10 +35,10 @@ struct Corner {
 	int quadrant;
 	bool inner;
 	enum FacingType {
-		FACING_AWAY,
-		FACING_CORNER,
-		FACING_TANGENT_FIRST,
-		FACING_TANGENT_SECOND
+		FACING_AWAY = 1 << 1,
+		FACING_CORNER = 1 << 2,
+		FACING_TANGENT_FIRST = 1 << 3,
+		FACING_TANGENT_SECOND = 1 << 4,
 	};
 	FacingType getFacingType(const sf::Vector2f &pos) const;
 };
@@ -129,6 +129,7 @@ public:
 	 * \return A const reference to the player.
 	 */
 	const Player& GetPlayer() const;
+	
 
 	/**
 	 * Gets the nearest colliding pixel in a certain diretcion.
@@ -160,7 +161,7 @@ public:
 	 * \return True if there is a collision in the line's direction, false otherwise.
 	 */
 	bool GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& nearest) const;
-	bool GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point) const;
+	bool GetCollide(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f& point, std::size_t skipCorner = -1) const;
 
 	/**
 	 * Attempts to activate an object, if the player is colliding with one.
