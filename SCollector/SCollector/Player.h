@@ -171,8 +171,8 @@ private:
 		ATTACKING
 	} state;
 
-	/** Flags set to true when the player should move in the corresponding direction */
-	bool moveLeft, moveRight, moveUp, moveDown;
+	/** Current movement direction */
+	sf::Vector2f dir;
 
 	/** Player's light source */
 	LightSource lighter;

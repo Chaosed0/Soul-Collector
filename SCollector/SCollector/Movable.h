@@ -8,6 +8,7 @@
 #define __MOVABLE_H
 
 #include "Entity.h"
+class Level;
 
 class Movable : public Entity
 {
@@ -35,6 +36,8 @@ public:
 	 * \return True if the movable is alive, false otherwise.
 	 */
 	virtual bool IsAlive();
+
+	virtual void move(Level &level, sf::Vector2f movement);
 protected:
 	/** Movement direction of the entity*/
 	float moveAngle;

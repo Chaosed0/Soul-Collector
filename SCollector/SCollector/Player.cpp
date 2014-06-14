@@ -25,7 +25,6 @@ Player::Player(const sf::Vector2f& pos)
 	, ambientLight(700, sf::Color(0, 0, 0, 210), pos)
 {
 	//When the player starts, he isn't moving anywhere
-	moveLeft = moveRight = moveUp = moveDown = false;
 	SetPos(pos);
 
 	state = CANMOVE;
@@ -54,7 +53,7 @@ Player::Player(const sf::Vector2f& pos)
 void Player::Reset()
 {
 	//When the player starts, he isn't moving anywhere
-	moveLeft = moveRight = moveUp = moveDown = false;
+	dir = sf::Vector2f(0,0);
 
 	isSprinting = false;
 
@@ -102,19 +101,19 @@ void Player::RemoveHealth(int amount)
 
 void Player::MoveLeft(bool start)
 {
-	moveLeft = start;
+	dir.x -= (start ? 1.0f : -1.0f);
 }
 void Player::MoveRight(bool start)
 {
-	moveRight = start;
+	dir.x += (start ? 1.0f : -1.0f);
 }
 void Player::MoveUp(bool start)
 {
-	moveUp = start;
+	dir.y -= (start ? 1.0f : -1.0f);
 }
 void Player::MoveDown(bool start)
 {
-	moveDown = start;
+	dir.y += (start ? 1.0f : -1.0f);
 }
 
 void Player::Sprint(bool start)
@@ -186,96 +185,26 @@ void Player::AddHumanity(int humanity)
 void Player::Update(Level& level, const sf::Time& timePassed)
 {
 	timer += timePassed;
-	bool moving = moveLeft || moveRight || moveUp || moveDown;
+	bool moving = dir.x != 0 || dir.y != 0;
+	float moveSpeed;
+	sf::Vector2f movement;
 
 	attackPower = baseAttack + (100-baseAttack)*(1-humanityTimer.asMicroseconds()/(float)maxHumanityTime.asMicroseconds());
 
+	if(isSprinting) {
+		moveSpeed = sprintSpeed*timePassed.asSeconds();
+		sprintTimer = std::max(sf::Time::Zero, sprintTimer-timePassed);
+	} else {
+		moveSpeed = regSpeed*timePassed.asSeconds();
+	}
+
+	movement.x = dir.x == 0 ? 0 : dir.x * moveSpeed / magnitude(dir);
+	movement.y = dir.y == 0 ? 0 : dir.y * moveSpeed / magnitude(dir);
+
 	if(state == CANMOVE && moving) {
 		PlayAnim("walk", timePassed);
-
-		//Get the sides of the player's collision rectangle
-		sf::Vector2f pos = sprite.getPosition();
-		float top = pos.y - collisionBox.height/2;
-		float left = pos.x - collisionBox.width/2;
-		float bot = pos.y + collisionBox.height/2;
-		float right = pos.x + collisionBox.width/2;
-		sf::Vector2f topLeft(left, top);
-		sf::Vector2f botRight(right, bot);
-		sf::Vector2f topRight(right, top);
-		sf::Vector2f botLeft(left, bot);
-		//printf("(%g, %g), (%g, %g)\n", topLeft.x, topLeft.y, botRight.x, botRight.y);
-		int nearestTopLeft, nearestBotRight, nearest;
-		bool foundTopLeft, foundBotRight, found;
-		float moveSpeed;
-		sf::Vector2f movement(0, 0);
-
-		if(isSprinting) {
-			moveSpeed = sprintSpeed*timePassed.asSeconds();
-			sprintTimer = std::max(sf::Time::Zero, sprintTimer-timePassed);
-		} else {
-			moveSpeed = regSpeed*timePassed.asSeconds();
-		}
-
-		if(moveUp) {
-			foundTopLeft = level.GetCollide(topLeft, false, false, nearestTopLeft);
-			foundBotRight = level.GetCollide(topRight, false, false, nearestBotRight);
-			nearest = std::max(nearestTopLeft, nearestBotRight);
-			nearest -= (int)top;
-			found = foundTopLeft || foundBotRight;
-			if(!found)
-				nearest = -INT_MAX;
-			//printf("Nearest Up: %d\n", nearest);
-			movement.y += std::max(-moveSpeed, (float)nearest);
-		}
-		if(moveDown) {
-			foundTopLeft = level.GetCollide(botLeft, false, true, nearestTopLeft);
-			foundBotRight = level.GetCollide(botRight, false, true, nearestBotRight);
-			nearest = std::min(nearestTopLeft, nearestBotRight);
-			nearest -= (int)bot;
-			found = foundTopLeft || foundBotRight;
-			if(!found)
-				nearest = INT_MAX;
-			//printf("Nearest Down: %d\n", nearest);
-			movement.y += std::min(moveSpeed, (float)nearest);
-		}
-		if(moveLeft) {
-			foundTopLeft = level.GetCollide(topLeft, true, false, nearestTopLeft);
-			foundBotRight = level.GetCollide(botLeft, true, false, nearestBotRight);
-			nearest = std::max(nearestTopLeft, nearestBotRight);
-			nearest -= (int)left;
-			found = foundTopLeft || foundBotRight;
-			if(!found)
-				nearest = -INT_MAX;
-			//printf("Nearest Left: %d\n", nearest);
-			movement.x += std::max(-moveSpeed, (float)nearest);
-		}
-		if(moveRight) {
-			foundTopLeft = level.GetCollide(topRight, true, true, nearestTopLeft);
-			foundBotRight = level.GetCollide(botRight, true, true, nearestBotRight);
-			nearest = std::min(nearestTopLeft, nearestBotRight);
-			nearest -= (int)right;
-			found = foundTopLeft || foundBotRight;
-			if(!found)
-				nearest = INT_MAX;
-			//printf("Nearest Right: %d\n", nearest);
-			movement.x += std::min(moveSpeed, (float)nearest);
-		}
-
-		//Correct diagonal movement so that player doesn't move faster
-		if(movement.x && movement.y) {
-			movement.x /= 1.414f;
-			movement.y /= 1.414f;
-		}
-		sprite.move(movement);
-
-		if(moveRight && moveDown && !moveLeft && !moveUp) sprite.setRotation(45);
-		else if(moveLeft && moveDown && !moveRight && !moveUp) sprite.setRotation(135);
-		else if(moveLeft && moveUp && !moveRight && !moveDown) sprite.setRotation(225);
-		else if(moveRight && moveUp && !moveLeft && !moveDown) sprite.setRotation(315);
-		else if(moveRight && !moveLeft) sprite.setRotation(0);
-		else if(moveDown && !moveUp) sprite.setRotation(90);
-		else if(moveLeft && !moveRight) sprite.setRotation(180);
-		else if(moveUp && !moveDown) sprite.setRotation(270);
+		move(level, movement);
+		sprite.setRotation(TO_DEG * atan2f(movement.y, movement.x));
 	} else if(state == ATTACKING) {
 		PlayAnim("attack", timePassed);
 		if(timer >= attackConeLife) {
