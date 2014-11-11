@@ -191,7 +191,7 @@ void Level::GetEdges() {
 		Corner curCorner = corners[i];
 		processed[i] = true;
 		do {
-			printf("Processing corner %d %d\n", tilePos[current].x, tilePos[current].y);
+			printf("Processing corner %d %d (%d %d)\n", tilePos[current].x, tilePos[current].y, curCorner.inner, curCorner.quadrant);
 			//Follow the edges in a clockwise fashion
 			sf::Vector2i dir(0,0);
 			sf::Vector2i normal(0,0);
@@ -217,7 +217,7 @@ void Level::GetEdges() {
 			std::unordered_map<unsigned, std::size_t>::iterator iter =
 				cornerLocSet.find(pos.y * (mapSize.x+1) + pos.x);
 			while(iter == cornerLocSet.end()) {
-				printf("  %d %d\n", pos.x, pos.y);
+				//printf("  %d %d\n", pos.x, pos.y);
 				if(pos.x < 0 || pos.x > (int)mapSize.x ||
 						pos.y < 0 || pos.y > (int)mapSize.x) {
 					fprintf(stderr, "WARNING: Encountered out-of-bounds while "
@@ -233,9 +233,10 @@ void Level::GetEdges() {
 				Edge edge;
 				std::size_t index = iter->second;
 				if(index+1 < corners.size() && corners[index].pos == corners[index+1].pos) {
+					int magic_number = curCorner.quadrant - (int)curCorner.inner;
 					//Corner case - two corners in the same spot
 					//We need to figure out which one we actually want
-					if(curCorner.quadrant - (int)curCorner.inner == corners[index].quadrant) {
+					if((magic_number == 0 ? 4 : magic_number) == corners[index].quadrant) {
 						++index;
 					}
 				}
