@@ -499,11 +499,11 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 				}
 			}
 			else if(type.compare("Key") == 0) {
-				std::string door = object->GetProperties().GetLiteralProperty("Door");
-				std::string description = object->GetProperties().GetLiteralProperty("Description");
-				int r = object->GetProperties().GetNumericProperty("Red");
-				int b = object->GetProperties().GetNumericProperty("Blue");
-				int g = object->GetProperties().GetNumericProperty("Green");
+				std::string door = object->GetProperties().GetStringProperty("Door");
+				std::string description = object->GetProperties().GetStringProperty("Description");
+				int r = object->GetProperties().GetIntProperty("Red");
+				int b = object->GetProperties().GetIntProperty("Blue");
+				int g = object->GetProperties().GetIntProperty("Green");
 				if(door.empty()) {
 					fprintf(stderr, "WARNING: Key has no associated door! Ignored...");
 				} else {
@@ -523,8 +523,8 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 				enemies.push_back(new SlowDemon(objectPos));
 				enemies.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Stairs") == 0) {
-				std::string nextLevel = object->GetProperties().GetLiteralProperty("NextLevel");
-				std::string nextSpawn = object->GetProperties().GetLiteralProperty("NextSpawn");
+				std::string nextLevel = object->GetProperties().GetStringProperty("NextLevel");
+				std::string nextSpawn = object->GetProperties().GetStringProperty("NextSpawn");
 				if(nextLevel.empty() || nextSpawn.empty()) {
 					fprintf(stderr, "WARNING: Stairs named %s have missing properties! Ignored...\n",
 						object->GetName().c_str());
@@ -533,18 +533,18 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 					activatables.back()->SetRotCorrected(object->GetRot());
 				}
 			} else if(type.compare("Door") == 0) {
-				std::string description = object->GetProperties().GetLiteralProperty("Description");
+				std::string description = object->GetProperties().GetStringProperty("Description");
 				activatables.push_back(new Door(objectPos, object->GetName(), description));
 				activatables.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Soul") == 0) {
 				activatables.push_back(new Soul(objectPos));
 				activatables.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Potion") == 0) {
-				int recovery = object->GetProperties().GetNumericProperty("Recovery");
+				int recovery = object->GetProperties().GetIntProperty("Recovery");
 				activatables.push_back(new HealthPot(objectPos, recovery));
 				activatables.back()->SetRotCorrected(object->GetRot());
 			} else if(type.compare("Fuel") == 0) {
-				int recovery = object->GetProperties().GetNumericProperty("Recovery");
+				int recovery = object->GetProperties().GetIntProperty("Recovery");
 				activatables.push_back(new FuelCanister(objectPos, recovery));
 				activatables.back()->SetRotCorrected(object->GetRot());
 			}
@@ -556,7 +556,7 @@ Tmx::Map* Level::Parse(const std::string& mapName)
 	}
 
 	//Get a map description to display to the player.
-	description = map->GetProperties().GetLiteralProperty("Description");
+	description = map->GetProperties().GetStringProperty("Description");
 	printf("Map parsing complete\n");
 	return map;
 }
@@ -798,14 +798,14 @@ bool Level::GetCollide(const sf::Vector2f& pos, float angle, sf::Vector2f& neare
 				if(!foundX) {
 					//If this pixel is not colliding, then keep searching
 					if(negXDir) nearestX.x--; else nearestX.x++;
-					if(negYDir) nearestX.y-=abs(tanDir); else nearestX.y+=abs(tanDir);
+					if(negYDir) nearestX.y-=std::abs(tanDir); else nearestX.y+=std::abs(tanDir);
 					pixel.x = (int)(nearestX.x-globTile.x*tileSize.x);
 					pixel.y = (int)(nearestX.y-globTile.y*tileSize.y);
 				} else {
 					//Otherwise, note down where we found this and break
 					//Back out one pixel; the previous pixel was the last non-colliding one
 					if(negXDir) nearestX.x++; else nearestX.x--;
-					if(negYDir) nearestX.y+=abs(tanDir); else nearestX.y-=abs(tanDir);
+					if(negYDir) nearestX.y+=std::abs(tanDir); else nearestX.y-=std::abs(tanDir);
 					sf::Vector2f relDist = pos - nearestX;
 					distX = magnitude(relDist);
 				}

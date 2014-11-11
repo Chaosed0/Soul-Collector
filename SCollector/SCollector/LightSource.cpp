@@ -194,9 +194,9 @@ void LightSource::Update(const Level& level)
 		//Composite the visibility texture, the circle aura texture and the color/dimness
 		// overlay together
 		compositeOverlay.clear();
-		compositeOverlay.draw(circleSprite, sf::BlendMode::BlendMultiply);
-		compositeOverlay.draw(circleOverlay, sf::BlendMode::BlendAlpha);
-		compositeOverlay.draw(triangleOverlaySprite, sf::BlendMode::BlendAdd);
+		compositeOverlay.draw(circleSprite, sf::BlendMultiply);
+		compositeOverlay.draw(circleOverlay, sf::BlendAlpha);
+		compositeOverlay.draw(triangleOverlaySprite, sf::BlendAdd);
 		compositeOverlay.display();
 		compositeOverlaySprite.setTexture(compositeOverlay.getTexture());
 		needsRedraw = false;

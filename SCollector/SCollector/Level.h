@@ -17,7 +17,7 @@
 #include <vector>
 #include <list>
 
-#include <TmxParser/Tmx.h>
+#include <tmxparser/Tmx.h>
 
 #include "Utility.h"
 #include "AttackCone.h"

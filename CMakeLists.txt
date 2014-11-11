@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules/ ${CMAKE_MODULE_PATH})
 
 find_package(SFML 2.1 REQUIRED system window graphics audio)
 find_package(SFGUI REQUIRED)
-find_package(Zlib)
+find_package(ZLIB)
 find_package(TinyXML)
 find_package(TmxParser)
 
