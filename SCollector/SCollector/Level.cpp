@@ -1048,12 +1048,8 @@ Corner::FacingType Corner::getFacingType(const sf::Vector2f &pos) const {
 			if((this->pos.x == pos.x && (this->quadrant == 2 || this->quadrant == 4)) ||
 					(this->pos.y == pos.y && (this->quadrant == 1 || this->quadrant == 3))) {
 				ret = FACING_TANGENT_FIRST;
-				printf("aaa\n");
-			}
-			if((this->pos.x == pos.x && (this->quadrant == 1 || this->quadrant == 3)) ||
-					(this->pos.y == pos.y && (this->quadrant == 2 || this->quadrant == 4))) {
+			} else {
 				ret = FACING_TANGENT_SECOND;
-				printf("bbb\n");
 			}
 		}
 	} else {
