@@ -2,7 +2,7 @@
 
 **5/29/2014**: The lighting algorithm has been updated a bit to fix some of the I had with it. I also fixed a couple small bugs. If you'd like to see it as it was at the end of CMPSC483W (software design at the Pennsylvania State University), revert to the git tag "v1.0" and give it a compile.
 
-If you just want to see the game, [here's a video of it](https://www.youtube.com/watch?v=eBNp7TAJF8E), and [here's a windows build](https://straypixels.net/wp-content/uploads/2014/11/SCollector-Dist.zip).
+If you just want to see the game, [here's a video of it](https://www.youtube.com/watch?v=eBNp7TAJF8E), and [here's a windows build](https://straypixels.net/Collector-Dist.zip).
 
 Original text follows...
 
